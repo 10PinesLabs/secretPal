@@ -6,6 +6,7 @@ import com.tenPines.model.Worker;
 import com.tenPines.persistence.AdminRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -33,7 +34,7 @@ public class AdminService {
     }
 
     public User nullUser(){
-        return User.newUser(new Worker(),"","");
+        return User.newUser(new Worker("Testy MacUserton", "someone@mail.com", LocalDate.now(),true),"","");
     }
 
     public boolean isAdmin(User user) {

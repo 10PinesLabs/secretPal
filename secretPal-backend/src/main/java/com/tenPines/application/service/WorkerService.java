@@ -2,9 +2,13 @@ package com.tenPines.application.service;
 
 import com.tenPines.model.Worker;
 import com.tenPines.persistence.WorkerRepository;
+import org.springframework.core.NestedRuntimeException;
 import org.springframework.data.domain.Example;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,9 +25,10 @@ public class WorkerService {
     }
 
     public List<Worker> getAllParticipants() {
-        Worker example = new Worker();
-        example.setWantsToParticipate(true);
-        return workerRepository.findAll(Example.of(example));
+        Specification<Worker> spec = Specifications.where((root, query, cb) ->
+            cb.isTrue(root.get("wantsToParticipate"))
+        );
+        return workerRepository.findAll(spec);
     }
 
     public void remove(Worker aWorker) {

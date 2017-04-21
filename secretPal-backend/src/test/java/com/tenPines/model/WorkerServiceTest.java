@@ -26,14 +26,14 @@ public class WorkerServiceTest extends SpringBaseTest{
     }
 
     @Test
-    public void When_I_Save_A_New_User_This_Should_Be_Stored() throws Exception {
+    public void When_I_Save_A_New_User_This_Should_Be_Stored() {
         workerService.save(aWorker);
 
         assertThat(workerService.getAllParticipants(), hasSize(1));
     }
 
     @Test
-    public void When_I_Ask_For_All_The_People_It_Should_Return_Them() throws Exception {
+    public void When_I_Ask_For_All_The_People_It_Should_Return_Them() {
         Worker aWorker = new WorkerBuilder().build();
         Worker anotherWorker = new WorkerBuilder().build();
 
@@ -47,7 +47,7 @@ public class WorkerServiceTest extends SpringBaseTest{
 
 
     @Test
-    public void When_I_Delete_An_Existing_Person_It_Should_Be_No_More() throws Exception {
+    public void When_I_Delete_An_Existing_Person_It_Should_Be_No_More() {
         Worker aWorker = new WorkerBuilder().build();
 
         workerService.save(aWorker);
@@ -56,33 +56,4 @@ public class WorkerServiceTest extends SpringBaseTest{
         assertThat(workerService.getAllParticipants(), not(hasItem(aWorker)));
         assertThat(workerService.getAllParticipants(), hasSize(0));
     }
-
-    @Test
-    public void When_I_Add_A_User_With_No_Name_I_Should_Get_An_Error() throws Exception {
-        Worker aWorker = new WorkerBuilder().build();
-        aWorker.setFullName("");
-
-        try {
-            workerService.save(aWorker);
-        } catch (ConstraintViolationException e) {
-            assertThat(e.getConstraintViolations(), hasSize(1));
-            assertThat(e.getMessage(), stringContainsInOrder(Arrays.asList("Validation failed", "Worker", "may not be empty", "fullName")));
-        }
-    }
-
-    @Test
-    public void When_I_Add_A_Blank_Worker_I_Should_Get_A_Ton_of_Errors() {
-        Worker aWorker = new Worker(); //completely blank
-
-        try {
-            workerService.save(aWorker);
-        } catch (ConstraintViolationException e) {
-            assertThat(e.getConstraintViolations(), hasSize(4));
-            assertThat(e.getMessage(), stringContainsInOrder(Arrays.asList("Validation failed", "Worker", "may not be empty", "fullName")));
-            assertThat(e.getMessage(), stringContainsInOrder(Arrays.asList("Validation failed", "Worker", "may not be null", "dateOfBirth")));
-            assertThat(e.getMessage(), stringContainsInOrder(Arrays.asList("Validation failed", "Worker", "may not be empty", "eMail")));
-        }
-
-    }
-
 }

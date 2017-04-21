@@ -39,8 +39,8 @@ public class Worker {
     @Column
     private LocalDate giftDateReceived;
 
-    public Worker() {
-    }
+    // Necessary for hibernate
+    private Worker() { }
 
     public Worker(String fullName, String email, LocalDate dateOfBirth, Boolean wantsToParticipate) {
         this.fullName = fullName;
