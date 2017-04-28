@@ -1,14 +1,25 @@
 package com.tenPines.application.service;
 
 import com.tenPines.application.ReminderSystem;
+import com.tenPines.application.service.validator.FriendRelationValidator;
 import com.tenPines.model.FriendRelation;
+import com.tenPines.model.User;
 import com.tenPines.model.Worker;
+import com.tenPines.model.process.AssignmentException;
 import com.tenPines.model.process.AssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Relation;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class FriendRelationService {
@@ -24,27 +35,15 @@ public class FriendRelationService {
         return friendRelationRepository.save(new RelationEstablisher(friendWorker, birthdayWorker).createRelation());
     }
 
-    public void autoAssignRelations() {
-        friendRelationRepository.save(
-                new AssignmentFunction(workerService.getAllParticipants()).execute()
-        );
-    }
-
-
     public List<FriendRelation> getAllRelations() {
         return friendRelationRepository.findAll();
     }
 
     public Worker retrieveAssignedFriendFor(Worker unWorker) {
         FriendRelation aRelation = friendRelationRepository.findBygiftReceiver(unWorker);
-        if (aRelation == null) {
-            autoAssignRelations();
-            aRelation = friendRelationRepository.findBygiftReceiver(unWorker);
-
-        }
         return aRelation.getGiftGiver();
 
-    }
+        }
 
     public void deleteRelationByReceipt(Worker to) {
         FriendRelation relation = friendRelationRepository.findBygiftReceiver(to);
@@ -59,5 +58,33 @@ public class FriendRelationService {
 
     public void deleteAllRelations() {
         friendRelationRepository.deleteAllRelations();
+    }
+
+    public void save(FriendRelation fr){
+        friendRelationRepository.save(fr);
+    }
+
+    public FriendRelation getByWorkerReceiver(Worker receiver){
+        return friendRelationRepository.findBygiftReceiver(receiver);
+    }
+
+    public List<FriendRelation> shuffle(List<User> users) {
+        List<User> validUsers = users.stream().filter(u -> u.getWorker().getDateOfBirth().withYear(LocalDate.now().getYear()).isAfter(LocalDate.now())).collect(Collectors.toList());
+        for(int i=0;i<100;i++){
+            FriendRelationValidator friendRelationValidator = new FriendRelationValidator(this);
+            if(friendRelationValidator.validateAll(validUsers)){
+                return new AssignmentFunction(validUsers).execute();
+            }
+            Collections.shuffle(validUsers, new Random(System.nanoTime()));
+        }
+
+        for(int i=0;i<100;i++){
+            FriendRelationValidator friendRelationValidator = new FriendRelationValidator(this);
+            if(friendRelationValidator.validateHardRules(validUsers)){
+                return new AssignmentFunction(validUsers).execute();
+            }
+            Collections.shuffle(validUsers, new Random(System.nanoTime()));
+        }
+        throw new RuntimeException("Cannot shuffle those users");
     }
 }

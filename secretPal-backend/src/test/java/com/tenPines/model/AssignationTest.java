@@ -1,5 +1,6 @@
 package com.tenPines.model;
 
+import com.tenPines.builder.UserFactory;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.model.process.AssignmentException;
 import com.tenPines.model.process.AssignmentFunction;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.*;
@@ -111,7 +113,8 @@ public class AssignationTest {
     }
 
     private List<FriendRelation> assign(List<Worker> workerList) throws AssignmentException{
-        return new AssignmentFunction(workerList).execute();
+        List<User> userList = workerList.stream().map( w -> UserFactory.newUserFromWorker(w)).collect(Collectors.toList());
+        return new AssignmentFunction(userList).execute();
     }
 
 }

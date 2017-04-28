@@ -66,9 +66,6 @@ public class WorkerService {
         return workerRepository.findAll();
     }
 
-    public Worker retrieveWorkerByFullname(String token) {
-        return workerRepository.findByfullName(token);
-
-    }
+    public Worker retrieveWorkerByFullname(String token) { return workerRepository.findByfullName(token); }
 
 }

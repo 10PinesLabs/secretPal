@@ -61,9 +61,6 @@ public class Worker {
         return id;
     }
 
-    /* @ManyToMany(mappedBy="friendRelations")
-    private Set<SecretPalEvent> secretPalEvents = new HashSet<>();*/
-
     public void setId(Long id) {
         this.id = id;
     }

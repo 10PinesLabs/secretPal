@@ -169,4 +169,8 @@ public class SystemPalFacade {
         NewUser newUser = NewUser.createANewUser(form.getUserName(), form.getPassword(), form.getEmail());
         registerService.registerUser(newUser);
     }
+
+    public List<FriendRelation> shuffle(List<User> users){
+        return friendRelationService.shuffle(users);
+    }
 }

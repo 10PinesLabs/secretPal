@@ -1,10 +1,16 @@
 package com.tenPines.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.tenPines.builder.FriendRelationMessageBuilder;
+import com.tenPines.configuration.JsonDateDeserializer;
+import com.tenPines.configuration.JsonDateSerializer;
 
 import javax.mail.MessagingException;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.time.LocalDate;
 
 @Entity
 @Table
@@ -20,14 +26,17 @@ public class FriendRelation {
     @OneToOne
     private Worker giftReceiver;
 
-//    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
-//    public SecretPalEvent event;
+    @JsonSerialize(using = JsonDateSerializer.class)
+    @JsonDeserialize(using = JsonDateDeserializer.class)
+    @NotNull
+    private LocalDate creationDate;
 
     public FriendRelation(){}
 
-    public FriendRelation(Worker participant, Worker giftReceiver)  {
-        this.giftGiver = participant;
-        this.giftReceiver = giftReceiver;
+    public FriendRelation(Worker participant, Worker aGiftReceiver)  {
+        giftGiver = participant;
+        giftReceiver = aGiftReceiver;
+        creationDate = LocalDate.now();
     }
 
     public Long getId() {
@@ -38,20 +47,20 @@ public class FriendRelation {
         this.id = id;
     }
 
-//    public SecretPalEvent getEvent() {
-//        return event;
-//    }
-//
-//    public void setEvent(SecretPalEvent event) {
-//        this.event = event;
-//    }
-
     public Worker getGiftGiver() {
         return this.giftGiver;
     }
 
     public void setGiftGiver(Worker giftGiver) {
         this.giftGiver = giftGiver;
+    }
+
+    public void setCreationDate(LocalDate aDate) {
+        this.creationDate = aDate;
+    }
+
+    public LocalDate getCreationDate() {
+        return this.creationDate;
     }
 
     public Worker getGiftReceiver() {

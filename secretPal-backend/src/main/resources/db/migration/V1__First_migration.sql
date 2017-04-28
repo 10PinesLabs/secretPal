@@ -37,7 +37,8 @@ CREATE TABLE email_template (
 CREATE TABLE friend_relation (
   id bigint PRIMARY KEY,
   gift_giver_id bigint REFERENCES worker,
-  gift_receiver_id bigint REFERENCES worker
+  gift_receiver_id bigint REFERENCES worker,
+  creation_date date NOT NULL
 );
 
 CREATE TABLE unsent_message (

@@ -4,6 +4,7 @@ import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.FriendRelation;
 //import com.tenPines.model.SecretPalEvent;
+import com.tenPines.model.User;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.management.relation.Relation;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,6 +73,13 @@ public class FriendRelationController {
     public Worker retrieveGiftee(@PathVariable("id") Long id) {
         return systemFacade.retrieveAssignedFriendFor(id);
     }
+
+    @RequestMapping(value = "/shuffle", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public List<FriendRelation> shuffle(@RequestBody @Valid List<User> users) {
+        return systemFacade.shuffle(users);
+    }
+
 
 
 }
