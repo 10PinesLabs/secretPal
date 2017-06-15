@@ -2,3 +2,7 @@
 
 # 10Pines-secretPal
 Apprenticeship final excercise.
+
+# Board de trello
+
+https://trello.com/b/QYdfnd7H/secretpal
