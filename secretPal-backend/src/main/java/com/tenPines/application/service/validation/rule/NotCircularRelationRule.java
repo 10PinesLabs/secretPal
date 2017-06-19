@@ -1,10 +1,10 @@
-package com.tenPines.application.service.validation;
+package com.tenPines.application.service.validation.rule;
 
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 
-public class NotCircularRelationRule extends AsssignationRule {
+public class NotCircularRelationRule extends AssignationRule {
 
     private FriendRelationService friendRelationService;
 

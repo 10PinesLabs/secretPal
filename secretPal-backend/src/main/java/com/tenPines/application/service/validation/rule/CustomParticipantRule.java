@@ -1,4 +1,4 @@
-package com.tenPines.application.service.validation;
+package com.tenPines.application.service.validation.rule;
 
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.model.User;
@@ -10,7 +10,7 @@ public class CustomParticipantRule {
 
     @Autowired
     public FriendRelationService friendRelationService;
-    public List<AsssignationRule> rules;
+    public List<AssignationRule> rules;
 
     public boolean softRule() {
         return false;
