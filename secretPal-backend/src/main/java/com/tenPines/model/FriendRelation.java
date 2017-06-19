@@ -1,10 +1,6 @@
 package com.tenPines.model;
 
-import com.tenPines.builder.FriendRelationMessageBuilder;
-
-import javax.mail.MessagingException;
 import javax.persistence.*;
-import java.io.IOException;
 
 @Entity
 @Table

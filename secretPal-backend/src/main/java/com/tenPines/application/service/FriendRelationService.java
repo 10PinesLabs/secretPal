@@ -1,6 +1,5 @@
 package com.tenPines.application.service;
 
-import com.tenPines.application.ReminderSystem;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 import com.tenPines.model.process.AssignmentFunction;
