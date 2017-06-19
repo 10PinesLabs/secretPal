@@ -59,4 +59,8 @@ public class FriendRelationService {
     public void deleteAllRelations() {
         friendRelationRepository.deleteAllRelations();
     }
+
+    public FriendRelation getByWorkerReceiver(Worker receiver){
+        return friendRelationRepository.findBygiftReceiver(receiver);
+    }
 }
