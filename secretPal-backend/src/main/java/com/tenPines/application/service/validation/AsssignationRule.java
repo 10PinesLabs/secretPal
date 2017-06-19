@@ -7,7 +7,4 @@ public abstract class AsssignationRule {
 
     public abstract Boolean validate(Worker worker, Worker otherWorker);
 
-    public abstract boolean softRule();
-
-    public abstract boolean evaluate(User giver, User receiver);
 }
