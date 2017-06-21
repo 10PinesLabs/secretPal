@@ -20,8 +20,8 @@ public class FriendRelationValidator {
     public FriendRelationValidator(FriendRelationService friendRelationService) {
         this.friendRelationService = friendRelationService;
         this.rules = Arrays.asList(
-                new NotCircularRelationRule(this.friendRelationService)
-        );
+                new NotCircularRelationRule(this.friendRelationService));
+        this.hardRules = Arrays.asList();
     }
 
     public Boolean validate(Worker giver, Worker receiver) {
@@ -32,7 +32,7 @@ public class FriendRelationValidator {
         return hardRules.stream().anyMatch(rule -> rule.validate(giver, receiver));
     }
 
-    private Boolean validateSoftRules(Worker giver, Worker receiver){
+    private Boolean validateSoftRules(Worker giver, Worker receiver) {
         return rules.stream().allMatch(rule -> rule.validate(giver, receiver));
     }
 
