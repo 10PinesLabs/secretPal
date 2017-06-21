@@ -10,7 +10,6 @@ public class CustomParticipantRule {
 
     @Autowired
     public FriendRelationService friendRelationService;
-    public List<AssignationRule> rules;
 
     public boolean softRule() {
         return false;
