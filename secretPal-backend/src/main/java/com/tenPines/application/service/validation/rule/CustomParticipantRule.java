@@ -1,22 +1,21 @@
 package com.tenPines.application.service.validation.rule;
 
-import com.tenPines.application.service.FriendRelationService;
-import com.tenPines.model.User;
+import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
-public class CustomParticipantRule {
+public class CustomParticipantRule extends AssignationRule {
 
     @Autowired
-    public FriendRelationService friendRelationService;
+    public Worker _giver;
+    public Worker _receiver;
 
-    public boolean softRule() {
-        return false;
+    public CustomParticipantRule(Worker giver2, Worker receiver2) {
+        _giver = giver2;
+        _receiver = receiver2;
     }
 
-    //TODO: Seguir desde acá
-    private boolean evaluate(User giver, User receiver) {
-        return true;
+    @Override
+    public Boolean validate(Worker giver, Worker receiver) {
+        return _giver.equals(giver) && _receiver.equals(receiver);
     }
 }

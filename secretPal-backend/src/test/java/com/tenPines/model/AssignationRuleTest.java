@@ -3,13 +3,11 @@ package com.tenPines.model;
 
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
-import com.tenPines.application.service.validation.FriendRelationValidator;
 import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTheSamePersonRule;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
