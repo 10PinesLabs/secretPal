@@ -16,6 +16,7 @@ public class FriendRelationValidator {
     @Autowired
     public FriendRelationService friendRelationService;
 
+    public List<AssignationRule> hardRules;
     public List<AssignationRule> rules;
 
     public FriendRelationValidator(FriendRelationService friendRelationService) {
@@ -24,9 +25,18 @@ public class FriendRelationValidator {
                 new NotCircularRelationRule(this.friendRelationService),
                 new NotTheSamePersonRule()
         );
+        this.hardRules = Arrays.asList();
     }
 
     public Boolean validate(Worker giver, Worker receiver) {
+        return validateHardRules(giver, receiver) || validateSoftRules(giver, receiver);
+    }
+
+    private Boolean validateHardRules(Worker giver, Worker receiver) {
+        return hardRules.stream().anyMatch(rule -> rule.validate(giver, receiver));
+    }
+
+    private Boolean validateSoftRules(Worker giver, Worker receiver) {
         return rules.stream().allMatch(rule -> rule.validate(giver, receiver));
     }
 
