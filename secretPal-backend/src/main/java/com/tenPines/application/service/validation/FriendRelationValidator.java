@@ -17,7 +17,7 @@ public class FriendRelationValidator {
     public List<AssignationRule> hardRules;
     public List<AssignationRule> rules;
 
-    public FriendRelationValidator(FriendRelationService friendRelationService) {
+    public   FriendRelationValidator(FriendRelationService friendRelationService) {
         this.friendRelationService = friendRelationService;
         this.rules = Arrays.asList(
                 new NotCircularRelationRule(this.friendRelationService));

@@ -21,6 +21,7 @@ public class SystemPalFacade {
     private final SecurityGuard securityGuard;
     private final RegisterService registerService;
     private final MailerService mailerService;
+    private final CustomParticipantRuleService customParticipantRuleService;
     private Long reminderDayPeriod;
     private Clock clock;
 
@@ -85,7 +86,7 @@ public class SystemPalFacade {
 
     }
 
-    public SystemPalFacade(FriendRelationService friendRelationService, WorkerService workerService, GiftDefaultService giftDefaultService, WishlistService wishlistService, SecurityGuard securityGuard, RegisterService registerService, MailerService mailerService) {
+    public SystemPalFacade(FriendRelationService friendRelationService, WorkerService workerService, GiftDefaultService giftDefaultService, WishlistService wishlistService, SecurityGuard securityGuard, RegisterService registerService, MailerService mailerService, CustomParticipantRuleService customParticipantRuleService) {
         setReminderDayPeriod(7L);
         this.friendRelationService = friendRelationService;
         this.workerService = workerService;
@@ -94,6 +95,7 @@ public class SystemPalFacade {
         this.securityGuard = securityGuard;
         this.registerService = registerService;
         this.mailerService = mailerService;
+        this.customParticipantRuleService = customParticipantRuleService;
     }
 
     public Long getReminderDayPeriod() {
@@ -168,5 +170,9 @@ public class SystemPalFacade {
     public void registerUserAndAsociateWithAWorker(NewUser form){
         NewUser newUser = NewUser.createANewUser(form.getUserName(), form.getPassword(), form.getEmail());
         registerService.registerUser(newUser);
+    }
+
+    public void createRule(Worker workerFrom, Worker workerTo) {
+        customParticipantRuleService.create(workerFrom, workerTo);
     }
 }

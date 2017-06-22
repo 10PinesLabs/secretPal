@@ -80,7 +80,7 @@ angular
       })
       .when('/ruleConfiguration', {
         templateUrl: '../views/ruleConfiguration.html',
-        controller: 'RuleConfiguration',
+        controller: 'CustomRuleController',
         resolve: { user : authenticatedAndAdmin }
       })
       .when('/gameStatus', {

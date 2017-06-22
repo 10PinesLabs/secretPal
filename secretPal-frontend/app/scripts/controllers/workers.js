@@ -11,10 +11,10 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     });
   }
 
-
   WorkerService.all(function (data) {
     $scope.workers = data;
   });
+
   FriendRelationService.all(function (data) {
     $scope.participants = data;
   });
@@ -115,6 +115,9 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
 
     $scope.opened = true;
   };
+
+  $scope.notHimSelf = function(){
+  }
 
 });
 

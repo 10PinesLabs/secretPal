@@ -52,6 +52,6 @@ angular.module('secretPalApp').service('WorkerService', function($http, SweetAle
 
   this.update = function (worker) {
     $http.post(buildRoute('/edit'), worker);
-  };
+  }
 
 });

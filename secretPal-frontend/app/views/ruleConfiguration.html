@@ -3,7 +3,7 @@
   <div class="clearfix">
     <h1>Configuracion de reglas de juego</h1>
   </div>
-  <div class="panel panel-primary" ng-controller="RulesConfiguration">
+  <div class="panel panel-primary" ng-controller="CustomRuleController">
     <form class="navbar-form" name="form" ng-submit="mailsFailure()">
       <table class="table table-striped">
         <thead>
@@ -29,6 +29,39 @@
       </table>
     </form>
   </div>
+
+  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#add_rule" aria-expanded="false"
+          aria-controls="add_worker" id="add_worker_button">
+    Agregar Regla Personalizada
+  </button>
+  <div class="collapse" id="add_rule">
+    <div class="well">
+      <div class="field">
+        <form class="navbar-form" name="form" ng-submit="Add()">
+          <td colspan="3">
+            <center>Selecciona dos pinos que quieras que se puedan regalar entre ellos sin importar las reglas</center>
+          </td>
+          <br>
+          <center>Pino nº 1:
+            <select
+              ng-model=workerGiver
+              ng-options="worker.fullName for worker in workers">
+            </select>
+
+            Pino nº 2:
+            <select
+              ng-model=workerReceiver
+              ng-options="worker.fullName for worker in workers">
+            </select>
+          </center>
+          <br>
+            <button class="btn btn-primary" type="button" ng-click="createRule()">Crear Relación</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">

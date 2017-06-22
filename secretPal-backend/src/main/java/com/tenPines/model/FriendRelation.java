@@ -34,14 +34,6 @@ public class FriendRelation {
         this.id = id;
     }
 
-//    public SecretPalEvent getEvent() {
-//        return event;
-//    }
-//
-//    public void setEvent(SecretPalEvent event) {
-//        this.event = event;
-//    }
-
     public Worker getGiftGiver() {
         return this.giftGiver;
     }
