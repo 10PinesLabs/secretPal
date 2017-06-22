@@ -31,7 +31,7 @@ public class AutoAssignationTest extends SpringBaseTest {
             assertThat(friendRelationService.getAllRelations(), hasSize(0));
         }
     }
-
+/*
     @Test
     public void When_there_is_2_participants_then_when_assign_each_participant_is_the_other_one_secret_pal() throws Exception {
         Worker worker = new WorkerBuilder().build();
@@ -45,6 +45,23 @@ public class AutoAssignationTest extends SpringBaseTest {
         assertThat(friendRelationService.getAllRelations(), hasSize(2));
         assertThat(friendRelationService.getAllRelations(), hasItem(hasProperty("giftGiver", is(worker))));
         assertThat(friendRelationService.getAllRelations(), hasItem(hasProperty("giftGiver", is(otherWorker))));
+    }
+*/
+    @Test
+    public void When_there_is_more_than_2_participants_then_assign_a_secret_pal_for_everyone() throws Exception {
+        Worker worker1 = new WorkerBuilder().build();
+        workerService.save(worker1);
+        Worker worker2 = new WorkerBuilder().build();
+        workerService.save(worker2);
+        Worker worker3 = new WorkerBuilder().build();
+        workerService.save(worker3);
+
+        friendRelationService.autoAssignRelations();
+
+        assertThat(friendRelationService.getAllRelations(), hasSize(3));
+        assertThat(friendRelationService.getAllRelations(), hasItem(hasProperty("giftGiver", is(worker1))));
+        assertThat(friendRelationService.getAllRelations(), hasItem(hasProperty("giftGiver", is(worker2))));
+        assertThat(friendRelationService.getAllRelations(), hasItem(hasProperty("giftGiver", is(worker3))));
     }
 
 }

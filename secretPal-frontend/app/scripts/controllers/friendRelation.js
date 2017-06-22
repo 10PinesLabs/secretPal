@@ -97,8 +97,6 @@ app.controller('FriendRelationController', function($scope, $modal, $filter, Fri
     });
   };
 
-
-
   $scope.ok = function () {
     SweetAlert.swal({
       title: "Actualizando",
@@ -109,13 +107,16 @@ app.controller('FriendRelationController', function($scope, $modal, $filter, Fri
   };
 
   $scope.auto = function(){
-    shuffleArray($scope.posibilities);
-    console.log($scope.posibilities.map(function(worker){ return worker.fullName; }));
-    $scope.posibilities.forEach(function(worker, index) {
-      $scope.friendRelations.find(function(relation){
-        return relation.giftGiver == worker;
-      }).giftReceiver = $scope.posibilities[(index+1) % $scope.posibilities.length ];
+    SweetAlert.swal({
+      title: "Actualizando",
+      text: "Esto puede tardar un rato...\n muchos algoritmos",
+      showConfirmButton: false
     });
+
+    FriendRelationService.autoAssign( function(data) {
+      $scope.friendRelations = data;
+    });
+
   };
 
   $scope.clean = function (relation) {
@@ -123,22 +124,3 @@ app.controller('FriendRelationController', function($scope, $modal, $filter, Fri
   };
 
 });
-
-var shuffleArray = function(array) {
-  var m = array.length, t, i;
-
-  // While there remain elements to shuffle
-  while (m) {
-    // Pick a remaining element…
-    i = Math.floor(Math.random() * m--);
-
-    // And swap it with the current element.
-    t = array[m];
-    array[m] = array[i];
-    array[i] = t;
-  }
-
-  return array;
-};
-
-

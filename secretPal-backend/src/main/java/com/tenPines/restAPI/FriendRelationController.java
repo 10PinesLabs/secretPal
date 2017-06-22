@@ -72,5 +72,13 @@ public class FriendRelationController {
         return systemFacade.retrieveAssignedFriendFor(id);
     }
 
+    @RequestMapping(value = "/autoAssign", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public List<WorkerWithRelation> autoAssignRelations() throws IOException {
+        systemFacade.deleteAllRelations();
+        systemFacade.autoAssignRelations();
+        return workersWithFriends();
+    }
+
 
 }

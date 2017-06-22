@@ -169,4 +169,9 @@ public class SystemPalFacade {
         NewUser newUser = NewUser.createANewUser(form.getUserName(), form.getPassword(), form.getEmail());
         registerService.registerUser(newUser);
     }
+
+    public List<FriendRelation> autoAssignRelations() {
+        return friendRelationService.autoAssignRelations();
+    }
+
 }

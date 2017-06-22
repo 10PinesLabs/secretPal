@@ -1,20 +1,15 @@
 package com.tenPines.model;
 
-
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.FriendRelationValidator;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
-import com.tenPines.persistence.UserRepository;
-import com.tenPines.persistence.WorkerRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class FriendRelationValidatorTest extends SpringBaseTest {
 
@@ -30,15 +25,23 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
     }
 
     @Test
-    public void whenTheReceiverWillGiftMeItShouldNotBeValid(){
+    public void whenTheReceiverWillGiftTheGiverItShouldNotBeValid() {
         Worker giver = new WorkerBuilder().build();
-        workerService.save(giver);
         Worker receiver = new WorkerBuilder().build();
+        workerService.save(giver);
         workerService.save(receiver);
 
         friendRelationService.create(giver, receiver);
 
         assertFalse(friendRelationValidator.validate(receiver,giver));
+    }
+
+    @Test
+    public void whenTheReceiverIsTheSamePersonThanGiverItShouldNotBeValid() {
+        Worker worker = new WorkerBuilder().build();
+        workerService.save(worker);
+
+        assertFalse(friendRelationValidator.validate(worker, worker));
     }
 
 }
