@@ -72,8 +72,12 @@ public class FriendRelationController {
         return systemFacade.retrieveAssignedFriendFor(id);
     }
 
-}
-
-    /*@RequestMapping(value = "/ruleConfiguration", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/autoAssign", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public void createRule(@PathVariable Long from,@PathVariable Long to)*/
+    public List<WorkerWithRelation> autoAssignRelations() throws IOException {
+        systemFacade.deleteAllRelations();
+        systemFacade.autoAssignRelations();
+        return workersWithFriends();
+    }
+
+}

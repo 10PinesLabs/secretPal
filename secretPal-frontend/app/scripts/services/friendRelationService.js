@@ -57,4 +57,14 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
         errorMsg("Intente nuevamente mas tarde");
       });
   };
+
+  this.autoAssign = function (callback) {
+    $http.post(buildRoute('/autoAssign')).success(function (data) {
+      successMsg("La asignación automática fue exitosa");
+      callback(data);
+    }).error(function () {
+      errorMsg("No se pudo procesar el pedido");
+    });
+  };
+
 });
