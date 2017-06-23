@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class AssignationRuleTest extends SpringBaseTest {
 
@@ -24,7 +25,7 @@ public class AssignationRuleTest extends SpringBaseTest {
     public WorkerService workerService;
 
     @Test
-    public void when_participant_A_gifts_participant_B_this_cannot_gifts_participant_A() {
+    public void when_participant_A_gifts_participant_B_then_this_cannot_gifts_participant_A() {
         Worker giver = new WorkerBuilder().build();
         Worker receiver = new WorkerBuilder().build();
         workerService.save(giver);
@@ -47,9 +48,11 @@ public class AssignationRuleTest extends SpringBaseTest {
     }
 
     @Test
-    public void when_participants_have_same_birthday_date_cannot_gifts_each_other() {
+    public void when_participants_have_same_birthday_date_then_isnt_valid_relation() {
         Worker worker = new WorkerBuilder().build();
         Worker otherWorker = new WorkerBuilder().build();
+        worker.setDateOfBirth(LocalDate.of(2000, 5, 1));
+        otherWorker.setDateOfBirth(LocalDate.of(1990, 5, 1));
         workerService.save(worker);
         workerService.save(otherWorker);
 
@@ -59,11 +62,11 @@ public class AssignationRuleTest extends SpringBaseTest {
     }
 
     @Test
-    public void participants_have_less_than_2_weeks_between_birthday_dates_cannot_gifts_each_other() {
+    public void participants_have_less_than_2_weeks_between_birthday_dates_then_isnt_valid_relation() {
         Worker worker = new WorkerBuilder().build();
         Worker otherWorker = new WorkerBuilder().build();
-        worker.setDateOfBirth(LocalDate.of(2017, 5, 1));
-        otherWorker.setDateOfBirth(LocalDate.of(2017, 5, 8));
+        worker.setDateOfBirth(LocalDate.of(2000, 5, 1));
+        otherWorker.setDateOfBirth(LocalDate.of(1990, 5, 8));
         workerService.save(worker);
         workerService.save(otherWorker);
 
@@ -71,6 +74,21 @@ public class AssignationRuleTest extends SpringBaseTest {
 
         assertFalse(rule.validate(worker, otherWorker));
         assertFalse(rule.validate(otherWorker, worker));
+    }
+
+    @Test
+    public void participants_have_more_than_2_weeks_between_birthday_dates_then_is_valid_relation() {
+        Worker worker = new WorkerBuilder().build();
+        Worker otherWorker = new WorkerBuilder().build();
+        worker.setDateOfBirth(LocalDate.of(2000, 5, 1));
+        otherWorker.setDateOfBirth(LocalDate.of(1990, 5, 16));
+        workerService.save(worker);
+        workerService.save(otherWorker);
+
+        AssignationRule rule = new NotTooCloseBirthdaysRule();
+
+        assertTrue(rule.validate(worker, otherWorker));
+        assertTrue(rule.validate(otherWorker, worker));
     }
 
 }

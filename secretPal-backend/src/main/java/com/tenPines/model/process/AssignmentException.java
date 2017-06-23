@@ -33,7 +33,8 @@ public class AssignmentException extends RuntimeException {
         NOT_ENOUGH_QUORUM("No hay suficientes participantes"),
         CANT_SELF_ASSIGN("Ambos usuarios no pueden ser el mismo"),
         RECEIVER_NULL("Alguien debe recibir el regalo"),
-        GIVER_NULL("Alguien debe recibir el regalo");
+        GIVER_NULL("Alguien debe recibir el regalo"),
+        CANT_AUTO_ASSIGN("Las reglas del juego no permiten realizar la asignacion automatica");
 
         private final String text;
 

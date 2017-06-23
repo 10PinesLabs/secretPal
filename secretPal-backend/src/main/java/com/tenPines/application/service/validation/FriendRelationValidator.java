@@ -4,6 +4,7 @@ import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTheSamePersonRule;
+import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +24,7 @@ public class FriendRelationValidator {
         this.friendRelationService = friendRelationService;
         this.rules = Arrays.asList(
                 new NotCircularRelationRule(this.friendRelationService),
+                new NotTooCloseBirthdaysRule(),
                 new NotTheSamePersonRule()
         );
         this.hardRules = Arrays.asList();
@@ -41,7 +43,9 @@ public class FriendRelationValidator {
     }
 
     public boolean validateAll(List<Worker> validWorkers){
-        return validWorkers.stream().allMatch(worker -> validate(worker, getNextWorker(validWorkers, worker)));
+        return validWorkers.stream().allMatch(worker ->
+                        validate(worker, getNextWorker(validWorkers, worker))
+                );
     }
 
     private Worker getNextWorker(List<Worker> validWorkers, Worker worker) {
