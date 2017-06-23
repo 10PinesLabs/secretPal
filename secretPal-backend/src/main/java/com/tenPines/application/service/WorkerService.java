@@ -73,7 +73,9 @@ public class WorkerService {
 
     }
 
-    public List<Worker> getValidWorkers() {
+    public List<Worker> assignableWorkers() {
+        /** todos los participantes que aun no regalan a partir de un mes */
+
         return getAllParticipants().stream().filter( worker ->
                         worker.getDateOfBirth().minusMonths(1).isBefore(LocalDate.now())
         ).collect(Collectors.toList());
