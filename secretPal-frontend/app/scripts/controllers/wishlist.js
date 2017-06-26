@@ -58,6 +58,7 @@ angular.module('secretPalApp')
           }
         });
     };
+
     $scope.canDelete = function(wish){
       return user.worker.id == wish.createdBy.id || user.worker.id == wish.worker.id;
     };
@@ -101,6 +102,7 @@ angular.module('secretPalApp')
           errorMsg("No se pudo procesar la solicitud al servidor");
         });
     };
+
     this.delete = function (wish, successFunction) {
       $http.delete(buildRoute('/' + wish.id)).
         success(function() {

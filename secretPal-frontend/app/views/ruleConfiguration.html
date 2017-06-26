@@ -3,7 +3,7 @@
   <div class="clearfix">
     <h1>Configuracion de reglas de juego</h1>
   </div>
-  <div class="panel panel-primary" ng-controller="CustomRuleController">
+  <div class="panel panel-primary" ng-controller="CustomParticipantRuleController">
     <form class="navbar-form" name="form" ng-submit="mailsFailure()">
       <table class="table table-striped">
         <thead>
@@ -55,10 +55,28 @@
             </select>
           </center>
           <br>
-            <button class="btn btn-primary" type="button" ng-click="createRule()">Crear Relación</button>
+          <button class="btn btn-primary" type="button" ng-click="createRule()">Crear Relación</button>
         </form>
       </div>
     </div>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th colspan="3">Regla</th>
+        <th colspan="3">¿Regla Activa?</th>
+        <th colspan="3">Eliminar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="rule in rules">
+        <td colspan="3">{{rule.giver.fullName}} le regala a {{rule.receiver.fullName}}</td>
+        <td colspan="3"><input type="checkbox" ng-change="changeIntention(rule)" ng-model="rule.isActive">
+        </td>
+        <td colspan="3"><a ng-click="delete(rule)"><span class="glyphicon glyphicon-trash"></span></a></td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 

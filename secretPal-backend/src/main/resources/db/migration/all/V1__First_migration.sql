@@ -57,8 +57,9 @@ CREATE TABLE wish (
 
 CREATE TABLE custom_participant_rule (
   id bigserial PRIMARY KEY,
-  _giver_id bigint REFERENCES worker,
-  _receiver_id bigint REFERENCES worker
+  giver_id bigint REFERENCES worker,
+  receiver_id bigint REFERENCES worker,
+  is_active boolean NOT NULL
 );
 
 CREATE SEQUENCE hibernate_sequence START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;

@@ -4,6 +4,7 @@ import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -12,20 +13,40 @@ public class CustomParticipantRule extends AssignationRule {
     @Id
     @GeneratedValue
     private Long id;
-
     @OneToOne
-    public Worker _giver;
-
+    public Worker giver;
     @OneToOne
-    public Worker _receiver;
+    public Worker receiver;
+    @NotNull
+    private Boolean isActive;
 
-    public CustomParticipantRule(Worker giver2, Worker receiver2) {
-        _giver = giver2;
-        _receiver = receiver2;
+    public CustomParticipantRule() {
+    }
+
+    public CustomParticipantRule(Worker giver, Worker receiver, Boolean isActive) {
+        this.giver = giver;
+        this.receiver = receiver;
+        this.isActive = isActive;
     }
 
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
-        return _giver.equals(giver) && _receiver.equals(receiver);
+        return this.giver.equals(giver) && this.receiver.equals(receiver);
+    }
+
+    public void changeRuleIntention() {
+        setIsActive(!isActive);
+    }
+
+    public boolean isRuleActivate() {
+        return this.isActive;
+    }
+
+    public void setIsActive(Boolean newState) {
+        this.isActive = newState;
+    }
+
+    public Long getId(){
+        return id;
     }
 }

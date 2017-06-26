@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public class CustomParticipantRuleService {
-    private final CustomParticipantRuleRepository customParticipantRuleRepository;
+    private CustomParticipantRuleRepository customParticipantRuleRepository;
     private final WorkerService workerService;
 
     public CustomParticipantRuleService(CustomParticipantRuleRepository customParticipantRuleRepository, WorkerService workerService) {
@@ -21,8 +21,15 @@ public class CustomParticipantRuleService {
         this.workerService = workerService;
     }
 
-    public CustomParticipantRule create(Worker from, Worker to) {
-        return customParticipantRuleRepository.save(new CustomParticipantRule(from, to));
+    public CustomParticipantRule create(Worker from, Worker to, Boolean isActive) {
+        return customParticipantRuleRepository.save(new CustomParticipantRule(from, to, isActive));
     }
 
+    public void delete(Long id) {
+        customParticipantRuleRepository.delete(id);
+    }
+
+    public List<CustomParticipantRule> getAllRules() {
+        return customParticipantRuleRepository.findAll();
+    }
 }

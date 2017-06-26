@@ -61,7 +61,7 @@ public class CustomParticipantRuleTest extends SpringBaseTest {
         workerService.save(receiver);
 
         friendRelationService.create(giver, receiver);
-        AssignationRule rule = new CustomParticipantRule(giver, receiver);
+        AssignationRule rule = new CustomParticipantRule(giver, receiver, false);
 
         assertTrue(rule.validate(giver, receiver));
     }
