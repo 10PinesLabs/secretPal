@@ -47,7 +47,7 @@
           <td>{{worker.fullName}}</td>
           <td>{{worker.eMail}}</td>
           <td>{{worker.dateOfBirth | date}}</td>
-          <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}" ng-change="changeIntention(worker)" ng-model="worker.wantsToParticipate"></td>
+          <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}" ng-change="changeIntention(worker)" ng-model="worker.wantsToParticipate" ng-disabled="cantParticipate(worker)"></td>
           <td><a ng-click="Edit(worker)"><span class="glyphicon glyphicon glyphicon-pencil"></span></a></td>
           <td><a ng-click="delete(worker)"><span class="glyphicon glyphicon-trash"></span></a></td>
         </tr>
