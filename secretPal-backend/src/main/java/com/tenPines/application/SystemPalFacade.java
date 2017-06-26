@@ -176,8 +176,8 @@ public class SystemPalFacade {
         customParticipantRuleService.create(workerFrom, workerTo, isActive);
     }
 
-    public List<FriendRelation> autoAssignRelations() {
-        return friendRelationService.autoAssignRelations();
+    public void autoAssignRelations() {
+        friendRelationService.autoAssignRelations();
     }
 
     public void deleteRule(Long id) {
@@ -186,5 +186,8 @@ public class SystemPalFacade {
 
     public List<CustomParticipantRule> getAllRules() {
         return customParticipantRuleService.getAllRules();
+    }
+    public List<FriendRelation> getAllRelations() {
+        return friendRelationService.getAllRelations();
     }
 }

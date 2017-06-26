@@ -108,6 +108,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     $location.path('/friendRelations');
   };
 
+
   /*DATEPICKER FUNCTIONS*/
   $scope.open = function ($event) {
     $event.preventDefault();
@@ -118,6 +119,14 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
 
   $scope.notHimSelf = function(){
   }
+
+  $scope.cantParticipate = function (worker) {
+    var today = new Date();
+    var actualBirthday = new Date(worker.dateOfBirth);
+    actualBirthday.setYear(today.getFullYear());
+
+    return actualBirthday <= today;
+  };
 
 });
 

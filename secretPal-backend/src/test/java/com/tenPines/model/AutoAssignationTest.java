@@ -23,18 +23,6 @@ public class AutoAssignationTest extends SpringBaseTest {
     private FriendRelationService friendRelationService;
 
     @Test
-    public void When_there_is_no_participants_then_it_should_raise_an_exception(){
-        workerService.save(new WorkerBuilder().build());
-        try {
-            friendRelationService.autoAssignRelations();
-            fail("The exception was not raised");
-        } catch (AssignmentException e) {
-            assertEquals(e.getReason(), AssignmentException.Reason.CANT_AUTO_ASSIGN.toString());
-            assertThat(friendRelationService.getAllRelations(), hasSize(0));
-        }
-    }
-
-    @Test
     public void When_there_is_more_than_2_participants_then_assign_a_secret_pal_for_everyone() throws Exception {
         Worker worker1 = new WorkerBuilder().build();
         worker1.setDateOfBirth(LocalDate.of(2000, 5, 1));
