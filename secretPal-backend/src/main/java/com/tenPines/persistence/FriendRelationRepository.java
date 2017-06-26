@@ -10,7 +10,9 @@ import java.util.List;
 @Transactional
 public interface FriendRelationRepository extends JpaRepository<FriendRelation, Long> {
 
-    FriendRelation findBygiftReceiver(Worker unWorker);
+    FriendRelation findByGiftReceiver(Worker unWorker);
+
+    FriendRelation findByGiftGiver(Worker unWorker);
 
     default void deleteAllRelations() {
         for (FriendRelation friendRelation : findAll()) {
@@ -19,4 +21,5 @@ public interface FriendRelationRepository extends JpaRepository<FriendRelation, 
 
     }
 
+    Long deleteByGiftGiver(Worker worker);
 }

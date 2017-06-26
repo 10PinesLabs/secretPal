@@ -176,8 +176,11 @@ public class SystemPalFacade {
         customParticipantRuleService.create(workerFrom, workerTo);
     }
 
-    public List<FriendRelation> autoAssignRelations() {
-        return friendRelationService.autoAssignRelations();
+    public void autoAssignRelations() {
+        friendRelationService.autoAssignRelations();
     }
 
+    public List<FriendRelation> getAllRelations() {
+        return friendRelationService.getAllRelations();
+    }
 }
