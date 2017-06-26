@@ -31,4 +31,11 @@ angular.module('secretPalApp').service('CustomRuleService', function ($http, Swe
     });
   };
 
+  this.delete = function (id, successFunction){
+    $http.delete(buildRoute('/' + id)).success(function() {
+      successMsg("Regla eliminada exitosamente");
+      successFunction();
+    });
+  }
+
 });
