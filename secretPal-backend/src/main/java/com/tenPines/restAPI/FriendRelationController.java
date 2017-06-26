@@ -31,14 +31,8 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<WorkerWithRelation> workersWithFriends() {
-        List<WorkerWithRelation> relations = new ArrayList<>();
-        List<Worker> participants = workerService.retrieveParticipants();
-        relations.addAll(participants.stream().map(
-                participant -> new WorkerWithRelation(participant, systemFacade.retrieveAssignedFriendFor(participant.getId())))
-                .collect(Collectors.toList()));
-        return relations;
-
+    public List<FriendRelation> workersWithFriends() {
+        return systemFacade.getAllRelations();
     }
 
 
@@ -72,5 +66,11 @@ public class FriendRelationController {
         return systemFacade.retrieveAssignedFriendFor(id);
     }
 
+    @RequestMapping(value = "/autoAssign", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public List<FriendRelation> autoAssignRelations() throws IOException {
+        systemFacade.autoAssignRelations();
+        return systemFacade.getAllRelations();
+    }
 
 }

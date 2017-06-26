@@ -29,7 +29,12 @@ public class AssignmentException extends RuntimeException {
     }
 
     public enum Reason{
-        DOES_NOT_WANT_TO_PARTICIPATE("Ese usuario no quiere participar"), NOT_ENOUGH_QUORUM("No hay suficientes participantes"), CANT_SELF_ASSIGN("Ambos usuarios no pueden ser el mismo"), RECEIVER_NULL("Alguien debe recibir el regalo"), GIVER_NULL("Alguien debe recibir el regalo");
+        DOES_NOT_WANT_TO_PARTICIPATE("Ese usuario no quiere participar"),
+        NOT_ENOUGH_QUORUM("No hay suficientes participantes"),
+        CANT_SELF_ASSIGN("Ambos usuarios no pueden ser el mismo"),
+        RECEIVER_NULL("Alguien debe recibir el regalo"),
+        GIVER_NULL("Alguien debe recibir el regalo"),
+        CANT_AUTO_ASSIGN("Las reglas del juego no permiten realizar la asignacion automatica");
 
         private final String text;
 

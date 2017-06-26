@@ -2,6 +2,7 @@ package com.tenPines.application;
 
 import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.*;
+import com.tenPines.application.service.validation.rule.CustomParticipantRule;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.*;
 import com.tenPines.restAPI.SecurityToken;
@@ -21,6 +22,7 @@ public class SystemPalFacade {
     private final SecurityGuard securityGuard;
     private final RegisterService registerService;
     private final MailerService mailerService;
+    private final CustomParticipantRuleService customParticipantRuleService;
     private Long reminderDayPeriod;
     private Clock clock;
 
@@ -30,7 +32,7 @@ public class SystemPalFacade {
     }
 
     public FriendRelation createRelation(Worker giftGiver, Worker giftReceiver) {
-        return friendRelationService.create(giftGiver,giftReceiver);
+        return friendRelationService.create(giftGiver, giftReceiver);
     }
 
     public void deleteRelation(Long from, Long to) {
@@ -39,9 +41,9 @@ public class SystemPalFacade {
 
     public List<DefaultGift> retrieveAllGiftsDefaults() {
         List<DefaultGift> defaultGifts = giftDefaultService.getAll();
-        if(defaultGifts.isEmpty()) {
+        if (defaultGifts.isEmpty()) {
 
-            defaultGifts.add(DefaultGift.createGiftDfault("Nada","$0"));
+            defaultGifts.add(DefaultGift.createGiftDfault("Nada", "$0"));
         }
         return defaultGifts;
     }
@@ -85,7 +87,7 @@ public class SystemPalFacade {
 
     }
 
-    public SystemPalFacade(FriendRelationService friendRelationService, WorkerService workerService, GiftDefaultService giftDefaultService, WishlistService wishlistService, SecurityGuard securityGuard, RegisterService registerService, MailerService mailerService) {
+    public SystemPalFacade(FriendRelationService friendRelationService, WorkerService workerService, GiftDefaultService giftDefaultService, WishlistService wishlistService, SecurityGuard securityGuard, RegisterService registerService, MailerService mailerService, CustomParticipantRuleService customParticipantRuleService) {
         setReminderDayPeriod(7L);
         this.friendRelationService = friendRelationService;
         this.workerService = workerService;
@@ -94,6 +96,7 @@ public class SystemPalFacade {
         this.securityGuard = securityGuard;
         this.registerService = registerService;
         this.mailerService = mailerService;
+        this.customParticipantRuleService = customParticipantRuleService;
     }
 
     public Long getReminderDayPeriod() {
@@ -126,7 +129,6 @@ public class SystemPalFacade {
 
     public DefaultGift retrieveTheLastDefaultGift() {
         return retrieveAllGiftsDefaults().get(0);
-
     }
 
     public void deleteAllRelations() {
@@ -160,13 +162,32 @@ public class SystemPalFacade {
         mailerService.resendMessageFailure(unsentMessage);
     }
 
-    public SecurityToken loginWithInternalCredential(Credential aCredential){
+    public SecurityToken loginWithInternalCredential(Credential aCredential) {
         String token = securityGuard.enterWith(aCredential);
         return SecurityToken.createWith(token);
     }
 
-    public void registerUserAndAsociateWithAWorker(NewUser form){
+    public void registerUserAndAsociateWithAWorker(NewUser form) {
         NewUser newUser = NewUser.createANewUser(form.getUserName(), form.getPassword(), form.getEmail());
         registerService.registerUser(newUser);
+    }
+
+    public void createRule(Worker workerFrom, Worker workerTo, Boolean isActive) {
+        customParticipantRuleService.create(workerFrom, workerTo, isActive);
+    }
+
+    public void autoAssignRelations() {
+        friendRelationService.autoAssignRelations();
+    }
+
+    public void deleteRule(Long id) {
+        customParticipantRuleService.delete(id);
+    }
+
+    public List<CustomParticipantRule> getAllRules() {
+        return customParticipantRuleService.getAllRules();
+    }
+    public List<FriendRelation> getAllRelations() {
+        return friendRelationService.getAllRelations();
     }
 }

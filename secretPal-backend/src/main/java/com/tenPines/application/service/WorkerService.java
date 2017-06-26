@@ -9,8 +9,10 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class WorkerService {
@@ -71,4 +73,11 @@ public class WorkerService {
 
     }
 
+    public List<Worker> assignableWorkers() {
+        /** todos los participantes que aun no regalan a partir de un mes */
+
+        return getAllParticipants().stream().filter( worker ->
+                        worker.getDateOfBirth().minusMonths(1).isBefore(LocalDate.now())
+        ).collect(Collectors.toList());
+    }
 }

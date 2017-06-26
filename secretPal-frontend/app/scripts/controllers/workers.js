@@ -11,10 +11,10 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     });
   }
 
-
   WorkerService.all(function (data) {
     $scope.workers = data;
   });
+
   FriendRelationService.all(function (data) {
     $scope.participants = data;
   });
@@ -108,12 +108,24 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     $location.path('/friendRelations');
   };
 
+
   /*DATEPICKER FUNCTIONS*/
   $scope.open = function ($event) {
     $event.preventDefault();
     $event.stopPropagation();
 
     $scope.opened = true;
+  };
+
+  $scope.notHimSelf = function(){
+  }
+
+  $scope.cantParticipate = function (worker) {
+    var today = new Date();
+    var actualBirthday = new Date(worker.dateOfBirth);
+    actualBirthday.setYear(today.getFullYear());
+
+    return actualBirthday <= today;
   };
 
 });
