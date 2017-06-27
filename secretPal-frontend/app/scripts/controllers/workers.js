@@ -24,10 +24,14 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
         title: "Estas seguro?",
         text: "No vas a poder recuperar este pino!",
         type: "warning",
+        allowOutsideClick: false,
+        showConfirmButton: true,
         showCancelButton: true,
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        confirmButtonText: "Si, ¡borrar!",
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Si, borrar!",
-        closeOnConfirm: false
+        cancelButtonText: "Cancelar",
       },
       function (isConfirm) {
         if (isConfirm) {

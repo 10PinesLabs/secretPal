@@ -10,10 +10,14 @@ app.controller('MailController', function($scope, $route, MailService, SweetAler
         title: "Estas seguro?",
         text: "El envio de mails sera modificado",
         type: "warning",
+        allowOutsideClick: false,
+        showConfirmButton: true,
         showCancelButton: true,
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        confirmButtonText: "¡Si!",
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Si!",
-        closeOnConfirm: false
+        cancelButtonText: "Cancelar",
       },
       function (isConfirm) {
         if(isConfirm) {

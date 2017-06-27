@@ -29,10 +29,14 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
         title: "¿Estas seguro?",
         text: "¡No vas a poder recuperar esta regla!",
         type: "warning",
+        allowOutsideClick: false,
+        showConfirmButton: true,
         showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
+        closeOnConfirm: false,
+        closeOnCancel: true,
         confirmButtonText: "Si, ¡borrar!",
-        closeOnConfirm: false
+        confirmButtonColor: "#DD6B55",
+        cancelButtonText: "Cancelar",
       },
 
       function (isConfirm) {

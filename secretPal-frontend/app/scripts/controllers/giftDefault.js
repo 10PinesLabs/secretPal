@@ -14,10 +14,14 @@ app.controller('GiftDefaultController', function($scope, $route, GiftDefaultServ
         title: "Estás seguro?",
         text: "El regalo default será modificado",
         type: "warning",
+        allowOutsideClick: false,
+        showConfirmButton: true,
         showCancelButton: true,
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        confirmButtonText: "¡Si!",
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Si!",
-        closeOnConfirm: false
+        cancelButtonText: "Cancelar",
       },
       function (isConfirm) {
         if(isConfirm) {

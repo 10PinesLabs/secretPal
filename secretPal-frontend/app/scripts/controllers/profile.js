@@ -16,10 +16,14 @@ angular.module('secretPalApp')
           title: "No estas participando",
           text: "Queres participar?",
           type: "warning",
+          allowOutsideClick: false,
+          showConfirmButton: true,
           showCancelButton: true,
+          closeOnConfirm: false,
+          closeOnCancel: true,
+          confirmButtonText: "¡Si!",
           confirmButtonColor: "#DD6B55",
-          confirmButtonText: "Si!",
-          closeOnConfirm: false
+          cancelButtonText: "Cancelar",
         },
         function (isConfirm) {
           if (isConfirm) {
