@@ -52,11 +52,11 @@ public class FriendRelationController {
         }
     }
 
-    @RequestMapping(value = "/{from}/{to}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{from}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
-    public void deleteRelation(@PathVariable Long from,@PathVariable Long to){
-        systemFacade.deleteRelation(from,to);
-
+    public void deleteRelation(@PathVariable Long from){
+        Worker giver = workerService.retriveWorker(from);
+        systemFacade.deleteRelation(giver);
     }
 
     @RequestMapping(value = "/friend/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

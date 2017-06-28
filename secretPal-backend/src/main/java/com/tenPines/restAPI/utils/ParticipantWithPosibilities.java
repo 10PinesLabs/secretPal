@@ -13,7 +13,7 @@ public class ParticipantWithPosibilities {
 
     public ParticipantWithPosibilities(Worker participant, FriendRelationService friendRelationService) {
         this.giver = participant;
-        this.receiver = friendRelationService.retrieveAssignedFriendFor(participant);
+        this.receiver = friendRelationService.retrieveGiftReceiverOf(participant);
         updatePosibleReceivers(friendRelationService);
     }
 

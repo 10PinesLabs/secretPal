@@ -97,6 +97,10 @@ public class FriendRelationService {
         );
     }
 
+    public void deleteByGiftGiver(Worker giver) {
+        friendRelationRepository.deleteByGiftGiver(giver);
+    }
+
     public List<ParticipantWithPosibilities> allPosibilities() {
         return workerService.getAllParticipants().stream().map(participant ->
             new ParticipantWithPosibilities(participant, this)
@@ -105,7 +109,20 @@ public class FriendRelationService {
 
     public void updateRelation(Worker giver, Worker newReceiver) {
         FriendRelation relation = friendRelationRepository.findByGiftGiver(giver);
-        relation.setGiftReceiver(newReceiver);
-        friendRelationRepository.save(relation);
+        if(relation == null) {
+            create(giver, newReceiver);
+        } else {
+            relation.setGiftReceiver(newReceiver);
+            friendRelationRepository.save(relation);
+        }
+    }
+
+    public Worker retrieveGiftReceiverOf(Worker worker) {
+        FriendRelation relation = friendRelationRepository.findByGiftGiver(worker);
+        Worker giftReceiver = null;
+        if(relation != null) {
+            giftReceiver = relation.getGiftReceiver();
+        }
+        return giftReceiver;
     }
 }

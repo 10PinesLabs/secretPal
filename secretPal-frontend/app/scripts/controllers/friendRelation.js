@@ -130,4 +130,26 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     });
   };
 
+  $scope.delete = function (giver) {
+    SweetAlert.swal({
+        title: "Estas seguro?",
+        text:  + " no será amigo invisible de nadie!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Si, borrar!",
+        closeOnConfirm: false
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          FriendRelationService.delete(giver, function () {
+            FriendRelationService.allPosibleRelations( function(data) {
+              $scope.posibleRelations = data;
+            });
+            SweetAlert.swal("Se ha borrado exitosamente");
+          });
+        }
+      });
+  };
+
 });

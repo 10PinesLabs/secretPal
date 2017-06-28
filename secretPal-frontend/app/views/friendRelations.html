@@ -26,10 +26,14 @@
               </select>
             </td>
             <td>
-              <a class="btn btn-sm btn-success" ng-click="update(posibleRelation.giver, posibleRelation.receiver)" title="Actualizar">
+              <a class="btn btn-sm btn-success"
+                 ng-click="update(posibleRelation.giver, posibleRelation.receiver)"
+                 title="Actualizar">
                 <span class="glyphicon glyphicon-ok"></span>
               </a>
-              <a class="btn btn-sm btn-danger" title="Borrar">
+              <a class="btn btn-sm btn-danger"
+                 ng-click="delete(posibleRelation.giver)"
+                 title="Borrar">
                 <span class="glyphicon glyphicon-remove"></span>
               </a>
             </td>

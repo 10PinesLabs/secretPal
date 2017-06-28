@@ -81,14 +81,20 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
 
   this.update = function (giver, receiver, callback) {
     $http.put(buildRoute('/update/' + giver.id + '/' + receiver.id)).success(function () {
-      successMsg("Asignación exitosa, ahora " + giver.fullName + " le regala a " + receiver.fullName + "!");
+      successMsg("Asignación exitosa. Ahora " + giver.fullName + " le regala a " + receiver.fullName + "!");
       callback();
     }).error(function () {
       errorMsg("No se pudo procesar el pedido");
     });
   };
 
-
+  this.delete = function(giver, successFunction) {
+    $http.delete(buildRoute('/' + giver.id)).
+    success(function() {
+      successMsg("Relación eliminada exitosamente. Ahora " + giver.fullName + " no es amigo invisible de nadie :(");
+      successFunction();
+    });
+  };
 
 
 

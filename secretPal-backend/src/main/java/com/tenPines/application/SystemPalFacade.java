@@ -36,8 +36,8 @@ public class SystemPalFacade {
         return friendRelationService.create(giftGiver, giftReceiver);
     }
 
-    public void deleteRelation(Long from, Long to) {
-        friendRelationService.deleteRelationByReceipt(retrieveAWorker(to));
+    public void deleteRelation(Worker giver) {
+        friendRelationService.deleteByGiftGiver(giver);
     }
 
     public List<DefaultGift> retrieveAllGiftsDefaults() {
