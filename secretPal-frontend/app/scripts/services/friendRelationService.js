@@ -80,7 +80,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
   };
 
   this.update = function (giver, receiver, callback) {
-    $http.put(buildRoute('/updateRelation')).success(function () {
+    $http.put(buildRoute('/update/' + giver.id + '/' + receiver.id)).success(function () {
       successMsg("Asignación exitosa, ahora " + giver.fullName + " le regala a " + receiver.fullName + "!");
       callback();
     }).error(function () {

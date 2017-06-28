@@ -78,5 +78,11 @@ public class FriendRelationController {
         return systemFacade.allPosibilities();
     }
 
-
+    @RequestMapping(value = "/update/{giverId}/{newReceiverId}", method = RequestMethod.PUT)
+    @ResponseBody
+    public void updateRelation(@PathVariable Long giverId,@PathVariable Long newReceiverId) throws IOException, MessagingException {
+        Worker giver = workerService.retriveWorker(giverId);
+        Worker newReceiver = workerService.retriveWorker(newReceiverId);
+        systemFacade.updateRelation(giver, newReceiver);
+    }
 }

@@ -102,4 +102,10 @@ public class FriendRelationService {
             new ParticipantWithPosibilities(participant, this)
         ).collect(Collectors.toList());
     }
+
+    public void updateRelation(Worker giver, Worker newReceiver) {
+        FriendRelation relation = friendRelationRepository.findByGiftGiver(giver);
+        relation.setGiftReceiver(newReceiver);
+        friendRelationRepository.save(relation);
+    }
 }

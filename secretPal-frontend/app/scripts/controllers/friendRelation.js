@@ -122,4 +122,12 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     relation.giftReceiver = null;
   };
 
+  $scope.update = function(giver, receiver) {
+    FriendRelationService.update(giver, receiver, function(data) {
+      FriendRelationService.allPosibleRelations( function(data) {
+        $scope.posibleRelations = data;
+      });
+    });
+  };
+
 });

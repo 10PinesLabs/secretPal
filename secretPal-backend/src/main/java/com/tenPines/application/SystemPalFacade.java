@@ -195,4 +195,8 @@ public class SystemPalFacade {
     public List<ParticipantWithPosibilities> allPosibilities() {
         return friendRelationService.allPosibilities();
     }
+
+    public void updateRelation(Worker giver, Worker newReceiver) {
+        friendRelationService.updateRelation(giver, newReceiver);
+    }
 }
