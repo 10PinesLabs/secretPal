@@ -5,12 +5,12 @@ import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTheSamePersonRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
+import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FriendRelationValidator {
 
@@ -31,7 +31,16 @@ public class FriendRelationValidator {
     }
 
     public Boolean validate(Worker giver, Worker receiver) {
+        return validateRules(giver, receiver) && !hasOtherSecretPal(giver, receiver);
+    }
+
+    private boolean validateRules(Worker giver, Worker receiver) {
         return validateHardRules(giver, receiver) || validateSoftRules(giver, receiver);
+    }
+
+    private Boolean hasOtherSecretPal(Worker giver, Worker receiver) {
+        FriendRelation relation = friendRelationService.getByWorkerReceiver(receiver);
+        return (relation != null) && (relation.getGiftGiver() != giver);
     }
 
     private Boolean validateHardRules(Worker giver, Worker receiver) {
