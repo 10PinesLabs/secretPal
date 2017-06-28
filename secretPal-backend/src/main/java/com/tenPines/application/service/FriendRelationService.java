@@ -72,9 +72,10 @@ public class FriendRelationService {
     }
 
     public List<Worker> getAvailablesRelationsTo(Worker workerTo) {
-//        List<Worker> availablesReceipt = null;
-//        availablesReceipt.add(friendRelationRepository.findByGiftReceiver(workerTo).getGiftReceiver());
-        return workerService.getAllParticipants();
+        FriendRelationValidator validator = new FriendRelationValidator(this);
+        return workerService.getAllParticipants().stream().filter(participant ->
+            validator.validate(workerTo, participant)
+        ).collect(Collectors.toList());
     }
 
     public FriendRelation getByWorkerReceiver(Worker receiver){
