@@ -67,4 +67,30 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
     });
   };
 
+
+
+
+
+  this.allPosibleRelations = function(callback) {
+    $http.get(buildRoute('/posibilities')).success(function (data) {
+      callback(data);
+    }).error(function () {
+      errorMsg("No se pudo procesar el pedido");
+    });
+  };
+
+  this.update = function (giver, receiver, callback) {
+    $http.put(buildRoute('/updateRelation')).success(function () {
+      successMsg("Asignación exitosa, ahora " + giver.fullName + " le regala a " + receiver.fullName + "!");
+      callback();
+    }).error(function () {
+      errorMsg("No se pudo procesar el pedido");
+    });
+  };
+
+
+
+
+
+
 });

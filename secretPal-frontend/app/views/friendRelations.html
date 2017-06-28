@@ -8,33 +8,31 @@
     <form class="navbar-form" name="form" ng-submit="ok()">
       <table class="table table-striped center-vertical">
         <thead>
-        <tr>
-          <th colspan="2">Participante</th>
-          <th></th>
-
-          <th colspan="2">Agasajado</th>
-          <th>Borrar</th>
-        </tr>
+          <tr>
+            <th >Participante</th>
+            <th ></th>
+            <th >Agasajado</th>
+            <th >Actualizar</th>
+          </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="fr in friendRelations | filter:birthdayHasNotPassed" >
-          <td>{{fr.giftGiver.fullName}}</td>
-          <td><small>le regala a</small></td>
-          <td>
-            <span ng-show="birthdayPassOnAMonth(fr)" tooltip="{{dayDifference(fr.giftReceiver.dateOfBirth)}}" class="glyphicon glyphicon-exclamation-sign icon-warning pull-right"></span>
-          </td>
-          <td>
-            <select name="" id="" ng-model="fr.giftReceiver.fullName">
-              <option ng-value="friendRelation.giftGiver.fullName" ng-repeat="friendRelation in validFriendRelations(fr)">{{friendRelation.giftGiver.fullName}}</option>
-            </select>
-          </td>
-          <td></td>
-          <td><a ng-click="clean(fr)"><span class="glyphicon glyphicon-remove"></span></a></td>
-        </tr>
+          <tr ng-repeat="posibleRelation in posibleRelations" >
+            <td>{{posibleRelation.giver.fullName}}</td>
+            <td><small>le regala a</small></td>
+            <td>
+              <select
+                ng-model="posibleRelation.receiver"
+                ng-options="posibleReceiver as posibleReceiver.fullName for posibleReceiver in posibleRelation.posibleReceivers track by posibleReceiver.id">
+              </select>
+            </td>
+            <td>
+              <a class="text-success">
+                <span class="glyphicon glyphicon-ok"></span>
+              </a>
+            </td>
+          </tr>
         </tbody>
       </table>
-
-        <button type="submit" class="btn btn-default">Agregar</button>
         <button type="button" class="btn btn-primary pull-right" ng-click="auto()">Asignar auto<i>magica</i>mente</button>
       </form>
   </div>

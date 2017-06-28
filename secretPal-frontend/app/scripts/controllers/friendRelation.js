@@ -3,6 +3,10 @@
 var app = angular.module('secretPalApp');
 app.controller('FriendRelationController', function ($scope, $modal, $filter, FriendRelationService, SweetAlert) {
 
+  FriendRelationService.allPosibleRelations( function(data) {
+    $scope.posibleRelations = data;
+  });
+
   $scope.today = new Date();
 
   $scope.hasBirthdayInAMonth = function (worker) {
