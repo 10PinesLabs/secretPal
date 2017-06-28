@@ -6,6 +6,7 @@ import com.tenPines.application.service.validation.rule.CustomParticipantRule;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.*;
 import com.tenPines.restAPI.SecurityToken;
+import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -189,5 +190,9 @@ public class SystemPalFacade {
     }
     public List<FriendRelation> getAllRelations() {
         return friendRelationService.getAllRelations();
+    }
+
+    public List<ParticipantWithPosibilities> allPosibilities() {
+        return friendRelationService.allPosibilities();
     }
 }

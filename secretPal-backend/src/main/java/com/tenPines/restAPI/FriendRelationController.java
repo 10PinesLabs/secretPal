@@ -5,6 +5,7 @@ import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.FriendRelation;
 //import com.tenPines.model.SecretPalEvent;
 import com.tenPines.model.Worker;
+import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/friendRelation")
@@ -72,5 +71,12 @@ public class FriendRelationController {
         systemFacade.autoAssignRelations();
         return systemFacade.getAllRelations();
     }
+
+    @RequestMapping(value = "/posibilities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public List<ParticipantWithPosibilities> allPosibilities() {
+        return systemFacade.allPosibilities();
+    }
+
 
 }

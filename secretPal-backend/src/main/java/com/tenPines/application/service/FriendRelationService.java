@@ -6,6 +6,7 @@ import com.tenPines.model.Worker;
 import com.tenPines.model.process.AssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
+import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -71,9 +72,9 @@ public class FriendRelationService {
     }
 
     public List<Worker> getAvailablesRelationsTo(Worker workerTo) {
-        List<Worker> availablesReceipt = null;
-        availablesReceipt.add(friendRelationRepository.findByGiftReceiver(workerTo).getGiftReceiver());
-        return availablesReceipt;
+//        List<Worker> availablesReceipt = null;
+//        availablesReceipt.add(friendRelationRepository.findByGiftReceiver(workerTo).getGiftReceiver());
+        return workerService.getAllParticipants();
     }
 
     public FriendRelation getByWorkerReceiver(Worker receiver){
@@ -95,4 +96,9 @@ public class FriendRelationService {
         );
     }
 
+    public List<ParticipantWithPosibilities> allPosibilities() {
+        return workerService.getAllParticipants().stream().map(participant ->
+            new ParticipantWithPosibilities(participant, this)
+        ).collect(Collectors.toList());
+    }
 }
