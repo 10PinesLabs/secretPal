@@ -23,15 +23,6 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
     });
   };
 
-  this.new = function (relations) {
-    $http.post(buildRoute('/'), relations).success(function () {
-      successMsg("La asignación fue exitosa");
-    }).error(function () {
-      errorMsg("No se pudo procesar el pedido");
-    });
-  };
-
-
   this.delete = function (idGiver, idReceiver, successFunction) {
     $http.delete(buildRoute('/' + idGiver + '/' + idReceiver)).success(function () {
       successFunction();
@@ -59,9 +50,9 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
   };
 
   this.autoAssign = function (callback) {
-    $http.post(buildRoute('/autoAssign')).success(function (data) {
+    $http.post(buildRoute('/autoAssign')).success(function () {
       successMsg("La asignación automática fue exitosa");
-      callback(data);
+      callback();
     }).error(function () {
       errorMsg("No se pudo procesar el pedido");
     });

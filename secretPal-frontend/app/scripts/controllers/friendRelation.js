@@ -3,9 +3,13 @@
 var app = angular.module('secretPalApp');
 app.controller('FriendRelationController', function ($scope, $modal, $filter, FriendRelationService, SweetAlert) {
 
-  FriendRelationService.allPosibleRelations( function(data) {
-    $scope.posibleRelations = data;
-  });
+  function updatePosibilities() {
+    FriendRelationService.allPosibleRelations( function(data) {
+      $scope.posibleRelations = data;
+    });
+  }
+
+  updatePosibilities();
 
   $scope.today = new Date();
 
@@ -96,15 +100,6 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     });
   };
 
-  $scope.ok = function () {
-    SweetAlert.swal({
-      title: "Actualizando",
-      text: "Esto puede tardar un rato...\n muchos algoritmos",
-      showConfirmButton: false
-    });
-    FriendRelationService.new($scope.friendRelations);
-  };
-
   $scope.auto = function(){
     SweetAlert.swal({
       title: "Actualizando",
@@ -112,22 +107,12 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
       showConfirmButton: false
     });
 
-    FriendRelationService.autoAssign( function(data) {
-      $scope.friendRelations = data;
-    });
+    FriendRelationService.autoAssign(updatePosibilities);
 
-  };
-
-  $scope.clean = function (relation) {
-    relation.giftReceiver = null;
   };
 
   $scope.update = function(giver, receiver) {
-    FriendRelationService.update(giver, receiver, function(data) {
-      FriendRelationService.allPosibleRelations( function(data) {
-        $scope.posibleRelations = data;
-      });
-    });
+    FriendRelationService.update(giver, receiver, updatePosibilities);
   };
 
   $scope.delete = function (giver) {
@@ -143,10 +128,8 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
       function (isConfirm) {
         if (isConfirm) {
           FriendRelationService.delete(giver, function () {
-            FriendRelationService.allPosibleRelations( function(data) {
-              $scope.posibleRelations = data;
-            });
-            SweetAlert.swal("Se ha borrado exitosamente");
+            updatePosibilities();
+            SweetAlert.swal("", "Relacion eliminada exitosamente. Ahora " + giver.fullName + " no es amigo invisible de nadie :(", "success");
           });
         }
       });
