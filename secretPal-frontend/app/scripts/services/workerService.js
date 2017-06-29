@@ -38,16 +38,19 @@ angular.module('secretPalApp').service('WorkerService', function($http, SweetAle
 
   this.changeIntention = function(worker) {
     $http.post(buildRoute('/intention'), worker).
-        success(function() {
-        });
+      success(function() {
+      });
   };
 
   this.delete = function(id, successFunction) {
     $http.delete(buildRoute('/' + id)).
-        success(function() {
-          successMsg("Pino eliminado exitosamente");
-          successFunction();
-        });
+      success(function() {
+        successMsg("Pino eliminado exitosamente");
+        successFunction();
+      }).
+      error(function() {
+        errorMsg("No se pudo eliminar este pino.");
+      });
   };
 
   this.update = function (worker) {
