@@ -17,7 +17,7 @@ import java.util.Set;
 @Table
 public class Worker {
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "worker")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "worker", orphanRemoval = true)
     @JsonIgnore
     public Set<Wish> wish;
     @Id
