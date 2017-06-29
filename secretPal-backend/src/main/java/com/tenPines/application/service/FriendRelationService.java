@@ -7,9 +7,11 @@ import com.tenPines.model.process.AssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
+import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -44,19 +46,6 @@ public class FriendRelationService {
         }
     }
 
-    private List<Worker> assignableWorkers() {
-        return workerService.getAllParticipants().stream().filter(worker -> assignable(worker))
-                .collect(Collectors.toList());
-    }
-
-    private Boolean assignable(Worker worker) {
-        FriendRelation relation = friendRelationRepository.findByGiftGiver(worker);
-        return (relation == null) || actualBirthday(relation.getGiftGiver()).isAfter(LocalDate.now());
-    }
-
-    private LocalDate actualBirthday(Worker worker) {
-        return worker.getDateOfBirth().withYear(LocalDate.now().getYear());
-    }
 
     public List<FriendRelation> getAllRelations() {
         return friendRelationRepository.findAll();
@@ -102,9 +91,35 @@ public class FriendRelationService {
     }
 
     public List<ParticipantWithPosibilities> allPosibilities() {
-        return workerService.getAllParticipants().stream().map(participant ->
+        return assignableWorkers().stream().map(participant ->
             new ParticipantWithPosibilities(participant, this)
         ).collect(Collectors.toList());
+    }
+
+    public List<FriendRelation> allInmutableRelations() {
+        return getAllRelations().stream().filter(relation ->
+            inmutableRelation(relation)
+        ).collect(Collectors.toList());
+    }
+
+    private List<Worker> assignableWorkers() {
+        return workerService.getAllParticipants().stream().filter(worker ->
+            assignable(worker)
+        ).collect(Collectors.toList());
+    }
+
+    private Boolean assignable(Worker worker) {
+        FriendRelation relation = friendRelationRepository.findByGiftGiver(worker);
+        return (relation == null) || !inmutableRelation(relation);
+    }
+
+    private LocalDate actualBirthday(Worker worker) {
+        return worker.getDateOfBirth().withYear(LocalDate.now().getYear());
+    }
+    private Boolean inmutableRelation(FriendRelation relation) {
+        LocalDate today = LocalDate.now();
+        LocalDate actualBirthday = actualBirthday(relation.getGiftReceiver());
+        return ChronoUnit.MONTHS.between(today, actualBirthday) < 1;
     }
 
     public void updateRelation(Worker giver, Worker newReceiver) {
@@ -125,4 +140,5 @@ public class FriendRelationService {
         }
         return giftReceiver;
     }
+
 }

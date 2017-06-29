@@ -78,6 +78,12 @@ public class FriendRelationController {
         return systemFacade.allPosibilities();
     }
 
+    @RequestMapping(value = "/inmutables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public List<FriendRelation> allInmutableRelations() {
+        return systemFacade.allInmutableRelations();
+    }
+
     @RequestMapping(value = "/update/{giverId}/{newReceiverId}", method = RequestMethod.PUT)
     @ResponseBody
     public void updateRelation(@PathVariable Long giverId,@PathVariable Long newReceiverId) throws IOException, MessagingException {

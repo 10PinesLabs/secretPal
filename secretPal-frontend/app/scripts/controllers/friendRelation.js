@@ -11,6 +11,14 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
 
   updatePosibilities();
 
+  function updateInmutableRelations() {
+    FriendRelationService.allInmutableRelations( function(data) {
+      $scope.inmutableRelations = data;
+    });
+  }
+
+  updateInmutableRelations();
+
   $scope.today = new Date();
 
   $scope.hasBirthdayInAMonth = function (worker) {

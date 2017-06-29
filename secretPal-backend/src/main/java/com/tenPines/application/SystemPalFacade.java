@@ -196,7 +196,12 @@ public class SystemPalFacade {
         return friendRelationService.allPosibilities();
     }
 
+    public List<FriendRelation> allInmutableRelations() {
+        return friendRelationService.allInmutableRelations();
+    }
+
     public void updateRelation(Worker giver, Worker newReceiver) {
         friendRelationService.updateRelation(giver, newReceiver);
     }
+
 }

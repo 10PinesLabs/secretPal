@@ -42,8 +42,7 @@
           </td>
         </tr>
         </tbody>
-      </table>
-      <a class="btn btn-primary pull-right"
+      </table><a class="btn btn-primary pull-right"
          ng-click="auto()">
         <span class="glyphicon glyphicon-random"></span>
         Asignar auto<i>magica</i>mente
@@ -65,12 +64,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="fr in friendRelations | filter:hasBirthdayPassed">
-          <td>{{fr.giftGiver.fullName}}</td>
+        <tr ng-repeat="relation in inmutableRelations">
+          <td>{{relation.giftGiver.fullName}}</td>
           <td>
-            <small>ya le regalo a</small>
+            <small>es amig@ invisible de </small>
           </td>
-          <td>{{fr.giftReceiver.fullName}}</td>
+          <td>{{relation.giftReceiver.fullName}}</td>
         </tr>
         </tbody>
       </table>
