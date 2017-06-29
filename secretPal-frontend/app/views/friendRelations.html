@@ -5,48 +5,55 @@
   </div>
 
   <div class="panel panel-primary">
-    <form class="navbar-form" name="form" ng-submit="ok()">
+    <form class="navbar-form" name="form">
       <table class="table table-striped center-vertical">
         <thead>
-          <tr>
-            <th >Participante</th>
-            <th ></th>
-            <th >Agasajado</th>
-            <th >Opciones</th>
-          </tr>
+        <tr>
+          <th>Participante</th>
+          <th></th>
+          <th>Agasajado</th>
+          <th>Opciones</th>
+        </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="posibleRelation in posibleRelations" >
-            <td>{{posibleRelation.giver.fullName}}</td>
-            <td><small>le regala a</small></td>
-            <td>
-              <select
-                ng-model="posibleRelation.receiver"
-                ng-options="posibleReceiver as posibleReceiver.fullName for posibleReceiver in posibleRelation.posibleReceivers track by posibleReceiver.id">
-              </select>
-            </td>
-            <td>
-              <a class="btn btn-sm btn-success"
-                 ng-click="update(posibleRelation.giver, posibleRelation.receiver)"
-                 title="Actualizar">
-                <span class="glyphicon glyphicon-ok"></span>
-              </a>
-              <a class="btn btn-sm btn-danger"
-                 ng-click="delete(posibleRelation.giver)"
-                 title="Borrar">
-                <span class="glyphicon glyphicon-remove"></span>
-              </a>
-            </td>
-          </tr>
+        <tr ng-repeat="posibleRelation in posibleRelations">
+          <td>{{posibleRelation.giver.fullName}}</td>
+          <td>
+            <small>le regala a</small>
+          </td>
+          <td>
+            <select
+              ng-model="posibleRelation.receiver"
+              ng-options="posibleReceiver as posibleReceiver.fullName for posibleReceiver in posibleRelation.posibleReceivers track by posibleReceiver.id">
+            </select>
+          </td>
+          <td>
+            <a class="btn btn-sm btn-success"
+               ng-click="update(posibleRelation.giver, posibleRelation.receiver)"
+               ng-disabled="!posibleRelation.receiver"
+               title="Actualizar">
+              <span class="glyphicon glyphicon-ok"></span>
+            </a>
+            <a class="btn btn-sm btn-danger"
+               ng-click="delete(posibleRelation.giver)"
+               title="Borrar">
+              <span class="glyphicon glyphicon-remove"></span>
+            </a>
+          </td>
+        </tr>
         </tbody>
       </table>
-        <button type="button" class="btn btn-primary pull-right" ng-click="auto()">Asignar auto<i>magica</i>mente</button>
-      </form>
+      <a class="btn btn-primary pull-right"
+         ng-click="auto()">
+        <span class="glyphicon glyphicon-random"></span>
+        Asignar auto<i>magica</i>mente
+      </a>
+    </form>
   </div>
 
   <div class="clearfix">
-    <h1>Relaciones vencidas</h1>
-    <p>No pueden cambiarse porque ya pasaron los cumpleaños</p>
+    <h1>Relaciones inmutables</h1>
+    <p>No pueden cambiarse porque ya paso el cumpleaños, o porque falta menos de un mes para el mismo</p>
   </div>
   <div class="panel panel-primary">
     <form class="navbar-form" name="form" ng-submit="ok()">
@@ -58,9 +65,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="fr in friendRelations | filter:hasBirthdayPassed" >
+        <tr ng-repeat="fr in friendRelations | filter:hasBirthdayPassed">
           <td>{{fr.giftGiver.fullName}}</td>
-          <td><small>ya le regalo a</small></td>
+          <td>
+            <small>ya le regalo a</small>
+          </td>
           <td>{{fr.giftReceiver.fullName}}</td>
         </tr>
         </tbody>
