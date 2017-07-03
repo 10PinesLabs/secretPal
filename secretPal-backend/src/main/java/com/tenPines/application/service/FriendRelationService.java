@@ -7,13 +7,13 @@ import com.tenPines.model.process.AssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -52,12 +52,9 @@ public class FriendRelationService {
     }
 
     public Worker retrieveAssignedFriendFor(Worker unWorker) {
-        FriendRelation aRelation = friendRelationRepository.findByGiftGiver(unWorker);
-        if (aRelation == null) {
-            autoAssignRelations();
-            aRelation = friendRelationRepository.findByGiftGiver(unWorker);
-        }
-        return aRelation.getGiftReceiver();
+        return friendRelationRepository.findByGiftGiver(unWorker)
+                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"))
+                .getGiftReceiver();
     }
 
     public List<Worker> getAvailablesRelationsTo(Worker workerTo) {
@@ -109,8 +106,9 @@ public class FriendRelationService {
     }
 
     private Boolean assignable(Worker worker) {
-        FriendRelation relation = friendRelationRepository.findByGiftGiver(worker);
-        return (relation == null) || !inmutableRelation(relation);
+        return friendRelationRepository.findByGiftGiver(worker)
+                .map(relation -> !inmutableRelation(relation))
+                .orElse(true);
     }
 
     private LocalDate actualBirthday(Worker worker) {
@@ -123,22 +121,19 @@ public class FriendRelationService {
     }
 
     public void updateRelation(Worker giver, Worker newReceiver) {
-        FriendRelation relation = friendRelationRepository.findByGiftGiver(giver);
-        if(relation == null) {
-            create(giver, newReceiver);
-        } else {
-            relation.setGiftReceiver(newReceiver);
-            friendRelationRepository.save(relation);
-        }
+        Optional<FriendRelation> optionalRelation = friendRelationRepository.findByGiftGiver(giver);
+        optionalRelation.ifPresent(relation -> changeReceiver(relation, newReceiver));
+        optionalRelation.orElseGet(() -> create(giver, newReceiver));
     }
 
-    public Worker retrieveGiftReceiverOf(Worker worker) {
-        FriendRelation relation = friendRelationRepository.findByGiftGiver(worker);
-        Worker giftReceiver = null;
-        if(relation != null) {
-            giftReceiver = relation.getGiftReceiver();
-        }
-        return giftReceiver;
+    private void changeReceiver(FriendRelation relation, Worker newReceiver) {
+        relation.setGiftReceiver(newReceiver);
+        friendRelationRepository.save(relation);
+    }
+
+    public Optional<Worker> retrieveGiftReceiverOf(Worker worker) {
+        return friendRelationRepository.findByGiftGiver(worker)
+                .map(relation -> relation.getGiftReceiver());
     }
 
 }

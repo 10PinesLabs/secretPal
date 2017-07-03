@@ -4,11 +4,12 @@ import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.model.Worker;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ParticipantWithPosibilities {
 
     public Worker giver;
-    public Worker receiver;
+    public Optional<Worker> receiver;
     public List<Worker> posibleReceivers;
 
     public ParticipantWithPosibilities(Worker participant, FriendRelationService friendRelationService) {
