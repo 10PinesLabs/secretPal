@@ -15,6 +15,8 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class FriendRelationServiceTest extends SpringBaseTest {
@@ -87,12 +89,56 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         workerService.save(workerWhoHasBirthday);
 
         friendRelationService.create(aWorker, workerWhoHasBirthday);
-        clock.setTime(clock.now().plusMonths(3));
+        clock.setTime(clock.now().plusMonths(3)); //advance time
 
         List<Worker> assignableWorkers = friendRelationService.assignableWorkers();
 
         assertThat(assignableWorkers, hasSize(1));
         assertThat(assignableWorkers, hasItem(workerWhoHasBirthday));
+    }
+
+    @Test
+    public void whenARelationBirthdayHasNotHappenedYet() {
+        clock.setTime(LocalDate.of(2017, Month.JUNE, 10)); //Set today
+
+        Worker aWorker = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
+        Worker anotherWorker = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
+        workerService.save(aWorker);
+        workerService.save(anotherWorker);
+
+        FriendRelation relation = friendRelationService.create(aWorker, anotherWorker);
+
+        assertFalse(friendRelationService.inmutableRelation(relation));
+    }
+
+    @Test
+    public void whenARelationBirthdayIsOver() {
+        clock.setTime(LocalDate.of(2017, Month.JUNE, 10)); //Set today
+
+        Worker aWorker = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
+        Worker anotherWorker = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
+        workerService.save(aWorker);
+        workerService.save(anotherWorker);
+
+        FriendRelation relation = friendRelationService.create(aWorker, anotherWorker);
+        clock.setTime(LocalDate.of(2017, Month.AUGUST, 5)); //advance time
+
+        assertTrue(friendRelationService.inmutableRelation(relation));
+    }
+
+    @Test
+    public void whenARelationBirthdayWillPassInLessThanOneMonth() {
+        clock.setTime(LocalDate.of(2017, Month.JUNE, 10)); //Set today
+
+        Worker aWorker = new WorkerBuilder().buildFromDate(20, Month.NOVEMBER);
+        Worker anotherWorker = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
+        workerService.save(aWorker);
+        workerService.save(anotherWorker);
+
+        FriendRelation relation = friendRelationService.create(aWorker, anotherWorker);
+        clock.setTime(LocalDate.of(2017, Month.JULY, 25)); //advance time
+
+        assertTrue(friendRelationService.inmutableRelation(relation));
     }
 
 }

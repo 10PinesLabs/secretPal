@@ -120,8 +120,9 @@ public class FriendRelationService {
     private LocalDate actualBirthday(Worker worker) {
         return worker.getDateOfBirth().withYear(LocalDate.now().getYear());
     }
-    private Boolean inmutableRelation(FriendRelation relation) {
-        LocalDate today = LocalDate.now();
+
+    public Boolean inmutableRelation(FriendRelation relation) {
+        LocalDate today = clock.now();
         LocalDate actualBirthday = actualBirthday(relation.getGiftReceiver());
         return ChronoUnit.MONTHS.between(today, actualBirthday) < 1;
     }
