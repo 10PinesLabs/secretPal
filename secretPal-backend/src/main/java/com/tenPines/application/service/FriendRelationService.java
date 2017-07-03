@@ -1,5 +1,6 @@
 package com.tenPines.application.service;
 
+import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.validation.FriendRelationValidator;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
@@ -7,6 +8,7 @@ import com.tenPines.model.process.AssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,10 +21,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class FriendRelationService {
+
+    private final Clock clock;
     private final FriendRelationRepository friendRelationRepository;
     private final WorkerService workerService;
 
-    public FriendRelationService(FriendRelationRepository friendRelationRepository, WorkerService workerService) {
+    @Autowired
+    public FriendRelationService(Clock clock, FriendRelationRepository friendRelationRepository, WorkerService workerService) {
+        this.clock = clock;
         this.friendRelationRepository = friendRelationRepository;
         this.workerService = workerService;
     }
@@ -99,7 +105,7 @@ public class FriendRelationService {
         ).collect(Collectors.toList());
     }
 
-    private List<Worker> assignableWorkers() {
+    public List<Worker> assignableWorkers() {
         return workerService.getAllParticipants().stream().filter(worker ->
             assignable(worker)
         ).collect(Collectors.toList());
