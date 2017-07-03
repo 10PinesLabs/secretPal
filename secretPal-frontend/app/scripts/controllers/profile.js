@@ -29,7 +29,7 @@ angular.module('secretPalApp')
         function (isConfirm) {
           if (isConfirm) {
             WorkerService.changeIntention(user.worker);
-            SweetAlert.swal("Ahora estas participando!");
+            SweetAlert.swal("¡Ahora estas participando!");
             $scope.noFriendAlert();
           } else {
             $location.path('/');

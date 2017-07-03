@@ -37,7 +37,7 @@ angular.module('secretPalApp')
     };
 
     self.isAdmin = function () {
-      if($rootScope.loggedUser !== undefined) {
+      if ($rootScope.loggedUser !== undefined) {
         return $rootScope.loggedUser.admin
       }
     };
@@ -56,7 +56,11 @@ angular.module('secretPalApp')
           Token.saveToken(response.data.token);
           return self.getProfile()
         }).then(function (currentProfile) {
-          SweetAlert.swal("¡Bienvenido " + currentProfile.userName + "!", "Ingresaste correctamente", "success");
+          SweetAlert.swal(SweetAlert.swal({
+            title: "¡Bienvenido " + currentProfile.userName + "!",
+            text: "Ingresaste correctamente",
+            confirmButtonColor: "#68bd46",
+          }));
           $location.path('/profile');
           return currentProfile;
         }).catch(function () {
@@ -67,7 +71,11 @@ angular.module('secretPalApp')
 
     self.register = function (newUser) {
       return $http.post(buildRoute('/register'), newUser).then(function () {
-        SweetAlert.swal("¡Registrado correctamente!", "Gracias por participar en ''Amigo invisible'' ", "success"),
+          SweetAlert.swal(SweetAlert.swal({
+            title: "¡Registrado correctamente!",
+            text: "Gracias por participar en ''Amigo invisible''",
+            confirmButtonColor: "#68bd46",
+          }));
           $location.path('/login');
       }).catch(function (error) {
         SweetAlert.swal("No te has registrado", error.data.message, "error");
