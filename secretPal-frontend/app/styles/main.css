@@ -9,6 +9,15 @@ body {
   padding: 0;
 }
 
+a{
+  color: #68BD46;
+}
+
+a :hover{
+  color: #44883c;
+}
+
+
 .splash {
   background-color: #68bd46;
   width: 100%;
@@ -66,6 +75,11 @@ body {
 .marketing p + h4 {
   margin-top: 28px;
 }
+
+.glyphicon-heart{
+  color: red;
+}
+
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
