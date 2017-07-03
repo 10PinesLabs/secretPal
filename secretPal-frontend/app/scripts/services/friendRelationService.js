@@ -7,8 +7,8 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
     return route + path;
   }
 
-  function successMsg(msg) {
-    SweetAlert.swal("", msg, "success");
+  function successMsg(title, msg) {
+    SweetAlert.swal(title, msg, "success");
   }
 
   function errorMsg(msg) {
@@ -51,7 +51,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
 
   this.autoAssign = function (callback) {
     $http.post(buildRoute('/autoAssign')).success(function () {
-      successMsg("La asignación automática fue exitosa");
+      successMsg("La asignación automática fue exitosa", "Ahora todos los pinos tienen amigo invisible!");
       callback();
     }).error(function () {
       errorMsg("No se pudo procesar el pedido");
@@ -76,7 +76,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
 
   this.update = function (giver, receiver, callback) {
     $http.put(buildRoute('/update/' + giver.id + '/' + receiver.id)).success(function () {
-      successMsg("Asignación exitosa. Ahora " + giver.fullName + " le regala a " + receiver.fullName + "!");
+      successMsg("Asignación exitosa", "Ahora " + giver.fullName + " le regala a " + receiver.fullName + "!");
       callback();
     }).error(function () {
       errorMsg("No se pudo procesar el pedido");
@@ -86,7 +86,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
   this.delete = function(giver, successFunction) {
     $http.delete(buildRoute('/' + giver.id)).
     success(function() {
-      successMsg("Relación eliminada exitosamente. Ahora " + giver.fullName + " no es amigo invisible de nadie :(");
+      successMsg("Relación eliminada exitosamente", "Ahora " + giver.fullName + " no es amigo invisible de nadie :(");
       successFunction();
     });
   };

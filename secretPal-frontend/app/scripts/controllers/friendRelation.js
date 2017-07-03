@@ -137,7 +137,7 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
         if (isConfirm) {
           FriendRelationService.delete(giver, function () {
             updatePosibilities();
-            SweetAlert.swal("", "Relacion eliminada exitosamente. Ahora " + giver.fullName + " no es amigo invisible de nadie :(", "success");
+            SweetAlert.swal("Relación eliminada exitosamente", "Ahora " + giver.fullName + " no es amigo invisible de nadie :(", "success");
           });
         }
       });
