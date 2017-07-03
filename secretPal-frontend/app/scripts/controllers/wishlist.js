@@ -57,7 +57,8 @@ angular.module('secretPalApp')
               $scope.wishlist.splice(
                 $scope.wishlist.indexOf(wish), 1
               );
-              SweetAlert.swal("Se ha borrado exitosamente","", "success");
+              SweetAlert.swal({title: "Regalo borrado exitosamente",
+                confirmButtonColor: "#68bd46",});
             });
           }
         });
