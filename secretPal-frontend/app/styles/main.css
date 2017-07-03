@@ -10,7 +10,7 @@ body {
 }
 
 a{
-  color: #68BD46;
+  color: #61b85c;
 }
 
 a :hover{
@@ -77,7 +77,16 @@ a :hover{
 }
 
 .glyphicon-heart{
-  color: red;
+  color: #d00009;
+}
+
+.toggle-switch{
+  color: #61b85c;
+}
+
+.toggle-switch .switch-left {
+  color: #FFFFFF;
+  background: #61b85c;
 }
 
 
@@ -236,8 +245,8 @@ a :hover{
 }
 
 span.label:not(:hover) {
-  background: #68bd46;
-  color: #68bd46;
+  background: #61b85c;
+  color: #61b85c;
 }
 
 
