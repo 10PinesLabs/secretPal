@@ -20,8 +20,9 @@ app.controller('GiftDefaultController', function($scope, $route, GiftDefaultServ
         closeOnConfirm: false,
         closeOnCancel: true,
         confirmButtonText: "¡Si!",
-        confirmButtonColor: "#DD6B55",
+        confirmButtonColor: "#68bd46",
         cancelButtonText: "Cancelar",
+        cancelButtonColor: '#FFFFFF',
       },
       function (isConfirm) {
         if(isConfirm) {

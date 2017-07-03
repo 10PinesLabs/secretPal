@@ -10,7 +10,7 @@ body {
 }
 
 .splash {
-  background-color: #428bca;
+  background-color: #68bd46;
   width: 100%;
   text-align: center;
   color: white;
@@ -222,8 +222,8 @@ body {
 }
 
 span.label:not(:hover) {
-  background: #5cb85c;
-  color: #5cb85c;
+  background: #68bd46;
+  color: #68bd46;
 }
 
 
