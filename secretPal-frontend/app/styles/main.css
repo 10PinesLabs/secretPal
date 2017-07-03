@@ -17,6 +17,10 @@ a :hover{
   color: #44883c;
 }
 
+/*.panel-primary{*/
+  /*border-color: black;*/
+/*}*/
+
 .splash {
   background-color: #68bd46;
   width: 100%;
