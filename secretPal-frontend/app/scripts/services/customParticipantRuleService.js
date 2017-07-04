@@ -20,7 +20,7 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
     $http.get(self.buildRoute('/')).success(function (data) {
       callback(data);
     }).error(function () {
-      self.errorMsg("No se pudieron traer las reglas, intentelo nuevamente.");
+      self.errorMsg("No se pudieron conseguir las reglas, intentelo nuevamente.");
     });
   };
 

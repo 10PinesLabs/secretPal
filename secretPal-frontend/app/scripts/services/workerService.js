@@ -21,7 +21,7 @@ angular.module('secretPalApp').service('WorkerService', function($http, SweetAle
         callback(data);
       }).
       error(function() {
-          errorMsg("No se pudieron cargar los trabajadores");
+          errorMsg("No se pudieron cargar los participantes, intentelo de nuvo más tarde.");
       });
   };
 

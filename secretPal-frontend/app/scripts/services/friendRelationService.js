@@ -45,7 +45,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
         callback(data);
       },
       function () {
-        errorMsg("Intente nuevamente");
+        errorMsg("No se pudo conseguir su pino invisible, intentelo nuevamente");
       });
   };
 
@@ -54,7 +54,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
         callback(data);
       },
       function () {
-        errorMsg("Intente nuevamente mas tarde");
+        errorMsg("No se puede conseguir el/los posible/s pino/s invisible/s. Intente nuevamente mas tarde");
       });
   };
 
@@ -63,7 +63,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
       successMsg("La asignación automática fue exitosa");
       callback(data);
     }).error(function () {
-      errorMsg("No se pudo procesar el pedido");
+      errorMsg("La asignación automática falló.");
     });
   };
 

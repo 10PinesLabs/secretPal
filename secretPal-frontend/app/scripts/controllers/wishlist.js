@@ -94,7 +94,7 @@ angular.module('secretPalApp')
         callback(data);
       }).
       error(function() {
-        errorMsg("No se pudo cargar la lista de regalos, inténtelo de nuevo más tarde.");
+        errorMsg("No se pudo cargar la lista de regalos, inténtlo de nuevo más tarde.");
       });
   };
 
