@@ -124,7 +124,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
   };
 
   $scope.notHimSelf = function(){
-  }
+  };
 
   $scope.cantParticipate = function (worker) {
     var today = new Date();
@@ -175,4 +175,3 @@ app.directive('unique', function () {
       $scope.opened = true;
     };
   });
-

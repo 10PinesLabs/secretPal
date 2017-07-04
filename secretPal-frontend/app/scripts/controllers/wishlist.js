@@ -94,7 +94,7 @@ angular.module('secretPalApp')
         callback(data);
       }).
       error(function() {
-        errorMsg("No se pudo procesar la solicitud al servidor");
+        errorMsg("No se pudo cargar la lista de regalos, inténtelo de nuevo más tarde.");
       });
   };
 
@@ -104,7 +104,7 @@ angular.module('secretPalApp')
           successFunction(data);
         }).
         error(function() {
-          errorMsg("No se pudo procesar la solicitud al servidor");
+          errorMsg("No se pudo crear un regalo, por favor inténtelo de nuevo.");
         });
     };
 

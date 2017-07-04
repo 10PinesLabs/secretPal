@@ -9,8 +9,8 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
   });
 
   CustomParticipantRuleService.all(function (data) {
-    $scope.rules = data
-  })
+    $scope.rules = data;
+  });
 
   $scope.createRule = function () {
     var from = $scope.workerGiver.id;
@@ -18,11 +18,11 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
 
     CustomParticipantRuleService.new(from, to).success(function (rule) {
       $scope.rules = R.append($scope.rules, rule);
-      CustomParticipantRuleService.successMsg("La nueva regla fue creada");
+      CustomParticipantRuleService.successMsg("La nueva regla fue creada.");
     }).error(function () {
-      CustomParticipantRuleService.errorMsg("No se pudo crear la regla");
+      CustomParticipantRuleService.errorMsg("No se pudo crear la regla.");
     });
-  }
+  };
 
   $scope.deleteWithConfirmationMsg = function (rule) {
     SweetAlert.swal({
@@ -37,7 +37,7 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
         confirmButtonText: "Si, ¡borrar!",
         confirmButtonColor: "#68bd46",
         cancelButtonText: "Cancelar",
-        cancelButtonColor: '#FFFFFF',
+        cancelButtonColor: '#FFFFFF'
       },
 
       function (isConfirm) {
@@ -46,7 +46,7 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
             $scope.rules = R.remove($scope.rules, rule);
             SweetAlert.swal({
               title: "Regla eliminada exitosamente",
-              confirmButtonColor: "#68bd46",
+              confirmButtonColor: "#68bd46"
             });
           });
         }
@@ -55,7 +55,7 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
 
   $scope.delete = function (rule) {
     if (rule.isRuleActivate) {
-      warningMsg("La regla está activada, no se puede borrar");
+      warningMsg("La regla está activa, no se puede borrar.");
     } else {
       $scope.deleteWithConfirmationMsg(rule);
     }
@@ -63,10 +63,10 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
 
   $scope.changeIntention = function (rule) {
     rule.changeRuleIntention;
-  }
+  };
 
   $scope.canDelete = function (rule) {
-    return rule.isActivate == false;
+    return rule.isActivate === false;
   };
 
 });

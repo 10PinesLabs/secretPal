@@ -8,7 +8,7 @@ angular.module('secretPalApp')
     $scope.internalAuthenticate = function () {
 
       SweetAlert.swal({
-        title: "Logeandose",
+        title: "Logueandose",
         text: "Entrando en la Matrix...",
         showConfirmButton: false,
       });

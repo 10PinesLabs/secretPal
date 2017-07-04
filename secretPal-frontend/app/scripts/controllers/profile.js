@@ -45,7 +45,7 @@ angular.module('secretPalApp')
           $scope.giftDefault = data.giftDefault;
           $scope.amountDefault = data.amountDefault;
         }).error(function () {
-          errorMsg("Inténtelo denuevo mas tarde");
+          errorMsg("No se han podido cargar el regalo y el monto default. Por favor intentalo de nuevo msá tarde.");
         });
 
         $scope.friend = friend;

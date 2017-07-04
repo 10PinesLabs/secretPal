@@ -19,7 +19,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
     $http.get(buildRoute('/')).success(function (data) {
       callback(data);
     }).error(function () {
-      errorMsg("No se pudo procesar el pedido");
+      errorMsg("No se pudieron cargar las relaciones.");
     });
   };
 
@@ -27,7 +27,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
     $http.post(buildRoute('/'), relations).success(function () {
       successMsg("La asignación fue exitosa");
     }).error(function () {
-      errorMsg("No se pudo procesar el pedido");
+      errorMsg("No se pudo asignar la relación");
     });
   };
 
