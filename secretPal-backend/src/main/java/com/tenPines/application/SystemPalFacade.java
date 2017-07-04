@@ -6,6 +6,7 @@ import com.tenPines.application.service.validation.rule.CustomParticipantRule;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.*;
 import com.tenPines.restAPI.SecurityToken;
+import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -35,8 +36,8 @@ public class SystemPalFacade {
         return friendRelationService.create(giftGiver, giftReceiver);
     }
 
-    public void deleteRelation(Long from, Long to) {
-        friendRelationService.deleteRelationByReceipt(retrieveAWorker(to));
+    public void deleteRelation(Worker giver) {
+        friendRelationService.deleteByGiftGiver(giver);
     }
 
     public List<DefaultGift> retrieveAllGiftsDefaults() {
@@ -190,4 +191,17 @@ public class SystemPalFacade {
     public List<FriendRelation> getAllRelations() {
         return friendRelationService.getAllRelations();
     }
+
+    public List<ParticipantWithPosibilities> allPosibilities() {
+        return friendRelationService.allPosibilities();
+    }
+
+    public List<FriendRelation> allInmutableRelations() {
+        return friendRelationService.allInmutableRelations();
+    }
+
+    public void updateRelation(Worker giver, Worker newReceiver) {
+        friendRelationService.updateRelation(giver, newReceiver);
+    }
+
 }

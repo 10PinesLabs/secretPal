@@ -70,14 +70,6 @@ public class WorkerService {
 
     public Worker retrieveWorkerByFullname(String token) {
         return workerRepository.findByfullName(token);
-
     }
 
-    public List<Worker> assignableWorkers() {
-        /** todos los participantes que aun no regalan a partir de un mes */
-
-        return getAllParticipants().stream().filter( worker ->
-                        worker.getDateOfBirth().minusMonths(1).isBefore(LocalDate.now())
-        ).collect(Collectors.toList());
-    }
 }

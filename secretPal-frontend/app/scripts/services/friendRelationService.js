@@ -7,8 +7,8 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
     return route + path;
   }
 
-  function successMsg(msg) {
-    SweetAlert.swal("", msg, "success");
+  function successMsg(title, msg) {
+    SweetAlert.swal(title, msg, "success");
   }
 
   function errorMsg(msg) {
@@ -22,15 +22,6 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
       errorMsg("No se pudieron cargar las relaciones.");
     });
   };
-
-  this.new = function (relations) {
-    $http.post(buildRoute('/'), relations).success(function () {
-      successMsg("La asignación fue exitosa");
-    }).error(function () {
-      errorMsg("No se pudo asignar la relación");
-    });
-  };
-
 
   this.delete = function (idGiver, idReceiver, successFunction) {
     $http.delete(buildRoute('/' + idGiver + '/' + idReceiver)).success(function () {
@@ -59,11 +50,44 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
   };
 
   this.autoAssign = function (callback) {
-    $http.post(buildRoute('/autoAssign')).success(function (data) {
-      successMsg("La asignación automática fue exitosa");
+    $http.post(buildRoute('/autoAssign')).success(function () {
+      successMsg("La asignación automática fue exitosa", "Ahora todos los pinos tienen amigo invisible!");
+      callback();
+    }).error(function () {
+      errorMsg("No se pudo procesar el pedido");
+    });
+  };
+
+  this.allPosibleRelations = function(callback) {
+    $http.get(buildRoute('/posibilities')).success(function (data) {
+      callback(data);
+    }).error(function () {
+      errorMsg("No se pudo procesar el pedido");
+    });
+  };
+
+  this.allInmutableRelations = function(callback) {
+    $http.get(buildRoute('/inmutables')).success(function (data) {
       callback(data);
     }).error(function () {
       errorMsg("La asignación automática falló.");
+    });
+  };
+
+  this.update = function (giver, receiver, callback) {
+    $http.put(buildRoute('/update/' + giver.id + '/' + receiver.id)).success(function () {
+      successMsg("Asignación exitosa", "Ahora " + giver.fullName + " le regala a " + receiver.fullName + "!");
+      callback();
+    }).error(function () {
+      errorMsg("No se pudo procesar el pedido");
+    });
+  };
+
+  this.delete = function(giver, successFunction) {
+    $http.delete(buildRoute('/' + giver.id)).
+    success(function() {
+      successMsg("Relación eliminada exitosamente", "Ahora " + giver.fullName + " no es amigo invisible de nadie :(");
+      successFunction();
     });
   };
 

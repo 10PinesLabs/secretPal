@@ -1,10 +1,9 @@
 package com.tenPines.model;
 
+import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.FriendRelationValidator;
-import com.tenPines.application.service.validation.rule.AssignationRule;
-import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
 import org.junit.Before;
@@ -20,13 +19,15 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
 
     public FriendRelationValidator validator;
     @Autowired
+    public Clock clock;
+    @Autowired
     public FriendRelationService friendRelationService;
     @Autowired
     public WorkerService workerService;
 
     @Before
     public void setUp(){
-        validator = new FriendRelationValidator(friendRelationService);
+        validator = new FriendRelationValidator(clock, friendRelationService);
     }
 
     @Test

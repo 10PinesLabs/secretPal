@@ -14,7 +14,8 @@ public class NotCircularRelationRule extends AssignationRule {
 
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
-        FriendRelation workerRelation = friendRelationService.getByWorkerReceiver(giver);
-        return (workerRelation == null) || !(workerRelation.getGiftGiver().equals((receiver)));
+        return friendRelationService.getByWorkerReceiver(giver)
+                .map(relation -> !relation.getGiftGiver().equals(receiver))
+                .orElse(true);
     }
 }
