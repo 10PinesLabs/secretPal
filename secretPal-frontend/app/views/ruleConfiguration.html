@@ -28,39 +28,11 @@
       </table>
     </form>
   </div>
+  <button class="btn btn-success pull-right" type="button">Asignar Reglas</button>
 </div>
-<button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_rule" aria-expanded="false"
-        aria-controls="add_worker" id="add_worker_button">
-  Agregar Regla Personalizada
-</button>
 
-
-<div class="collapse" id="add_rule">
-  <div class="well">
-    <div class="field">
-      <form class="navbar-form" name="form" ng-submit="Add()">
-        <td colspan="3">
-          <center>Selecciona dos pinos que quieras que se puedan regalar entre ellos sin importar las reglas</center>
-        </td>
-        <br>
-        <center>Pino nº 1:
-          <select
-            ng-model=workerGiver
-            ng-options="worker.fullName for worker in workers">
-          </select>
-
-          Pino nº 2:
-          <select
-            ng-model=workerReceiver
-            ng-options="worker.fullName for worker in workers">
-          </select>
-        </center>
-        <br>
-        <button class="btn btn-success" type="button" ng-click="createRule()">Crear Relación</button>
-      </form>
-    </div>
-  </div>
-</div>
+<br>
+<br>
 
 <div class="panel panel-black" ng-controller="CustomParticipantRuleController">
   <table class="table table-striped">
@@ -81,6 +53,42 @@
     </tbody>
   </table>
 </div>
+
+<div ng-controller="CustomParticipantRuleController">
+
+  <div align="right">
+  <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_rule" aria-expanded="false"
+          aria-controls="add_worker" id="add_worker_button">
+    Agregar Regla Personalizada
+  </button>
+  </div>
+
+  <div class="collapse panel-black" id="add_rule">
+    <div class="well">
+      <div class="field">
+        <form class="navbar-form" name="form" ng-submit="Add()">
+          <td colspan="3">
+            <center>Selecciona dos pinos que quieras que se puedan regalar entre ellos sin importar las reglas</center>
+          </td>
+          <br>
+          <center>Pino nº 1:
+            <select
+              ng-model=workerGiver
+              ng-options="worker.fullName for worker in workers">
+            </select>
+
+            Pino nº 2:
+            <select
+              ng-model=workerReceiver
+              ng-options="worker.fullName for worker in workers">
+            </select>
+          </center>
+          <br>
+          <button class="btn btn-success" type="button" ng-click="createRule()">Crear Relación</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 
