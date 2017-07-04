@@ -28,10 +28,12 @@
       </table>
     </form>
   </div>
-  <button class="btn btn-success pull-right" type="button">Asignar Reglas</button>
 </div>
 
-<br>
+<div align="right">
+  <button class="btn btn-success" type="button">Asignar Reglas</button>
+</div>
+
 <br>
 
 <div class="panel panel-black" ng-controller="CustomParticipantRuleController">
@@ -57,10 +59,10 @@
 <div ng-controller="CustomParticipantRuleController">
 
   <div align="right">
-  <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_rule" aria-expanded="false"
-          aria-controls="add_worker" id="add_worker_button">
-    Agregar Regla Personalizada
-  </button>
+    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_rule" aria-expanded="false"
+            aria-controls="add_worker" id="add_worker_button">
+      Agregar Regla Personalizada
+    </button>
   </div>
 
   <div class="collapse panel-black" id="add_rule">
@@ -83,7 +85,6 @@
               ng-options="worker.fullName for worker in workers">
             </select>
           </center>
-          <br>
           <button class="btn btn-success" type="button" ng-click="createRule()">Crear Relación</button>
         </form>
       </div>
