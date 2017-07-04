@@ -2,6 +2,7 @@ package com.tenPines.restAPI;
 
 import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.AdminService;
+import com.tenPines.application.service.UserService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.User;
 import com.tenPines.model.Worker;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/worker")
@@ -27,6 +29,8 @@ public class WorkerController {
     private SystemPalFacade systemFacade;
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE )
     @ResponseBody
@@ -44,10 +48,9 @@ public class WorkerController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(@PathVariable Long id) throws IOException {
-        User user = User.newUser(system.retrieveAWorker(id),"","");
-        if (adminService.isAdmin(user)) {
-            system.deleteAWorker(user.getWorker());
-        }
+        Worker worker = system.retrieveAWorker(id);
+        userService.deleteByWorker(worker);
+        system.deleteAWorker(worker);
     }
 
     @RequestMapping(value = "/intention", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
