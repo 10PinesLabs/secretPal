@@ -69,4 +69,8 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
     return rule.isActivate === false;
   };
 
+  $scope.assignRules = function (rules) {
+    return
+  }
+
 });
