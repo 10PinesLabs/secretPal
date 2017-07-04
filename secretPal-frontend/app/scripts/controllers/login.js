@@ -10,7 +10,7 @@ angular.module('secretPalApp')
       SweetAlert.swal({
         title: "Logeandose",
         text: "Entrando en la Matrix...",
-        showConfirmButton: false
+        showConfirmButton: false,
       });
 
       Account.login({userName: $scope.userName, password: $scope.password});

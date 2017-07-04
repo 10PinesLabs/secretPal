@@ -4,20 +4,37 @@
   <div class="container">
     <h2>Este año tu pino cumpleañero es:</h2>
 
-    <h5>(Apoye el mouse por encima de los bloques verdes para ver la información)</h5>
-    <h3><span class="label label-success"><strong style="text-transform:uppercase">{{friend.data.fullName}}</strong></span></h3>
+    <h5>-Apoye el mouse por encima de los bloques verdes para ver la información-</h5>
+    <h3>
+      <center>
+        <span style="display:block; width: 200px; height: 30px; background-color: #61b85c" class="label label-success"><strong
+          style="text-transform:uppercase">{{friend.data.fullName}}</strong>
+        </span>
+      </center>
+    </h3>
     <h2>Tu pino asignado cumple el:</h2>
-    <h3><span class="label label-info"><strong style="text-transform:uppercase">{{friend.data.dateOfBirth | date: 'dd-MMM'}}</strong></span></h3>
+    <h3>
+      <center>
+      <span style="display:block; width: 200px; height: 30px; background-color: #61b85c;" class="label label-info"><strong
+        style="text-transform:uppercase">{{friend.data.dateOfBirth | date: 'dd-MMM'}}</strong>
+      </span>
+      </center>
+    </h3>
     <h3>El regalo default este año es:<br><strong>{{giftDefault}}</strong></h3>
 
     <h3>El monto estimado del regalo es:
-      <strong style="text-transform:uppercase">{{amountDefault}}</strong> </h3>
+      <strong style="text-transform:uppercase">{{amountDefault}}</strong></h3>
 
     <h3>Particularmente a tu pino le gustaría:</h3>
-      <div ng-show="wishlist.length === 0"><h2>Tu pino no tiene deseos en la Wishlist</h2></div>
-      <div ng-repeat="wish in wishlist">
-        <h2><span class="label label-warning -align-center"><strong style="text-transform:uppercase">{{wish.gift}}</strong></span></h2>
-      </div>
+    <div ng-show="wishlist.length === 0"><h2>Tu pino no tiene deseos en la Wishlist</h2></div>
+    <div ng-repeat="wish in wishlist">
+      <h2>
+        <center>
+          <span style="display:block; width: 400px; height: 30px; background-color: #61b85c;" class="label label-warning -align-center"><strong
+            style="text-transform:uppercase">{{wish.gift}}</strong></span>
+        </center>
+      </h2>
+    </div>
   </div>
 </div>
 

@@ -3,7 +3,7 @@
   <div class="clearfix">
     <h1>Configuracion de reglas de juego</h1>
   </div>
-  <div class="panel panel-primary" ng-controller="CustomParticipantRuleController">
+  <div class="panel panel-sucess" ng-controller="CustomParticipantRuleController">
     <form class="navbar-form" name="form" ng-submit="mailsFailure()">
       <table class="table table-striped">
         <thead>
@@ -16,13 +16,13 @@
         <tr>
           <td colspan="3">Si el Pino A le regala a el Pino B, el Pino B no le puede regalar a el Pino A</td>
           <td colspan="3">
-            <input type="checkbox" checked data-toggle="toggle">
+            <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
           </td>
         </tr>
         <tr>
           <td colspan="3">Esta permitido volver a regalar al pino del año pasado</td>
           <td colspan="3">
-            <input type="checkbox" checked data-toggle="toggle">
+            <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
           </td>
         </tr>
         </tbody>
@@ -30,7 +30,7 @@
     </form>
   </div>
 
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#add_rule" aria-expanded="false"
+  <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_rule" aria-expanded="false"
           aria-controls="add_worker" id="add_worker_button">
     Agregar Regla Personalizada
   </button>
@@ -55,7 +55,7 @@
             </select>
           </center>
           <br>
-          <button class="btn btn-primary" type="button" ng-click="createRule()">Crear Relación</button>
+          <button class="btn btn-success" type="button" ng-click="createRule()">Crear Relación</button>
         </form>
       </div>
     </div>

@@ -6,14 +6,14 @@
         Deseo: <input type="text" ng-model="wish.gift">
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()" ng-enter="ok();">OK</button>
+        <button class="btn btn-success" ng-click="ok()" ng-enter="ok();" ->OK</button>
         <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
     </div>
 </script>
 
 
 <h1>Wish List</h1>
-<div class="panel panel-primary">
+<div class="panel panel-success">
     <table class="table table-striped">
         <thead>
         <tr>
@@ -34,7 +34,7 @@
     </table>
 </div>
 
-<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false" aria-controls="add_wish" id="add_wish_button">
+<button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false" aria-controls="add_wish" id="add_wish_button">
   Agrega un nuevo Deseo!
 </button>
 <div class="collapse" id="add_wish">
@@ -51,7 +51,7 @@
         <input id="mail" required placeholder="Gift" class="form-control" ng-model="wish.gift">
       </div>
       <div class="action">
-        <button type="submit" class="btn btn-default">Agregar</button>
+        <button type="submit" class="btn btn-success">Agregar</button>
       </div>
     </form>
   </div>

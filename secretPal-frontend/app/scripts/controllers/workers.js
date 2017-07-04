@@ -21,8 +21,8 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
 
   $scope.deleteWithConfirmationMSg = function (worker) {
     SweetAlert.swal({
-        title: "Estas seguro?",
-        text: "No vas a poder recuperar este pino!",
+        title: "¿Estas seguro?",
+        text: "¡No vas a poder recuperar este pino!",
         type: "warning",
         allowOutsideClick: false,
         showConfirmButton: true,
@@ -30,14 +30,16 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
         closeOnConfirm: false,
         closeOnCancel: true,
         confirmButtonText: "Si, ¡borrar!",
-        confirmButtonColor: "#DD6B55",
+        confirmButtonColor: "#68bd46",
         cancelButtonText: "Cancelar",
+        cancelButtonColor: '#FFFFFF',
       },
       function (isConfirm) {
         if (isConfirm) {
           WorkerService.delete(worker.id, function () {
             $scope.workers = $filter('filter')($scope.workers, {id: '!' + worker.id});
-            SweetAlert.swal("Se ha borrado exitosamente");
+            SweetAlert.swal({title: "Pino borrado exitosamente",
+              confirmButtonColor: "#68bd46",});
           });
         }
       });

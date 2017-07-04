@@ -1,17 +1,17 @@
 'use strict';
 
 angular.module('secretPalApp')
-.controller('ProfileController', function($scope, $http, user, $location, FriendRelationService, WishlistService, SweetAlert, WorkerService) {
+  .controller('ProfileController', function ($scope, $http, user, $location, FriendRelationService, WishlistService, SweetAlert, WorkerService) {
 
     $scope.wishlist = [];
     $scope.giftDefault;
 
-    $scope.noFriendAlert = function(){
+    $scope.noFriendAlert = function () {
       $location.path('/');
       SweetAlert.swal("No tienes ningun amigo asignado", "avisale al administrador", "error");
     };
 
-    $scope.wantToParticipateMsg = function() {
+    $scope.wantToParticipateMsg = function () {
       SweetAlert.swal({
           title: "No estas participando",
           text: "Queres participar?",
@@ -22,13 +22,14 @@ angular.module('secretPalApp')
           closeOnConfirm: false,
           closeOnCancel: true,
           confirmButtonText: "¡Si!",
-          confirmButtonColor: "#DD6B55",
+          confirmButtonColor: "#68bd46",
           cancelButtonText: "Cancelar",
+          cancelButtonColor: '#FFFFFF',
         },
         function (isConfirm) {
           if (isConfirm) {
             WorkerService.changeIntention(user.worker);
-            SweetAlert.swal("Ahora estas participando!");
+            SweetAlert.swal("¡Ahora estas participando!");
             $scope.noFriendAlert();
           } else {
             $location.path('/');
@@ -40,12 +41,10 @@ angular.module('secretPalApp')
     } else {
       FriendRelationService.getFriend(user.worker, function (friend) {
 
-        $http.get('/api/auth/giftsDefault').
-        success(function(data) {
+        $http.get('/api/auth/giftsDefault').success(function (data) {
           $scope.giftDefault = data.giftDefault;
           $scope.amountDefault = data.amountDefault;
-        }).
-        error(function() {
+        }).error(function () {
           errorMsg("Inténtelo denuevo mas tarde");
         });
 

@@ -39,13 +39,17 @@ angular.module('secretPalApp')
 
     $scope.Delete = function (wish) {
       SweetAlert.swal({
-          title: "Estas seguro?",
-          text: "No vas a poder recuperar este deseo!",
+          title: "¿Estas seguro?",
+          text: "¡No vas a poder recuperar este deseo!",
           type: "warning",
+          allowOutsideClick: false,
+          showConfirmButton: true,
           showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: "Si, borrar!",
-          closeOnConfirm: false
+          closeOnConfirm: false,
+          closeOnCancel: true,
+          confirmButtonColor: "#68bd46",
+          confirmButtonText: "¡Si!, borrar",
+          cancelButtonText: "Cancelar"
         },
         function (isConfirm) {
           if (isConfirm) {
@@ -53,7 +57,8 @@ angular.module('secretPalApp')
               $scope.wishlist.splice(
                 $scope.wishlist.indexOf(wish), 1
               );
-              SweetAlert.swal("Se ha borrado exitosamente","", "success");
+              SweetAlert.swal({title: "Regalo borrado exitosamente",
+                confirmButtonColor: "#68bd46",});
             });
           }
         });

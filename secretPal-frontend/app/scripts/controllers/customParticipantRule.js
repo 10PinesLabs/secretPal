@@ -35,8 +35,9 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
         closeOnConfirm: false,
         closeOnCancel: true,
         confirmButtonText: "Si, ¡borrar!",
-        confirmButtonColor: "#DD6B55",
+        confirmButtonColor: "#68bd46",
         cancelButtonText: "Cancelar",
+        cancelButtonColor: '#FFFFFF',
       },
 
       function (isConfirm) {
