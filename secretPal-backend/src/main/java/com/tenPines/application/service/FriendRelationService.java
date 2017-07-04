@@ -70,13 +70,8 @@ public class FriendRelationService {
         ).collect(Collectors.toList());
     }
 
-    public FriendRelation getByWorkerReceiver(Worker receiver){
+    public Optional<FriendRelation> getByWorkerReceiver(Worker receiver){
         return friendRelationRepository.findByGiftReceiver(receiver);
-    }
-
-    public void deleteRelationByReceipt(Worker to) {
-        FriendRelation relation = friendRelationRepository.findByGiftReceiver(to);
-        friendRelationRepository.delete(relation);
     }
 
     public void deleteAllRelations() {

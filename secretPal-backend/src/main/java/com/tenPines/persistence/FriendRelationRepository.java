@@ -11,7 +11,7 @@ import java.util.Optional;
 @Transactional
 public interface FriendRelationRepository extends JpaRepository<FriendRelation, Long> {
 
-    FriendRelation findByGiftReceiver(Worker unWorker);
+    Optional<FriendRelation> findByGiftReceiver(Worker unWorker);
 
     Optional<FriendRelation> findByGiftGiver(Worker unWorker);
 

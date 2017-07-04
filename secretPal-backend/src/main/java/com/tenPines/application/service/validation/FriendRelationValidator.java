@@ -45,8 +45,9 @@ public class FriendRelationValidator {
     }
 
     private Boolean hasOtherSecretPal(Worker giver, Worker receiver) {
-        FriendRelation relation = friendRelationService.getByWorkerReceiver(receiver);
-        return (relation != null) && (relation.getGiftGiver() != giver);
+        return friendRelationService.getByWorkerReceiver(receiver)
+                .map(relation -> !relation.getGiftGiver().equals(giver))
+                .orElse(false);
     }
 
     private Boolean validateHardRules(Worker giver, Worker receiver) {
