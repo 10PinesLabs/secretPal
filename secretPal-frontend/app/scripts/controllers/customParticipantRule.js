@@ -44,7 +44,10 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
         if (isConfirm) {
           CustomParticipantRuleService.delete(rule.id, function () {
             $scope.rules = R.remove($scope.rules, rule);
-            SweetAlert.swal("Regla eliminada exitosamente");
+            SweetAlert.swal({
+              title: "Regla eliminada exitosamente",
+              confirmButtonColor: "#68bd46",
+            });
           });
         }
       });
