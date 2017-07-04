@@ -113,13 +113,12 @@ public class FriendRelationService {
     }
 
     private LocalDate actualBirthday(Worker worker) {
-        return worker.getDateOfBirth().withYear(LocalDate.now().getYear());
+        return worker.getDateOfBirth().withYear(clock.now().getYear());
     }
 
     public Boolean inmutableRelation(FriendRelation relation) {
-        LocalDate today = clock.now();
         LocalDate actualBirthday = actualBirthday(relation.getGiftReceiver());
-        return ChronoUnit.MONTHS.between(today, actualBirthday) < 1;
+        return ChronoUnit.MONTHS.between(clock.now(), actualBirthday) < 1;
     }
 
     public void updateRelation(Worker giver, Worker newReceiver) {
