@@ -22,7 +22,7 @@ angular.module('secretPalApp').service('MailService', function($http, SweetAlert
         successFunction(data);
       }).
       error(function() {
-        errorMsg("Inténtelo denuevo mas tarde");
+        errorMsg("Inténtelo de nuevo mas tarde. ¿Cuando se dispara esto?");
       });
   };
 
@@ -32,7 +32,7 @@ angular.module('secretPalApp').service('MailService', function($http, SweetAlert
         successMsg("Se ha actualizado la configuración del mail");
       }).
       error(function() {
-        errorMsg("Inténtelo de nuevo mas tarde");
+        errorMsg("No se pudo actualizar la configuración, inténtelo de nuevo mas tarde");
       });
   };
 
@@ -42,7 +42,7 @@ angular.module('secretPalApp').service('MailService', function($http, SweetAlert
       callback(data);
     }).
     error(function() {
-      errorMsg("Inténtelo de nuevo mas tarde");
+      errorMsg("Inténtelo de nuevo mas tarde. ¿Cuando se dispara esto?");
     });
   };
 

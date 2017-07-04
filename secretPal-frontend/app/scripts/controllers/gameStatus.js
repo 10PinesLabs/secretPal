@@ -39,7 +39,7 @@ app.controller('GameStatusController', function ($scope, $modal, $rootScope, Mai
             });
         }
         return hasNotFailureMail? "Si" : "No";
-    }
+    };
 
 
 

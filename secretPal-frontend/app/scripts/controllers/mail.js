@@ -7,13 +7,18 @@ app.controller('MailController', function($scope, $route, MailService, SweetAler
 
   $scope.change = function(){
     SweetAlert.swal({
-        title: "Estas seguro?",
+        title: "¿Estas seguro?",
         text: "El envio de mails sera modificado",
         type: "warning",
+        allowOutsideClick: false,
+        showConfirmButton: true,
         showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Si!",
-        closeOnConfirm: false
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        confirmButtonText: "¡Si!",
+        confirmButtonColor: "#68bd46",
+        cancelButtonText: "Cancelar",
+        cancelButtonColor: "#b8bdb7",
       },
       function (isConfirm) {
         if(isConfirm) {

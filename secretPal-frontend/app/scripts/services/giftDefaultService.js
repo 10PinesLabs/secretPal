@@ -22,7 +22,7 @@ angular.module('secretPalApp')
       successFunction(data);
     }).
     error(function() {
-      errorMsg("Inténtelo denuevo mas tarde");
+      errorMsg("No se pudieron cargar los regalos.");
     });
   };
 
@@ -32,7 +32,7 @@ angular.module('secretPalApp')
       successMsg("Se ha actualizado el regalo default");
     }).
     error(function() {
-      errorMsg("Inténtelo de nuevo mas tarde");
+      errorMsg("No se ha podido actualizar el regalo default.");
     });
   };
 

@@ -21,19 +21,25 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
 
   $scope.deleteWithConfirmationMSg = function (worker) {
     SweetAlert.swal({
-        title: "Estas seguro?",
-        text: "No vas a poder recuperar este pino!",
+        title: "¿Estas seguro?",
+        text: "¡No vas a poder recuperar este pino!",
         type: "warning",
+        allowOutsideClick: false,
+        showConfirmButton: true,
         showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Si, borrar!",
-        closeOnConfirm: false
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        confirmButtonText: "Si, ¡borrar!",
+        confirmButtonColor: "#68bd46",
+        cancelButtonText: "Cancelar",
+        cancelButtonColor: '#FFFFFF',
       },
       function (isConfirm) {
         if (isConfirm) {
           WorkerService.delete(worker.id, function () {
             $scope.workers = $filter('filter')($scope.workers, {id: '!' + worker.id});
-            SweetAlert.swal("Se ha borrado exitosamente");
+            SweetAlert.swal({title: "Pino borrado exitosamente",
+              confirmButtonColor: "#68bd46",});
           });
         }
       });
@@ -118,7 +124,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
   };
 
   $scope.notHimSelf = function(){
-  }
+  };
 
   $scope.cantParticipate = function (worker) {
     var today = new Date();
@@ -169,4 +175,3 @@ app.directive('unique', function () {
       $scope.opened = true;
     };
   });
-

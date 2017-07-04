@@ -17,7 +17,7 @@ angular.module('secretPalApp')
         });
         Account.register({userName: $scope.userName, password: $scope.password1, email: $scope.email});
       }else{
-        SweetAlert.swal("Las passwords no coinciden", "Por favor revisálas antes de enviar el formulario", "error");
+        SweetAlert.swal("Las passwords no coinciden", "Por favor revisalas antes de enviar el formulario", "error");
       }
     };
 

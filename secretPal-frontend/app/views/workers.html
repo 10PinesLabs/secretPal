@@ -24,15 +24,15 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()" ng-enter="ok();">OK</button>
-    <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+    <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
+    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();">OK</button>
   </div>
 </script>
 
 <div class="list_data">
-  <button class="btn btn-primary pull-right" ng-click="assignation()">Asignar Amigos!</button>
+  <button class="btn btn-success pull-right" ng-click="assignation()">Asignar Amigos!</button>
   <h1>Lista de Pinos</h1>
-  <div class="panel panel-primary">
+  <div class="panel panel-black">
     <table class="table table-striped">
       <thead>
       <tr>
@@ -59,7 +59,7 @@
   </div>
 </div>
 
-<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#add_worker" aria-expanded="false"
+<button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_worker" aria-expanded="false"
         aria-controls="add_worker" id="add_worker_button">
   Agrega un nuevo Pino!
 </button>
@@ -88,9 +88,9 @@
         </p>
       </div>
       <div class="action">
-        <button type="submit" class="btn btn-default">Agregar</button>
+        <button type="submit" class="btn btn-success">Agregar</button>
       </div>
     </form>
-    <button class="btn btn-default" ng-click="Reset()">Resetear</button>
+    <button class="btn btn-success" ng-click="Reset()">Resetear</button>
   </div>
 </div>

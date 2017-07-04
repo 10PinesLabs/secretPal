@@ -1,9 +1,8 @@
 <div class="list_data">
-
   <div class="clearfix">
     <h1>Configuracion de reglas de juego</h1>
   </div>
-  <div class="panel panel-primary" ng-controller="CustomParticipantRuleController">
+  <div class="panel panel-black" ng-controller="CustomParticipantRuleController">
     <form class="navbar-form" name="form" ng-submit="mailsFailure()">
       <table class="table table-striped">
         <thead>
@@ -16,71 +15,74 @@
         <tr>
           <td colspan="3">Si el Pino A le regala a el Pino B, el Pino B no le puede regalar a el Pino A</td>
           <td colspan="3">
-            <input type="checkbox" checked data-toggle="toggle">
+            <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
           </td>
         </tr>
         <tr>
           <td colspan="3">Esta permitido volver a regalar al pino del año pasado</td>
           <td colspan="3">
-            <input type="checkbox" checked data-toggle="toggle">
+            <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
           </td>
         </tr>
         </tbody>
       </table>
     </form>
   </div>
+</div>
+<button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_rule" aria-expanded="false"
+        aria-controls="add_worker" id="add_worker_button">
+  Agregar Regla Personalizada
+</button>
 
-  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#add_rule" aria-expanded="false"
-          aria-controls="add_worker" id="add_worker_button">
-    Agregar Regla Personalizada
-  </button>
-  <div class="collapse" id="add_rule">
-    <div class="well">
-      <div class="field">
-        <form class="navbar-form" name="form" ng-submit="Add()">
-          <td colspan="3">
-            <center>Selecciona dos pinos que quieras que se puedan regalar entre ellos sin importar las reglas</center>
-          </td>
-          <br>
-          <center>Pino nº 1:
-            <select
-              ng-model=workerGiver
-              ng-options="worker.fullName for worker in workers">
-            </select>
 
-            Pino nº 2:
-            <select
-              ng-model=workerReceiver
-              ng-options="worker.fullName for worker in workers">
-            </select>
-          </center>
-          <br>
-          <button class="btn btn-primary" type="button" ng-click="createRule()">Crear Relación</button>
-        </form>
-      </div>
-    </div>
-
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th colspan="3">Regla</th>
-        <th colspan="3">¿Regla Activa?</th>
-        <th colspan="3">Eliminar</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="rule in rules">
-        <td colspan="3">{{rule.giver.fullName}} le regala a {{rule.receiver.fullName}}</td>
-        <td colspan="3"><input type="checkbox" ng-change="changeIntention(rule)" ng-model="rule.isActive">
+<div class="collapse" id="add_rule">
+  <div class="well">
+    <div class="field">
+      <form class="navbar-form" name="form" ng-submit="Add()">
+        <td colspan="3">
+          <center>Selecciona dos pinos que quieras que se puedan regalar entre ellos sin importar las reglas</center>
         </td>
-        <td colspan="3"><a ng-click="delete(rule)"><span class="glyphicon glyphicon-trash"></span></a></td>
-      </tr>
-      </tbody>
-    </table>
+        <br>
+        <center>Pino nº 1:
+          <select
+            ng-model=workerGiver
+            ng-options="worker.fullName for worker in workers">
+          </select>
+
+          Pino nº 2:
+          <select
+            ng-model=workerReceiver
+            ng-options="worker.fullName for worker in workers">
+          </select>
+        </center>
+        <br>
+        <button class="btn btn-success" type="button" ng-click="createRule()">Crear Relación</button>
+      </form>
+    </div>
   </div>
 </div>
 
+<div class="panel panel-black" ng-controller="CustomParticipantRuleController">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th colspan="3">Regla</th>
+      <th colspan="3">¿Regla Activa?</th>
+      <th colspan="3">Eliminar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="rule in rules">
+      <td colspan="3">{{rule.giver.fullName}} le regala a {{rule.receiver.fullName}}</td>
+      <td colspan="3"><input type="checkbox" ng-change="changeIntention(rule)" ng-model="rule.isActive">
+      </td>
+      <td colspan="3"><a ng-click="delete(rule)"><span class="glyphicon glyphicon-trash"></span></a></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
+</div>
+
 
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
