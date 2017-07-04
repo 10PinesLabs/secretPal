@@ -92,6 +92,12 @@ a :hover{
   background: #61b85c;
 }
 
+.btn-transparent{
+  background-color: transparent;
+  text-decoration-color: black;
+  border-color: #4cae4c;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
