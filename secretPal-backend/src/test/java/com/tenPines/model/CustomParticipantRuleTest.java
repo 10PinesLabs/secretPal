@@ -1,5 +1,6 @@
 package com.tenPines.model;
 
+import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.FriendRelationValidator;
@@ -25,12 +26,13 @@ public class CustomParticipantRuleTest extends SpringBaseTest {
     private RelationEstablisher relationEstablisher;
 
     @Autowired
+    private Clock clock;
+    @Autowired
     public WorkerService workerService;
-
     @Autowired
     public FriendRelationService friendRelationService;
 
-    public FriendRelationValidator friendRelationValidator = new FriendRelationValidator(friendRelationService);
+    public FriendRelationValidator friendRelationValidator = new FriendRelationValidator(clock, friendRelationService);
 
     @Test
     public void When_there_is_no_participants_the_rule_should_give_an_error() {

@@ -1,10 +1,12 @@
 package com.tenPines.application.service.validation;
 
+import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTheSamePersonRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
+import com.tenPines.model.BirthdayPassedRule;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,16 @@ public class FriendRelationValidator {
     public List<AssignationRule> hardRules;
     public List<AssignationRule> rules;
 
-    public   FriendRelationValidator(FriendRelationService friendRelationService) {
+    private final Clock clock;
+
+    public   FriendRelationValidator(Clock clock, FriendRelationService friendRelationService) {
+        this.clock = clock;
         this.friendRelationService = friendRelationService;
         this.rules = Arrays.asList(
                 new NotCircularRelationRule(this.friendRelationService),
                 new NotTooCloseBirthdaysRule(),
-                new NotTheSamePersonRule()
+                new NotTheSamePersonRule(),
+                new BirthdayPassedRule(clock)
         );
         this.hardRules = Arrays.asList();
     }

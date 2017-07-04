@@ -38,7 +38,7 @@ public class FriendRelationService {
     }
 
     public void autoAssignRelations() {
-        FriendRelationValidator validator = new FriendRelationValidator(this);
+        FriendRelationValidator validator = new FriendRelationValidator(clock, this);
         List<Worker> validWorkers = assignableWorkers();
 
         for(int i=0;i<100;i++){
@@ -64,7 +64,7 @@ public class FriendRelationService {
     }
 
     public List<Worker> getAvailablesRelationsTo(Worker workerTo) {
-        FriendRelationValidator validator = new FriendRelationValidator(this);
+        FriendRelationValidator validator = new FriendRelationValidator(clock, this);
         return workerService.getAllParticipants().stream().filter(participant ->
             validator.validate(workerTo, participant)
         ).collect(Collectors.toList());

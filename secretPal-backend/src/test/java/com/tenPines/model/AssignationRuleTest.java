@@ -1,6 +1,7 @@
 package com.tenPines.model;
 
 
+import com.tenPines.application.clock.FakeClock;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.rule.AssignationRule;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.time.Month;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,6 +25,8 @@ public class AssignationRuleTest extends SpringBaseTest {
     public FriendRelationService friendRelationService;
     @Autowired
     public WorkerService workerService;
+    @Autowired
+    public FakeClock clock;
 
     @Test
     public void when_participant_A_gifts_participant_B_then_this_cannot_gifts_participant_A() {
@@ -88,6 +92,20 @@ public class AssignationRuleTest extends SpringBaseTest {
         AssignationRule rule = new NotTooCloseBirthdaysRule();
 
         assertTrue(rule.validate(worker, otherWorker));
+        assertTrue(rule.validate(otherWorker, worker));
+    }
+
+    @Test
+    public void receiver_allready_has_been_his_birthday_then_isnt_valid_relation() {
+        clock.setTime(LocalDate.of(2017, Month.OCTOBER, 20));
+        Worker worker = new WorkerBuilder().buildFromDate(1, Month.DECEMBER);
+        Worker otherWorker = new WorkerBuilder().buildFromDate(16, Month.OCTOBER);
+        workerService.save(worker);
+        workerService.save(otherWorker);
+
+        AssignationRule rule = new BirthdayPassedRule(clock);
+
+        assertFalse(rule.validate(worker, otherWorker));
         assertTrue(rule.validate(otherWorker, worker));
     }
 
