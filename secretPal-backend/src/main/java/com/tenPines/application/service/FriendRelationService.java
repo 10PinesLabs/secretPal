@@ -4,6 +4,7 @@ import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.validation.FriendRelationValidator;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
+import com.tenPines.model.process.AssignmentException;
 import com.tenPines.model.process.AssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
@@ -18,6 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import static com.tenPines.model.process.AssignmentException.Reason.CANT_AUTO_ASSIGN;
+import static com.tenPines.model.process.AssignmentException.Reason.NOT_ENOUGH_QUORUM;
 
 @Service
 public class FriendRelationService {
@@ -37,21 +41,24 @@ public class FriendRelationService {
         return friendRelationRepository.save(new RelationEstablisher(friendWorker, birthdayWorker).createRelation());
     }
 
-    public void autoAssignRelations() {
-        FriendRelationValidator validator = new FriendRelationValidator(clock, this);
-        List<Worker> validWorkers = assignableWorkers();
+    public void autoAssignRelations() throws AssignmentException{
+        checkIfThereAreEnoughParticipants();
+        checkIfThereAreTwoParticipants();
 
-        for(int i=0;i<100;i++){
-            Collections.shuffle(validWorkers, new Random(System.nanoTime()));
-            if (validator.validateAll(validWorkers)) {
-                deleteRelationsByGiftGivers(validWorkers);
-                friendRelationRepository.save(
-                    new AssignmentFunction(validWorkers).execute()
-                );
-            }
-        }
+        friendRelationRepository.save(
+            new AssignmentFunction(workerService.getAllParticipants()).execute()
+        );
     }
 
+    private void checkIfThereAreEnoughParticipants() {
+        if (workerService.getAllParticipants().size() < 2)
+            throw new AssignmentException(NOT_ENOUGH_QUORUM);
+    }
+
+    private void checkIfThereAreTwoParticipants() {
+        if (workerService.getAllParticipants().size() == 2)
+                throw new AssignmentException(CANT_AUTO_ASSIGN);
+    }
 
     public List<FriendRelation> getAllRelations() {
         return friendRelationRepository.findAll();
