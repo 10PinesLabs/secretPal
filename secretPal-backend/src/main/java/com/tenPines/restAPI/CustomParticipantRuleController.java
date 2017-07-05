@@ -43,4 +43,10 @@ public class CustomParticipantRuleController {
         List<CustomParticipantRule> rules = systemFacade.getAllRules();
         return rules;
     }
+
+    @RequestMapping(value = "/newRuleCircularRule", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void newCircularRule(){
+        systemFacade.addCircularRule()
+    }
 }

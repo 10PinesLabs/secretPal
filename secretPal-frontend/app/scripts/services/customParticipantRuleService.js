@@ -8,11 +8,11 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
     return route + path;
   };
 
-  self.successMsg = function(msg) {
+  self.successMsg = function (msg) {
     SweetAlert.swal("", msg, "success");
   };
 
-  self.errorMsg = function(msg) {
+  self.errorMsg = function (msg) {
     SweetAlert.swal("Algo salio mal", msg, "error");
   };
 
@@ -34,4 +34,16 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
       successFunction();
     });
   };
+
+  this.circularRuleChecked = function (circularCheck) {
+    if (circularCheck == true) {
+      $http.post(self.buildRoute('/circularRule'))
+    }
+  }
+
+  this.notTheSamePersonChecked = function (notTheSameCheck) {
+    if (notTheSameCheck == true) {
+      $http.post(self.buildRoute('/notTheSamePersonRule'))
+    }
+  }
 });

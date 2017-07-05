@@ -69,8 +69,8 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
     return rule.isActivate === false;
   };
 
-  $scope.assignRules = function (rules) {
-    return
-  }
-
+  $scope.assignRules = function () {
+    CustomParticipantRuleService.circularRuleChecked($scope.circularCheck);
+    CustomParticipantRuleService.notTheSamePersonChecked($scope.notTheSameCheck);
+  };
 });
