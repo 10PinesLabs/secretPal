@@ -29,6 +29,7 @@ public class FriendRelationService {
     private final Clock clock;
     private final FriendRelationRepository friendRelationRepository;
     private final WorkerService workerService;
+    private static Random random = new Random(System.nanoTime());
 
     @Autowired
     public FriendRelationService(Clock clock, FriendRelationRepository friendRelationRepository, WorkerService workerService) {
@@ -45,9 +46,19 @@ public class FriendRelationService {
         checkIfThereAreEnoughParticipants();
         checkIfThereAreTwoParticipants();
 
-        friendRelationRepository.save(
-            new AssignmentFunction(workerService.getAllParticipants()).execute()
-        );
+        FriendRelationValidator validator = new FriendRelationValidator(clock, this);
+        List<Worker> assignableWorkers = assignableWorkers();
+
+        for (int i = 0; i<100; i++) {
+            Collections.shuffle(assignableWorkers, random);
+            deleteRelationsByGiftGivers(assignableWorkers);
+            if (validator.validateAll(assignableWorkers)) {
+                friendRelationRepository.save(
+                    new AssignmentFunction(assignableWorkers).execute()
+                );
+                break;
+            }
+        }
     }
 
     private void checkIfThereAreEnoughParticipants() {
@@ -57,7 +68,7 @@ public class FriendRelationService {
 
     private void checkIfThereAreTwoParticipants() {
         if (workerService.getAllParticipants().size() == 2)
-                throw new AssignmentException(CANT_AUTO_ASSIGN);
+            throw new AssignmentException(CANT_AUTO_ASSIGN);
     }
 
     public List<FriendRelation> getAllRelations() {
