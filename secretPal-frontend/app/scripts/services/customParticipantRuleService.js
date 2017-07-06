@@ -16,8 +16,8 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
     SweetAlert.swal("Algo salio mal", msg, "error");
   };
 
-  this.all = function (callback) {
-    $http.get(self.buildRoute('/')).success(function (data) {
+  this.allCustomRules = function (callback) {
+    $http.get(self.buildRoute('/customRules')).success(function (data) {
       callback(data);
     }).error(function () {
       self.errorMsg("No se pudieron conseguir las reglas, intentelo nuevamente.");
@@ -34,16 +34,4 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
       successFunction();
     });
   };
-
-  this.circularRuleChecked = function (circularCheck) {
-    if (circularCheck == true) {
-      $http.post(self.buildRoute('/circularRule'))
-    }
-  }
-
-  this.notTheSamePersonChecked = function (notTheSameCheck) {
-    if (notTheSameCheck == true) {
-      $http.post(self.buildRoute('/notTheSamePersonRule'))
-    }
-  }
 });

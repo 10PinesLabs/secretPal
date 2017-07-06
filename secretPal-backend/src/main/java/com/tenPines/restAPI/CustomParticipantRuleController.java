@@ -37,10 +37,10 @@ public class CustomParticipantRuleController {
         systemFacade.deleteRule(id);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/customRules", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<CustomParticipantRule> rules() {
-        List<CustomParticipantRule> rules = systemFacade.getAllRules();
+        List<CustomParticipantRule> rules = systemFacade.getAllCustomRules();
         return rules;
     }
 }

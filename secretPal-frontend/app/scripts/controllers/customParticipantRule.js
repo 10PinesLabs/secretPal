@@ -8,7 +8,7 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
     $scope.workers = data;
   });
 
-  CustomParticipantRuleService.all(function (data) {
+  CustomParticipantRuleService.allCustomRules(function (data) {
     $scope.rules = data;
   });
 
@@ -67,10 +67,5 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
 
   $scope.canDelete = function (rule) {
     return rule.isActivate === false;
-  };
-
-  $scope.assignRules = function () {
-    CustomParticipantRuleService.circularRuleChecked($scope.circularCheck);
-    CustomParticipantRuleService.notTheSamePersonChecked($scope.notTheSameCheck);
   };
 });

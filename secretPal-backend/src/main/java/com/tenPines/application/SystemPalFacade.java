@@ -184,8 +184,8 @@ public class SystemPalFacade {
         customParticipantRuleService.delete(id);
     }
 
-    public List<CustomParticipantRule> getAllRules() {
-        return customParticipantRuleService.getAllRules();
+    public List<CustomParticipantRule> getAllCustomRules() {
+        return customParticipantRuleService.getAllCustomRules();
     }
     public List<FriendRelation> getAllRelations() {
         return friendRelationService.getAllRelations();
