@@ -39,7 +39,15 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
     $http.get(self.buildRoute('/notCircularRule')).success(function (data) {
       callback(data);
     }).error(function () {
-      self.errorMsg("No se pudo cargar la regla circular, intentlo nuevamente.")
+      self.errorMsg("No se pudo cargar la regla circular, intentalo nuevamente.")
+    });
+  }
+
+  this.notTooCloseBirthdayRule = function (callback) {
+    $http.get(self.buildRoute('/notTooCloseBirthdayRule')).success(function (data) {
+      callback(data);
+    }).error(function () {
+      self.errorMsg("No se pudo cargar la regla de los cumpleaños cercanos, intentalo nuevamente.")
     });
   }
 });

@@ -4,6 +4,7 @@ import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.*;
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
+import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.*;
 import com.tenPines.restAPI.SecurityToken;
@@ -194,5 +195,9 @@ public class SystemPalFacade {
 
     public NotCircularRelationRule getCircularRule() {
         return customParticipantRuleService.getCircularRule();
+    }
+
+    public NotTooCloseBirthdaysRule getNotTooCloseBirthdayRule() {
+        return customParticipantRuleService.getNotTooCloseBirthdayRule();
     }
 }

@@ -16,6 +16,10 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
     $scope.notCircularRule = data;
   });
 
+  CustomParticipantRuleService.notTooCloseBirthdayRule(function (data){
+    $scope.notTooCloseBirthdaysRule = data;
+  });
+
   $scope.createRule = function () {
     var from = $scope.workerGiver.id;
     var to = $scope.workerReceiver.id;

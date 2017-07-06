@@ -4,6 +4,7 @@ import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
+import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,5 +52,13 @@ public class CustomParticipantRuleController {
     public NotCircularRelationRule notCircularRule() {
         NotCircularRelationRule circularRule = systemFacade.getCircularRule();
         return circularRule;
+    }
+
+    @RequestMapping(value = "/notTooCloseBirthdayRule", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public NotTooCloseBirthdaysRule notTooCloseBirthdayRule() {
+        NotTooCloseBirthdaysRule birthdayRule = systemFacade.getNotTooCloseBirthdayRule();
+        return birthdayRule;
     }
 }
