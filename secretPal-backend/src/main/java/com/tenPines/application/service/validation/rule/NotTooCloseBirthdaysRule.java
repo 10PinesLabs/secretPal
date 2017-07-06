@@ -8,6 +8,14 @@ import java.time.temporal.ChronoUnit;
 
 public class NotTooCloseBirthdaysRule extends AssignationRule {
 
+    public String description;
+    public Boolean isActivate;
+
+    public NotTooCloseBirthdaysRule(){
+        this.description = "Esta permitido regalar aunque el cumpleaños del pino también esté cerca.";
+        this.isActivate = false;
+    }
+
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
         return moreThan2WeeksBetweenBirthdays(giver, receiver);
