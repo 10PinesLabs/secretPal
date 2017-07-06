@@ -15,8 +15,9 @@ public class CustomParticipantRuleService {
     private NotCircularRelationRuleRepository notCircularRelationRuleRepository;
     private final WorkerService workerService;
 
-    public CustomParticipantRuleService(CustomParticipantRuleRepository customParticipantRuleRepository, WorkerService workerService) {
+    public CustomParticipantRuleService(CustomParticipantRuleRepository customParticipantRuleRepository, NotCircularRelationRuleRepository notCircularRelationRuleRepository, WorkerService workerService) {
         this.customParticipantRuleRepository = customParticipantRuleRepository;
+        this.notCircularRelationRuleRepository = notCircularRelationRuleRepository;
         this.workerService = workerService;
     }
 
@@ -32,7 +33,7 @@ public class CustomParticipantRuleService {
         return customParticipantRuleRepository.findAll();
     }
 
-    public NotCircularRelationRule getCircularRule(Long id) {
-        return notCircularRelationRuleRepository.getOne(id);
+    public NotCircularRelationRule getCircularRule() {
+        return notCircularRelationRuleRepository.findAll().get(0);
     }
 }

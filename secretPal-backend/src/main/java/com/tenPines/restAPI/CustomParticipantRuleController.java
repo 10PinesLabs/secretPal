@@ -45,10 +45,11 @@ public class CustomParticipantRuleController {
         return rules;
     }
 
-    @RequestMapping(value = "/notCircularRule/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/notCircularRule", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public NotCircularRelationRule notCircularRule(@PathVariable Long id) {
-    NotCircularRelationRule circularRule = systemFacade.getCircularRule(id);
-    return circularRule;
+    public NotCircularRelationRule notCircularRule() {
+        NotCircularRelationRule circularRule = systemFacade.getCircularRule();
+        return circularRule;
     }
 }

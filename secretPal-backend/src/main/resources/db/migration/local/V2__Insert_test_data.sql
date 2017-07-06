@@ -15,3 +15,7 @@ INSERT INTO usuario
 INSERT INTO admin_profile
 (user_id) VALUES
   ((SELECT id from usuario WHERE user_name='aye'));
+
+INSERT INTO not_circular_relation_rule
+(id, description, is_activate) VALUES
+  (1, 'Si el Pino A le regala a el Pino B, el Pino B no le puede regalar a el Pino A.', FALSE);

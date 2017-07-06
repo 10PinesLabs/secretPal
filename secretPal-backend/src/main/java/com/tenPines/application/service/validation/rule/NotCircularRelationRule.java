@@ -22,6 +22,10 @@ public class NotCircularRelationRule extends AssignationRule {
     @NotNull
     public Boolean isActivate;
 
+    public NotCircularRelationRule(){
+
+    }
+
     public NotCircularRelationRule(FriendRelationService friendRelationService) {
         this.friendRelationService = friendRelationService;
         this.description = "Si el Pino A le regala a el Pino B, el Pino B no le puede regalar a el Pino A.";

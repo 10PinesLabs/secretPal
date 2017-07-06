@@ -192,7 +192,7 @@ public class SystemPalFacade {
         return friendRelationService.getAllRelations();
     }
 
-    public NotCircularRelationRule getCircularRule(Long id) {
-        return customParticipantRuleService.getCircularRule(id);
+    public NotCircularRelationRule getCircularRule() {
+        return customParticipantRuleService.getCircularRule();
     }
 }
