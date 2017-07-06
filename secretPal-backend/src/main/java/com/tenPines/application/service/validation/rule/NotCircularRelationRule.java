@@ -4,10 +4,22 @@ import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table
 public class NotCircularRelationRule extends AssignationRule {
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Transient
     private FriendRelationService friendRelationService;
+    @NotNull
     public String description;
+    @NotNull
     public Boolean isActivate;
 
     public NotCircularRelationRule(FriendRelationService friendRelationService) {

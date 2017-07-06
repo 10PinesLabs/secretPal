@@ -3,6 +3,7 @@ package com.tenPines.application;
 import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.*;
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
+import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.*;
 import com.tenPines.restAPI.SecurityToken;
@@ -189,5 +190,9 @@ public class SystemPalFacade {
     }
     public List<FriendRelation> getAllRelations() {
         return friendRelationService.getAllRelations();
+    }
+
+    public NotCircularRelationRule getCircularRule(Long id) {
+        return customParticipantRuleService.getCircularRule(id);
     }
 }

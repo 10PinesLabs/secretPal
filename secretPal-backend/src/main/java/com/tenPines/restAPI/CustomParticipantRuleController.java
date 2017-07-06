@@ -3,6 +3,7 @@ package com.tenPines.restAPI;
 import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
+import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,12 @@ public class CustomParticipantRuleController {
     public List<CustomParticipantRule> rules() {
         List<CustomParticipantRule> rules = systemFacade.getAllCustomRules();
         return rules;
+    }
+
+    @RequestMapping(value = "/notCircularRule/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public NotCircularRelationRule notCircularRule(@PathVariable Long id) {
+    NotCircularRelationRule circularRule = systemFacade.getCircularRule(id);
+    return circularRule;
     }
 }

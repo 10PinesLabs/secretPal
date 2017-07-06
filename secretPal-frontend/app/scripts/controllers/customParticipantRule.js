@@ -12,6 +12,10 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
     $scope.rules = data;
   });
 
+  CustomParticipantRuleService.notCircularRule(function (data) {
+    $scope.notCircularRule = data;
+  });
+
   $scope.createRule = function () {
     var from = $scope.workerGiver.id;
     var to = $scope.workerReceiver.id;

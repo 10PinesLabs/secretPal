@@ -34,4 +34,12 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
       successFunction();
     });
   };
+
+  this.notCircularRule = function (callback) {
+    $http.get(self.buildRoute('/notCircularRule' + '/' + id)).success(function (data) {
+      callback(data);
+    }).error(function () {
+      self.errorMsg("No se pudo cargar la regla circular, intentlo nuevamente.")
+    });
+  }
 });

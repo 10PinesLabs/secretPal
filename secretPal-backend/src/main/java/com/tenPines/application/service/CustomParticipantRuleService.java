@@ -1,8 +1,10 @@
 package com.tenPines.application.service;
 
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
+import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.model.Worker;
 import com.tenPines.persistence.CustomParticipantRuleRepository;
+import com.tenPines.persistence.NotCircularRelationRuleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 @Service
 public class CustomParticipantRuleService {
     private CustomParticipantRuleRepository customParticipantRuleRepository;
+    private NotCircularRelationRuleRepository notCircularRelationRuleRepository;
     private final WorkerService workerService;
 
     public CustomParticipantRuleService(CustomParticipantRuleRepository customParticipantRuleRepository, WorkerService workerService) {
@@ -27,5 +30,9 @@ public class CustomParticipantRuleService {
 
     public List<CustomParticipantRule> getAllCustomRules() {
         return customParticipantRuleRepository.findAll();
+    }
+
+    public NotCircularRelationRule getCircularRule(Long id) {
+        return notCircularRelationRuleRepository.getOne(id);
     }
 }
