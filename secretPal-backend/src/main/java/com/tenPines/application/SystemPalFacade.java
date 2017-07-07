@@ -2,6 +2,7 @@ package com.tenPines.application;
 
 import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.*;
+import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
@@ -199,5 +200,12 @@ public class SystemPalFacade {
 
     public NotTooCloseBirthdaysRule getNotTooCloseBirthdayRule() {
         return customParticipantRuleService.getNotTooCloseBirthdayRule();
+    }
+
+    public void updateCircularRule(NotCircularRelationRule rule){
+        customParticipantRuleService.updateCircularRule(rule);
+    }
+    public void updateBirthdayRule(NotTooCloseBirthdaysRule rule) {
+        customParticipantRuleService.updateRuleBirthday(rule);
     }
 }

@@ -1,5 +1,6 @@
 package com.tenPines.application.service;
 
+import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
@@ -46,5 +47,13 @@ public class CustomParticipantRuleService {
 
     public NotTooCloseBirthdaysRule getNotTooCloseBirthdayRule() {
         return notTooCloseBirthdayRuleRepository.findAll().get(0);
+    }
+
+    public void updateCircularRule(NotCircularRelationRule rule) {
+        notCircularRelationRuleRepository.save(rule);
+    }
+
+    public void updateRuleBirthday(NotTooCloseBirthdaysRule rule) {
+        notTooCloseBirthdayRuleRepository.save(rule);
     }
 }

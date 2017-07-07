@@ -22,8 +22,7 @@ public class NotCircularRelationRule extends AssignationRule {
     @NotNull
     public Boolean isActivate;
 
-    public NotCircularRelationRule(){
-
+    public NotCircularRelationRule() {
     }
 
     public NotCircularRelationRule(FriendRelationService friendRelationService) {
@@ -42,7 +41,7 @@ public class NotCircularRelationRule extends AssignationRule {
         setIsActive(!isActivate);
     }
 
-    public boolean isRuleActivate() {
+    public boolean isActivate() {
         return this.isActivate;
     }
 

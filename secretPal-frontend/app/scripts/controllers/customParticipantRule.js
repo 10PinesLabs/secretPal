@@ -16,7 +16,7 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
     $scope.notCircularRule = data;
   });
 
-  CustomParticipantRuleService.notTooCloseBirthdayRule(function (data){
+  CustomParticipantRuleService.notTooCloseBirthdayRule(function (data) {
     $scope.notTooCloseBirthdaysRule = data;
   });
 
@@ -76,4 +76,15 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
   $scope.canDelete = function (rule) {
     return rule.isActivate === false;
   };
+
+  $scope.assignRules = function (notCircularRule, notTooCloseBirthdaysRule) {
+    if ($scope.circularCheck == true) {
+      notCircularRule.changeRuleIntention();
+      CustomParticipantRuleService.updateIsCheckedCircular(notCircularRule);
+    }
+    if ($scope.notTooCloseCheck == true){
+      notTooCloseBirthdaysRule.changeRuleIntention();
+      CustomParticipantRuleService.updateIsCheckedBirthday(notTooCloseBirthdaysRule);
+    }
+  }
 });

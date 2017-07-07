@@ -46,4 +46,15 @@ public class NotTooCloseBirthdaysRule extends AssignationRule {
         return MonthDay.from(giver.getDateOfBirth()).atYear(LocalDate.now().getYear());
     }
 
+    public void changeRuleIntention() {
+        setIsActive(!isActivate);
+    }
+
+    public boolean isActivate() {
+        return this.isActivate;
+    }
+
+    public void setIsActive(Boolean newState) {
+        this.isActivate = newState;
+    }
 }

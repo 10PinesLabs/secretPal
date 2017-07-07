@@ -50,4 +50,20 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
       self.errorMsg("No se pudo cargar la regla de los cumpleaños cercanos, intentalo nuevamente.")
     });
   }
+
+  this.updateIsCheckedCircular = function (rule) {
+    $http.post(self.buildRoute('/notCircularRule', rule)).success(function () {
+      self.successMsg("Se ha actualizado la regla circular");
+    }).error(function () {
+      self.errorMsg("No se pudo actualizar la regla circular, inténtelo de nuevo mas tarde");
+    });
+  };
+
+  this.updateIsCheckedBirthday = function (rule) {
+    $http.post(self.buildRoute('/notTooCloseBirthdayRule', rule)).success(function () {
+      self.successMsg("Se ha actualizado la regla de cumpleaños cercano");
+    }).error(function () {
+      self.errorMsg("No se pudo actualizar la regla de cumpleaños cercano, inténtelo de nuevo mas tarde");
+    });
+  };
 });

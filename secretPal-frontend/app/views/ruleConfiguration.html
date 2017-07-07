@@ -15,14 +15,14 @@
         <tr>
           <td colspan="3">{{notCircularRule.description}}</td>
           <td colspan="3">
-            <input type="checkbox" , name="circularCheck" , checked data-toggle="toggle" data-onstyle="success"
+            <input type="checkbox" name="circularCheck" checked data-toggle="toggle" data-onstyle="success"
                    ng-model="notCircularRule.isActivate">
           </td>
         </tr>
         <tr>
           <td colspan="3">{{notTooCloseBirthdaysRule.description}}</td>
           <td colspan="3">
-            <input type="checkbox" , name="notTheSameCheck" , checked data-toggle="toggle" data-onstyle="success"
+            <input type="checkbox" name="notTooCloseCheck" checked data-toggle="toggle" data-onstyle="success"
                    ng-model="notTooCloseBirthdaysRule.isActivate">
           </td>
         </tr>
@@ -33,7 +33,9 @@
 </div>
 
 <div align="right">
-  <button class="btn btn-success" type="button" ng-click="assignRules()">Asignar Reglas</button>
+  <button class="btn btn-success" type="button" ng-click="assignRules(notCircularRule, notTooCloseBirthdaysRule)">
+    Asignar Reglas
+  </button>
 </div>
 
 <br>
