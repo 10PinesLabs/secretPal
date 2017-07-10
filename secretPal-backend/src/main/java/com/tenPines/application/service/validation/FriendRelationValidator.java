@@ -72,4 +72,25 @@ public class FriendRelationValidator {
         return (validWorkers.indexOf(worker)+1) % validWorkers.size();
     }
 
+    public Boolean validateNewRelations(List<FriendRelation> relations) {
+        return relations.stream().allMatch(relation -> validateNewRelation(relation, relations));
+    }
+
+    private Boolean validateNewRelation(FriendRelation relation, List<FriendRelation> newRelations) {
+        return applyRulesToNewRelations(relation) &&
+                notNewCircularRelation(relation, newRelations);
+    }
+
+    private boolean applyRulesToNewRelations(FriendRelation relation) {
+        return rules.stream().allMatch(rule ->
+                rule.validate(relation.getGiftGiver(), relation.getGiftReceiver())
+        );
+    }
+
+    private Boolean notNewCircularRelation(FriendRelation relation, List<FriendRelation> newRelations) {
+        return !newRelations.stream().anyMatch(thisRelation ->
+                (thisRelation.getGiftReceiver() == relation.getGiftGiver()) &&
+                        (thisRelation.getGiftGiver() == relation.getGiftReceiver())
+        );
+    }
 }
