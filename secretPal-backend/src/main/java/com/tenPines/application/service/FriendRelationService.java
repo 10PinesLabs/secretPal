@@ -93,6 +93,10 @@ public class FriendRelationService {
         ).collect(Collectors.toList());
     }
 
+    public Optional<FriendRelation> getByWorkerGiver(Worker giver){
+        return friendRelationRepository.findByGiftGiver(giver);
+    }
+
     public Optional<FriendRelation> getByWorkerReceiver(Worker receiver){
         return friendRelationRepository.findByGiftReceiver(receiver);
     }

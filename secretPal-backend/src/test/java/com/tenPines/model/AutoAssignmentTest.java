@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -32,6 +33,7 @@ public class AutoAssignmentTest extends SpringBaseTest {
     private Worker worker;
     private Worker otherWorker;
     private Worker yetOtherWorker;
+    private Worker anotherWorker;
 
     @Before
     public void setUp(){
@@ -39,6 +41,7 @@ public class AutoAssignmentTest extends SpringBaseTest {
         worker = new WorkerBuilder().buildFromDate(1, Month.JUNE);
         otherWorker = new WorkerBuilder().buildFromDate(1, Month.SEPTEMBER);
         yetOtherWorker = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
+        anotherWorker = new WorkerBuilder().buildFromDate(1, Month.OCTOBER);
     }
 
 
@@ -59,6 +62,18 @@ public class AutoAssignmentTest extends SpringBaseTest {
         ));
     }
 
+    private void assertRelationsChanged(List<FriendRelation> oldRelations) {
+        Boolean condition = oldRelations.stream().anyMatch(relation ->
+            relationHasChanged(relation)
+        );
+
+        assertThat(condition, is(true));
+    }
+
+    private Boolean relationHasChanged(FriendRelation relation) {
+        Worker newReceiver = friendRelationService.retrieveAssignedFriendFor(relation.getGiftGiver());
+        return !relation.getGiftReceiver().equals(newReceiver);
+    }
 
     @Test
     public void whenThereIsntAnyParticipantThenAutoAssignRaiseQuorumError() throws AssignmentException {
@@ -106,6 +121,20 @@ public class AutoAssignmentTest extends SpringBaseTest {
         assertRelated(worker);
         assertRelated(otherWorker);
         assertRelated(yetOtherWorker);
+    }
+
+    @Test
+    public void whenAutoAssignThenGiversMayHaveNewReceivers() throws AssignmentException {
+        workerService.save(worker);
+        workerService.save(otherWorker);
+        workerService.save(yetOtherWorker);
+        workerService.save(anotherWorker);
+
+        friendRelationService.autoAssignRelations();
+        List<FriendRelation> oldRelations = friendRelationService.getAllRelations();
+        friendRelationService.autoAssignRelations();
+
+        assertRelationsChanged(oldRelations);
     }
 
 
