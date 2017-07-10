@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SecretPalProperties {
-    private long reminderDayPeriod = 7L;
+    private long reminderDayPeriod = 14L;
     private long reminderMonthPeriod = 2L;
 
     public long getReminderDayPeriod() {

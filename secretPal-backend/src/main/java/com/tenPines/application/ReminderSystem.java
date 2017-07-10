@@ -36,7 +36,7 @@ public class ReminderSystem {
 
 
     @Scheduled(fixedDelay = 86400000) //86400000 = 1 dia
-    public void sendRemindersTheLastBirthday() {
+    public void sendTwoWeeksReminders() {
         friendRelationService.getAllRelations().stream()
                 .filter(friendRelation ->
                         MonthDay.from(friendRelation.getGiftReceiver().getDateOfBirth())
