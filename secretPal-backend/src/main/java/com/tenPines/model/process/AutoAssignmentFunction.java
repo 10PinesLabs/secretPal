@@ -34,7 +34,7 @@ public class AutoAssignmentFunction {
 
     public List<FriendRelation> relate() {
         List<FriendRelation> newRelations = createNewRelations();
-        if (validator.validateNewRelations(newRelations))
+        if (validator.validateAll(newRelations))
             return newRelations;
         return Arrays.asList();
     }

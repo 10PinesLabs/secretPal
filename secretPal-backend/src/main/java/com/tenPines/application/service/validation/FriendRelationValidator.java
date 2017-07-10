@@ -33,15 +33,15 @@ public class FriendRelationValidator {
                 new NotTheSamePersonRule(),
                 new BirthdayPassedRule(clock)
         );
-        this.hardRules = Arrays.asList();
     }
 
     public Boolean validate(Worker giver, Worker receiver) {
         return validateRules(giver, receiver) && !hasOtherSecretPal(giver, receiver);
     }
 
-    private boolean validateRules(Worker giver, Worker receiver) {
-        return validateHardRules(giver, receiver) || validateSoftRules(giver, receiver);
+
+    private Boolean validateRules(Worker giver, Worker receiver) {
+        return rules.stream().allMatch(rule -> rule.validate(giver, receiver));
     }
 
     private Boolean hasOtherSecretPal(Worker giver, Worker receiver) {
@@ -50,47 +50,12 @@ public class FriendRelationValidator {
                 .orElse(false);
     }
 
-    private Boolean validateHardRules(Worker giver, Worker receiver) {
-        return hardRules.stream().anyMatch(rule -> rule.validate(giver, receiver));
+    public Boolean validateAll(List<FriendRelation> newRelations) {
+        return newRelations.stream().allMatch(relation -> validateRelation(relation, newRelations));
     }
 
-    private Boolean validateSoftRules(Worker giver, Worker receiver) {
-        return rules.stream().allMatch(rule -> rule.validate(giver, receiver));
+    private Boolean validateRelation(FriendRelation relation, List<FriendRelation> newRelations) {
+        return rules.stream().allMatch(rule -> rule.validate(relation, newRelations));
     }
 
-    public boolean validateAll(List<Worker> validWorkers){
-        return validWorkers.stream().allMatch(worker ->
-                        validate(worker, getNextWorker(validWorkers, worker))
-                );
-    }
-
-    private Worker getNextWorker(List<Worker> validWorkers, Worker worker) {
-        return validWorkers.get(getIndexOfNextWorker(validWorkers, worker));
-    }
-
-    private int getIndexOfNextWorker(List<Worker> validWorkers, Worker worker) {
-        return (validWorkers.indexOf(worker)+1) % validWorkers.size();
-    }
-
-    public Boolean validateNewRelations(List<FriendRelation> relations) {
-        return relations.stream().allMatch(relation -> validateNewRelation(relation, relations));
-    }
-
-    private Boolean validateNewRelation(FriendRelation relation, List<FriendRelation> newRelations) {
-        return applyRulesToNewRelations(relation) &&
-                notNewCircularRelation(relation, newRelations);
-    }
-
-    private boolean applyRulesToNewRelations(FriendRelation relation) {
-        return rules.stream().allMatch(rule ->
-                rule.validate(relation.getGiftGiver(), relation.getGiftReceiver())
-        );
-    }
-
-    private Boolean notNewCircularRelation(FriendRelation relation, List<FriendRelation> newRelations) {
-        return !newRelations.stream().anyMatch(thisRelation ->
-                (thisRelation.getGiftReceiver() == relation.getGiftGiver()) &&
-                        (thisRelation.getGiftGiver() == relation.getGiftReceiver())
-        );
-    }
 }
