@@ -65,7 +65,7 @@ public class ReminderSystemTest extends SpringBaseTest {
 
     @Test
     public void When_aproach_the_birthday_of_friendWorker(){
-        setUp(LocalDate.now().plusDays(secretPalProperties.getReminderDayPeriod()), LocalDate.now());
+        setUp(LocalDate.now().plusDays(secretPalProperties.getReminderWeekPeriod()), LocalDate.now());
 
         reminderSystem.sendTwoWeeksReminders();
         assertThat(postMan.messagesTo(friendWorker.geteMail()), empty());

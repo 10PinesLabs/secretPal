@@ -6,7 +6,8 @@ import com.tenPines.application.service.MailerService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.builder.FriendRelationMessageBuilder;
 import com.tenPines.builder.HappyBithdayMessageBuilder;
-import com.tenPines.builder.ReminderAproachTheBirthdayBuilder;
+import com.tenPines.builder.ReminderMonthsBirthdayAproachBuilder;
+import com.tenPines.builder.ReminderWeeksBirthdayAproachBuilder;
 import com.tenPines.mailer.PostOffice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -35,24 +36,6 @@ public class ReminderSystem {
     }
 
 
-    @Scheduled(fixedDelay = 86400000) //86400000 = 1 dia
-    public void sendTwoWeeksReminders() {
-        friendRelationService.getAllRelations().stream()
-                .filter(friendRelation ->
-                        MonthDay.from(friendRelation.getGiftReceiver().getDateOfBirth())
-                                .equals(
-                                        MonthDay.from(clock.now().plusDays(secretPalProperties.getReminderDayPeriod())))
-                )
-                .forEach(friendRelation -> {
-                    try {
-                        postOffice.sendMessage(
-                                new ReminderAproachTheBirthdayBuilder().buildMessage(friendRelation)
-                        );
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-    }
 
 
     @Scheduled(fixedDelay = 86400000) //86400000 = 1 dia
@@ -81,7 +64,25 @@ public class ReminderSystem {
                 .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder().buildMesage(worker)));
 
     }
-
+    
+    @Scheduled(fixedDelay = 86400000) //86400000 = 1 dia
+    public void sendTwoWeeksReminders() {
+        friendRelationService.getAllRelations().stream()
+                .filter(friendRelation ->
+                        MonthDay.from(friendRelation.getGiftReceiver().getDateOfBirth())
+                                .equals(
+                                        MonthDay.from(clock.now().plusWeeks(secretPalProperties.getReminderWeekPeriod())))
+                )
+                .forEach(friendRelation -> {
+                    try {
+                        postOffice.sendMessage(
+                                new ReminderWeeksBirthdayAproachBuilder().buildMessage(friendRelation)
+                        );
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
 
     @Scheduled(fixedDelay = 86400000) //86400000 = 1 dia
     public void sendTwoMonthsReminders() {
@@ -94,7 +95,7 @@ public class ReminderSystem {
                 .forEach(friendRelation -> {
                     try {
                         postOffice.sendMessage(
-                                new ReminderAproachTheBirthdayBuilder().buildMessage(friendRelation)
+                                new ReminderMonthsBirthdayAproachBuilder().buildMessage(friendRelation)
                         );
                     } catch (IOException e) {
                         e.printStackTrace();
