@@ -4,7 +4,8 @@ import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.validation.FriendRelationValidator;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
-import com.tenPines.model.process.AssignmentFunction;
+import com.tenPines.model.process.AssignmentException;
+import com.tenPines.model.process.AutoAssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
@@ -13,11 +14,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import static com.tenPines.model.process.AssignmentException.Reason.CANT_AUTO_ASSIGN;
+import static com.tenPines.model.process.AssignmentException.Reason.NOT_ENOUGH_QUORUM;
 
 @Service
 public class FriendRelationService {
@@ -25,6 +28,7 @@ public class FriendRelationService {
     private final Clock clock;
     private final FriendRelationRepository friendRelationRepository;
     private final WorkerService workerService;
+    private static Random random = new Random(System.nanoTime());
 
     @Autowired
     public FriendRelationService(Clock clock, FriendRelationRepository friendRelationRepository, WorkerService workerService) {
@@ -37,21 +41,38 @@ public class FriendRelationService {
         return friendRelationRepository.save(new RelationEstablisher(friendWorker, birthdayWorker).createRelation());
     }
 
-    public void autoAssignRelations() {
-        FriendRelationValidator validator = new FriendRelationValidator(clock, this);
-        List<Worker> validWorkers = assignableWorkers();
+    public void autoAssignRelations() throws AssignmentException{
+        checkIfThereAreEnoughParticipants();
+        checkIfThereAreTwoParticipants();
 
-        for(int i=0;i<100;i++){
-            Collections.shuffle(validWorkers, new Random(System.nanoTime()));
-            if (validator.validateAll(validWorkers)) {
-                deleteRelationsByGiftGivers(validWorkers);
-                friendRelationRepository.save(
-                    new AssignmentFunction(validWorkers).execute()
-                );
+        FriendRelationValidator validator = new FriendRelationValidator(clock, this);
+        List<Worker> assignableWorkers = workersWhoCanGive();
+
+        for (int i = 0; i<100; i++) {
+            deleteRelationsByGiftGivers(workersWhoCanGive());
+            List<FriendRelation> relations = new AutoAssignmentFunction(
+                    clock, random, this).relate();
+
+            if (allWorkersHasRelation(relations)) {
+                friendRelationRepository.save(relations);
+                break;
             }
         }
     }
 
+    private Boolean allWorkersHasRelation(List<FriendRelation> newRelations) {
+        return !newRelations.isEmpty() && (newRelations.size() == workersWhoCanGive().size());
+    }
+
+    private void checkIfThereAreEnoughParticipants() {
+        if (workerService.getAllParticipants().size() < 2)
+            throw new AssignmentException(NOT_ENOUGH_QUORUM);
+    }
+
+    private void checkIfThereAreTwoParticipants() {
+        if (workerService.getAllParticipants().size() == 2)
+            throw new AssignmentException(CANT_AUTO_ASSIGN);
+    }
 
     public List<FriendRelation> getAllRelations() {
         return friendRelationRepository.findAll();
@@ -70,26 +91,21 @@ public class FriendRelationService {
         ).collect(Collectors.toList());
     }
 
+    public Optional<FriendRelation> getByWorkerGiver(Worker giver){
+        return friendRelationRepository.findByGiftGiver(giver);
+    }
+
     public Optional<FriendRelation> getByWorkerReceiver(Worker receiver){
         return friendRelationRepository.findByGiftReceiver(receiver);
     }
 
-    public void deleteAllRelations() {
-        friendRelationRepository.deleteAllRelations();
-    }
-
-    public void deleteRelationsByGiftGivers(List<Worker> workers) {
-        workers.stream().forEach(giver ->
-            friendRelationRepository.deleteByGiftGiver(giver)
-        );
-    }
-
-    public void deleteByGiftGiver(Worker giver) {
-        friendRelationRepository.deleteByGiftGiver(giver);
+    public Optional<Worker> retrieveGiftReceiverOf(Worker worker) {
+        return friendRelationRepository.findByGiftGiver(worker)
+                .map(relation -> relation.getGiftReceiver());
     }
 
     public List<ParticipantWithPosibilities> allPosibilities() {
-        return assignableWorkers().stream().map(participant ->
+        return workersWhoCanGive().stream().map(participant ->
             new ParticipantWithPosibilities(participant, this)
         ).collect(Collectors.toList());
     }
@@ -100,16 +116,26 @@ public class FriendRelationService {
         ).collect(Collectors.toList());
     }
 
-    public List<Worker> assignableWorkers() {
+    public List<Worker> workersWhoCanGive() {
         return workerService.getAllParticipants().stream().filter(worker ->
-            assignable(worker)
+            canGive(worker)
         ).collect(Collectors.toList());
     }
 
-    private Boolean assignable(Worker worker) {
+    private Boolean canGive(Worker worker) {
         return friendRelationRepository.findByGiftGiver(worker)
                 .map(relation -> !inmutableRelation(relation))
                 .orElse(true);
+    }
+
+    public List<Worker> workersWhoCanReceive() {
+        return workerService.getAllParticipants().stream().filter(worker ->
+                canReceive(worker)
+        ).collect(Collectors.toList());
+    }
+
+    private boolean canReceive(Worker worker) {
+        return ChronoUnit.MONTHS.between(clock.now(), actualBirthday(worker)) >= 1;
     }
 
     private LocalDate actualBirthday(Worker worker) {
@@ -132,9 +158,18 @@ public class FriendRelationService {
         friendRelationRepository.save(relation);
     }
 
-    public Optional<Worker> retrieveGiftReceiverOf(Worker worker) {
-        return friendRelationRepository.findByGiftGiver(worker)
-                .map(relation -> relation.getGiftReceiver());
+    public void deleteAllRelations() {
+        friendRelationRepository.deleteAllRelations();
+    }
+
+    public void deleteRelationsByGiftGivers(List<Worker> workers) {
+        workers.stream().forEach(giver ->
+                friendRelationRepository.deleteByGiftGiver(giver)
+        );
+    }
+
+    public void deleteByGiftGiver(Worker giver) {
+        friendRelationRepository.deleteByGiftGiver(giver);
     }
 
 }

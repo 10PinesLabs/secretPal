@@ -65,11 +65,10 @@ public class FriendRelationController {
         return systemFacade.retrieveAssignedFriendFor(id);
     }
 
-    @RequestMapping(value = "/autoAssign", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/autoAssign", method = RequestMethod.POST)
     @ResponseBody
-    public List<FriendRelation> autoAssignRelations() throws IOException {
+    public void autoAssignRelations() throws IOException {
         systemFacade.autoAssignRelations();
-        return systemFacade.getAllRelations();
     }
 
     @RequestMapping(value = "/posibilities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

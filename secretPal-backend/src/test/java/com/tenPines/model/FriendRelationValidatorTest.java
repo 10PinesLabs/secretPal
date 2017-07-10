@@ -39,7 +39,7 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
 
         friendRelationService.create(giver, receiver);
 
-        assertFalse(validator.validate(receiver,giver));
+        assertFalse(validator.validate(receiver, giver));
     }
 
     @Test
