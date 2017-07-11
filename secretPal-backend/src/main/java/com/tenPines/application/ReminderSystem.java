@@ -36,23 +36,6 @@ public class ReminderSystem {
     }
 
 
-
-
-    @Scheduled(fixedDelay = 86400000) //86400000 = 1 dia
-    public void sendAssignedRelation() {
-        FriendRelationMessageBuilder friendRelationMessageBuilder = new FriendRelationMessageBuilder(mailerService);
-        friendRelationService.getAllRelations().forEach(friendRelation -> {
-            try {
-                postOffice.sendMessage(
-                        friendRelationMessageBuilder.buildMessage(friendRelation)
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-
     @Scheduled(fixedDelay = 86400000)
     public void sendHappyBithdayMessages() {
         workerService.getAllParticipants().stream()

@@ -55,15 +55,6 @@ public class ReminderSystemTest extends SpringBaseTest {
     }
 
     @Test
-    public void When_assign_relation_between_two_workers(){
-        setUp(LocalDate.now(), LocalDate.now());
-
-        reminderSystem.sendAssignedRelation();
-        assertThat(postMan.messagesTo(friendWorker.geteMail()), not(empty()));
-    }
-
-
-    @Test
     public void When_aproach_the_birthday_of_friendWorker(){
         setUp(LocalDate.now().plusDays(secretPalProperties.getReminderWeekPeriod()), LocalDate.now());
 

@@ -32,4 +32,5 @@ public abstract class ReminderBuilder {
     protected String birthday(Worker birthdayWorker) {
         return dateFormat.format(birthdayWorker.getDateOfBirth());
     }
+
 }
