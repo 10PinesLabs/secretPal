@@ -62,7 +62,7 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
   };
 
   $scope.delete = function (rule) {
-    if (rule.isRuleActivate) {
+    if (rule.isActive) {
       warningMsg("La regla está activa, no se puede borrar.");
     } else {
       $scope.deleteWithConfirmationMsg(rule);
@@ -70,21 +70,28 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
   };
 
   $scope.changeIntention = function (rule) {
-    rule.changeRuleIntention;
+    rule.changeRuleIntention();
   };
 
   $scope.canDelete = function (rule) {
-    return rule.isActivate === false;
+    return rule.isActive() == false;
   };
 
   $scope.assignRules = function (notCircularRule, notTooCloseBirthdaysRule) {
     if ($scope.circularCheck == true) {
       notCircularRule.changeRuleIntention();
       CustomParticipantRuleService.updateIsCheckedCircular(notCircularRule);
+    } else {
+      notCircularRule.changeRuleIntention();
+      CustomParticipantRuleService.updateIsCheckedCircular(notCircularRule);
     }
-    if ($scope.notTooCloseCheck == true){
+    if ($scope.notTooCloseCheck == true) {
+      notTooCloseBirthdaysRule.changeRuleIntention();
+      CustomParticipantRuleService.updateIsCheckedBirthday(notTooCloseBirthdaysRule);
+    } else {
       notTooCloseBirthdaysRule.changeRuleIntention();
       CustomParticipantRuleService.updateIsCheckedBirthday(notTooCloseBirthdaysRule);
     }
+    CustomParticipantRuleService.successMsg("Regla/s actualizada/s con exito.");
   }
 });

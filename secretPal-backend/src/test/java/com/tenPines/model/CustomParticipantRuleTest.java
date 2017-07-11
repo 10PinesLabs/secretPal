@@ -32,7 +32,7 @@ public class CustomParticipantRuleTest extends SpringBaseTest {
     public FriendRelationService friendRelationService;
     @Autowired
     public CustomParticipantRuleService customParticipantRuleService;
-    
+
     @Test
     public void When_there_is_no_participants_the_rule_should_give_an_error() {
         relationEstablisher = new RelationEstablisher(giver, receiver);
