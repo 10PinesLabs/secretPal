@@ -65,4 +65,8 @@ public class MailerService {
     public Optional<EmailTemplate> getTemplate() {
         return emailTemplateRepository.findFirstBy();
     }
+
+    public void deleteTemplate() {
+        emailTemplateRepository.deleteAll();
+    }
 }

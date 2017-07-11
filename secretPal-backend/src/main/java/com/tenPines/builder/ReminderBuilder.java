@@ -46,7 +46,7 @@ public abstract class ReminderBuilder {
         return res;
     }
 
-    protected abstract String defaultBody(Worker birthdayWorker);
+    public abstract String defaultBody(Worker birthdayWorker);
 
     protected String birthday(Worker birthdayWorker) {
         return dateFormat.format(birthdayWorker.getDateOfBirth());
