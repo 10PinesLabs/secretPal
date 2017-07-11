@@ -18,10 +18,13 @@ import java.util.stream.Collectors;
 public class FriendRelationService {
     private final FriendRelationRepository friendRelationRepository;
     private final WorkerService workerService;
+    private final CustomParticipantRuleService customParticipantRuleService;
 
-    public FriendRelationService(FriendRelationRepository friendRelationRepository, WorkerService workerService) {
+    public FriendRelationService(FriendRelationRepository friendRelationRepository, WorkerService workerService,
+                                 CustomParticipantRuleService customParticipantRuleService) {
         this.friendRelationRepository = friendRelationRepository;
         this.workerService = workerService;
+        this.customParticipantRuleService = customParticipantRuleService;
     }
 
     public FriendRelation create(Worker friendWorker, Worker birthdayWorker) {
@@ -29,7 +32,7 @@ public class FriendRelationService {
     }
 
     public void autoAssignRelations() {
-        FriendRelationValidator validator = new FriendRelationValidator(this);
+        FriendRelationValidator validator = new FriendRelationValidator(this, customParticipantRuleService);
         List<Worker> validWorkers = assignableWorkers();
 
         for(int i=0;i<100;i++){

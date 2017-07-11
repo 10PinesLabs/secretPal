@@ -1,8 +1,7 @@
 package com.tenPines.application.service.validation.rule;
 
-import com.tenPines.application.service.FriendRelationService;
-import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
+import org.dom4j.rule.Rule;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,37 +14,29 @@ public class NotCircularRelationRule extends AssignationRule {
     @GeneratedValue
     private Long id;
 
-    @Transient
-    private FriendRelationService friendRelationService;
     @NotNull
     public String description;
     @NotNull
-    public Boolean isActivate;
+    public boolean isActive;
 
     public NotCircularRelationRule() {
-    }
-
-    public NotCircularRelationRule(FriendRelationService friendRelationService) {
-        this.friendRelationService = friendRelationService;
         this.description = "Si el Pino A le regala a el Pino B, el Pino B no le puede regalar a el Pino A.";
-        this.isActivate = false;
     }
 
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
-        FriendRelation workerRelation = friendRelationService.getByWorkerReceiver(giver);
-        return (workerRelation == null) || !(workerRelation.getGiftGiver().equals((receiver)));
+        return RuleValidator.validate(giver, receiver);
     }
 
     public void changeRuleIntention() {
-        setIsActive(!isActivate);
+        setIsActive(!isActive);
     }
 
-    public boolean isActivate() {
-        return this.isActivate;
+    public boolean isActive() {
+        return isActive;
     }
 
     public void setIsActive(Boolean newState) {
-        this.isActivate = newState;
+        this.isActive = newState;
     }
 }

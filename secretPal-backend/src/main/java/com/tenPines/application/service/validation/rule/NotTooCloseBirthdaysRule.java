@@ -22,11 +22,10 @@ public class NotTooCloseBirthdaysRule extends AssignationRule {
     @NotNull
     public String description;
     @NotNull
-    public Boolean isActivate;
+    public boolean isActive;
 
     public NotTooCloseBirthdaysRule() {
         this.description = "Esta permitido regalar aunque el cumpleaños del pino también esté cerca.";
-        this.isActivate = false;
     }
 
     @Override
@@ -47,14 +46,14 @@ public class NotTooCloseBirthdaysRule extends AssignationRule {
     }
 
     public void changeRuleIntention() {
-        setIsActive(!isActivate);
+        setIsActive(!isActive);
     }
 
-    public boolean isActivate() {
-        return this.isActivate;
+    public boolean isActive() {
+        return this.isActive;
     }
 
     public void setIsActive(Boolean newState) {
-        this.isActivate = newState;
+        this.isActive = newState;
     }
 }

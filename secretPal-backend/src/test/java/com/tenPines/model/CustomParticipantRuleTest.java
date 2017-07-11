@@ -1,5 +1,6 @@
 package com.tenPines.model;
 
+import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.FriendRelationValidator;
@@ -29,9 +30,9 @@ public class CustomParticipantRuleTest extends SpringBaseTest {
 
     @Autowired
     public FriendRelationService friendRelationService;
-
-    public FriendRelationValidator friendRelationValidator = new FriendRelationValidator(friendRelationService);
-
+    @Autowired
+    public CustomParticipantRuleService customParticipantRuleService;
+    
     @Test
     public void When_there_is_no_participants_the_rule_should_give_an_error() {
         relationEstablisher = new RelationEstablisher(giver, receiver);

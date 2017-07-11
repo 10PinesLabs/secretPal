@@ -1,12 +1,16 @@
 package com.tenPines.model;
 
+import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.FriendRelationValidator;
-import com.tenPines.application.service.validation.rule.AssignationRule;
+import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
+import com.tenPines.application.service.validation.rule.RuleValidator;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
+import com.tenPines.persistence.NotCircularRelationRuleRepository;
+import com.tenPines.persistence.NotTooCloseBirthdayRuleRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +27,39 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
     public FriendRelationService friendRelationService;
     @Autowired
     public WorkerService workerService;
+    @Autowired
+    private NotCircularRelationRuleRepository notCircularRelationRuleRepository;
+    @Autowired
+    private NotTooCloseBirthdayRuleRepository notTooCloseBirthdayRuleRepository;
+    @Autowired
+    private CustomParticipantRuleService customParticipantRuleService;
+    @Autowired
+    private RuleValidator ruleValidator;
 
     @Before
-    public void setUp(){
-        validator = new FriendRelationValidator(friendRelationService);
+    public void setUp() {
+        validator = new FriendRelationValidator(friendRelationService, customParticipantRuleService);
     }
 
     @Test
     public void whenTheReceiverWillGiftTheGiverItShouldNotBeValid() {
+        NotCircularRelationRule notCircularRelationRule = notCircularRelationRuleRepository.findAll().get(0);
+        notCircularRelationRule.isActive = false;
+        notCircularRelationRuleRepository.save(notCircularRelationRule);
+
+        notCircularRelationRule.changeRuleIntention();
+        notCircularRelationRuleRepository.save(notCircularRelationRule);
+
         Worker giver = new WorkerBuilder().build();
         Worker receiver = new WorkerBuilder().build();
+
+
         workerService.save(giver);
         workerService.save(receiver);
 
         friendRelationService.create(giver, receiver);
 
-        assertFalse(validator.validate(receiver,giver));
+        assertFalse(validator.validate(receiver, giver));
     }
 
     @Test
@@ -51,6 +72,13 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
 
     @Test
     public void isInvalidWhenValidateTooCloseBirthdayRule() {
+        NotTooCloseBirthdaysRule notTooCloseBirthdaysRule = notTooCloseBirthdayRuleRepository.findAll().get(0);
+        notTooCloseBirthdaysRule.isActive = false;
+        notTooCloseBirthdayRuleRepository.save(notTooCloseBirthdaysRule);
+
+        notTooCloseBirthdaysRule.changeRuleIntention();
+        notTooCloseBirthdayRuleRepository.save(notTooCloseBirthdaysRule);
+
         Worker worker = new WorkerBuilder().build();
         Worker otherWorker = new WorkerBuilder().build();
         worker.setDateOfBirth(LocalDate.of(2000, 5, 1));
@@ -64,6 +92,13 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
 
     @Test
     public void isValidWhenValidateTooCloseBirthdayRule() {
+        NotTooCloseBirthdaysRule notTooCloseBirthdaysRule = notTooCloseBirthdayRuleRepository.findAll().get(0);
+        notTooCloseBirthdaysRule.isActive = false;
+        notTooCloseBirthdayRuleRepository.save(notTooCloseBirthdaysRule);
+
+        notTooCloseBirthdaysRule.changeRuleIntention();
+        notTooCloseBirthdayRuleRepository.save(notTooCloseBirthdaysRule);
+
         Worker worker = new WorkerBuilder().build();
         Worker otherWorker = new WorkerBuilder().build();
         worker.setDateOfBirth(LocalDate.of(2000, 10, 1));

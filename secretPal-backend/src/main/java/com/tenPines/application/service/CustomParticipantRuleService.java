@@ -6,17 +6,24 @@ import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.model.Worker;
 import com.tenPines.persistence.CustomParticipantRuleRepository;
-import com.tenPines.persistence.NotTooCloseBirthdayRuleRepository;
 import com.tenPines.persistence.NotCircularRelationRuleRepository;
+import com.tenPines.persistence.NotTooCloseBirthdayRuleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CustomParticipantRuleService {
-    private CustomParticipantRuleRepository customParticipantRuleRepository;
-    private NotCircularRelationRuleRepository notCircularRelationRuleRepository;
-    private NotTooCloseBirthdayRuleRepository notTooCloseBirthdayRuleRepository;
+
+    @Autowired
+    private final CustomParticipantRuleRepository customParticipantRuleRepository;
+    @Autowired
+    private final NotCircularRelationRuleRepository notCircularRelationRuleRepository;
+    @Autowired
+    private final NotTooCloseBirthdayRuleRepository notTooCloseBirthdayRuleRepository;
+    @Autowired
     private final WorkerService workerService;
 
     public CustomParticipantRuleService(CustomParticipantRuleRepository customParticipantRuleRepository,
@@ -41,6 +48,14 @@ public class CustomParticipantRuleService {
         return customParticipantRuleRepository.findAll();
     }
 
+    public List<AssignationRule> getActiveRules() {
+        List<AssignationRule> assignationRules = new ArrayList<>();
+            assignationRules.add(getCircularRule());
+            assignationRules.add(getNotTooCloseBirthdayRule());
+
+        return assignationRules;
+    }
+
     public NotCircularRelationRule getCircularRule() {
         return notCircularRelationRuleRepository.findAll().get(0);
     }
@@ -56,4 +71,6 @@ public class CustomParticipantRuleService {
     public void updateRuleBirthday(NotTooCloseBirthdaysRule rule) {
         notTooCloseBirthdayRuleRepository.save(rule);
     }
+
+
 }
