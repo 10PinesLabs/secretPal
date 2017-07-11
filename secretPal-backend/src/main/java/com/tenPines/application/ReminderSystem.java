@@ -4,7 +4,6 @@ import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.MailerService;
 import com.tenPines.application.service.WorkerService;
-import com.tenPines.builder.FriendRelationMessageBuilder;
 import com.tenPines.builder.HappyBithdayMessageBuilder;
 import com.tenPines.builder.ReminderMonthsBirthdayAproachBuilder;
 import com.tenPines.builder.ReminderWeeksBirthdayAproachBuilder;
@@ -59,7 +58,7 @@ public class ReminderSystem {
                 .forEach(friendRelation -> {
                     try {
                         postOffice.sendMessage(
-                                new ReminderWeeksBirthdayAproachBuilder().buildMessage(friendRelation)
+                                new ReminderWeeksBirthdayAproachBuilder(mailerService).buildMessage(friendRelation)
                         );
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -78,7 +77,7 @@ public class ReminderSystem {
                 .forEach(friendRelation -> {
                     try {
                         postOffice.sendMessage(
-                                new ReminderMonthsBirthdayAproachBuilder().buildMessage(friendRelation)
+                                new ReminderMonthsBirthdayAproachBuilder(mailerService).buildMessage(friendRelation)
                         );
                     } catch (IOException e) {
                         e.printStackTrace();
