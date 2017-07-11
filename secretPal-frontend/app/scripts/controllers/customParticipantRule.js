@@ -69,27 +69,23 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
     }
   };
 
-  $scope.changeIntention = function (rule) {
-    rule.changeRuleIntention();
-  };
-
   $scope.canDelete = function (rule) {
     return rule.isActive() == false;
   };
 
   $scope.assignRules = function (notCircularRule, notTooCloseBirthdaysRule) {
     if ($scope.circularCheck == true) {
-      notCircularRule.changeRuleIntention();
+      notCircularRule.isActive = true;
       CustomParticipantRuleService.updateIsCheckedCircular(notCircularRule);
     } else {
-      notCircularRule.changeRuleIntention();
+      notCircularRule.isActive = false;
       CustomParticipantRuleService.updateIsCheckedCircular(notCircularRule);
     }
     if ($scope.notTooCloseCheck == true) {
-      notTooCloseBirthdaysRule.changeRuleIntention();
+      notTooCloseBirthdaysRule.isActive = true;
       CustomParticipantRuleService.updateIsCheckedBirthday(notTooCloseBirthdaysRule);
     } else {
-      notTooCloseBirthdaysRule.changeRuleIntention();
+      notTooCloseBirthdaysRule.isActive = false;
       CustomParticipantRuleService.updateIsCheckedBirthday(notTooCloseBirthdaysRule);
     }
     CustomParticipantRuleService.successMsg("Regla/s actualizada/s con exito.");

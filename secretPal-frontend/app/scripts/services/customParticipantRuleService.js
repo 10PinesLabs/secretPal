@@ -39,7 +39,7 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
     $http.get(self.buildRoute('/notCircularRule')).success(function (data) {
       callback(data);
     }).error(function () {
-      self.errorMsg("No se pudo cargar la regla circular, intentalo nuevamente.")
+      self.errorMsg("No se pudo cargar la regla circular.")
     });
   }
 
@@ -47,23 +47,23 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
     $http.get(self.buildRoute('/notTooCloseBirthdayRule')).success(function (data) {
       callback(data);
     }).error(function () {
-      self.errorMsg("No se pudo cargar la regla de los cumpleaños cercanos, intentalo nuevamente.")
+      self.errorMsg("No se pudo cargar la regla de los cumpleaños cercanos.")
     });
   }
 
   this.updateIsCheckedCircular = function (rule) {
-    $http.post(self.buildRoute('/notCircularRule', rule)).success(function () {
-      self.successMsg("Se ha actualizado la regla circular");
+    $http.put(self.buildRoute('/notCircularRule'), rule).success(function () {
+      self.successMsg("Se han actualizado las reglas seleccionadas");
     }).error(function () {
-      self.errorMsg("No se pudo actualizar la regla circular, inténtelo de nuevo mas tarde");
+      self.errorMsg("No se pudo actualizar alguna/s de las reglas");
     });
   };
 
   this.updateIsCheckedBirthday = function (rule) {
-    $http.post(self.buildRoute('/notTooCloseBirthdayRule', rule)).success(function () {
-      self.successMsg("Se ha actualizado la regla de cumpleaños cercano");
+    $http.put(self.buildRoute('/notTooCloseBirthdayRule'), rule).success(function () {
+      self.successMsg("Se han actualizado las reglas seleccionadas");
     }).error(function () {
-      self.errorMsg("No se pudo actualizar la regla de cumpleaños cercano, inténtelo de nuevo mas tarde");
+      self.errorMsg("No se pudo actualizar alguna/s de las reglas");
     });
   };
 });

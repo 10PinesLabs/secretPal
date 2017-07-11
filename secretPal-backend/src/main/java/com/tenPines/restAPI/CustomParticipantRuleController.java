@@ -63,15 +63,15 @@ public class CustomParticipantRuleController {
         return birthdayRule;
     }
 
-    @RequestMapping(value = "/notCircularRule/{rule}", method = RequestMethod.POST)
+    @RequestMapping(value = "/notCircularRule", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public void updateCircularRule(@RequestBody NotCircularRelationRule rule){
+    public void updateCircularRule(@RequestBody NotCircularRelationRule rule) {
         systemFacade.updateCircularRule(rule);
     }
 
-    @RequestMapping(value = "/notTooCloseBirthdayRule/{rule}", method = RequestMethod.POST)
+    @RequestMapping(value = "/notTooCloseBirthdayRule", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
-    public void updateBirthdayRule(@RequestBody NotTooCloseBirthdaysRule rule){
+    public void updateBirthdayRule(@RequestBody NotTooCloseBirthdaysRule rule) {
         systemFacade.updateBirthdayRule(rule);
     }
 }
