@@ -46,7 +46,7 @@ public class ReminderSystem {
                                 .equals(
                                         MonthDay.from(clock.now()))
                 )
-                .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder().buildMesage(worker)));
+                .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder(secretPalProperties).buildMessage(worker)));
 
     }
     

@@ -1,7 +1,7 @@
 package com.tenPines.builder;
 
 
-import com.tenPines.model.FriendRelation;
+import com.tenPines.application.SecretPalProperties;
 import com.tenPines.model.Message;
 import com.tenPines.model.Worker;
 import com.tenPines.utils.PropertyParser;
@@ -11,13 +11,10 @@ import java.io.IOException;
 public class HappyBithdayMessageBuilder {
 
     private PropertyParser templateProperties;
+    private SecretPalProperties secretPalProperties;
 
-    public HappyBithdayMessageBuilder() {
-        try {
-            templateProperties = new PropertyParser("mailTemplate.properties");
-        } catch (IOException e) {
-
-        }
+    public HappyBithdayMessageBuilder(SecretPalProperties secretPalProperties) {
+        this.secretPalProperties = secretPalProperties;
     }
 
     private String assignationSubject(Worker birthdayWorker) {
@@ -28,9 +25,9 @@ public class HappyBithdayMessageBuilder {
         return "Feliz cumpleaños y que seas muy feliz!";
     }
 
-    public Message buildMesage(Worker birthdaysWorker) {
+    public Message buildMessage(Worker birthdaysWorker) {
         return new Message(
-                templateProperties.getProperty("receipt"),
+                secretPalProperties.getAllRecipientsMail(),
                 assignationSubject(birthdaysWorker),
                 assignationBodyText()
         );
