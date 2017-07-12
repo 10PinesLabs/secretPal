@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 public interface FriendRelationRepository extends JpaRepository<FriendRelation, Long> {
 
-    FriendRelation findByGiftReceiver(Worker unWorker);
+    Optional<FriendRelation> findByGiftReceiver(Worker unWorker);
 
-    FriendRelation findByGiftGiver(Worker unWorker);
+    Optional<FriendRelation> findByGiftGiver(Worker unWorker);
 
     default void deleteAllRelations() {
         for (FriendRelation friendRelation : findAll()) {

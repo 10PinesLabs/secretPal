@@ -28,6 +28,15 @@ public class NotCircularRelationRule extends AssignationRule {
         return RuleValidator.validate(giver, receiver);
     }
 
+    /*TODO: Poner esto en el validate de arriba
+        @Override
+    public Boolean validate(Worker giver, Worker receiver) {
+        return friendRelationService.getByWorkerReceiver(giver)
+                .map(relation -> !relation.getGiftGiver().equals(receiver))
+                .orElse(true);
+    }
+     */
+
     public void changeRuleIntention() {
         setIsActive(!isActive);
     }

@@ -1,5 +1,6 @@
 package com.tenPines.model;
 
+import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
@@ -23,6 +24,8 @@ import static org.junit.Assert.assertTrue;
 public class FriendRelationValidatorTest extends SpringBaseTest {
 
     @Autowired
+    public Clock clock;
+    @Autowired
     public FriendRelationService friendRelationService;
     @Autowired
     public WorkerService workerService;
@@ -38,6 +41,12 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
     @Before
     public void setUp() {
     }
+    /*TODO: Ver esto
+    @Before
+    public void setUp(){
+        validator = new FriendRelationValidator(clock, friendRelationService);
+    }
+     */
 
     @Test
     public void whenTheReceiverWillGiftTheGiverItShouldNotBeValid() {
@@ -51,13 +60,12 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
         Worker giver = new WorkerBuilder().build();
         Worker receiver = new WorkerBuilder().build();
 
-
         workerService.save(giver);
         workerService.save(receiver);
 
         friendRelationService.create(giver, receiver);
 
-        assertFalse(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(receiver, giver));
+        assertFalse(new FriendRelationValidator(clock, friendRelationService, customParticipantRuleService).validate(receiver, giver));
     }
 
     @Test
@@ -65,7 +73,7 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
         Worker worker = new WorkerBuilder().build();
         workerService.save(worker);
 
-        assertFalse(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(worker, worker));
+        assertFalse(new FriendRelationValidator(clock, friendRelationService, customParticipantRuleService).validate(worker, worker));
     }
 
     @Test
@@ -84,8 +92,8 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
         workerService.save(worker);
         workerService.save(otherWorker);
 
-        assertFalse(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(worker, otherWorker));
-        assertFalse(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(otherWorker, worker));
+        assertFalse(new FriendRelationValidator(clock, friendRelationService, customParticipantRuleService).validate(worker, otherWorker));
+        assertFalse(new FriendRelationValidator(clock, friendRelationService, customParticipantRuleService).validate(otherWorker, worker));
     }
 
     @Test
@@ -104,8 +112,8 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
         workerService.save(worker);
         workerService.save(otherWorker);
 
-        assertTrue(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(worker, otherWorker));
-        assertTrue(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(otherWorker, worker));
+        assertTrue(new FriendRelationValidator(clock, friendRelationService, customParticipantRuleService).validate(worker, otherWorker));
+        assertTrue(new FriendRelationValidator(clock, friendRelationService, customParticipantRuleService).validate(otherWorker, worker));
     }
 
 }

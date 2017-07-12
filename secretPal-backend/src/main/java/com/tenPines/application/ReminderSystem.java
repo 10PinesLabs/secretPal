@@ -8,6 +8,7 @@ import com.tenPines.builder.FriendRelationMessageBuilder;
 import com.tenPines.builder.HappyBithdayMessageBuilder;
 import com.tenPines.builder.ReminderAproachTheBirthdayBuilder;
 import com.tenPines.mailer.PostOffice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class ReminderSystem {
     private final PostOffice postOffice;
     private final MailerService mailerService;
 
+    @Autowired
     public ReminderSystem(Clock clock, FriendRelationService friendRelationService, WorkerService workerService, SecretPalProperties secretPalProperties, PostOffice postOffice, MailerService mailerService) {
         this.clock = clock;
         this.friendRelationService = friendRelationService;
