@@ -22,7 +22,6 @@ import static org.junit.Assert.assertTrue;
 
 public class FriendRelationValidatorTest extends SpringBaseTest {
 
-    public FriendRelationValidator validator;
     @Autowired
     public FriendRelationService friendRelationService;
     @Autowired
@@ -38,7 +37,6 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
 
     @Before
     public void setUp() {
-        validator = new FriendRelationValidator(friendRelationService, customParticipantRuleService);
     }
 
     @Test
@@ -59,7 +57,7 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
 
         friendRelationService.create(giver, receiver);
 
-        assertFalse(validator.validate(receiver, giver));
+        assertFalse(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(receiver, giver));
     }
 
     @Test
@@ -67,7 +65,7 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
         Worker worker = new WorkerBuilder().build();
         workerService.save(worker);
 
-        assertFalse(validator.validate(worker, worker));
+        assertFalse(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(worker, worker));
     }
 
     @Test
@@ -86,8 +84,8 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
         workerService.save(worker);
         workerService.save(otherWorker);
 
-        assertFalse(validator.validate(worker, otherWorker));
-        assertFalse(validator.validate(otherWorker, worker));
+        assertFalse(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(worker, otherWorker));
+        assertFalse(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(otherWorker, worker));
     }
 
     @Test
@@ -106,8 +104,8 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
         workerService.save(worker);
         workerService.save(otherWorker);
 
-        assertTrue(validator.validate(worker, otherWorker));
-        assertTrue(validator.validate(otherWorker, worker));
+        assertTrue(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(worker, otherWorker));
+        assertTrue(new FriendRelationValidator(friendRelationService, customParticipantRuleService).validate(otherWorker, worker));
     }
 
 }

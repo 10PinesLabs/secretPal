@@ -16,14 +16,14 @@ public class FriendRelationValidator {
     public FriendRelationService friendRelationService;
 
     private List<AssignationRule> hardRules;
-    private List<AssignationRule> rules;
+    private List<AssignationRule> activeRules;
 
     public FriendRelationValidator(FriendRelationService friendRelationService,
                                    CustomParticipantRuleService customParticipantRuleService
                                    ) {
         this.friendRelationService = friendRelationService;
-        this.rules = customParticipantRuleService.getActiveRules();
-        this.rules.add(new NotTheSamePersonRule());
+        this.customParticipantRuleService = customParticipantRuleService;
+        this.customParticipantRuleService.getActiveRules().add(new NotTheSamePersonRule());
         this.hardRules = Collections.emptyList();
     }
 
@@ -36,7 +36,8 @@ public class FriendRelationValidator {
     }
 
     private Boolean validateSoftRules(Worker giver, Worker receiver) {
-        List<AssignationRule> activeRules = rules.stream().filter(rule -> rule.isActive()).collect(Collectors.toList());
+        activeRules = customParticipantRuleService.getActiveRules();
+        activeRules.add(new NotTheSamePersonRule());
         return activeRules.stream().allMatch(rule -> rule.validate(giver, receiver));
     }
 
