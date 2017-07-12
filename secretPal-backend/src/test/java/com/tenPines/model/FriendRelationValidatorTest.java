@@ -24,9 +24,9 @@ import static org.junit.Assert.assertTrue;
 public class FriendRelationValidatorTest extends SpringBaseTest {
 
     @Autowired
-    public Clock clock;
+    private Clock clock;
     @Autowired
-    public FriendRelationService friendRelationService;
+    private FriendRelationService friendRelationService;
     @Autowired
     public WorkerService workerService;
     @Autowired

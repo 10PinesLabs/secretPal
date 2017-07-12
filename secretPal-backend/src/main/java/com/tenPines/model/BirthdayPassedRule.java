@@ -19,4 +19,9 @@ public class BirthdayPassedRule extends AssignationRule {
         return clock.now().isBefore(actualBirthday);
     }
 
+    @Override
+    public boolean isActive() {
+        return true;
+    }
+
 }

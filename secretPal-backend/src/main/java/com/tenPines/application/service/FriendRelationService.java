@@ -32,7 +32,7 @@ public class FriendRelationService {
                                  CustomParticipantRuleService customParticipantRuleService) {
         this.clock = clock;
         this.friendRelationRepository = friendRelationRepository;
-        this.workerService = workerService
+        this.workerService = workerService;
         this.customParticipantRuleService = customParticipantRuleService;
     }
 
@@ -55,7 +55,6 @@ public class FriendRelationService {
         }
     }
 
-
     public List<FriendRelation> getAllRelations() {
         return friendRelationRepository.findAll();
     }
@@ -67,7 +66,7 @@ public class FriendRelationService {
     }
 
     public List<Worker> getAvailablesRelationsTo(Worker workerTo) {
-        FriendRelationValidator validator = new FriendRelationValidator(clock, this);
+        FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
         return workerService.getAllParticipants().stream().filter(participant ->
             validator.validate(workerTo, participant)
         ).collect(Collectors.toList());
