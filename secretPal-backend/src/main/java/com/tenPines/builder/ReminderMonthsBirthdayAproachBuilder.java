@@ -14,11 +14,6 @@ public class ReminderMonthsBirthdayAproachBuilder extends ReminderBuilder {
     @Autowired
     public ReminderMonthsBirthdayAproachBuilder(MailerService mailerService) {
         super(mailerService);
-        try {
-            templateProperties = new PropertyParser("mailTemplate.properties");
-        } catch (IOException e) {
-
-        }
     }
 
     @Override

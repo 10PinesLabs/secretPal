@@ -1,11 +1,23 @@
 package com.tenPines.application;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
+@ConfigurationProperties(prefix = "secretPal")
 public class SecretPalProperties {
-    private long reminderWeekPeriod = 2L;
-    private long reminderMonthPeriod = 2L;
+    private long reminderWeekPeriod;
+    private long reminderMonthPeriod;
+    public String allRecipientsMail;
+
+    public String getAllRecipientsMail() {
+        return allRecipientsMail;
+    }
+
+    public void setAllRecipientsMail(String allRecipientsMail) {
+        this.allRecipientsMail = allRecipientsMail;
+    }
+
 
     public long getReminderWeekPeriod() {
         return reminderWeekPeriod;
