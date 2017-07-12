@@ -97,8 +97,8 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     }
 
     @Test
-    public void whenARelationBirthdayHasNotHappenedYet() {
-        clock.setTime(LocalDate.of(2017, Month.JUNE, 10)); //Set today
+    public void whenItIsMoreThanTwoMonthsBeforeRelationBirthday() {
+        clock.setTime(LocalDate.of(2017, Month.MAY, 10)); //Set today
 
         Worker aWorker = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
         Worker anotherWorker = new WorkerBuilder().buildFromDate(1, Month.AUGUST);

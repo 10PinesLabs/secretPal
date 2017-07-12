@@ -135,7 +135,7 @@ public class FriendRelationService {
     }
 
     private boolean canReceive(Worker worker) {
-        return ChronoUnit.MONTHS.between(clock.now(), actualBirthday(worker)) >= 1;
+        return ChronoUnit.MONTHS.between(clock.now(), actualBirthday(worker)) >= 2;
     }
 
     private LocalDate actualBirthday(Worker worker) {
@@ -144,7 +144,7 @@ public class FriendRelationService {
 
     public Boolean inmutableRelation(FriendRelation relation) {
         LocalDate actualBirthday = actualBirthday(relation.getGiftReceiver());
-        return ChronoUnit.MONTHS.between(clock.now(), actualBirthday) < 1;
+        return ChronoUnit.MONTHS.between(clock.now(), actualBirthday) < 2;
     }
 
     public void updateRelation(Worker giver, Worker newReceiver) {
