@@ -1,9 +1,7 @@
 package com.tenPines.application.service;
 
-import com.tenPines.application.service.validation.rule.AssignationRule;
-import com.tenPines.application.service.validation.rule.CustomParticipantRule;
-import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
-import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
+import com.tenPines.application.clock.Clock;
+import com.tenPines.application.service.validation.rule.*;
 import com.tenPines.model.Worker;
 import com.tenPines.persistence.CustomParticipantRuleRepository;
 import com.tenPines.persistence.NotCircularRelationRuleRepository;
@@ -18,6 +16,8 @@ import java.util.List;
 public class CustomParticipantRuleService {
 
     @Autowired
+    private final Clock clock;
+    @Autowired
     private final CustomParticipantRuleRepository customParticipantRuleRepository;
     @Autowired
     private final NotCircularRelationRuleRepository notCircularRelationRuleRepository;
@@ -26,10 +26,11 @@ public class CustomParticipantRuleService {
     @Autowired
     private final WorkerService workerService;
 
-    public CustomParticipantRuleService(CustomParticipantRuleRepository customParticipantRuleRepository,
+    public CustomParticipantRuleService(Clock clock, CustomParticipantRuleRepository customParticipantRuleRepository,
                                         NotCircularRelationRuleRepository notCircularRelationRuleRepository,
                                         NotTooCloseBirthdayRuleRepository notTooCloseBirthdayRuleRepository,
                                         WorkerService workerService) {
+        this.clock = clock;
         this.customParticipantRuleRepository = customParticipantRuleRepository;
         this.notCircularRelationRuleRepository = notCircularRelationRuleRepository;
         this.notTooCloseBirthdayRuleRepository = notTooCloseBirthdayRuleRepository;
@@ -52,6 +53,8 @@ public class CustomParticipantRuleService {
         List<AssignationRule> assignationRules = new ArrayList<>();
             assignationRules.add(getCircularRule());
             assignationRules.add(getNotTooCloseBirthdayRule());
+            assignationRules.add(new NotTheSamePersonRule());
+            assignationRules.add(new BirthdayPassedRule(clock));
 
         return assignationRules;
     }

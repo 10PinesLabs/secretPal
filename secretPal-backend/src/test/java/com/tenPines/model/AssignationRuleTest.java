@@ -4,10 +4,7 @@ package com.tenPines.model;
 import com.tenPines.application.clock.FakeClock;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
-import com.tenPines.application.service.validation.rule.AssignationRule;
-import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
-import com.tenPines.application.service.validation.rule.NotTheSamePersonRule;
-import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
+import com.tenPines.application.service.validation.rule.*;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
 import org.junit.Test;
@@ -36,7 +33,8 @@ public class AssignationRuleTest extends SpringBaseTest {
         workerService.save(receiver);
 
         friendRelationService.create(giver, receiver);
-        AssignationRule rule = new NotCircularRelationRule();
+        NotCircularRelationRule rule = new NotCircularRelationRule();
+        rule.changeRuleIntention();
 
         assertFalse(rule.validate(receiver, giver));
     }
@@ -60,7 +58,8 @@ public class AssignationRuleTest extends SpringBaseTest {
         workerService.save(worker);
         workerService.save(otherWorker);
 
-        AssignationRule rule = new NotTooCloseBirthdaysRule();
+        NotTooCloseBirthdaysRule rule = new NotTooCloseBirthdaysRule();
+        rule.changeRuleIntention();
 
         assertFalse(rule.validate(worker, otherWorker));
     }
@@ -74,7 +73,8 @@ public class AssignationRuleTest extends SpringBaseTest {
         workerService.save(worker);
         workerService.save(otherWorker);
 
-        AssignationRule rule = new NotTooCloseBirthdaysRule();
+        NotTooCloseBirthdaysRule rule = new NotTooCloseBirthdaysRule();
+        rule.changeRuleIntention();
 
         assertFalse(rule.validate(worker, otherWorker));
         assertFalse(rule.validate(otherWorker, worker));

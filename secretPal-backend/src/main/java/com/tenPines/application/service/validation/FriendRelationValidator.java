@@ -3,7 +3,6 @@ package com.tenPines.application.service.validation;
 import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.application.service.FriendRelationService;
-import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 
@@ -13,9 +12,6 @@ public class FriendRelationValidator {
 
     private CustomParticipantRuleService customParticipantRuleService;
     public FriendRelationService friendRelationService;
-
-    private List<AssignationRule> hardRules;
-    private List<AssignationRule> rules;
 
     private final Clock clock;
 

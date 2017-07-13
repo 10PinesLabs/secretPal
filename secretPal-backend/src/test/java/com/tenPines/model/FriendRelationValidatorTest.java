@@ -41,12 +41,6 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
     @Before
     public void setUp() {
     }
-    /*TODO: Ver esto
-    @Before
-    public void setUp(){
-        validator = new FriendRelationValidator(clock, friendRelationService);
-    }
-     */
 
     @Test
     public void whenTheReceiverWillGiftTheGiverItShouldNotBeValid() {
