@@ -5,11 +5,19 @@ import com.tenPines.model.Worker;
 
 import java.util.List;
 
+
 public class NotTheSamePersonRule extends AssignationRule {
+
+    public Boolean isActive = true;
 
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
         return !giver.equals(receiver);
+    }
+
+    @Override
+    public boolean isActive( ) {
+        return isActive;
     }
 
     @Override

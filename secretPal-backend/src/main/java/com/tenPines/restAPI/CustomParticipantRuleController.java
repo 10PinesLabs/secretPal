@@ -2,7 +2,10 @@ package com.tenPines.restAPI;
 
 import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.WorkerService;
+import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
+import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
+import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,10 +40,38 @@ public class CustomParticipantRuleController {
         systemFacade.deleteRule(id);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/customRules", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<CustomParticipantRule> rules() {
-        List<CustomParticipantRule> rules = systemFacade.getAllRules();
+        List<CustomParticipantRule> rules = systemFacade.getAllCustomRules();
         return rules;
+    }
+
+    @RequestMapping(value = "/notCircularRule", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public NotCircularRelationRule notCircularRule() {
+        NotCircularRelationRule circularRule = systemFacade.getCircularRule();
+        return circularRule;
+    }
+
+    @RequestMapping(value = "/notTooCloseBirthdayRule", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public NotTooCloseBirthdaysRule notTooCloseBirthdayRule() {
+        NotTooCloseBirthdaysRule birthdayRule = systemFacade.getNotTooCloseBirthdayRule();
+        return birthdayRule;
+    }
+
+    @RequestMapping(value = "/notCircularRule", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateCircularRule(@RequestBody NotCircularRelationRule rule) {
+        systemFacade.updateCircularRule(rule);
+    }
+
+    @RequestMapping(value = "/notTooCloseBirthdayRule", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateBirthdayRule(@RequestBody NotTooCloseBirthdaysRule rule) {
+        systemFacade.updateBirthdayRule(rule);
     }
 }

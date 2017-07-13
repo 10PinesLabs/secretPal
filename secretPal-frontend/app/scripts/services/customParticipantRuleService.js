@@ -8,16 +8,16 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
     return route + path;
   };
 
-  self.successMsg = function(msg) {
+  self.successMsg = function (msg) {
     SweetAlert.swal("", msg, "success");
   };
 
-  self.errorMsg = function(msg) {
+  self.errorMsg = function (msg) {
     SweetAlert.swal("Algo salio mal", msg, "error");
   };
 
-  this.all = function (callback) {
-    $http.get(self.buildRoute('/')).success(function (data) {
+  this.allCustomRules = function (callback) {
+    $http.get(self.buildRoute('/customRules')).success(function (data) {
       callback(data);
     }).error(function () {
       self.errorMsg("No se pudieron conseguir las reglas, intentelo nuevamente.");
@@ -32,6 +32,38 @@ angular.module('secretPalApp').service('CustomParticipantRuleService', function 
     $http.delete(self.buildRoute('/' + id)).success(function () {
       self.successMsg("Regla eliminada exitosamente");
       successFunction();
+    });
+  };
+
+  this.notCircularRule = function (callback) {
+    $http.get(self.buildRoute('/notCircularRule')).success(function (data) {
+      callback(data);
+    }).error(function () {
+      self.errorMsg("No se pudo cargar la regla circular.")
+    });
+  }
+
+  this.notTooCloseBirthdayRule = function (callback) {
+    $http.get(self.buildRoute('/notTooCloseBirthdayRule')).success(function (data) {
+      callback(data);
+    }).error(function () {
+      self.errorMsg("No se pudo cargar la regla de los cumpleaños cercanos.")
+    });
+  }
+
+  this.updateIsCheckedCircular = function (rule) {
+    $http.put(self.buildRoute('/notCircularRule'), rule).success(function () {
+      self.successMsg("Se han actualizado las reglas seleccionadas");
+    }).error(function () {
+      self.errorMsg("No se pudo actualizar alguna/s de las reglas");
+    });
+  };
+
+  this.updateIsCheckedBirthday = function (rule) {
+    $http.put(self.buildRoute('/notTooCloseBirthdayRule'), rule).success(function () {
+      self.successMsg("Se han actualizado las reglas seleccionadas");
+    }).error(function () {
+      self.errorMsg("No se pudo actualizar alguna/s de las reglas");
     });
   };
 });

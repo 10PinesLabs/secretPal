@@ -36,7 +36,7 @@ public class AssignationRuleTest extends SpringBaseTest {
         workerService.save(receiver);
 
         friendRelationService.create(giver, receiver);
-        AssignationRule rule = new NotCircularRelationRule(friendRelationService);
+        AssignationRule rule = new NotCircularRelationRule();
 
         assertFalse(rule.validate(receiver, giver));
     }

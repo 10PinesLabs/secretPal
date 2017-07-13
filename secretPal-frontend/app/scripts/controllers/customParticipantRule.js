@@ -8,8 +8,16 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
     $scope.workers = data;
   });
 
-  CustomParticipantRuleService.all(function (data) {
+  CustomParticipantRuleService.allCustomRules(function (data) {
     $scope.rules = data;
+  });
+
+  CustomParticipantRuleService.notCircularRule(function (data) {
+    $scope.notCircularRule = data;
+  });
+
+  CustomParticipantRuleService.notTooCloseBirthdayRule(function (data) {
+    $scope.notTooCloseBirthdaysRule = data;
   });
 
   $scope.createRule = function () {
@@ -54,19 +62,32 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
   };
 
   $scope.delete = function (rule) {
-    if (rule.isRuleActivate) {
+    if (rule.isActive) {
       warningMsg("La regla está activa, no se puede borrar.");
     } else {
       $scope.deleteWithConfirmationMsg(rule);
     }
   };
 
-  $scope.changeIntention = function (rule) {
-    rule.changeRuleIntention;
-  };
-
   $scope.canDelete = function (rule) {
-    return rule.isActivate === false;
+    return rule.isActive() == false;
   };
 
+  $scope.assignRules = function (notCircularRule, notTooCloseBirthdaysRule) {
+    if ($scope.circularCheck == true) {
+      notCircularRule.isActive = true;
+      CustomParticipantRuleService.updateIsCheckedCircular(notCircularRule);
+    } else {
+      notCircularRule.isActive = false;
+      CustomParticipantRuleService.updateIsCheckedCircular(notCircularRule);
+    }
+    if ($scope.notTooCloseCheck == true) {
+      notTooCloseBirthdaysRule.isActive = true;
+      CustomParticipantRuleService.updateIsCheckedBirthday(notTooCloseBirthdaysRule);
+    } else {
+      notTooCloseBirthdaysRule.isActive = false;
+      CustomParticipantRuleService.updateIsCheckedBirthday(notTooCloseBirthdaysRule);
+    }
+    CustomParticipantRuleService.successMsg("Regla/s actualizada/s con exito.");
+  }
 });

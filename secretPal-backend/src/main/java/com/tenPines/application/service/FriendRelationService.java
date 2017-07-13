@@ -29,12 +29,15 @@ public class FriendRelationService {
     private final FriendRelationRepository friendRelationRepository;
     private final WorkerService workerService;
     private static Random random = new Random(System.nanoTime());
+    private final CustomParticipantRuleService customParticipantRuleService;
 
     @Autowired
-    public FriendRelationService(Clock clock, FriendRelationRepository friendRelationRepository, WorkerService workerService) {
+    public FriendRelationService(Clock clock, FriendRelationRepository friendRelationRepository, WorkerService workerService,
+                                 CustomParticipantRuleService customParticipantRuleService) {
         this.clock = clock;
         this.friendRelationRepository = friendRelationRepository;
         this.workerService = workerService;
+        this.customParticipantRuleService = customParticipantRuleService;
     }
 
     public FriendRelation create(Worker friendWorker, Worker birthdayWorker) {
@@ -45,13 +48,13 @@ public class FriendRelationService {
         checkIfThereAreEnoughParticipants();
         checkIfThereAreTwoParticipants();
 
-        FriendRelationValidator validator = new FriendRelationValidator(clock, this);
+        FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
         List<Worker> assignableWorkers = workersWhoCanGive();
 
         for (int i = 0; i<100; i++) {
             deleteRelationsByGiftGivers(workersWhoCanGive());
             List<FriendRelation> relations = new AutoAssignmentFunction(
-                    clock, random, this).relate();
+                    clock, random, this, customParticipantRuleService).relate();
 
             if (allWorkersHasRelation(relations)) {
                 friendRelationRepository.save(relations);
@@ -85,7 +88,7 @@ public class FriendRelationService {
     }
 
     public List<Worker> getAvailablesRelationsTo(Worker workerTo) {
-        FriendRelationValidator validator = new FriendRelationValidator(clock, this);
+        FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
         return workerService.getAllParticipants().stream().filter(participant ->
             validator.validate(workerTo, participant)
         ).collect(Collectors.toList());

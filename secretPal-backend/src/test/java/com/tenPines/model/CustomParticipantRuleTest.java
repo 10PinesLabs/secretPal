@@ -1,6 +1,7 @@
 package com.tenPines.model;
 
 import com.tenPines.application.clock.Clock;
+import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.FriendRelationValidator;
@@ -10,6 +11,7 @@ import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
 import com.tenPines.model.process.AssignmentException;
 import com.tenPines.model.process.RelationEstablisher;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,8 +33,15 @@ public class CustomParticipantRuleTest extends SpringBaseTest {
     public WorkerService workerService;
     @Autowired
     public FriendRelationService friendRelationService;
+    @Autowired
+    public CustomParticipantRuleService customParticipantRuleService;
 
-    public FriendRelationValidator friendRelationValidator = new FriendRelationValidator(clock, friendRelationService);
+    public FriendRelationValidator friendRelationValidator;
+
+    @Before
+    public void setUp(){
+        friendRelationValidator = new FriendRelationValidator(clock, friendRelationService, customParticipantRuleService);
+    }
 
     @Test
     public void When_there_is_no_participants_the_rule_should_give_an_error() {
