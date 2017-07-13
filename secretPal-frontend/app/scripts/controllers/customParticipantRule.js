@@ -70,24 +70,12 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
   };
 
   $scope.canDelete = function (rule) {
-    return rule.isActive() == false;
+    return rule.isActive() === false;
   };
 
-  $scope.assignRules = function (notCircularRule, notTooCloseBirthdaysRule) {
-    if ($scope.circularCheck == true) {
-      notCircularRule.isActive = true;
-      CustomParticipantRuleService.updateIsCheckedCircular(notCircularRule);
-    } else {
-      notCircularRule.isActive = false;
-      CustomParticipantRuleService.updateIsCheckedCircular(notCircularRule);
-    }
-    if ($scope.notTooCloseCheck == true) {
-      notTooCloseBirthdaysRule.isActive = true;
-      CustomParticipantRuleService.updateIsCheckedBirthday(notTooCloseBirthdaysRule);
-    } else {
-      notTooCloseBirthdaysRule.isActive = false;
-      CustomParticipantRuleService.updateIsCheckedBirthday(notTooCloseBirthdaysRule);
-    }
-    CustomParticipantRuleService.successMsg("Regla/s actualizada/s con exito.");
-  }
+  $scope.assignRules = function () {
+      debugger;
+      CustomParticipantRuleService.updateIsCheckedCircular($scope.notCircularRule);
+      CustomParticipantRuleService.updateIsCheckedBirthday($scope.notTooCloseBirthdaysRule);
+  };
 });
