@@ -4,11 +4,9 @@ import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.validation.rule.AssignationRule;
-import com.tenPines.application.service.validation.rule.NotTheSamePersonRule;
-import com.tenPines.model.BirthdayPassedRule;
+import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 
-import java.util.Collections;
 import java.util.List;
 
 public class FriendRelationValidator {
@@ -17,7 +15,7 @@ public class FriendRelationValidator {
     public FriendRelationService friendRelationService;
 
     private List<AssignationRule> hardRules;
-    private List<AssignationRule> activeRules;
+    private List<AssignationRule> rules;
 
     private final Clock clock;
 
@@ -27,16 +25,15 @@ public class FriendRelationValidator {
         this.clock = clock;
         this.friendRelationService = friendRelationService;
         this.customParticipantRuleService = customParticipantRuleService;
-        this.customParticipantRuleService.getActiveRules().add(new NotTheSamePersonRule());
-        this.hardRules = Collections.emptyList();
     }
 
     public Boolean validate(Worker giver, Worker receiver) {
         return validateRules(giver, receiver) && !hasOtherSecretPal(giver, receiver);
     }
 
-    private boolean validateRules(Worker giver, Worker receiver) {
-        return validateHardRules(giver, receiver) || validateSoftRules(giver, receiver);
+
+    private Boolean validateRules(Worker giver, Worker receiver) {
+        return customParticipantRuleService.getRules().stream().allMatch(rule -> rule.validate(giver, receiver));
     }
 
     private Boolean hasOtherSecretPal(Worker giver, Worker receiver) {
@@ -45,28 +42,12 @@ public class FriendRelationValidator {
                 .orElse(false);
     }
 
-    private Boolean validateHardRules(Worker giver, Worker receiver) {
-        return hardRules.stream().anyMatch(rule -> rule.validate(giver, receiver));
+    public Boolean validateAll(List<FriendRelation> newRelations) {
+        return newRelations.stream().allMatch(relation -> validateRelation(relation, newRelations));
     }
 
-    private Boolean validateSoftRules(Worker giver, Worker receiver) {
-        activeRules = customParticipantRuleService.getActiveRules();
-        activeRules.add(new NotTheSamePersonRule());
-        activeRules.add(new BirthdayPassedRule(clock));
-        return activeRules.stream().allMatch(rule -> rule.validate(giver, receiver));
+    private Boolean validateRelation(FriendRelation relation, List<FriendRelation> newRelations) {
+        return customParticipantRuleService.getRules().stream().allMatch(rule -> rule.validate(relation, newRelations));
     }
 
-    public boolean validateAll(List<Worker> validWorkers) {
-        return validWorkers.stream().allMatch(worker ->
-                validate(worker, getNextWorker(validWorkers, worker))
-        );
-    }
-
-    private Worker getNextWorker(List<Worker> validWorkers, Worker worker) {
-        return validWorkers.get(getIndexOfNextWorker(validWorkers, worker));
-    }
-
-    private int getIndexOfNextWorker(List<Worker> validWorkers, Worker worker) {
-        return (validWorkers.indexOf(worker) + 1) % validWorkers.size();
-    }
 }

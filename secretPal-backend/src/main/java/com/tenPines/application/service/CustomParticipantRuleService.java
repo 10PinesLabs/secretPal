@@ -48,7 +48,7 @@ public class CustomParticipantRuleService {
         return customParticipantRuleRepository.findAll();
     }
 
-    public List<AssignationRule> getActiveRules() {
+    public List<AssignationRule> getRules() {
         List<AssignationRule> assignationRules = new ArrayList<>();
             assignationRules.add(getCircularRule());
             assignationRules.add(getNotTooCloseBirthdayRule());
@@ -65,10 +65,12 @@ public class CustomParticipantRuleService {
     }
 
     public void updateCircularRule(NotCircularRelationRule rule) {
+        notCircularRelationRuleRepository.deleteAll();
         notCircularRelationRuleRepository.save(rule);
     }
 
     public void updateRuleBirthday(NotTooCloseBirthdaysRule rule) {
+        notTooCloseBirthdayRuleRepository.deleteAll();
         notTooCloseBirthdayRuleRepository.save(rule);
     }
 

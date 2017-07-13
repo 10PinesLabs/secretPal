@@ -1,6 +1,10 @@
 package com.tenPines.application.service.validation.rule;
 
+import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
+
+import java.util.List;
+
 
 public class NotTheSamePersonRule extends AssignationRule {
 
@@ -14,6 +18,11 @@ public class NotTheSamePersonRule extends AssignationRule {
     @Override
     public boolean isActive( ) {
         return isActive;
+    }
+
+    @Override
+    public Boolean validate(FriendRelation relation, List<FriendRelation> newRelations) {
+        return validate(relation.getGiftGiver(), relation.getGiftReceiver());
     }
 
 }

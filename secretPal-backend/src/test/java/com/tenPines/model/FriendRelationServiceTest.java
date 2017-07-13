@@ -5,7 +5,6 @@ import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -72,7 +71,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         workerService.save(aWorker);
         workerService.save(anotherWorker);
 
-        List<Worker> assignableWorkers = friendRelationService.assignableWorkers();
+        List<Worker> assignableWorkers = friendRelationService.workersWhoCanGive();
 
         assertThat(assignableWorkers, hasSize(2));
         assertThat(assignableWorkers, hasItem(aWorker));
@@ -91,7 +90,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         friendRelationService.create(aWorker, workerWhoHasBirthday);
         clock.setTime(clock.now().plusMonths(3)); //advance time
 
-        List<Worker> assignableWorkers = friendRelationService.assignableWorkers();
+        List<Worker> assignableWorkers = friendRelationService.workersWhoCanGive();
 
         assertThat(assignableWorkers, hasSize(1));
         assertThat(assignableWorkers, hasItem(workerWhoHasBirthday));
@@ -139,6 +138,39 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         clock.setTime(LocalDate.of(2017, Month.JULY, 25)); //advance time
 
         assertTrue(friendRelationService.inmutableRelation(relation));
+    }
+
+    @Test
+    public void whenAllWorkersCanBeReceivers() {
+        clock.setTime(LocalDate.of(2017, Month.FEBRUARY, 10)); //Set today
+        Worker aWorker = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
+        Worker anotherWorker = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
+        workerService.save(aWorker);
+        workerService.save(anotherWorker);
+
+        List<Worker> assignableWorkers = friendRelationService.workersWhoCanReceive();
+
+        assertThat(assignableWorkers, hasSize(2));
+        assertThat(assignableWorkers, hasItem(aWorker));
+        assertThat(assignableWorkers, hasItem(anotherWorker));
+    }
+
+    @Test
+    public void whenAWorkerCannotBeReceiver() {
+        clock.setTime(LocalDate.of(2017, Month.JUNE, 10)); //Set today
+
+        Worker aWorker = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
+        Worker workerWhoHasBirthday = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
+        workerService.save(aWorker);
+        workerService.save(workerWhoHasBirthday);
+
+        friendRelationService.create(aWorker, workerWhoHasBirthday);
+        clock.setTime(clock.now().plusMonths(3)); //advance time
+
+        List<Worker> assignableWorkers = friendRelationService.workersWhoCanReceive();
+
+        assertThat(assignableWorkers, hasSize(1));
+        assertThat(assignableWorkers, hasItem(aWorker));
     }
 
 }

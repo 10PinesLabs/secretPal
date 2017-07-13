@@ -1,5 +1,6 @@
 package com.tenPines.application.service.validation.rule;
 
+import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Entity
 @Table
@@ -30,7 +32,12 @@ public class NotTooCloseBirthdaysRule extends AssignationRule {
 
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
-        return moreThan2WeeksBetweenBirthdays(giver, receiver);
+        return (isActive && moreThan2WeeksBetweenBirthdays(giver, receiver)) || !isActive;
+    }
+
+    @Override
+    public Boolean validate(FriendRelation relation, List<FriendRelation> newRelations) {
+        return validate(relation.getGiftGiver(), relation.getGiftReceiver());
     }
 
     private Boolean moreThan2WeeksBetweenBirthdays(Worker giver, Worker receiver) {

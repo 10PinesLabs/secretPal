@@ -1,10 +1,13 @@
 package com.tenPines.application.service.validation.rule;
 
+import com.tenPines.model.FriendRelation;
 import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.model.Worker;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.List;
 
 @Entity
 @Table
@@ -32,6 +35,11 @@ public class CustomParticipantRule extends AssignationRule {
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
         return this.giver.equals(giver) && this.receiver.equals(receiver);
+    }
+
+    @Override
+    public Boolean validate(FriendRelation relation, List<FriendRelation> newRelations) {
+        return validate(relation.getGiftGiver(), relation.getGiftReceiver());
     }
 
     public void changeRuleIntention() {
