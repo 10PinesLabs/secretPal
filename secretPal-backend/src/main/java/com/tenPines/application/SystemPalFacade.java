@@ -26,6 +26,7 @@ public class SystemPalFacade {
     private final CustomParticipantRuleService customParticipantRuleService;
     private Long reminderDayPeriod;
     private Clock clock;
+    private final ReminderSystem reminderSystem;
 
     public Worker retrieveAssignedFriendFor(Long Idparticipant) {
         Worker participant = workerService.retriveWorker(Idparticipant);
@@ -88,7 +89,8 @@ public class SystemPalFacade {
 
     }
 
-    public SystemPalFacade(FriendRelationService friendRelationService, WorkerService workerService, GiftDefaultService giftDefaultService, WishlistService wishlistService, SecurityGuard securityGuard, RegisterService registerService, MailerService mailerService, CustomParticipantRuleService customParticipantRuleService) {
+    public SystemPalFacade(FriendRelationService friendRelationService, WorkerService workerService, GiftDefaultService giftDefaultService, WishlistService wishlistService, SecurityGuard securityGuard, RegisterService registerService, MailerService mailerService, CustomParticipantRuleService customParticipantRuleService, ReminderSystem reminderSystem) {
+        this.reminderSystem = reminderSystem;
         setReminderDayPeriod(7L);
         this.friendRelationService = friendRelationService;
         this.workerService = workerService;
@@ -204,4 +206,7 @@ public class SystemPalFacade {
         friendRelationService.updateRelation(giver, newReceiver);
     }
 
+    public void sendAllTodayReminders() {
+        reminderSystem.sendAllReminders();
+    }
 }

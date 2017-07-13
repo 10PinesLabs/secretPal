@@ -58,5 +58,16 @@ angular.module('secretPalApp').service('MailService', function($http, SweetAlert
 
   };
 
+  this.remind = function () {
+    $http.post(buildRoute('/remind')).
+    success(function(){
+      successMsg("Se enviaron los todos los recordatorios de hoy");
+    }).error(function () {
+      errorMsg("No se pudieron enviar los recordatorios, inténtelo mas tarde");
+
+    });
+
+  };
+
 
 });

@@ -5,11 +5,9 @@ import com.tenPines.application.service.MailerService;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.EmailTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +47,12 @@ public class MailerController {
     @ResponseBody
     public void resendMail(@RequestBody UnsentMessage unsentMessage) throws IOException {
         system.resendMessageFailure(unsentMessage);
+    }
+
+    @RequestMapping(value = "/remind", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void sendAllTodayReminders() throws IOException {
+        system.sendAllTodayReminders();
     }
 
 

@@ -27,4 +27,26 @@ app.controller('MailController', function($scope, $route, MailService, SweetAler
       });
   };
 
+  $scope.remind = function(){
+    SweetAlert.swal({
+        title: "¿Estas seguro?",
+        text: "Se enviaran mails de recordatorio a aquellos pinos cuyo agasajado cumpla en 2 meses o 2 semanas.",
+        type: "warning",
+        allowOutsideClick: false,
+        showConfirmButton: true,
+        showCancelButton: true,
+        closeOnConfirm: false,
+        closeOnCancel: true,
+        confirmButtonText: "¡Si!",
+        confirmButtonColor: "#68bd46",
+        cancelButtonText: "Cancelar",
+        cancelButtonColor: "#b8bdb7",
+      },
+      function (isConfirm) {
+        if(isConfirm) {
+          MailService.remind();
+        }
+      });
+  };
+
 });
