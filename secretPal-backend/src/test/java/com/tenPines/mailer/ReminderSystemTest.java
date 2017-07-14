@@ -13,12 +13,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.Temporal;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.containsString;
 
 
 public class ReminderSystemTest extends SpringBaseTest {
@@ -50,27 +47,21 @@ public class ReminderSystemTest extends SpringBaseTest {
 
 
     @Test
-    public void When_A_Workers_Birthday_Should_Mail_Him(){
+    public void When_A_Workers_Birthday_Should_Mail_All_Pines(){
         setUp(LocalDate.now(), LocalDate.now());
 
         reminderSystem.sendHappyBithdayMessages();
         assertThat(postMan.messagesTo(birthdayWorker.geteMail()), empty());
     }
 
-    @Test
-    public void When_assign_relation_between_two_workers(){
-        setUp(LocalDate.now(), LocalDate.now());
 
-        reminderSystem.sendAssignedRelation();
-        assertThat(postMan.messagesTo(friendWorker.geteMail()), not(empty()));
-    }
 
 
     @Test
     public void When_aproach_the_birthday_of_friendWorker(){
-        setUp(LocalDate.now().plusDays(secretPalProperties.getReminderDayPeriod()), LocalDate.now());
+        setUp(LocalDate.now().plusDays(secretPalProperties.getReminderWeekPeriod()), LocalDate.now());
 
-        reminderSystem.sendRemindersTheLastBirthday();
+        reminderSystem.sendTwoWeeksReminders();
         assertThat(postMan.messagesTo(friendWorker.geteMail()), empty());
     }
 
