@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.time.MonthDay;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -46,7 +46,6 @@ public class FriendRelationService {
         checkIfThereAreTwoParticipants();
 
         FriendRelationValidator validator = new FriendRelationValidator(clock, this);
-        List<Worker> assignableWorkers = workersWhoCanGive();
 
         for (int i = 0; i<100; i++) {
             deleteRelationsByGiftGivers(workersWhoCanGive());
@@ -135,7 +134,7 @@ public class FriendRelationService {
     }
 
     private boolean canReceive(Worker worker) {
-        return ChronoUnit.MONTHS.between(clock.now(), actualBirthday(worker)) >= 2;
+        return !lessThanTwoMonths(worker);
     }
 
     private LocalDate actualBirthday(Worker worker) {
@@ -143,8 +142,13 @@ public class FriendRelationService {
     }
 
     public Boolean inmutableRelation(FriendRelation relation) {
-        LocalDate actualBirthday = actualBirthday(relation.getGiftReceiver());
-        return ChronoUnit.MONTHS.between(clock.now(), actualBirthday) < 2;
+        return lessThanTwoMonths(relation.getGiftReceiver());
+    }
+
+    private boolean lessThanTwoMonths(Worker worker) {
+        MonthDay todayPlusTwoMonths = MonthDay.from(clock.now().plusMonths(2));
+        MonthDay birthday = MonthDay.from(actualBirthday(worker));
+        return birthday.equals(todayPlusTwoMonths) || birthday.isBefore(todayPlusTwoMonths);
     }
 
     public void updateRelation(Worker giver, Worker newReceiver) {

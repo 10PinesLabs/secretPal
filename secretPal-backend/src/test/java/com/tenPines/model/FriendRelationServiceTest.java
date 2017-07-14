@@ -165,7 +165,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         workerService.save(workerWhoHasBirthday);
 
         friendRelationService.create(aWorker, workerWhoHasBirthday);
-        clock.setTime(clock.now().plusMonths(3)); //advance time
+        clock.setTime(clock.now().plusMonths(2)); //advance time
 
         List<Worker> assignableWorkers = friendRelationService.workersWhoCanReceive();
 
