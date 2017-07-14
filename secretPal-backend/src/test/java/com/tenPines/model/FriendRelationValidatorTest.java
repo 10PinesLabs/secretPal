@@ -44,7 +44,7 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
 
     @Test
     public void whenTheReceiverWillGiftTheGiverItShouldNotBeValid() {
-        NotCircularRelationRule notCircularRelationRule = notCircularRelationRuleRepository.findAll().get(0);
+        NotCircularRelationRule notCircularRelationRule = customParticipantRuleService.getCircularRule();
         notCircularRelationRule.isActive = false;
         notCircularRelationRuleRepository.save(notCircularRelationRule);
 
@@ -72,7 +72,7 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
 
     @Test
     public void isInvalidWhenValidateTooCloseBirthdayRule() {
-        NotTooCloseBirthdaysRule notTooCloseBirthdaysRule = notTooCloseBirthdayRuleRepository.findAll().get(0);
+        NotTooCloseBirthdaysRule notTooCloseBirthdaysRule = customParticipantRuleService.getNotTooCloseBirthdayRule();
         notTooCloseBirthdaysRule.isActive = false;
         notTooCloseBirthdayRuleRepository.save(notTooCloseBirthdaysRule);
 
@@ -92,7 +92,7 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
 
     @Test
     public void isValidWhenValidateTooCloseBirthdayRule() {
-        NotTooCloseBirthdaysRule notTooCloseBirthdaysRule = notTooCloseBirthdayRuleRepository.findAll().get(0);
+        NotTooCloseBirthdaysRule notTooCloseBirthdaysRule = customParticipantRuleService.getNotTooCloseBirthdayRule();
         notTooCloseBirthdaysRule.isActive = false;
         notTooCloseBirthdayRuleRepository.save(notTooCloseBirthdaysRule);
 
