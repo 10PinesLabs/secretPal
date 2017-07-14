@@ -27,7 +27,7 @@ public class NotCircularRelationRule extends AssignationRule {
 
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
-        return RuleValidator.validate(this, giver, receiver);
+        return NotCircularRuleValidator.validate(this, giver, receiver);
     }
 
     public void changeRuleIntention() {
@@ -44,7 +44,7 @@ public class NotCircularRelationRule extends AssignationRule {
 
     @Override
     public Boolean validate(FriendRelation relation, List<FriendRelation> newRelations) {
-        return RuleValidator.validate(this, relation, newRelations);
+        return NotCircularRuleValidator.validate(this, relation, newRelations);
     }
 
 }

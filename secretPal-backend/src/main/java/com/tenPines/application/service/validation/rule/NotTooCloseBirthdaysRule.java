@@ -32,6 +32,7 @@ public class NotTooCloseBirthdaysRule extends AssignationRule {
 
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
+
         return (isActive && moreThan2WeeksBetweenBirthdays(giver, receiver)) || !isActive;
     }
 

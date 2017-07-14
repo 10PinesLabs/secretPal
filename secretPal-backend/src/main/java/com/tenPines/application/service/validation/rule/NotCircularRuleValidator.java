@@ -8,19 +8,19 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class RuleValidator {
+public class NotCircularRuleValidator {
 
     public static FriendRelationService friendRelationService;
 
-    public RuleValidator(FriendRelationService friendRelationService) {
+    public NotCircularRuleValidator(FriendRelationService friendRelationService) {
         this.friendRelationService = friendRelationService;
     }
 
     public static Boolean validate(NotCircularRelationRule rule, Worker giver, Worker receiver) {
-        return (rule.isActive && saraza(giver, receiver)) || !rule.isActive;
+        return (rule.isActive && existACircularRelationBetween(giver, receiver)) || !rule.isActive;
     }
 
-    private static Boolean saraza(Worker giver, Worker receiver) {
+    private static Boolean existACircularRelationBetween(Worker giver, Worker receiver) {
         return friendRelationService.getByWorkerReceiver(giver)
                 .map(relation -> !relation.getGiftGiver().equals(receiver))
                 .orElse(true);
@@ -28,10 +28,10 @@ public class RuleValidator {
 
     public static Boolean validate(NotCircularRelationRule rule, FriendRelation relation, List<FriendRelation> newRelations) {
         return validate(rule, relation.getGiftGiver(), relation.getGiftReceiver()) &&
-                sarazaRevenge(rule, relation, newRelations);
+                validateNewRelation(rule, relation, newRelations);
     }
 
-    private static Boolean sarazaRevenge(NotCircularRelationRule rule, FriendRelation relation, List<FriendRelation> newRelations) {
+    private static Boolean validateNewRelation(NotCircularRelationRule rule, FriendRelation relation, List<FriendRelation> newRelations) {
         return (rule.isActive && notNewCircularRelation(relation, newRelations)) || !rule.isActive;
     }
 

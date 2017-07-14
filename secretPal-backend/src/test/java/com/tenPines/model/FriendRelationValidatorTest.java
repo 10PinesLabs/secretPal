@@ -7,7 +7,7 @@ import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.FriendRelationValidator;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
-import com.tenPines.application.service.validation.rule.RuleValidator;
+import com.tenPines.application.service.validation.rule.NotCircularRuleValidator;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
 import com.tenPines.persistence.NotCircularRelationRuleRepository;
@@ -36,7 +36,7 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
     @Autowired
     private CustomParticipantRuleService customParticipantRuleService;
     @Autowired
-    private RuleValidator ruleValidator;
+    private NotCircularRuleValidator notCircularRuleValidator;
 
     @Before
     public void setUp() {

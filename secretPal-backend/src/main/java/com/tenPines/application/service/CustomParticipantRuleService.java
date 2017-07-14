@@ -60,11 +60,13 @@ public class CustomParticipantRuleService {
     }
 
     public NotCircularRelationRule getCircularRule() {
-        return notCircularRelationRuleRepository.findAll().get(0);
+        return notCircularRelationRuleRepository.findFirstBy()
+                .orElse(new NotCircularRelationRule());
     }
 
     public NotTooCloseBirthdaysRule getNotTooCloseBirthdayRule() {
-        return notTooCloseBirthdayRuleRepository.findAll().get(0);
+        return notTooCloseBirthdayRuleRepository.findFirstBy()
+                .orElse(new NotTooCloseBirthdaysRule());
     }
 
     public void updateCircularRule(NotCircularRelationRule rule) {

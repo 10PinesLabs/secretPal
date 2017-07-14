@@ -74,7 +74,6 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
   };
 
   $scope.assignRules = function () {
-      debugger;
       CustomParticipantRuleService.updateIsCheckedCircular($scope.notCircularRule);
       CustomParticipantRuleService.updateIsCheckedBirthday($scope.notTooCloseBirthdaysRule);
   };
