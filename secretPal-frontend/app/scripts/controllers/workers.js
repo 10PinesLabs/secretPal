@@ -21,7 +21,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
 
   $scope.deleteWithConfirmationMSg = function (worker) {
     SweetAlert.swal({
-        title: "¿Estas seguro?",
+        title: "¿Estás seguro?",
         text: "¡No vas a poder recuperar este pino!",
         type: "warning",
         allowOutsideClick: false,
@@ -47,7 +47,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
 
   $scope.delete = function (worker) {
     if (worker.wantsToParticipate) {
-      warningMsg("Este trabajador esta participando. No se puede borrar.");
+      warningMsg("Este pino está participando. No se puede borrar.");
     } else {
       $scope.deleteWithConfirmationMSg(worker);
     }
@@ -76,12 +76,12 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     angular.forEach($scope.participants, function (participant) {
         if (keepGoing) {
           if (worker.id === participant.giftGiver.id && participant.giftReceiver !== null) {
-            warningMsg("Este trabajador es el amigo invisible de otro participante. Se debe borrar esa relacion antes de que deje de participar.");
+            warningMsg("Este trabajador es el amigo invisible de otro participante. Se debe borrar esa relación antes de que deje de participar.");
             worker.wantsToParticipate = true;
             keepGoing = false;
           }
           if (participant.giftReceiver !== null && worker.id === participant.giftReceiver.id) {
-            warningMsg("Hay un participante que es amigo invisible de este trabajador.Se debe borrar esa relacion antes de que deje de participar.");
+            warningMsg("Hay un participante que es amigo invisible de este trabajador.Se debe borrar esa relación antes de que deje de participar.");
             worker.wantsToParticipate = true;
             keepGoing = false;
           }

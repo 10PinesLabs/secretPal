@@ -7,8 +7,8 @@ app.controller('MailController', function($scope, $route, MailService, SweetAler
 
   $scope.change = function(){
     SweetAlert.swal({
-        title: "¿Estas seguro?",
-        text: "El envio de mails sera modificado",
+        title: "¿Estás seguro?",
+        text: "El envio de mails será modificado.",
         type: "warning",
         allowOutsideClick: false,
         showConfirmButton: true,
@@ -27,10 +27,11 @@ app.controller('MailController', function($scope, $route, MailService, SweetAler
       });
   };
 
+
   $scope.remind = function(){
     SweetAlert.swal({
-        title: "¿Estas seguro?",
-        text: "Se enviaran mails de recordatorio a aquellos pinos cuyo agasajado cumpla en 2 meses o 2 semanas.",
+        title: "¿Estás seguro?",
+        text: "Se enviarán mails de recordatorio a aquellos pinos cuyo agasajado cumpla en 2 meses o 2 semanas.",
         type: "warning",
         allowOutsideClick: false,
         showConfirmButton: true,
@@ -44,6 +45,12 @@ app.controller('MailController', function($scope, $route, MailService, SweetAler
       },
       function (isConfirm) {
         if(isConfirm) {
+          SweetAlert.swal({
+            title: "Enviando recordatorios de hoy",
+            text: "Esto puede tardar un rato...\n muchos algoritmos",
+            type: "info",
+            showConfirmButton: false
+          });
           MailService.remind();
         }
       });

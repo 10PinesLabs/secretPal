@@ -49,7 +49,7 @@ public class MailerController {
         system.resendMessageFailure(unsentMessage);
     }
 
-    @RequestMapping(value = "/remind", method = RequestMethod.POST)
+    @RequestMapping(value = "/remind", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.OK)
     public void sendAllTodayReminders() throws IOException {
         system.sendAllTodayReminders();
