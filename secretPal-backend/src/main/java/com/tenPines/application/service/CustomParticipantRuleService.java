@@ -1,23 +1,39 @@
 package com.tenPines.application.service;
 
-import com.tenPines.application.service.validation.rule.CustomParticipantRule;
-import com.tenPines.model.FriendRelation;
+import com.tenPines.application.clock.Clock;
+import com.tenPines.application.service.validation.rule.*;
 import com.tenPines.model.Worker;
-import com.tenPines.model.process.AssignmentFunction;
-import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.CustomParticipantRuleRepository;
-import com.tenPines.persistence.FriendRelationRepository;
+import com.tenPines.persistence.NotCircularRelationRuleRepository;
+import com.tenPines.persistence.NotTooCloseBirthdayRuleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CustomParticipantRuleService {
-    private CustomParticipantRuleRepository customParticipantRuleRepository;
+
+    @Autowired
+    private final Clock clock;
+    @Autowired
+    private final CustomParticipantRuleRepository customParticipantRuleRepository;
+    @Autowired
+    private final NotCircularRelationRuleRepository notCircularRelationRuleRepository;
+    @Autowired
+    private final NotTooCloseBirthdayRuleRepository notTooCloseBirthdayRuleRepository;
+    @Autowired
     private final WorkerService workerService;
 
-    public CustomParticipantRuleService(CustomParticipantRuleRepository customParticipantRuleRepository, WorkerService workerService) {
+    public CustomParticipantRuleService(Clock clock, CustomParticipantRuleRepository customParticipantRuleRepository,
+                                        NotCircularRelationRuleRepository notCircularRelationRuleRepository,
+                                        NotTooCloseBirthdayRuleRepository notTooCloseBirthdayRuleRepository,
+                                        WorkerService workerService) {
+        this.clock = clock;
         this.customParticipantRuleRepository = customParticipantRuleRepository;
+        this.notCircularRelationRuleRepository = notCircularRelationRuleRepository;
+        this.notTooCloseBirthdayRuleRepository = notTooCloseBirthdayRuleRepository;
         this.workerService = workerService;
     }
 
@@ -29,7 +45,39 @@ public class CustomParticipantRuleService {
         customParticipantRuleRepository.delete(id);
     }
 
-    public List<CustomParticipantRule> getAllRules() {
+    public List<CustomParticipantRule> getAllCustomRules() {
         return customParticipantRuleRepository.findAll();
     }
+
+    public List<AssignationRule> getRules() {
+        List<AssignationRule> assignationRules = new ArrayList<>();
+            assignationRules.add(getCircularRule());
+            assignationRules.add(getNotTooCloseBirthdayRule());
+            assignationRules.add(new NotTheSamePersonRule());
+            assignationRules.add(new BirthdayPassedRule(clock));
+
+        return assignationRules;
+    }
+
+    public NotCircularRelationRule getCircularRule() {
+        return notCircularRelationRuleRepository.findFirstBy()
+                .orElse(new NotCircularRelationRule());
+    }
+
+    public NotTooCloseBirthdaysRule getNotTooCloseBirthdayRule() {
+        return notTooCloseBirthdayRuleRepository.findFirstBy()
+                .orElse(new NotTooCloseBirthdaysRule());
+    }
+
+    public void updateCircularRule(NotCircularRelationRule rule) {
+        notCircularRelationRuleRepository.deleteAll();
+        notCircularRelationRuleRepository.save(rule);
+    }
+
+    public void updateRuleBirthday(NotTooCloseBirthdaysRule rule) {
+        notTooCloseBirthdayRuleRepository.deleteAll();
+        notTooCloseBirthdayRuleRepository.save(rule);
+    }
+
+
 }

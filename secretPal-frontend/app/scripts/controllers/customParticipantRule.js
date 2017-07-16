@@ -8,8 +8,16 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
     $scope.workers = data;
   });
 
-  CustomParticipantRuleService.all(function (data) {
+  CustomParticipantRuleService.allCustomRules(function (data) {
     $scope.rules = data;
+  });
+
+  CustomParticipantRuleService.notCircularRule(function (data) {
+    $scope.notCircularRule = data;
+  });
+
+  CustomParticipantRuleService.notTooCloseBirthdayRule(function (data) {
+    $scope.notTooCloseBirthdaysRule = data;
   });
 
   $scope.createRule = function () {
@@ -54,19 +62,19 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
   };
 
   $scope.delete = function (rule) {
-    if (rule.isRuleActivate) {
+    if (rule.isActive) {
       warningMsg("La regla está activa, no se puede borrar.");
     } else {
       $scope.deleteWithConfirmationMsg(rule);
     }
   };
 
-  $scope.changeIntention = function (rule) {
-    rule.changeRuleIntention;
-  };
-
   $scope.canDelete = function (rule) {
-    return rule.isActivate === false;
+    return rule.isActive() === false;
   };
 
+  $scope.assignRules = function () {
+      CustomParticipantRuleService.updateIsCheckedCircular($scope.notCircularRule);
+      CustomParticipantRuleService.updateIsCheckedBirthday($scope.notTooCloseBirthdaysRule);
+  };
 });

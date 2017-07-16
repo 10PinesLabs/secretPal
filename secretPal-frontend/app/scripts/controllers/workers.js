@@ -81,7 +81,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
             keepGoing = false;
           }
           if (participant.giftReceiver !== null && worker.id === participant.giftReceiver.id) {
-            warningMsg("Hay un participante que es amigo invisible de este trabajador.Se debe borrar esa relacion antes de que deje de participar.");
+            warningMsg("Hay un participante que es amigo invisible de este trabajador. Se debe borrar esa relacion antes de que deje de participar.");
             worker.wantsToParticipate = true;
             keepGoing = false;
           }
