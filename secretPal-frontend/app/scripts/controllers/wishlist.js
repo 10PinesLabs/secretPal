@@ -47,8 +47,8 @@ angular.module('secretPalApp')
           showCancelButton: true,
           closeOnConfirm: false,
           closeOnCancel: true,
-          confirmButtonColor: "#68bd46",
-          confirmButtonText: "¡Si!, borrar",
+          confirmButtonColor: "#d43f3a",
+          confirmButtonText: "Si, borrar!",
           cancelButtonText: "Cancelar"
         },
         function (isConfirm) {

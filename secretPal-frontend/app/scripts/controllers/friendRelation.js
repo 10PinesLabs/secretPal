@@ -129,7 +129,7 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
         text:  giver.fullName + " no será amigo invisible de nadie!",
         type: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
+        confirmButtonColor: "#d43f3a",
         confirmButtonText: "Si, borrar!",
         closeOnConfirm: false
       },
