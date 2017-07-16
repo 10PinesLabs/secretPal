@@ -30,7 +30,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
         closeOnConfirm: false,
         closeOnCancel: true,
         confirmButtonText: "Si, ¡borrar!",
-        confirmButtonColor: "#68bd46",
+        confirmButtonColor: "#d43f3a",
         cancelButtonText: "Cancelar",
         cancelButtonColor: '#FFFFFF',
       },
