@@ -39,7 +39,7 @@ angular.module('secretPalApp')
 
     $scope.Delete = function (wish) {
       SweetAlert.swal({
-          title: "¿Estas seguro?",
+          title: "¿Estás seguro?",
           text: "¡No vas a poder recuperar este deseo!",
           type: "warning",
           allowOutsideClick: false,

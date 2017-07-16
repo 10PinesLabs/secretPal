@@ -34,7 +34,7 @@ app.controller('CustomParticipantRuleController', function ($scope, $route, Mail
 
   $scope.deleteWithConfirmationMsg = function (rule) {
     SweetAlert.swal({
-        title: "¿Estas seguro?",
+        title: "¿Estás seguro?",
         text: "¡No vas a poder recuperar esta regla!",
         type: "warning",
         allowOutsideClick: false,

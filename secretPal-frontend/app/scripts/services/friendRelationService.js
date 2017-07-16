@@ -27,7 +27,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
     $http.delete(buildRoute('/' + idGiver + '/' + idReceiver)).success(function () {
       successFunction();
     }).error(function () {
-      errorMsg("No se pudo borrar esta relacion");
+      errorMsg("No se pudo borrar esta relación");
     });
   };
 

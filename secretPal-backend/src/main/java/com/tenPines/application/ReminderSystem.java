@@ -102,4 +102,9 @@ public class ReminderSystem {
         }
     }
 
+    public void sendAllReminders() {
+        sendTwoMonthsReminders();
+        sendTwoWeeksReminders();
+        sendHappyBithdayMessages();
+    }
 }

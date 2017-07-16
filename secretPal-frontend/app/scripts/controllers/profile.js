@@ -13,7 +13,7 @@ angular.module('secretPalApp')
 
     $scope.wantToParticipateMsg = function () {
       SweetAlert.swal({
-          title: "No estas participando",
+          title: "No estás participando",
           text: "Queres participar?",
           type: "warning",
           allowOutsideClick: false,
@@ -29,7 +29,7 @@ angular.module('secretPalApp')
         function (isConfirm) {
           if (isConfirm) {
             WorkerService.changeIntention(user.worker);
-            SweetAlert.swal("¡Ahora estas participando!");
+            SweetAlert.swal("¡Ahora estás participando!");
             $scope.noFriendAlert();
           } else {
             $location.path('/');

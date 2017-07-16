@@ -125,7 +125,7 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
 
   $scope.delete = function (giver) {
     SweetAlert.swal({
-        title: "Estas seguro?",
+        title: "¿Estás seguro?",
         text:  giver.fullName + " no será amigo invisible de nadie!",
         type: "warning",
         showCancelButton: true,

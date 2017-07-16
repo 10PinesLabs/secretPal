@@ -38,22 +38,31 @@ angular.module('secretPalApp').service('MailService', function($http, SweetAlert
 
   this.all = function(callback) {
     $http.get(buildRoute('/failedMails') ).
-    success(function(data) {
-      callback(data);
-    }).
-    error(function() {
-      errorMsg("Inténtelo de nuevo mas tarde. ¿Cuando se dispara esto?");
-    });
+      success(function(data) {
+        callback(data);
+      }).
+      error(function() {
+        errorMsg("Inténtelo de nuevo mas tarde. ¿Cuando se dispara esto?");
+      });
   };
 
   this.resendMessage = function (unsentMessage, successFunction) {
     $http.post(buildRoute('/resendMailsFailure'), unsentMessage).
-        success(function(){
-      successMsg("Se reenvió el mail correctamente");
-      successFunction();
-    }).error(function () {
-      errorMsg("No se pudo reenviar el mail, inténtelo mas tarde");
+      success(function(){
+        successMsg("Se reenvió el mail correctamente");
+        successFunction();
+      }).error(function () {
+        errorMsg("No se pudo reenviar el mail, inténtelo mas tarde");
+    });
 
+  };
+
+  this.remind = function () {
+    $http.put(buildRoute('/remind')).
+      success(function(){
+        successMsg("Se enviaron todos los recordatorios de hoy");
+      }).error(function () {
+        errorMsg("No se pudieron enviar los recordatorios, inténtelo mas tarde");
     });
 
   };
