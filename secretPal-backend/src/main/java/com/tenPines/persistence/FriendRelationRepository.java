@@ -19,7 +19,6 @@ public interface FriendRelationRepository extends JpaRepository<FriendRelation, 
         for (FriendRelation friendRelation : findAll()) {
             delete(friendRelation);
         }
-
     }
 
     Long deleteByGiftGiver(Worker worker);

@@ -1,11 +1,12 @@
 package com.tenPines.application.service.validation.rule;
 
 import com.tenPines.model.FriendRelation;
+import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.model.Worker;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.List;
 
 @Entity
@@ -45,7 +46,7 @@ public class CustomParticipantRule extends AssignationRule {
         setIsActive(!isActive);
     }
 
-    public boolean isRuleActivate() {
+    public boolean isActive() {
         return this.isActive;
     }
 
@@ -53,7 +54,7 @@ public class CustomParticipantRule extends AssignationRule {
         this.isActive = newState;
     }
 
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 }

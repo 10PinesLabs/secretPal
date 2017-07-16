@@ -3,6 +3,7 @@ package com.tenPines.model;
 import com.tenPines.application.clock.FakeClock;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
+import com.tenPines.application.service.validation.rule.BirthdayPassedRule;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
@@ -27,9 +28,10 @@ public class ParticipantWithPosibilitiesTest extends SpringBaseTest {
     private Worker worker;
     private Worker anotherWorker;
     private Worker yetAnotherWorker;
+    private BirthdayPassedRule birthdayPassedRule;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         worker = new WorkerBuilder().buildFromDate(1, Month.NOVEMBER);
         anotherWorker = new WorkerBuilder().buildFromDate(1, Month.SEPTEMBER);
         yetAnotherWorker = new WorkerBuilder().buildFromDate(1, Month.AUGUST);

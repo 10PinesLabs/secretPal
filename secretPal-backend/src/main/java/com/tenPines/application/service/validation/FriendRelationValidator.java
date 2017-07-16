@@ -1,38 +1,26 @@
 package com.tenPines.application.service.validation;
 
 import com.tenPines.application.clock.Clock;
+import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.application.service.FriendRelationService;
-import com.tenPines.application.service.validation.rule.AssignationRule;
-import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
-import com.tenPines.application.service.validation.rule.NotTheSamePersonRule;
-import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
-import com.tenPines.model.BirthdayPassedRule;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class FriendRelationValidator {
 
-    @Autowired
+    private CustomParticipantRuleService customParticipantRuleService;
     public FriendRelationService friendRelationService;
-
-    public List<AssignationRule> hardRules;
-    public List<AssignationRule> rules;
 
     private final Clock clock;
 
-    public   FriendRelationValidator(Clock clock, FriendRelationService friendRelationService) {
+    public FriendRelationValidator(Clock clock,
+                                   FriendRelationService friendRelationService,
+                                   CustomParticipantRuleService customParticipantRuleService) {
         this.clock = clock;
         this.friendRelationService = friendRelationService;
-        this.rules = Arrays.asList(
-                new NotCircularRelationRule(this.friendRelationService),
-                new NotTooCloseBirthdaysRule(),
-                new NotTheSamePersonRule(),
-                new BirthdayPassedRule(clock)
-        );
+        this.customParticipantRuleService = customParticipantRuleService;
     }
 
     public Boolean validate(Worker giver, Worker receiver) {
@@ -41,7 +29,7 @@ public class FriendRelationValidator {
 
 
     private Boolean validateRules(Worker giver, Worker receiver) {
-        return rules.stream().allMatch(rule -> rule.validate(giver, receiver));
+        return customParticipantRuleService.getRules().stream().allMatch(rule -> rule.validate(giver, receiver));
     }
 
     private Boolean hasOtherSecretPal(Worker giver, Worker receiver) {
@@ -55,7 +43,7 @@ public class FriendRelationValidator {
     }
 
     private Boolean validateRelation(FriendRelation relation, List<FriendRelation> newRelations) {
-        return rules.stream().allMatch(rule -> rule.validate(relation, newRelations));
+        return customParticipantRuleService.getRules().stream().allMatch(rule -> rule.validate(relation, newRelations));
     }
 
 }

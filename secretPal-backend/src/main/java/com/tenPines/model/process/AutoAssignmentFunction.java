@@ -1,6 +1,7 @@
 package com.tenPines.model.process;
 
 import com.tenPines.application.clock.Clock;
+import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.validation.FriendRelationValidator;
 import com.tenPines.model.FriendRelation;
@@ -18,16 +19,18 @@ public class AutoAssignmentFunction {
     private final Clock clock;
     private final Random random;
     private final FriendRelationService friendRelationService;
+    private final CustomParticipantRuleService customParticipantRuleService;
     private final FriendRelationValidator validator;
     private final List<Worker> givers;
     private final List<Worker> receivers;
 
 
-    public AutoAssignmentFunction(Clock clock, Random random, FriendRelationService friendRelationService) {
+    public AutoAssignmentFunction(Clock clock, Random random, FriendRelationService friendRelationService, CustomParticipantRuleService customParticipantRuleService) {
         this.clock = clock;
         this.random = random;
         this.friendRelationService = friendRelationService;
-        this.validator = new FriendRelationValidator(clock, friendRelationService);
+        this.customParticipantRuleService = customParticipantRuleService;
+        this.validator = new FriendRelationValidator(clock, friendRelationService, customParticipantRuleService);
         this.givers = friendRelationService.workersWhoCanGive();
         this.receivers = friendRelationService.workersWhoCanReceive();
     }

@@ -1,36 +1,50 @@
 package com.tenPines.application.service.validation.rule;
 
-import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 
 import java.util.List;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table
 public class NotCircularRelationRule extends AssignationRule {
 
-    private FriendRelationService friendRelationService;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    public NotCircularRelationRule(FriendRelationService friendRelationService) {
-        this.friendRelationService = friendRelationService;
+    @NotNull
+    public String description;
+    @NotNull
+    public boolean isActive;
+
+    public NotCircularRelationRule() {
+        this.description = "Si el Pino A le regala a el Pino B, el Pino B no le puede regalar a el Pino A.";
     }
 
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
-        return friendRelationService.getByWorkerReceiver(giver)
-                .map(relation -> !relation.getGiftGiver().equals(receiver))
-                .orElse(true);
+        return NotCircularRuleValidator.validate(this, giver, receiver);
+    }
+
+    public void changeRuleIntention() {
+        setIsActive(!isActive);
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean newState) {
+        this.isActive = newState;
     }
 
     @Override
     public Boolean validate(FriendRelation relation, List<FriendRelation> newRelations) {
-        return validate(relation.getGiftGiver(), relation.getGiftReceiver()) &&
-                notNewCircularRelation(relation, newRelations);
+        return NotCircularRuleValidator.validate(this, relation, newRelations);
     }
 
-    private Boolean notNewCircularRelation(FriendRelation newRelation, List<FriendRelation> newRelations) {
-        return !newRelations.stream().anyMatch(thisRelation ->
-                (thisRelation.getGiftReceiver() == newRelation.getGiftGiver()) &&
-                        (thisRelation.getGiftGiver() == newRelation.getGiftReceiver())
-        );
-    }
 }

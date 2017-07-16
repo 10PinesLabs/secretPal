@@ -1,7 +1,9 @@
-package com.tenPines.model;
+package com.tenPines.application.service.validation.rule;
 
 import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.validation.rule.AssignationRule;
+import com.tenPines.model.FriendRelation;
+import com.tenPines.model.Worker;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +26,11 @@ public class BirthdayPassedRule extends AssignationRule {
     public Boolean validate(FriendRelation relation, List<FriendRelation> newRelations) {
         LocalDate actualBirthday = relation.getGiftReceiver().getDateOfBirth().withYear(clock.now().getYear());
         return clock.now().isBefore(actualBirthday);
+    }
+
+    @Override
+    public boolean isActive() {
+        return true;
     }
 
 }
