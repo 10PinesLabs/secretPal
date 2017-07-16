@@ -2,7 +2,10 @@ package com.tenPines.application;
 
 import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.*;
+import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
+import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
+import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.*;
 import com.tenPines.restAPI.SecurityToken;
@@ -187,11 +190,26 @@ public class SystemPalFacade {
         customParticipantRuleService.delete(id);
     }
 
-    public List<CustomParticipantRule> getAllRules() {
-        return customParticipantRuleService.getAllRules();
+    public List<CustomParticipantRule> getAllCustomRules() {
+        return customParticipantRuleService.getAllCustomRules();
     }
     public List<FriendRelation> getAllRelations() {
         return friendRelationService.getAllRelations();
+    }
+
+    public NotCircularRelationRule getCircularRule() {
+        return customParticipantRuleService.getCircularRule();
+    }
+
+    public NotTooCloseBirthdaysRule getNotTooCloseBirthdayRule() {
+        return customParticipantRuleService.getNotTooCloseBirthdayRule();
+    }
+
+    public void updateCircularRule(NotCircularRelationRule rule){
+        customParticipantRuleService.updateCircularRule(rule);
+    }
+    public void updateBirthdayRule(NotTooCloseBirthdaysRule rule) {
+        customParticipantRuleService.updateRuleBirthday(rule);
     }
 
     public List<ParticipantWithPosibilities> allPosibilities() {
