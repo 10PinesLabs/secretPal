@@ -1,14 +1,11 @@
 package com.tenPines.model;
 
-import com.tenPines.utils.PropertyParser;
-
 import javax.mail.Authenticator;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.util.Properties;
 
 public class Message {
@@ -35,25 +32,19 @@ public class Message {
         return body;
     }
 
-    public javax.mail.Message toJavax() throws MessagingException {
-        javax.mail.Message javaxMessage = new MimeMessage(authenticatedSession());
+    public javax.mail.Message toJavax(String user, String password) throws MessagingException {
+        javax.mail.Message javaxMessage = new MimeMessage(authenticatedSession(user, password));
         javaxMessage.setRecipients(javax.mail.Message.RecipientType.TO, InternetAddress.parse(getRecipient()));
         javaxMessage.setSubject(getSubject());
         javaxMessage.setText(getBody());
         return javaxMessage;
     }
 
-    private Session authenticatedSession() {
+    private Session authenticatedSession(final String user, final String password) {
         Properties authProperties = new Properties();
-        try {
-            authProperties = new PropertyParser("gmail.properties");
-        } catch (IOException e) {
-            authProperties.setProperty("auth.user", "default");
-            authProperties.setProperty("auth.password", "default");
-        }
+        authProperties.setProperty("auth.user", user);
+        authProperties.setProperty("auth.password", password);
 
-        String user = authProperties.getProperty("auth.user");
-        String password = authProperties.getProperty("auth.password");
         return Session.getInstance(authProperties,
                 new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {

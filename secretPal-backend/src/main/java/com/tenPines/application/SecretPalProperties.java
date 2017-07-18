@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 public class SecretPalProperties {
     private long reminderWeekPeriod;
     private long reminderMonthPeriod;
-    public String allRecipientsMail;
+    private String allRecipientsMail;
+    private String mailUser;
+    private String mailPassword;
 
     public String getAllRecipientsMail() {
         return allRecipientsMail;
@@ -33,5 +35,21 @@ public class SecretPalProperties {
 
     public void setReminderMonthPeriod(long reminderMonthPeriod) {
         this.reminderMonthPeriod = reminderMonthPeriod;
+    }
+
+    public String getMailUser() {
+        return mailUser;
+    }
+
+    public void setMailUser(String mailUser) {
+        this.mailUser = mailUser;
+    }
+
+    public String getMailPassword() {
+        return mailPassword;
+    }
+
+    public void setMailPassword(String mailPassword) {
+        this.mailPassword = mailPassword;
     }
 }
