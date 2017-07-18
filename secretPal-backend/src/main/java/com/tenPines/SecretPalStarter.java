@@ -8,6 +8,8 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 public class SecretPalStarter extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(SecretPalStarter.class, args);
+        SpringApplication springApplication = new SpringApplication(SecretPalStarter.class);
+        springApplication.setWebEnvironment(false);
+        springApplication.run(args);
     }
 }

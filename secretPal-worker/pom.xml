@@ -1,18 +1,20 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>secretPal-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
 
     <parent>
         <groupId>com.tenpines</groupId>
         <artifactId>secretPal</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>..</relativePath>
     </parent>
 
-    <name>SecretPal-backend</name>
+    <groupId>com.tenpines</groupId>
+    <artifactId>secretPal-worker</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>SecretPal-worker</name>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -23,5 +25,4 @@
             <version>${version}</version>
         </dependency>
     </dependencies>
-
 </project>
