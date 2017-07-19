@@ -1,5 +1,7 @@
 package com.tenPines.model;
 
+import com.tenPines.application.MailProperties;
+
 import javax.mail.Authenticator;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -13,6 +15,7 @@ public class Message {
     private String recipient;
     private String body;
     private String subject;
+
 
     public Message(String recipient, String subject, String body) {
         this.recipient = recipient;
@@ -32,24 +35,22 @@ public class Message {
         return body;
     }
 
-    public javax.mail.Message toJavax(String user, String password) throws MessagingException {
-        javax.mail.Message javaxMessage = new MimeMessage(authenticatedSession(user, password));
+    public javax.mail.Message toJavax(MailProperties mailProperties) throws MessagingException {
+        javax.mail.Message javaxMessage = new MimeMessage(authenticatedSession(mailProperties));
         javaxMessage.setRecipients(javax.mail.Message.RecipientType.TO, InternetAddress.parse(getRecipient()));
         javaxMessage.setSubject(getSubject());
         javaxMessage.setText(getBody());
         return javaxMessage;
     }
 
-    private Session authenticatedSession(final String user, final String password) {
-        Properties authProperties = new Properties();
-        authProperties.setProperty("auth.user", user);
-        authProperties.setProperty("auth.password", password);
-
-        return Session.getInstance(authProperties,
+    private Session authenticatedSession(MailProperties mailProperties) {
+        Properties props = mailProperties.getProperties();
+        return Session.getInstance(props,
                 new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(user, password);
+                        return new PasswordAuthentication(mailProperties.getUser(), mailProperties.getPassword());
                     }
                 });
     }
+
 }

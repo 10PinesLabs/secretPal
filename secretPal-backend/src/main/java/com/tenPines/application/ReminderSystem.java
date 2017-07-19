@@ -24,15 +24,17 @@ public class ReminderSystem {
     private final FriendRelationService friendRelationService;
     private final WorkerService workerService;
     private final SecretPalProperties secretPalProperties;
+    private final MailProperties mailProperties;
     private final PostOffice postOffice;
     private final MailerService mailerService;
 
     @Autowired
-    public ReminderSystem(Clock clock, FriendRelationService friendRelationService, WorkerService workerService, SecretPalProperties secretPalProperties, PostOffice postOffice, MailerService mailerService) {
+    public ReminderSystem(Clock clock, FriendRelationService friendRelationService, WorkerService workerService, SecretPalProperties secretPalProperties, MailProperties mailProperties, PostOffice postOffice, MailerService mailerService) {
         this.clock = clock;
         this.friendRelationService = friendRelationService;
         this.workerService = workerService;
         this.secretPalProperties = secretPalProperties;
+        this.mailProperties = mailProperties;
         this.postOffice = postOffice;
         this.mailerService = mailerService;
     }
@@ -46,7 +48,7 @@ public class ReminderSystem {
                                 .equals(
                                         MonthDay.from(clock.now()))
                 )
-                .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder(secretPalProperties).buildMessage(worker)));
+                .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder(mailProperties).buildMessage(worker)));
 
     }
     
