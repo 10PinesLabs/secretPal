@@ -35,7 +35,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
 
     @Before
     public void setUp() {
-        birthdayWorker = birthdayWorker = new WorkerBuilder().withFullName("Cacho Castania")
+        birthdayWorker = new WorkerBuilder().withFullName("Cacho Castania")
                 .withBirthDayDate(LocalDate.of(1950, Month.DECEMBER, 10)).build();
         workerGiver = new WorkerBuilder().build();
         friendRelation = new FriendRelation(workerGiver, birthdayWorker);

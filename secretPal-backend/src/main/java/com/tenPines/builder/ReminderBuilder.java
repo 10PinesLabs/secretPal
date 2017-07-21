@@ -27,8 +27,7 @@ public abstract class ReminderBuilder {
         return new Message(
                 aFriendRelation.getGiftGiver().geteMail(),
                 assignationSubject(),
-                assignationBodyText(aFriendRelation.getGiftReceiver())
-        );
+                assignationBodyText(aFriendRelation.getGiftReceiver()));
     }
 
 

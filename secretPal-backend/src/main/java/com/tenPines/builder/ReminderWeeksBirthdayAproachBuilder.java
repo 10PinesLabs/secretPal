@@ -1,18 +1,14 @@
 package com.tenPines.builder;
 
+import com.tenPines.application.MailProperties;
 import com.tenPines.application.service.MailerService;
 import com.tenPines.model.Worker;
-import com.tenPines.utils.PropertyParser;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
 
 /**
  * Created by Aye on 01/11/16.
  */
 public class ReminderWeeksBirthdayAproachBuilder extends ReminderBuilder {
-
-    private PropertyParser templateProperties;
 
     @Autowired
     public ReminderWeeksBirthdayAproachBuilder(MailerService mailerService) {

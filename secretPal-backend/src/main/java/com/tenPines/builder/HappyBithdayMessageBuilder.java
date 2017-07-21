@@ -1,20 +1,15 @@
 package com.tenPines.builder;
 
-
-import com.tenPines.application.SecretPalProperties;
+import com.tenPines.application.MailProperties;
 import com.tenPines.model.Message;
 import com.tenPines.model.Worker;
-import com.tenPines.utils.PropertyParser;
-
-import java.io.IOException;
 
 public class HappyBithdayMessageBuilder {
 
-    private PropertyParser templateProperties;
-    private SecretPalProperties secretPalProperties;
+    private MailProperties mailProperties;
 
-    public HappyBithdayMessageBuilder(SecretPalProperties secretPalProperties) {
-        this.secretPalProperties = secretPalProperties;
+    public HappyBithdayMessageBuilder(MailProperties mailProperties) {
+        this.mailProperties = mailProperties;
     }
 
     private String assignationSubject(Worker birthdayWorker) {
@@ -27,9 +22,8 @@ public class HappyBithdayMessageBuilder {
 
     public Message buildMessage(Worker birthdaysWorker) {
         return new Message(
-                secretPalProperties.getAllRecipientsMail(),
+                mailProperties.getRecipients(),
                 assignationSubject(birthdaysWorker),
-                assignationBodyText()
-        );
+                assignationBodyText());
     }
 }
