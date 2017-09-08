@@ -34,9 +34,6 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
   this.getFriend = function (worker, callback) {
     return $http.get(buildRoute('/friend/' + worker.id)).then(function (data) {
         callback(data);
-      },
-      function () {
-        errorMsg("No se pudo conseguir su pino invisible, probablemente sea que no tiene ninguno asignado.");
       });
   };
 
