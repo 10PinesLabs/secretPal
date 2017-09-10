@@ -1,7 +1,11 @@
 <head class="modal-title col-lg-offset-6">
 </head>
 <div class="jumbotron">
-  <div class="container">
+  <div class="container" ng-show="!haveFriend()">
+    <h2>No tenés amigo invisible asignado aún</h2>
+    <img src="https://i.giphy.com/media/AYKv7lXcZSJig/giphy.webp">
+  </div>
+  <div class="container" ng-show="haveFriend()">
     <h2>Este año tu pino cumpleañero es:</h2>
 
     <h5>-Apoye el mouse por encima de los bloques verdes para ver la información-</h5>

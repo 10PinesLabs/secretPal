@@ -6,9 +6,9 @@ angular.module('secretPalApp')
     $scope.wishlist = [];
     $scope.giftDefault;
 
-    $scope.noFriendAlert = function () {
-      $location.path('/');
-      SweetAlert.swal("No tienes ningun amigo asignado", "avisale al administrador", "error");
+
+    $scope.haveFriend = function() {
+      return $scope.friend !== undefined;
     };
 
     $scope.wantToParticipateMsg = function () {
@@ -49,10 +49,6 @@ angular.module('secretPalApp')
         });
 
         $scope.friend = friend;
-
-        if (friend.data === "") {
-          $scope.noFriendAlert();
-        }
 
         WishlistService.getAllWishesFor($scope.friend.data, function (wishlistResponse) {
           $scope.wishlist = wishlistResponse.data;
