@@ -9,6 +9,7 @@ import com.tenPines.application.service.WorkerService;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
 import com.tenPines.model.Worker;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +19,7 @@ import java.time.Month;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+@Ignore
 public class ScheduleMailerTest extends SpringBaseTest {
     @Autowired
     private WorkerService workerService;
