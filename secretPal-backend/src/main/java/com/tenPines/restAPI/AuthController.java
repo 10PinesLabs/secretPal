@@ -8,12 +8,15 @@ import com.tenPines.application.service.WorkerService;
 import com.tenPines.configuration.AdminProperties;
 import com.tenPines.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api/auth")
@@ -37,10 +40,10 @@ public class AuthController {
     @Autowired
     private SystemPalFacade systemFacade;
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    @ResponseBody
-    public Worker getAdmin() {
-        return new AdminProperties().findAdminWorker(adminService).orElseThrow(() -> new RuntimeException("No existe un administrador paa este sistema"));
+    @GetMapping("/backoffice/callback")
+    public HttpEntity getAdmin(@RequestParam Map<String, String> params) {
+        System.out.println(params);
+        return null;
     }
 
     @RequestMapping(value = "/me", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
