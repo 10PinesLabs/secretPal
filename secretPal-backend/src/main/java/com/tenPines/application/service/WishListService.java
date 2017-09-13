@@ -2,7 +2,7 @@ package com.tenPines.application.service;
 
 import com.tenPines.model.Wish;
 import com.tenPines.model.Worker;
-import com.tenPines.persistence.WishlistRepository;
+import com.tenPines.persistence.WishListRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.List;
  */
 
 @Service
-public class WishlistService {
+public class WishListService {
 
-    private final WishlistRepository wishRepository;
+    private final WishListRepository wishRepository;
 
-    public WishlistService(WishlistRepository wishRepository) {
+    public WishListService(WishListRepository wishRepository) {
         this.wishRepository = wishRepository;
     }
 

@@ -16,7 +16,7 @@ import static org.hamcrest.core.IsNot.not;
 public class DatabaseWishlistTest extends SpringBaseTest {
 
     @Autowired
-    private WishlistRepository wishlistRepository;
+    private WishListRepository wishListRepository;
     @Autowired
     private WorkerService workerService;
 
@@ -33,53 +33,53 @@ public class DatabaseWishlistTest extends SpringBaseTest {
 
     @Test
     public void When_A_Wishlist_is_created_it_should_be_empty() {
-        assertThat(wishlistRepository.findAll(), empty());
+        assertThat(wishListRepository.findAll(), empty());
     }
 
     @Test
     public void When_I_Add_A_Wish_To_A_Wishlist_It_Should_Get_Stored() throws Exception {
         Wish aWish = Wish.create(creator, worker, "Un pony");
 
-        wishlistRepository.save(aWish);
+        wishListRepository.save(aWish);
 
-        assertThat(wishlistRepository.findAll(), hasSize(1));
-        assertThat(wishlistRepository.findAll(), hasItem(hasProperty("gift", is("Un pony"))));
+        assertThat(wishListRepository.findAll(), hasSize(1));
+        assertThat(wishListRepository.findAll(), hasItem(hasProperty("gift", is("Un pony"))));
     }
 
     @Test
     public void When_I_Remove_A_Wish_From_A_Wishlist_It_Should_Be_No_More() throws Exception {
         Wish aWish = Wish.create(creator, worker, "Un pony");
 
-        wishlistRepository.save(aWish);
-        wishlistRepository.delete(aWish);
+        wishListRepository.save(aWish);
+        wishListRepository.delete(aWish);
 
-        assertThat(wishlistRepository.findAll(), hasSize(0));
-        assertThat(wishlistRepository.findAll(), not(hasItem(aWish)));
+        assertThat(wishListRepository.findAll(), hasSize(0));
+        assertThat(wishListRepository.findAll(), not(hasItem(aWish)));
     }
 
     @Test
     public void When_I_Edit_A_Wish_From_A_Wishlist_It_Should_Be_Changed() throws Exception {
         Wish aWish = Wish.create(creator, worker, "Un pony");
-        wishlistRepository.save(aWish);
+        wishListRepository.save(aWish);
 
         aWish.setGift("Dos ponys!");
-        wishlistRepository.save(aWish);
+        wishListRepository.save(aWish);
 
-        assertThat(wishlistRepository.findAll(), hasSize(1));
-        assertThat(wishlistRepository.findAll(), hasItem(hasProperty("gift", is("Dos ponys!"))));
+        assertThat(wishListRepository.findAll(), hasSize(1));
+        assertThat(wishListRepository.findAll(), hasItem(hasProperty("gift", is("Dos ponys!"))));
         assertThat(worker.getId(), not(nullValue()));
     }
 
     @Test
     public void One_creator_can_have_multiple_wishes_for_himself() throws Exception {
         Wish aWish = Wish.create(creator, creator, "Un pony");
-        wishlistRepository.save(aWish);
+        wishListRepository.save(aWish);
 
         Wish otherWish = Wish.create(creator, creator, "Otro pony");
-        wishlistRepository.save(otherWish);
+        wishListRepository.save(otherWish);
 
-        assertThat(wishlistRepository.findAll(), hasSize(2));
-        assertThat(wishlistRepository.findAll(), hasItems(
+        assertThat(wishListRepository.findAll(), hasSize(2));
+        assertThat(wishListRepository.findAll(), hasItems(
                 hasProperty("gift", is("Un pony")),
                 hasProperty("gift", is("Otro pony"))
             ));

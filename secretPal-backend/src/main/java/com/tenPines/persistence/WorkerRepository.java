@@ -7,17 +7,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
-    List<Worker> findByeMail(String email);
+    Optional<Worker> findByeMail(String email);
 
     List<Worker> findBywantsToParticipate(Boolean bool);
 
     Worker findByfullName(String token);
 
     List<Worker> findAll(Specification<Worker> spec);
+
 }
 
 

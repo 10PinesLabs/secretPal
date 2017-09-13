@@ -40,7 +40,7 @@ public class WorkerService {
     }
 
     public Optional<Worker> retrieveWorkerByEmail(String email) {
-        return workerRepository.findByeMail(email).stream().findFirst();
+        return workerRepository.findByeMail(email);
     }
 
     public static String errorWhenDoNotExistAWorkerWithThisEmail() {

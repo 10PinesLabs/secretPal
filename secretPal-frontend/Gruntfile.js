@@ -66,7 +66,7 @@ module.exports = function (grunt) {
           '.tmp/styles/{,*/}*.css',
           '<%= config.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
-      },
+      }
     },
 
     // The actual grunt server settings
@@ -80,7 +80,7 @@ module.exports = function (grunt) {
       proxies: [{
         context: '/api',
         host: 'localhost',
-        port: 8080,
+        port: 8080
       }],
       livereload: {
         options: {
@@ -285,27 +285,27 @@ module.exports = function (grunt) {
     //   dist: {}
     // },
 
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>/images',
-          src: '**/*.{png,jpg,jpeg,gif}',
-          dest: '<%= config.dist %>/images'
-        }]
-      }
-    },
+    // imagemin: {
+    //   dist: {
+    //     files: [{
+    //       expand: true,
+    //       cwd: '<%= config.app %>/images',
+    //       src: '**/*.{png,jpg,jpeg,gif}',
+    //       dest: '<%= config.dist %>/images'
+    //     }]
+    //   }
+    // },
 
-    svgmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>/images',
-          src: '{,*/}*.svg',
-          dest: '<%= config.dist %>/images'
-        }]
-      }
-    },
+    // svgmin: {
+    //   dist: {
+    //     files: [{
+    //       expand: true,
+    //       cwd: '<%= config.app %>/images',
+    //       src: '{,*/}*.svg',
+    //       dest: '<%= config.dist %>/images'
+    //     }]
+    //   }
+    // },
 
     htmlmin: {
       dist: {
@@ -409,8 +409,8 @@ module.exports = function (grunt) {
       ],
       dist: [
         'copy:styles',
-        'imagemin',
-        'svgmin'
+        // 'imagemin',
+        // 'svgmin'
       ]
     },
 

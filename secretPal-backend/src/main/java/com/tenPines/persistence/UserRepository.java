@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 public interface UserRepository extends JpaRepository<User, Long>{
 
-    List<User> findByUserName(String userName);
-
     Long deleteByWorker(Worker worker);
 
     User findByWorker(Worker worker);
+
+    Optional<User> findByBackofficeId(Long backofficeId);
 }
