@@ -10,7 +10,4 @@ angular.module('secretPalApp')
         return (Token.isAuthenticated());
       };
 
-      $scope.ingresar = function () {
-        return $location.path("/login");
-      };
 });
