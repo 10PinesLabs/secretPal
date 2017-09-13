@@ -24,17 +24,9 @@ public class AdminService {
         return aUser;
     }
 
-    public Optional<Worker> findAdminWorker(){
-        return workerService.retrieveWorkerByEmail(findAdminUser().orElse(nullUser()).geteMail());
-    }
-
     public Optional<User> findAdminUser() {
         Optional<AdminProfile> adminProfile = adminRepository.findAll().stream().findFirst();
         return adminProfile.map(a->a.user);
-    }
-
-    public User nullUser(){
-        return User.newUser(new Worker("Testy MacUserton", "someone@mail.com", LocalDate.now(),true),"","");
     }
 
     public boolean isAdmin(User user) {
