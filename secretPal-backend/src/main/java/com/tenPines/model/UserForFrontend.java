@@ -2,7 +2,7 @@ package com.tenPines.model;
 
 public class UserForFrontend {
 
-    private Long id;
+    public Long id;
 
     public Worker worker;
 
@@ -11,26 +11,10 @@ public class UserForFrontend {
     public Boolean admin;
 
 
-    public UserForFrontend(Long id, Worker worker, String userName,Boolean admin){
-        setId(id);
-        setWorker(worker);
-        setUserName(userName);
-        setAdmin(admin);
-    }
-
-    public void setAdmin(Boolean admin) {
-        this.admin = admin;
-    }
-
-    private void setId(Long id) {
-        this.id = id;
-    }
-
-    private void setWorker(Worker worker) {
-        this.worker = worker;
-    }
-
-    private void setUserName(String userName) {
-        this.userName = userName;
+    public UserForFrontend(User user, Boolean isAdmin){
+        this.id = user.getId();
+        this.worker = user.getWorker();
+        this.userName = this.worker.getFullName();
+        this.admin = isAdmin;
     }
 }
