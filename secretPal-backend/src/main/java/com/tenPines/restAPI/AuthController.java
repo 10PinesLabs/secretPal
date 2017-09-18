@@ -4,21 +4,27 @@ import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.AdminService;
 import com.tenPines.application.service.UserService;
 import com.tenPines.application.service.WorkerService;
+import com.tenPines.auth.BackofficeValidator;
 import com.tenPines.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.util.Arrays;
 
 @Controller
 @RequestMapping("/api/auth")
 public class AuthController {
-
-    public static final String SECRET_PAL_TOKEN = "SECRET_PAL_TOKEN";
-    @Autowired
-    private SystemPalFacade system;
 
     @Autowired
     private WorkerService workerService;
@@ -32,11 +38,22 @@ public class AuthController {
     @Autowired
     private SystemPalFacade systemFacade;
 
+    @Autowired
+    private BackofficeValidator backofficeValidator;
+
     @GetMapping(value = "/callback", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
-    public String backofficeCallback(@RequestParam("full_name") String fullName,
-                                     @RequestParam("email") String email,
-                                     @RequestParam("uid") Long uid) throws Exception {
+    public String backofficeCallback(
+            @RequestParam("uid") Long uid,
+            @RequestParam("email") String email,
+            @RequestParam("username") String username,
+            @RequestParam("full_name") String fullName,
+            @RequestParam("root") Boolean root,
+            @RequestParam("hmac") String hmac) throws Exception {
+
+        if (!backofficeValidator.isFromBackoffice(uid, email, username, fullName, root, hmac))
+            return "Falló la validación, el backoffice envió una firma incorrecta";
+
         User loggedUser = userService.findByBackofficeId(uid)
                 .orElseGet(() -> createUser(uid, fullName, email));
 
@@ -52,6 +69,7 @@ public class AuthController {
                 "<body>",
                 "    <h2>Redirigiendo...</h2>",
                 "    <script>",
+                "        debugger;",
                 "        /* Store the token into localStorage */",
                 "        window.localStorage.setItem('token', '" + token + "');",
                 "        /* Redirect to the actual application */",
@@ -61,9 +79,10 @@ public class AuthController {
                 "</html >");
     }
 
+
     private User createUser(Long backofficeId, String fullName, String email) {
         Worker worker = workerService.retrieveWorkerByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Tu mail no esta registrado en el sistema, molesta a un admin"));
+                .orElseThrow(() -> new RuntimeException("Tu mail no esta registrado en el sistema, molestá a un admin"));
 
         worker.setFullName(fullName);
         workerService.save(worker);
@@ -73,8 +92,9 @@ public class AuthController {
 
     @RequestMapping(value = "/me", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public User retrieveLoggedWorker(@RequestHeader("Authorization") String token) throws IOException {
-        return userService.getUserFromToken(token);
+    public UserForFrontend retrieveLoggedWorker(@RequestHeader("Authorization") String token) throws IOException {
+        User user = userService.getUserFromToken(token);
+        return new UserForFrontend(user, adminService.isAdmin(user));
     }
 
     @RequestMapping(value = "/giftsDefault", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
