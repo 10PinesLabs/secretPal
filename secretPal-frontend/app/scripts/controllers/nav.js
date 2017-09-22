@@ -4,11 +4,11 @@ angular.module('secretPalApp')
   .controller('navCtrl', function($scope, Account, $location) {
 
   $scope.isAuthenticated = function() {
-    return Account.isAuthenticated()
+    return Account.isAuthenticated();
   };
 
   $scope.isAdmin = function(){
-    return Account.isAdmin()
+    return Account.isAdmin();
   };
 
   $scope.logout = function () {

@@ -39,13 +39,17 @@ angular.module('secretPalApp')
 
     $scope.Delete = function (wish) {
       SweetAlert.swal({
-          title: "Estas seguro?",
-          text: "No vas a poder recuperar este deseo!",
+          title: "¿Estás seguro?",
+          text: "¡No vas a poder recuperar este deseo!",
           type: "warning",
+          allowOutsideClick: false,
+          showConfirmButton: true,
           showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
+          closeOnConfirm: false,
+          closeOnCancel: true,
+          confirmButtonColor: "#d43f3a",
           confirmButtonText: "Si, borrar!",
-          closeOnConfirm: false
+          cancelButtonText: "Cancelar"
         },
         function (isConfirm) {
           if (isConfirm) {
@@ -53,11 +57,13 @@ angular.module('secretPalApp')
               $scope.wishlist.splice(
                 $scope.wishlist.indexOf(wish), 1
               );
-              SweetAlert.swal("Se ha borrado exitosamente","", "success");
+              SweetAlert.swal({title: "Regalo borrado exitosamente",
+                confirmButtonColor: "#68bd46",});
             });
           }
         });
     };
+
     $scope.canDelete = function(wish){
       return user.worker.id == wish.createdBy.id || user.worker.id == wish.worker.id;
     };
@@ -88,7 +94,7 @@ angular.module('secretPalApp')
         callback(data);
       }).
       error(function() {
-        errorMsg("No se pudo procesar la solicitud al servidor");
+        errorMsg("No se pudo cargar la lista de regalos, inténtlo de nuevo más tarde.");
       });
   };
 
@@ -98,9 +104,10 @@ angular.module('secretPalApp')
           successFunction(data);
         }).
         error(function() {
-          errorMsg("No se pudo procesar la solicitud al servidor");
+          errorMsg("No se pudo crear un regalo, por favor inténtelo de nuevo.");
         });
     };
+
     this.delete = function (wish, successFunction) {
       $http.delete(buildRoute('/' + wish.id)).
         success(function() {

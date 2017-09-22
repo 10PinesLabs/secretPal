@@ -1,6 +1,7 @@
 package com.tenPines.application.service;
 
 import com.tenPines.model.User;
+import com.tenPines.model.Worker;
 import com.tenPines.persistence.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +37,13 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public void deleteByWorker(Worker worker) {
+        userRepository.deleteByWorker(worker);
+    }
+
+    public User retrieveByWorker(Worker worker) {
+        return userRepository.findByWorker(worker);
     }
 }

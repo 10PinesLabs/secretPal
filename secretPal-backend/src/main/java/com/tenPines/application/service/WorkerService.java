@@ -2,22 +2,21 @@ package com.tenPines.application.service;
 
 import com.tenPines.model.Worker;
 import com.tenPines.persistence.WorkerRepository;
-import org.springframework.core.NestedRuntimeException;
-import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class WorkerService {
     private final WorkerRepository workerRepository;
+    private final UserService userService;
 
-    public WorkerService(WorkerRepository workerRepository) {
+    public WorkerService(WorkerRepository workerRepository, UserService userService) {
         this.workerRepository = workerRepository;
+        this.userService = userService;
     }
 
     public Worker save(Worker newWorker) {
@@ -32,7 +31,7 @@ public class WorkerService {
     }
 
     public void remove(Worker aWorker) {
-        //TODO: y debería sacar las relaciones asociadas; y arreglarlas de alguna manera
+        userService.deleteByWorker(aWorker);
         workerRepository.delete(aWorker);
     }
 
@@ -68,7 +67,6 @@ public class WorkerService {
 
     public Worker retrieveWorkerByFullname(String token) {
         return workerRepository.findByfullName(token);
-
     }
 
 }

@@ -1,10 +1,6 @@
 package com.tenPines.model;
 
-import com.tenPines.builder.FriendRelationMessageBuilder;
-
-import javax.mail.MessagingException;
 import javax.persistence.*;
-import java.io.IOException;
 
 @Entity
 @Table
@@ -37,14 +33,6 @@ public class FriendRelation {
     public void setId(Long id) {
         this.id = id;
     }
-
-//    public SecretPalEvent getEvent() {
-//        return event;
-//    }
-//
-//    public void setEvent(SecretPalEvent event) {
-//        this.event = event;
-//    }
 
     public Worker getGiftGiver() {
         return this.giftGiver;
