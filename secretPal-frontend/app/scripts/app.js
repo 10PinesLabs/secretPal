@@ -8,7 +8,8 @@ angular
     'ngRoute',
     'satellizer',
     'oitozero.ngSweetAlert',
-    'toggle-switch'
+    'toggle-switch',
+    'ngPageTitle'
   ])
   .config(function ($routeProvider) {
     var authenticated = function (Account, $location) {
@@ -28,40 +29,64 @@ angular
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainController'
+        controller: 'MainController',
+        data: {
+          pageTitle: 'Con cariño'
+        }
       })
       .when('/mail', {
         templateUrl: 'views/mail.html',
         controller: 'MailController',
-        resolve: { user : authenticatedAndAdmin }
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Mails'
+        }
       })
       .when('/workers', {
         templateUrl: '../views/workers.html',
         controller: 'WorkersController',
-        resolve: { user : authenticatedAndAdmin }
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Workers'
+        }
       })
       .when('/friendRelations', {
         templateUrl: '../views/friendRelations.html',
         controller: 'FriendRelationController',
-        resolve: { user : authenticatedAndAdmin }
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Relaciones de amiguitos'
+        }
       })
       .when('/wishlist', {
         templateUrl: '../views/wishlist.html',
         controller: 'WishlistController',
-        resolve: { user : authenticated }
+        resolve: { user : authenticated },
+        data: {
+          pageTitle: 'Wishlist'
+        }
       })
       .when('/login', {
         templateUrl: '../views/login.html',
-        controller: 'LoginController'
+        controller: 'LoginController',
+        data: {
+          pageTitle: 'Login'
+        }
       })
       .when('/register', {
         templateUrl: '../views/register.html',
         controller: 'RegisterController',
+        data: {
+          pageTitle: 'Registrar'
+        }
       })
       .when('/profile', {
         templateUrl: '../views/profile.html',
         controller: 'ProfileController',
-        resolve: { user : authenticated }
+        resolve: { user : authenticated },
+        data: {
+          pageTitle: 'Perfil'
+        }
       })
       .when('/confirmationGift', {
         templateUrl: '../views//confirmationGift.html',
