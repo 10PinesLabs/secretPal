@@ -1,8 +1,8 @@
 <!doctype html>
-<html>
+<html ng-app="secretPalApp">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title page-title pattern="SecretPal | %s"></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="secretPalApp">
+  <body>
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <!--[endif]-->
@@ -93,6 +93,7 @@
     <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
     <script src="bower_components/angular-sweetalert/SweetAlert.js"></script>
     <script src="bower_components/angular-toggle-switch/angular-toggle-switch.js"></script>
+    <script src="bower_components/ng-page-title/dist/ng-page-title.js"></script>
     <script src="bower_components/ramda/dist/ramda.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
