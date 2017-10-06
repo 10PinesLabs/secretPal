@@ -3,8 +3,6 @@ package com.tenPines;
 import com.tenPines.application.service.AdminService;
 import com.tenPines.application.service.UserService;
 import com.tenPines.application.service.WorkerService;
-import com.tenPines.model.InitializerHerokuSystem;
-import com.tenPines.model.InitializerLocalSystem;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,11 +22,5 @@ public class SecretPalConfig{
         this.workerService = workerService;
         this.userService = userService;
         this.adminService = adminService;
-    }
-
-    @Bean
-    @Profile("heroku")
-    public InitializerHerokuSystem initializeHeroku(){
-        return new InitializerHerokuSystem(workerService);
     }
 }

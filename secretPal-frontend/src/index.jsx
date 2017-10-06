@@ -12,6 +12,12 @@ import axios from 'axios';
 
 axios.defaults.baseURL = '/api/';
 
+window.debug = (o) => {
+  console.trace(o);
+  debugger;
+  return o;
+};
+
 // render the main component
 const load = () => {
   ReactDOM.render(

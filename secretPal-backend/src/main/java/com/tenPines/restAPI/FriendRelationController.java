@@ -1,6 +1,5 @@
 package com.tenPines.restAPI;
 
-import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.FriendRelation;
 //import com.tenPines.model.SecretPalEvent;
@@ -17,13 +16,11 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+import static com.tenPines.application.service.validation.rule.NotCircularRuleValidator.friendRelationService;
+
 @Controller
 @RequestMapping("/api/friendRelation")
 public class FriendRelationController {
-
-
-    @Autowired
-    private SystemPalFacade systemFacade;
 
     @Autowired
     private WorkerService workerService;
@@ -31,63 +28,65 @@ public class FriendRelationController {
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<FriendRelation> workersWithFriends() {
-        return systemFacade.getAllRelations();
+        return friendRelationService.getAllRelations();
     }
 
 
     @RequestMapping(value = "/posibleFriend/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<Worker> posiblesFriends(@PathVariable Long id) {
-        return systemFacade.getPossibleFriendsTo(id);
+        Worker workerTo = workerService.retriveWorkerOrThrow(id);
+        return friendRelationService.getAvailablesRelationsTo(workerTo);
 
 
     }
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public void createRelation(@RequestBody @Valid List<FriendRelation> friendRelations) throws IOException, MessagingException {
-        
-        systemFacade.deleteAllRelations();
+
+        friendRelationService.deleteAllRelations();
         for (FriendRelation friendRelation : friendRelations) {
-            systemFacade.createRelation(friendRelation.getGiftGiver(), friendRelation.getGiftReceiver());
+            friendRelationService.create(friendRelation.getGiftGiver(), friendRelation.getGiftReceiver());
         }
     }
 
     @RequestMapping(value = "/{from}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void deleteRelation(@PathVariable Long from){
-        Worker giver = workerService.retriveWorker(from);
-        systemFacade.deleteRelation(giver);
+        Worker giver = workerService.retriveWorkerOrThrow(from);
+        friendRelationService.deleteByGiftGiver(giver);
     }
 
     @RequestMapping(value = "/friend/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public Worker retrieveGiftee(@PathVariable("id") Long id) {
-        return systemFacade.retrieveAssignedFriendFor(id);
+        Worker participant = workerService.retriveWorkerOrThrow(id);
+        return friendRelationService.retrieveAssignedFriendFor(participant);
     }
 
     @RequestMapping(value = "/autoAssign", method = RequestMethod.POST)
     @ResponseBody
     public void autoAssignRelations() throws IOException {
-        systemFacade.autoAssignRelations();
+        friendRelationService.autoAssignRelations();
     }
 
     @RequestMapping(value = "/posibilities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<ParticipantWithPosibilities> allPosibilities() {
-        return systemFacade.allPosibilities();
+        return friendRelationService.allPosibilities();
     }
 
     @RequestMapping(value = "/inmutables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<FriendRelation> allInmutableRelations() {
-        return systemFacade.allInmutableRelations();
+        return friendRelationService.allInmutableRelations();
     }
 
     @RequestMapping(value = "/update/{giverId}/{newReceiverId}", method = RequestMethod.PUT)
     @ResponseBody
     public void updateRelation(@PathVariable Long giverId,@PathVariable Long newReceiverId) throws IOException, MessagingException {
-        Worker giver = workerService.retriveWorker(giverId);
-        Worker newReceiver = workerService.retriveWorker(newReceiverId);
-        systemFacade.updateRelation(giver, newReceiver);
+        Worker giver = workerService.retriveWorkerOrThrow(giverId);
+        Worker newReceiver = workerService.retriveWorkerOrThrow(newReceiverId);
+        friendRelationService.updateRelation(giver, newReceiver);
     }
 }

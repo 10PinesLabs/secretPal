@@ -21,7 +21,7 @@ export class App extends React.Component {
   render () {
     const appBar =
       <AppBar
-        title='Ganancias'
+        title={<Link to="/">Secret Pal</Link>}
         iconStyleLeft={this.props.isLoggedIn ? {} : {display: 'none'}}
         onLeftIconButtonTouchTap={() =>
           this.setState((prevState) => ({open: !prevState.open}))}
@@ -40,16 +40,10 @@ export class App extends React.Component {
             onRequestChange={(open) => this.setState({open})}
             >
             {appBar}
-            <Link to='/agregarEmpleado'>
-              <MenuItem onTouchTap={
+            <Link to='/wishlist'>
+              <MenuItem onClick={
                 () => this.setState({open: !this.state.open})}>
                 Agregar empleado
-              </MenuItem>
-            </Link>
-            <Link to='/empleados'>
-              <MenuItem onTouchTap={
-                () => this.setState({open: !this.state.open})}>
-                Ver empleados
               </MenuItem>
             </Link>
           </Drawer>

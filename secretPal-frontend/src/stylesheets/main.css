@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+a, a:hover, a:visited, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
 .anti-pantalleo {
     color: #61b85c;
     background-color: #61b85c;
@@ -7,15 +17,6 @@
 
 .anti-pantalleo:hover {
     color: white;
-}
-
-body {
-  margin: 0px;
-  font-family: 'Roboto', sans-serif;
-}
-
-a {
-  text-decoration: none;
 }
 
 .loginContainer {

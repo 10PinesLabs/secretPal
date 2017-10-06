@@ -1,7 +1,8 @@
 package com.tenPines.restAPI;
 
 import com.tenPines.SecretPalStarter;
-import com.tenPines.application.SystemPalFacade;
+import com.tenPines.application.service.WishListService;
+import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.Wish;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,47 +19,41 @@ import java.util.List;
 public class WishListController {
 
     @Autowired
-    private SecretPalStarter systemOld;
-    private Worker worker;
-
-
-
+    private WishListService wishListService;
     @Autowired
-    private SystemPalFacade systemActual;
+    private WorkerService workerService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping("/")
     @ResponseBody
     public List<Wish> wishes() {
-        return systemActual.retrieveAllWishes();
+        return wishListService.retrieveAllWishes();
     }
 
-    @RequestMapping(value = "/worker/{workerID}", method = RequestMethod.GET)
+    @GetMapping("/worker/{workerID}")
     @ResponseBody
     public List<Wish> getWorkersWishes(@PathVariable Long workerID) {
-        Worker worker = systemActual.retrieveAWorker(workerID);
-        return systemActual.retrievallWishesForWorker(worker);
+        Worker worker = workerService.retriveWorkerOrThrow(workerID);
+        return wishListService.retrieveByWorker(worker);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/")
     @ResponseBody
-    public Wish save(@RequestBody Wish wish) throws IOException {
-        return systemActual.saveWish(wish);
+    public Wish save(@RequestBody Wish wish) {
+        return wishListService.saveWish(wish);
     }
 
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    @ResponseStatus(value = HttpStatus.OK)
+    @PostMapping("/{id}")
     public void updateWish(@PathVariable Long id, @RequestBody String gift) {
-        Wish wish = systemActual.retrieveAWish(id);
+        Wish wish = wishListService.retrieveAWish(id);
         wish.setGift(gift);
-        systemActual.updateWish(wish);
+        wishListService.updateWish(wish);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public void deleteWish(@PathVariable Long id) {
-        Wish wish = systemActual.retrieveAWish(id);
-        systemActual.deleteAWish(wish);
+        Wish wish = wishListService.retrieveAWish(id);
+        wishListService.deleteAWish(wish);
     }
 
     @ExceptionHandler(Exception.class)

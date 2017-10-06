@@ -5,6 +5,7 @@ import { history } from './store';
 import App from './components/App';
 import LoginPage from './components/LoginPage';
 import NotFoundPage from './components/NotFoundPage';
+import WishListPage from './components/WishListPage';
 import EnsureAuthenticated from './components/EnsureAuthenticated';
 import SecretPalPage from './components/SecretPalPage';
 
@@ -19,6 +20,7 @@ export const AppRouter = () =>
             <EnsureAuthenticated>
               <Switch>
                 <Route exact path='/' component={SecretPalPage}/>
+                <Route exact path='/wishlist' component={WishListPage}/>
                 <Route component={NotFoundPage}/>
               </Switch>
             </EnsureAuthenticated>

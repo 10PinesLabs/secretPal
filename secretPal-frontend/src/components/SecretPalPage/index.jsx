@@ -6,6 +6,7 @@ import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
+import {Loading} from '../Loading';
 import axios from 'axios';
 import {swal} from 'react-redux-sweetalert';
 
@@ -30,7 +31,7 @@ class SecretPalPage extends React.Component {
   componentDidMount() {
     axios.get(`/friendRelation/friend/${this.props.palId}`)
       .then((response) => this.setState({regalado: response.data}))
-      .catch(error => console.error(error));
+      .catch(error => this.setState({error: error.response.data.message}));
   }
 
   render() {
@@ -60,9 +61,9 @@ class SecretPalPage extends React.Component {
         </Paper>
       );
     } else if (this.state.error) {
-      return <p>Algo salió mal {this.state.error}</p>;
+      return <p>Algo salió mal: {this.state.error}</p>;
     } else {
-      return <p>Cargando empleado...</p>;
+      return <Loading/>;
     }
   }
 }

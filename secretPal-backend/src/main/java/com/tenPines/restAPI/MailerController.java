@@ -1,6 +1,6 @@
 package com.tenPines.restAPI;
 
-import com.tenPines.application.SystemPalFacade;
+import com.tenPines.application.ReminderSystem;
 import com.tenPines.application.service.MailerService;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.EmailTemplate;
@@ -15,45 +15,35 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/mail")
 public class MailerController {
+    @Autowired private MailerService mailerService;
+    @Autowired private ReminderSystem reminderSystem;
 
-    @Autowired
-    private SystemPalFacade system;
-
-    @Autowired
-    private MailerService mailerService;
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     @ResponseBody
     public EmailTemplate getMail() throws IOException {
-        return system.getEMailTemplate();
+        return mailerService.getEMailTemplate();
     }
 
-
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @PostMapping("/")
     @ResponseBody
     public EmailTemplate setMail(@RequestBody EmailTemplate modifiedMail) throws IOException {
-        return system.setEmailTemplate(modifiedMail);
+        return mailerService.setEmailTemplate(modifiedMail);
     }
 
-
-    @RequestMapping(value = "/failedMails", method = RequestMethod.GET)
+    @GetMapping("/failedMails")
     @ResponseBody
     public List<UnsentMessage> getFailedMail(){
         return mailerService.retrieveAllFailedMails();}
 
-
-
-    @RequestMapping(value = "/resendMailsFailure", method = RequestMethod.POST)
+    @GetMapping("/resendMailsFailure")
     @ResponseBody
-    public void resendMail(@RequestBody UnsentMessage unsentMessage) throws IOException {
-        system.resendMessageFailure(unsentMessage);
+    public void resendMail(@RequestBody UnsentMessage unsentMessage) {
+        mailerService.resendMessageFailure(unsentMessage);
     }
 
-    @RequestMapping(value = "/remind", method = RequestMethod.PUT)
-    @ResponseStatus(value = HttpStatus.OK)
-    public void sendAllTodayReminders() throws IOException {
-        system.sendAllTodayReminders();
+    @PutMapping("/remind")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendAllTodayReminders() {
+        reminderSystem.sendAllReminders();
     }
-
-
 }

@@ -47,8 +47,7 @@ public class WorkerService {
         return "The Worker with this email does not exist";
     }
 
-    public void changeIntention(Worker aWorker) {
-        Worker worker = retriveWorker(aWorker.getId());
+    public void changeIntention(Worker worker) {
         worker.changeParticipationIntention();
         workerRepository.save(worker);
     }
@@ -57,8 +56,13 @@ public class WorkerService {
         return workerRepository.findBywantsToParticipate(true);
     }
 
-    public Worker retriveWorker(Long to) {
-        return workerRepository.findOne(to);
+    public Optional<Worker> retriveWorker(Long workerId) {
+        return Optional.ofNullable(workerRepository.findOne(workerId));
+    }
+
+    public Worker retriveWorkerOrThrow(Long workerId) {
+        return Optional.ofNullable(workerRepository.findOne(workerId))
+                .orElseThrow(() -> new RuntimeException("Worker not found"));
     }
 
     public List<Worker> getAllWorkers() {

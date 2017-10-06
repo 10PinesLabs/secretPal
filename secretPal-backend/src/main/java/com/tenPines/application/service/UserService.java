@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public String getTokenForUser(User user) {
-        return jwtGenerator.encodeJWTFromString(user.getId().toString());
+        return jwtGenerator.encodeJWTFromString(user.worker.getId().toString());
     }
 
     public User getUserFromToken(String token) {

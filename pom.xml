@@ -36,7 +36,6 @@
 
 
     <modules>
-        <module>secretPal-frontend</module>
         <module>secretPal-backend</module>
     </modules>
 
