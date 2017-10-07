@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class FriendRelation {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne

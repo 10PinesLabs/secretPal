@@ -21,7 +21,7 @@ public class Worker {
     @JsonIgnore
     public Set<Wish> wish;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @NotEmpty
     private String fullName;

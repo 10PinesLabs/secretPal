@@ -1,9 +1,12 @@
 package com.tenPines.model;
 
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 // We use the name usuario instead of user since 'user' is a keyword and
@@ -14,16 +17,14 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
     public Worker worker;
 
-    @NotEmpty
     public String userName;
 
-    @NotEmpty
     public String password;
 
 

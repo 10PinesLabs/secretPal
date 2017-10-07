@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Table
 public class Wish {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
