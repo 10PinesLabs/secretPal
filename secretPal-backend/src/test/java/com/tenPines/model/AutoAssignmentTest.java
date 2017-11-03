@@ -62,14 +62,6 @@ public class AutoAssignmentTest extends SpringBaseTest {
         ));
     }
 
-    private void assertRelationsChanged(List<FriendRelation> oldRelations) {
-        Boolean condition = oldRelations.stream().anyMatch(relation ->
-            relationHasChanged(relation)
-        );
-
-        assertThat(condition, is(true));
-    }
-
     private Boolean relationHasChanged(FriendRelation relation) {
         Worker newReceiver = friendRelationService.retrieveAssignedFriendFor(relation.getGiftGiver());
         return !relation.getGiftReceiver().equals(newReceiver);
@@ -122,20 +114,4 @@ public class AutoAssignmentTest extends SpringBaseTest {
         assertRelated(otherWorker);
         assertRelated(yetOtherWorker);
     }
-
-    @Test
-    public void whenAutoAssignThenGiversMayHaveNewReceivers() throws AssignmentException {
-        workerService.save(worker);
-        workerService.save(otherWorker);
-        workerService.save(yetOtherWorker);
-        workerService.save(anotherWorker);
-
-        friendRelationService.autoAssignRelations();
-        List<FriendRelation> oldRelations = friendRelationService.getAllRelations();
-        friendRelationService.autoAssignRelations();
-
-        assertRelationsChanged(oldRelations);
-    }
-
-
 }
