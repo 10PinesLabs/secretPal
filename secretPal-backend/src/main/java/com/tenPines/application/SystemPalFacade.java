@@ -22,9 +22,7 @@ public class SystemPalFacade {
     private final FriendRelationService friendRelationService;
     private final WorkerService workerService;
     private final GiftDefaultService giftDefaultService;
-    private final WishlistService wishlistService;
-    private final SecurityGuard securityGuard;
-    private final RegisterService registerService;
+    private final WishListService wishListService;
     private final MailerService mailerService;
     private final CustomParticipantRuleService customParticipantRuleService;
     private Long reminderDayPeriod;
@@ -59,7 +57,7 @@ public class SystemPalFacade {
     }
 
     public List<Wish> retrieveAllWishes() {
-        return wishlistService.retrieveAllWishes();
+        return wishListService.retrieveAllWishes();
     }
 
     public Worker retrieveAWorker(Long workerID) {
@@ -67,46 +65,35 @@ public class SystemPalFacade {
     }
 
     public List<Wish> retrievallWishesForWorker(Worker worker) {
-        return wishlistService.retrieveByWorker(worker);
+        return wishListService.retrieveByWorker(worker);
     }
 
     public Wish saveWish(Wish wish) {
 
-        return wishlistService.saveWish(wish);
+        return wishListService.saveWish(wish);
     }
 
     public Wish retrieveAWish(Long id) {
-        return wishlistService.retrieveAWish(id);
+        return wishListService.retrieveAWish(id);
     }
 
     public void updateWish(Wish wish) {
-        wishlistService.updateWish(wish);
+        wishListService.updateWish(wish);
     }
 
     public void deleteAWish(Wish wish) {
-        wishlistService.deleteAWish(wish);
+        wishListService.deleteAWish(wish);
     }
 
-    public Optional<Worker> retrieveWorkerByEmail(String email) {
-        return workerService.retrieveWorkerByEmail(email);
-
-    }
-
-    public SystemPalFacade(FriendRelationService friendRelationService, WorkerService workerService, GiftDefaultService giftDefaultService, WishlistService wishlistService, SecurityGuard securityGuard, RegisterService registerService, MailerService mailerService, CustomParticipantRuleService customParticipantRuleService, ReminderSystem reminderSystem) {
+    public SystemPalFacade(FriendRelationService friendRelationService, WorkerService workerService, GiftDefaultService giftDefaultService, WishListService wishListService, MailerService mailerService, CustomParticipantRuleService customParticipantRuleService, ReminderSystem reminderSystem) {
         this.reminderSystem = reminderSystem;
         setReminderDayPeriod(7L);
         this.friendRelationService = friendRelationService;
         this.workerService = workerService;
         this.giftDefaultService = giftDefaultService;
-        this.wishlistService = wishlistService;
-        this.securityGuard = securityGuard;
-        this.registerService = registerService;
+        this.wishListService = wishListService;
         this.mailerService = mailerService;
         this.customParticipantRuleService = customParticipantRuleService;
-    }
-
-    public Long getReminderDayPeriod() {
-        return reminderDayPeriod;
     }
 
     public void setReminderDayPeriod(Long reminderDayPeriod) {
@@ -166,16 +153,6 @@ public class SystemPalFacade {
     public void resendMessageFailure(UnsentMessage unsentMessage) {
 
         mailerService.resendMessageFailure(unsentMessage);
-    }
-
-    public SecurityToken loginWithInternalCredential(Credential aCredential) {
-        String token = securityGuard.enterWith(aCredential);
-        return SecurityToken.createWith(token);
-    }
-
-    public void registerUserAndAsociateWithAWorker(NewUser form) {
-        NewUser newUser = NewUser.createANewUser(form.getUserName(), form.getPassword(), form.getEmail());
-        registerService.registerUser(newUser);
     }
 
     public void createRule(Worker workerFrom, Worker workerTo, Boolean isActive) {

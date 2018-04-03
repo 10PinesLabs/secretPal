@@ -20,55 +20,21 @@ public class User {
     @OneToOne
     public Worker worker;
 
-    @NotEmpty
-    public String userName;
-
-    @NotEmpty
-    public String password;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setWorker(Worker worker) {
-        this.worker = worker;
-    }
+    public Long backofficeId;
 
     public Worker getWorker() {
         return worker;
     }
 
+    // Because hibernate
+    private User () {}
 
-    static public User newUser(Worker aWorker, String aUserName, String aPassword){
-        User user = new User();
-        user.setWorker(aWorker);
-        user.setUserName(aUserName);
-        user.setPassword(aPassword);
-        return user;
+    public User(Worker aWorker, Long backofficeId) {
+        this.backofficeId = backofficeId;
+        this.worker = aWorker;
     }
 
-    public String geteMail(){
-        return worker.geteMail();
+    public Long getId() {
+        return id;
     }
 }

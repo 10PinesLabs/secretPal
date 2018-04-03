@@ -20,7 +20,7 @@ public abstract class SpringBaseTest {
     @Autowired
     private WorkerRepository workerRepository;
     @Autowired
-    private WishlistRepository wishlistRepository;
+    private WishListRepository wishListRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -28,7 +28,7 @@ public abstract class SpringBaseTest {
 
     public void resetDB(){
         friendRelationRepository.deleteAll();
-        wishlistRepository.deleteAll();
+        wishListRepository.deleteAll();
         adminRepository.deleteAll();
         userRepository.deleteAll();
         workerRepository.deleteAll();

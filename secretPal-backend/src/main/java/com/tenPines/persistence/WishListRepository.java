@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public interface WishlistRepository extends JpaRepository<Wish, Long> {
+public interface WishListRepository extends JpaRepository<Wish, Long> {
     List<Wish> findByWorker(Worker worker);
 }
 

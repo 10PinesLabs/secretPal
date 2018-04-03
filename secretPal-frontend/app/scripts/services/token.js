@@ -1,23 +1,24 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .service('Token', function ($rootScope) {
+  .service('Token', function () {
+    var self = this;
 
-    this.saveToken = function (aToken) {
-      sessionStorage.token = aToken;
+    self.saveToken = function (aToken) {
+      localStorage.token = aToken;
     };
 
-    this.getToken = function () {
-      return sessionStorage.token;
+    self.getToken = function () {
+      return localStorage.token;
     };
 
-    this.isAuthenticated = function () {
-      return sessionStorage.token !== undefined;
+    self.isAuthenticated = function () {
+      return !! self.getToken();
     };
 
-    this.logout = function () {
+    self.logout = function () {
       $rootScope.loggedUser = undefined;
-      return sessionStorage.clear("token");
+      saveToken(undefined);
     };
   });
 

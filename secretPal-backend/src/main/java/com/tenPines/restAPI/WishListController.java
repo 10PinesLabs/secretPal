@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/wishlist")
-public class WishlistController {
+public class WishListController {
 
     @Autowired
     private SecretPalStarter systemOld;

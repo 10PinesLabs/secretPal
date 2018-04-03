@@ -1,13 +1,16 @@
 package com.tenPines.restAPI;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.AdminService;
 import com.tenPines.application.service.UserService;
 import com.tenPines.application.service.WorkerService;
-import com.tenPines.configuration.AdminProperties;
-import com.tenPines.model.*;
+import com.tenPines.auth.BackofficeValidator;
+import com.tenPines.model.DefaultGift;
+import com.tenPines.model.User;
+import com.tenPines.model.UserForFrontend;
+import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -20,9 +23,6 @@ import java.io.IOException;
 public class AuthController {
 
     @Autowired
-    private SystemPalFacade system;
-
-    @Autowired
     private WorkerService workerService;
 
     @Autowired
@@ -32,65 +32,94 @@ public class AuthController {
     private AdminService adminService;
 
     @Autowired
-    private RegisterService registerService;
+    private SystemPalFacade systemFacade;
 
     @Autowired
-    private SystemPalFacade systemFacade;
+    private BackofficeValidator backofficeValidator;
+
+    @Value("${backoffice.should.validate}")
+    private boolean shouldValidate;
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     @ResponseBody
     public Worker getAdmin() {
-        return new AdminProperties().findAdminWorker(adminService).orElseThrow(() -> new RuntimeException("No existe un administrador paa este sistema"));
+        return adminService
+            .findAdminUser()
+            .map(User::getWorker)
+            .orElseThrow(() -> new RuntimeException("No existe un administrador paa este sistema"));
+    }
+
+    @GetMapping(value = "/callback", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    public String backofficeCallback(
+            @RequestParam("uid") Long uid,
+            @RequestParam("email") String email,
+            @RequestParam("username") String username,
+            @RequestParam("full_name") String fullName,
+            @RequestParam("root") Boolean root,
+            @RequestParam("hmac") String hmac) throws Exception {
+
+        if (shouldValidate && !backofficeValidator.isFromBackoffice(uid, email, username, fullName, root, hmac))
+            return "Falló la validación, el backoffice envió una firma incorrecta";
+
+        User loggedUser = userService.findByBackofficeId(uid)
+                .orElseGet(() -> createUser(uid, fullName, email));
+
+        String token = userService.getTokenForUser(loggedUser);
+
+        return String.join("\n",
+                "<!DOCTYPE html>",
+                "<html lang=\"en\">",
+                "<head>",
+                "    <meta charset=\"UTF-8\">",
+                "    <title>Logueandote</title>",
+                "</head>",
+                "<body>",
+                "    <h2>Redirigiendo...</h2>",
+                "    <script>",
+                "        /* Store the token into localStorage */",
+                "        window.localStorage.setItem('token', '" + token + "');",
+                "        /* Redirect to the actual application */",
+                "        window.location.href = '/';",
+                "    </script>",
+                "</body>",
+                "</html >");
+    }
+
+
+    private User createUser(Long backofficeId, String fullName, String email) {
+        Worker worker = workerService.retrieveWorkerByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Tu mail no esta registrado en el sistema, molestá a un admin"));
+
+        worker.setFullName(fullName);
+        workerService.save(worker);
+
+        return userService.save(new User(worker, backofficeId));
     }
 
     @RequestMapping(value = "/me", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public UserForFrontend retrieveLoggedWorker(@RequestHeader(value = "Authorization") String header) throws IOException {
-        User completeUser = userService.retrieveUserByUserName(header);
-        return new UserForFrontend(completeUser.getId(),completeUser.getWorker(),completeUser.getUserName(), adminService.isAdmin(completeUser));
+    public UserForFrontend retrieveLoggedWorker(@RequestHeader("Authorization") String token) throws IOException {
+        User user = userService.getUserFromToken(token);
+        return new UserForFrontend(user, adminService.isAdmin(user));
     }
 
-    public static class Token {
-        String token;
-
-        public Token(@JsonProperty("token") String token) {
-            this.token = token;
-        }
-
-        public String getToken() {
-            return token;
-        }
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public SecurityToken loginWithInternalCredential(@RequestBody Credential credential){
-        return systemFacade.loginWithInternalCredential(credential);
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(value = HttpStatus.OK)
-    public void registerUserAndAsociateWithAWorker(@RequestBody NewUser form){
-        systemFacade.registerUserAndAsociateWithAWorker(form);
-    }
-
-    @RequestMapping(value="/giftsDefault", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/giftsDefault", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public DefaultGift giftDefaults() {
-        DefaultGift defaultGift =systemFacade.retrieveTheLastDefaultGift();
-        return defaultGift;
+        return systemFacade.retrieveTheLastDefaultGift();
     }
 
-    @RequestMapping(value="/giftsDefault", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/giftsDefault", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public void addGiftDefaults(@RequestBody DefaultGift defaultGift){
+    public void addGiftDefaults(@RequestBody DefaultGift defaultGift) {
         systemFacade.addGiftDefaults(defaultGift);
     }
 
-    @RequestMapping(value="/confirmationGift/{id}", method= RequestMethod.PUT)
+    @RequestMapping(value = "/confirmationGift/{id}", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.OK)
-    public void updateGiftReceivedDate(@PathVariable(value="id") Long id){
+    public void updateGiftReceivedDate(@PathVariable(value = "id") Long id) {
         Worker workerToUpdate = workerService.retriveWorker(id);
         workerToUpdate.markGiftAsReceived();
         workerService.save(workerToUpdate);
