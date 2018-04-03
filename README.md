@@ -4,9 +4,9 @@
 
 ##¿Qué se puede hacer con Secret Pal?
 
--Ver qué pino tenés asignado como amigo invisible
--Ver la lista de deseos de los pinos
--Agregar ítems a la lista de deseos de un pino
+* Ver qué pino tenés asignado como amigo invisible 
+* Ver la lista de deseos de los pinos 
+* Agregar ítems a la lista de deseos de un pino 
 
 #Configurando el ambiente de desarrollo
 
