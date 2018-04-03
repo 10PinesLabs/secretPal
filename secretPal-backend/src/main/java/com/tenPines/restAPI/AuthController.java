@@ -5,22 +5,18 @@ import com.tenPines.application.service.AdminService;
 import com.tenPines.application.service.UserService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.auth.BackofficeValidator;
-import com.tenPines.model.*;
+import com.tenPines.model.DefaultGift;
+import com.tenPines.model.User;
+import com.tenPines.model.UserForFrontend;
+import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.util.Arrays;
 
 @Controller
 @RequestMapping("/api/auth")
@@ -41,6 +37,18 @@ public class AuthController {
     @Autowired
     private BackofficeValidator backofficeValidator;
 
+    @Value("${backoffice.should.validate}")
+    private boolean shouldValidate;
+
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    @ResponseBody
+    public Worker getAdmin() {
+        return adminService
+            .findAdminUser()
+            .map(User::getWorker)
+            .orElseThrow(() -> new RuntimeException("No existe un administrador paa este sistema"));
+    }
+
     @GetMapping(value = "/callback", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String backofficeCallback(
@@ -51,7 +59,7 @@ public class AuthController {
             @RequestParam("root") Boolean root,
             @RequestParam("hmac") String hmac) throws Exception {
 
-        if (!backofficeValidator.isFromBackoffice(uid, email, username, fullName, root, hmac))
+        if (shouldValidate && !backofficeValidator.isFromBackoffice(uid, email, username, fullName, root, hmac))
             return "Falló la validación, el backoffice envió una firma incorrecta";
 
         User loggedUser = userService.findByBackofficeId(uid)
@@ -69,7 +77,6 @@ public class AuthController {
                 "<body>",
                 "    <h2>Redirigiendo...</h2>",
                 "    <script>",
-                "        debugger;",
                 "        /* Store the token into localStorage */",
                 "        window.localStorage.setItem('token', '" + token + "');",
                 "        /* Redirect to the actual application */",

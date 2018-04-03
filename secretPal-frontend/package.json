@@ -45,6 +45,7 @@
   },
   "scripts": {
     "postinstall": "bower install",
-    "build": "grunt build"
+    "build": "grunt build",
+    "dev": "grunt serve"
   }
 }
