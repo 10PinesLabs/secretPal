@@ -19,7 +19,8 @@ public class FriendRelation {
     @OneToOne
     private Worker giftReceiver;
 
-    @ElementCollection(targetClass = String.class)
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+
     private List<String> hints;
 
 //    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
