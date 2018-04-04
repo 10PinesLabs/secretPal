@@ -9,9 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>secretPal-backend</artifactId>
+    <artifactId>secretPal-scheduler</artifactId>
     <packaging>jar</packaging>
-
 
     <dependencies>
         <dependency>
@@ -31,11 +30,12 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.tenPines.SecretPalStarter</mainClass>
+                            <mainClass>com.tenPines.SecretPalScheduler</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>

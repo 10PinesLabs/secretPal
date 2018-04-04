@@ -32,14 +32,4 @@ public class FailProofPostOffice implements PostOffice {
     public List<UnsentMessage> getFailedMessages() {
         return failedMails.findAll();
     }
-
-    @Scheduled(fixedDelay = 86400000) //86400000 = 1 dia
-    public void resendFailedMessages() {
-        failedMails.findAll().stream().forEach(
-                (unSentMessage) -> {
-                    failedMails.delete(unSentMessage);
-                    sendMessage(unSentMessage.toMessage());
-                }
-        );
-    }
 }

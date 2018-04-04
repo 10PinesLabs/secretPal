@@ -37,8 +37,9 @@
 
     <modules>
         <module>secretPal-frontend</module>
-        <module>secretPal-backend</module>
         <module>secretPal-lib</module>
+        <module>secretPal-backend</module>
+        <module>secretPal-scheduler</module>
     </modules>
 
 </project>

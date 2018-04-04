@@ -38,8 +38,6 @@ public class ReminderSystem {
         this.mailerService = mailerService;
     }
 
-
-//    @Scheduled(fixedDelay = 86400000)
     public void sendHappyBithdayMessages() {
         workerService.getAllParticipants().stream()
                 .filter(worker ->
@@ -50,8 +48,7 @@ public class ReminderSystem {
                 .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder(mailProperties).buildMessage(worker)));
 
     }
-    
-//    @Scheduled(fixedDelay = 86400000) //86400000 = 1 dia
+
     public void sendTwoWeeksReminders() {
         relationsWithBirthdayTwoWeeksFromNow()
                 .forEach(friendRelation -> {
@@ -59,7 +56,6 @@ public class ReminderSystem {
                 });
     }
 
-//    @Scheduled(fixedDelay = 86400000) //86400000 = 1 dia
     public void sendTwoMonthsReminders() {
         relationsWithBirthdayTwoMonthsFromNow()
             .forEach(friendRelation -> {
