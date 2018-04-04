@@ -180,4 +180,12 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         assertThat(friendRelationService.retrieveGiftGiverFor(aWorkerReceiver), is(aWorkerGiver));
     }
 
+    @Test
+    public void canSeeTheHintsGivenToTheGiftReciever(){
+        setUp();
+        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+        assertTrue(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver).isEmpty());
+
+    }
+
 }
