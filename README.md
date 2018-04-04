@@ -12,11 +12,10 @@
 
 ## Crear la base de datos para levantar la aplicacion del backend
 0. `sudo apt install postgresql`.
-1. `sudo -u postgres createuser pal`.
+1. `sudo -u postgres createuser -P pal`.
 2. `sudo -u postgres create db secret_pal (secret_pal_test para los tests)`.
 3. `sudo -u postgres psql`.
-4. `alter user pal with encrypted password 'secreto'`.
-5. `grant all privileges on database secret_pal (_test para tests) to pal`.
+4. `grant all privileges on database secret_pal (_test para tests) to pal`.
 
 ## Levantar el frontend con npm
 1. `npm install`.
