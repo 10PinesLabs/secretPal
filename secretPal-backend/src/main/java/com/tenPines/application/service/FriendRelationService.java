@@ -190,4 +190,22 @@ public class FriendRelationService {
         friendRelationRepository.deleteByGiftGiver(giver);
     }
 
+    public void addHintFrom(Worker aWorkerGiver, String hint) {
+        FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver).get();
+        friendRelation.addHint(hint);
+        friendRelationRepository.save(friendRelation);
+    }
+
+    public void editHintFrom(Worker aWorkerGiver, String oldHint, String newHint) {
+        FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver).get();
+        friendRelation.editHint(oldHint,newHint);
+        friendRelationRepository.save(friendRelation);
+    }
+
+
+    public void removeHintFrom(Worker aWorkerGiver, String hint) {
+        FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver).get();
+        friendRelation.removeHint(hint);
+        friendRelationRepository.save(friendRelation);
+    }
 }

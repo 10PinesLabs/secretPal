@@ -185,7 +185,34 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
         assertTrue(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver).isEmpty());
+    }
 
+    @Test
+    public void TheGifterCanAddHints(){
+        setUp();
+        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+        friendRelationService.addHintFrom(aWorkerGiver,"hint");
+        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasItem("hint"));
+        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(1));
+    }
+
+    @Test
+    public void TheGifterCanEditHints(){
+        setUp();
+        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+        friendRelationService.addHintFrom(aWorkerGiver,"hint");
+        friendRelationService.editHintFrom(aWorkerGiver,"hint","newOne");
+        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasItem("newOne"));
+        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(1));
+    }
+
+    @Test
+    public void TheGifterCanRemoveHints(){
+        setUp();
+        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+        friendRelationService.addHintFrom(aWorkerGiver,"hint");
+        friendRelationService.removeHintFrom(aWorkerGiver,"hint");
+        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(0));
     }
 
 }
