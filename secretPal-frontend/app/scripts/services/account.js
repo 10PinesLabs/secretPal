@@ -42,14 +42,6 @@ angular.module('secretPalApp')
       }
     };
 
-    self.setCurrentAdmin = function (admin) {
-      return $http.post(buildRoute('/admin'), admin).then(function () {
-        SweetAlert.swal("Cambio de Admin", "El nuevo Admin es: " + admin.fullName, "success");
-      }, function (data) {
-        SweetAlert.swal("Algo salio mal", data, "error");
-      });
-    };
-
     self.login = function (credentials) {
       return $http.post(buildRoute('/login'), credentials)
         .then(function (response) {
