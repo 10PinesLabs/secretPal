@@ -8,6 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDateTime;
+
 @SpringBootApplication
 public class SecretPalScheduler {
     private static final Logger log = LoggerFactory.getLogger(SecretPalScheduler.class);
@@ -21,8 +23,9 @@ public class SecretPalScheduler {
     @Bean
     public CommandLineRunner demo(ReminderSystem system) {
         return (args) -> {
-            log.info(String.valueOf(system));
-            //system.sendAllReminders();
+            log.info("Sending all reminders for today " + LocalDateTime.now().toString());
+            system.sendAllReminders();
+            log.info("Sent!");
         };
     }
 }

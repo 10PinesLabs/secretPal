@@ -1,6 +1,5 @@
 package com.tenPines.restAPI;
 
-import com.tenPines.SecretPalStarter;
 import com.tenPines.application.SystemPalFacade;
 import com.tenPines.model.Wish;
 import com.tenPines.model.Worker;
@@ -16,13 +15,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/wishlist")
 public class WishListController {
-
-    @Autowired
-    private SecretPalStarter systemOld;
-    private Worker worker;
-
-
-
     @Autowired
     private SystemPalFacade systemActual;
 

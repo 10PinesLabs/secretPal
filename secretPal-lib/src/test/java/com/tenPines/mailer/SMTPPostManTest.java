@@ -25,6 +25,8 @@ public class SMTPPostManTest extends SpringBaseTest {
 
     @Before
     public void setUp() {
+        failedMailsRepository.deleteAll();
+
         PostMan failingPostMan = message -> {
             throw new UnableToSendMessage(new MessagingException("Upsis"));
         };
