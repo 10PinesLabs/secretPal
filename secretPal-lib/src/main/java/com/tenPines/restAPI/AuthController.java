@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/auth")
@@ -45,11 +46,15 @@ public class AuthController {
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     @ResponseBody
     public List<Worker> getAdmins() {
-        Worker admin = adminService
-                .findAdminUser()
+        List<Worker> admins = adminService
+                .adminUsers()
+                .stream()
                 .map(User::getWorker)
-                .orElseThrow(() -> new RuntimeException("No existe un administrador paa este sistema"));
-        return Arrays.asList(admin);
+                .collect(Collectors.toList());
+        if(admins.isEmpty()){
+            throw new RuntimeException("No existe un administrador para este sistema");
+        }
+        return admins;
     }
 
     @GetMapping(value = "/callback", produces = MediaType.TEXT_HTML_VALUE)

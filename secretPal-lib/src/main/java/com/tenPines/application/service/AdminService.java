@@ -5,16 +5,16 @@ import com.tenPines.model.User;
 import com.tenPines.persistence.AdminRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
     private final AdminRepository adminRepository;
-    private final WorkerService workerService;
 
-    public AdminService(WorkerService workerService, AdminRepository adminRepository) {
+    public AdminService(AdminRepository adminRepository) {
         this.adminRepository = adminRepository;
-        this.workerService = workerService;
     }
 
     public User save(User aUser) {
@@ -22,12 +22,11 @@ public class AdminService {
         return aUser;
     }
 
-    public Optional<User> findAdminUser() {
-        Optional<AdminProfile> adminProfile = adminRepository.findAll().stream().findFirst();
-        return adminProfile.map(a->a.user);
+    public List<User> adminUsers() {
+        return adminRepository.findAll().stream().map(a->a.user).collect(Collectors.toList());
     }
 
     public boolean isAdmin(User user) {
-        return findAdminUser().equals(Optional.of(user));
+        return adminUsers().contains(user);
     }
 }
