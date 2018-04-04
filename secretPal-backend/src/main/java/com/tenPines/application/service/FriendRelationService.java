@@ -107,6 +107,11 @@ public class FriendRelationService {
                 .map(relation -> relation.getGiftReceiver());
     }
 
+    public Worker retrieveGiftGiverFor(Worker worker) {
+        return friendRelationRepository.findByGiftReceiver(worker)
+                .map(relation -> relation.getGiftGiver()).get();
+    }
+
     public List<ParticipantWithPosibilities> allPosibilities() {
         return workersWhoCanGive().stream().map(participant ->
             new ParticipantWithPosibilities(participant, this)

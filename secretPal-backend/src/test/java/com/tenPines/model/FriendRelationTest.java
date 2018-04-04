@@ -10,8 +10,10 @@ import static com.tenPines.model.process.AssignmentException.Reason.CANT_SELF_AS
 import static com.tenPines.model.process.AssignmentException.Reason.DOES_NOT_WANT_TO_PARTICIPATE;
 import static com.tenPines.model.process.AssignmentException.Reason.RECEIVER_NULL;
 import static com.tenPines.model.process.AssignmentException.Reason.GIVER_NULL;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 public class FriendRelationTest {
@@ -20,7 +22,7 @@ public class FriendRelationTest {
     private Worker otherWorker;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         this.aWorker = new WorkerBuilder().build();
         this.otherWorker = new WorkerBuilder().build();
     }
@@ -35,7 +37,7 @@ public class FriendRelationTest {
             fail("The exception was not raised");
         } catch (AssignmentException e) {
             assertThat(e.getReason(), is(DOES_NOT_WANT_TO_PARTICIPATE.toString()));
-            assertThat(e.getDetails(), hasEntry("worker",aWorker));
+            assertThat(e.getDetails(), hasEntry("worker", aWorker));
         }
     }
 
@@ -85,6 +87,7 @@ public class FriendRelationTest {
             assertThat(e.getReason(), is(RECEIVER_NULL.toString()));
         }
     }
+
     @Test
     public void WhenHavingNullGiverYouCannotEstablishAFriendRelation() {
         RelationEstablisher relationEstablisher = new RelationEstablisher(null, otherWorker);
@@ -95,6 +98,72 @@ public class FriendRelationTest {
         } catch (AssignmentException e) {
             assertThat(e.getReason(), is(GIVER_NULL.toString()));
         }
+    }
+
+    @Test
+    public void theGifterCanGiveHintsToTheReciever() {
+        RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
+
+        FriendRelation relation = relationEstablisher.createRelation();
+        String pista = "Tengo un cuchillo";
+        relation.addHint(pista);
+
+        assertThat(relation.hints(), hasItem(pista));
+    }
+
+    @Test
+    public void theGifterStartsByGivingNoHintsToTheReciever() {
+        RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
+
+        FriendRelation relation = relationEstablisher.createRelation();
+
+        assertTrue(relation.hints().isEmpty());
+    }
+
+    @Test
+    public void theGifterCanNotGiveMoreThan3HintsToTheReciever() {
+        RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
+
+        FriendRelation relation = relationEstablisher.createRelation();
+
+        relation.addHint("1");
+        relation.addHint("2");
+        relation.addHint("3");
+
+        try {
+            relation.addHint("cuarta pista");
+            fail("The exception was not raised");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), is("Can not have more than 3 hints"));
+        }
+    }
+
+
+    @Test
+    public void theGifterCanDeleteAHint() {
+        RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
+
+        FriendRelation relation = relationEstablisher.createRelation();
+        relation.addHint("pista");
+        relation.addHint("pista2");
+        relation.removeHint("pista");
+
+        assertThat(relation.hints(), hasSize(1));
+        assertThat(relation.hints(), hasItem("pista2"));
+        assertFalse(relation.hints().contains("pista"));
+    }
+
+    @Test
+    public void theGifterCanEditAHint() {
+        RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
+
+        FriendRelation relation = relationEstablisher.createRelation();
+        relation.addHint("pista");
+        relation.editHint("pista", "pista nueva");
+
+        assertThat(relation.hints(), hasSize(1));
+        assertThat(relation.hints(), hasItem("pista nueva"));
+        assertFalse(relation.hints().contains("pista"));
     }
 
 

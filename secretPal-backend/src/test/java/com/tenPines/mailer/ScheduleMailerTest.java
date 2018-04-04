@@ -19,7 +19,7 @@ import java.time.Month;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-@Ignore
+//@Ignore
 public class ScheduleMailerTest extends SpringBaseTest {
     @Autowired
     private WorkerService workerService;
