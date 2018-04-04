@@ -3,10 +3,12 @@ package com.tenPines.application.service.validation.rule;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 
-import java.util.List;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table

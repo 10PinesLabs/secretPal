@@ -2,19 +2,16 @@ package com.tenPines.application;
 
 import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.*;
-import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.*;
-import com.tenPines.restAPI.SecurityToken;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SystemPalFacade {

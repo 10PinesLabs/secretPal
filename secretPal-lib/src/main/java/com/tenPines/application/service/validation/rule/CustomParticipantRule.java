@@ -1,12 +1,10 @@
 package com.tenPines.application.service.validation.rule;
 
 import com.tenPines.model.FriendRelation;
-import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.model.Worker;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.List;
 
 @Entity

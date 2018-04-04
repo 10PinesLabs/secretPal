@@ -3,9 +3,7 @@ package com.tenPines.model.process;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 
-import static com.tenPines.model.process.AssignmentException.Reason.CANT_SELF_ASSIGN;
-import static com.tenPines.model.process.AssignmentException.Reason.RECEIVER_NULL;
-import static com.tenPines.model.process.AssignmentException.Reason.GIVER_NULL;
+import static com.tenPines.model.process.AssignmentException.Reason.*;
 
 public class RelationEstablisher {
     private final Worker giftgiver;

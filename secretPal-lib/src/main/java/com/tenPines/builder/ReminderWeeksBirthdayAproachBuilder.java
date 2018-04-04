@@ -1,6 +1,5 @@
 package com.tenPines.builder;
 
-import com.tenPines.application.MailProperties;
 import com.tenPines.application.service.MailerService;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,6 @@
 package com.tenPines.application.service.validation.rule;
 
 import com.tenPines.application.clock.Clock;
-import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Worker;
 

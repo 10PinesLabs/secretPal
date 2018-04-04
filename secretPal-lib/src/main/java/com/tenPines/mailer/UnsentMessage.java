@@ -1,12 +1,10 @@
 package com.tenPines.mailer;
 
-import com.tenPines.application.MailProperties;
 import com.tenPines.model.Message;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 
 @Entity

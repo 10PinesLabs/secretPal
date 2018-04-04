@@ -2,11 +2,9 @@ package com.tenPines.application.service;
 
 import com.tenPines.model.AdminProfile;
 import com.tenPines.model.User;
-import com.tenPines.model.Worker;
 import com.tenPines.persistence.AdminRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
