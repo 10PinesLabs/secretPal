@@ -19,15 +19,16 @@ public class FriendRelation {
     @OneToOne
     private Worker giftReceiver;
 
-    @OneToMany
+    @ElementCollection(targetClass = String.class)
     private List<String> hints;
 
 //    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
 //    public SecretPalEvent event;
 
-    public FriendRelation(){}
+    public FriendRelation() {
+    }
 
-    public FriendRelation(Worker participant, Worker giftReceiver)  {
+    public FriendRelation(Worker participant, Worker giftReceiver) {
         this.giftGiver = participant;
         this.giftReceiver = giftReceiver;
         this.hints = new ArrayList<String>();
@@ -67,7 +68,7 @@ public class FriendRelation {
     }
 
     private void assertLessThan3Hints() {
-        if(this.hints.size() >= 3){
+        if (this.hints.size() >= 3) {
             throw new RuntimeException("Can not have more than 3 hints");
         }
     }
@@ -78,5 +79,13 @@ public class FriendRelation {
 
     public void editHint(String pista, String pista_nueva) {
         hints.set(hints.indexOf(pista), pista_nueva);
+    }
+
+    public List<String> getHints() {
+        return hints;
+    }
+
+    public void setHints(List<String> hints) {
+        this.hints = hints;
     }
 }
