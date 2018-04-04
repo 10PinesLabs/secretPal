@@ -32,7 +32,7 @@ angular.module('secretPalApp')
       return Token.logout();
     };
 
-    self.getCurrentAdmin = function () {
+    self.getAdmins = function () {
       return $http.get(buildRoute('/admin'));
     };
 

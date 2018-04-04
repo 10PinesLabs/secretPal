@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/auth")
@@ -42,11 +44,12 @@ public class AuthController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     @ResponseBody
-    public Worker getAdmin() {
-        return adminService
-            .findAdminUser()
-            .map(User::getWorker)
-            .orElseThrow(() -> new RuntimeException("No existe un administrador paa este sistema"));
+    public List<Worker> getAdmins() {
+        Worker admin = adminService
+                .findAdminUser()
+                .map(User::getWorker)
+                .orElseThrow(() -> new RuntimeException("No existe un administrador paa este sistema"));
+        return Arrays.asList(admin);
     }
 
     @GetMapping(value = "/callback", produces = MediaType.TEXT_HTML_VALUE)
