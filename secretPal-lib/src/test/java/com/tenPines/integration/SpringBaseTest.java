@@ -24,7 +24,7 @@ public abstract class SpringBaseTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private RealAdminRepository adminRepository;
+    private AdminRepository adminRepository;
 
     public void resetDB(){
         friendRelationRepository.deleteAll();

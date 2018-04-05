@@ -20,4 +20,9 @@ public class FakeAdminRepository implements AdminRepository {
         adminProfiles.add(anAdminProfile);
         return anAdminProfile;
     }
+
+    @Override
+    public void deleteAll() {
+        adminProfiles.clear();
+    }
 }

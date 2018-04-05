@@ -9,4 +9,5 @@ import java.util.List;
 public interface AdminRepository {
     List<AdminProfile> findAll();
     AdminProfile save(AdminProfile anAdminProfile);
+    void deleteAll();
 }
