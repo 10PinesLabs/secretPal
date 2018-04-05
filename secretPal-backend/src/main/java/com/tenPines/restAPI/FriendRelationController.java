@@ -90,4 +90,20 @@ public class FriendRelationController {
         Worker newReceiver = workerService.retriveWorker(newReceiverId);
         systemFacade.updateRelation(giver, newReceiver);
     }
+
+    @RequestMapping(value = "/hintsFor/{workerID}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getHintsFor(@PathVariable Long workerID) {
+        Worker worker = systemFacade.retrieveAWorker(workerID);
+        return systemFacade.hintsFor(worker);
+    }
+
+    @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getHintsFrom(@PathVariable Long workerID) {
+        Worker worker = systemFacade.retrieveAWorker(workerID);
+        return systemFacade.hintsFrom(worker);
+    }
+
+
 }

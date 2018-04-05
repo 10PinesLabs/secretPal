@@ -112,10 +112,7 @@ public class FriendRelationService {
                 .map(relation -> relation.getGiftGiver()).get();
     }
 
-    public List<String> retrieveHintsGivenTo(Worker worker) {
-        return friendRelationRepository.findByGiftReceiver(worker)
-                .map(relation -> relation.hints()).get();
-    }
+
 
     public List<ParticipantWithPosibilities> allPosibilities() {
         return workersWhoCanGive().stream().map(participant ->
@@ -207,5 +204,15 @@ public class FriendRelationService {
         FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver).get();
         friendRelation.removeHint(hint);
         friendRelationRepository.save(friendRelation);
+    }
+
+    public List<String> retrieveHintsGivenTo(Worker worker) {
+        return friendRelationRepository.findByGiftReceiver(worker)
+                .map(relation -> relation.hints()).get();
+    }
+
+    public List<String> retrieveHintsFrom(Worker worker) {
+        return friendRelationRepository.findByGiftGiver(worker)
+                .map(relation -> relation.hints()).get();
     }
 }

@@ -204,4 +204,13 @@ public class SystemPalFacade {
     public void sendAllTodayReminders() {
         reminderSystem.sendAllReminders();
     }
+
+    public List<String> hintsFor(Worker worker) {
+        return friendRelationService.retrieveHintsGivenTo(worker);
+    }
+
+    public List<String> hintsFrom(Worker worker) {
+        return friendRelationService.retrieveHintsFrom(worker);
+
+    }
 }
