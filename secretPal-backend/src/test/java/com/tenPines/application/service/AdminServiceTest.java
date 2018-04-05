@@ -16,7 +16,6 @@ import static org.junit.Assert.assertTrue;
 public class AdminServiceTest extends SpringBaseTest {
 
     private AdminRepository fakeAdminRepository;
-
     private AdminService adminService;
     private User anUser;
 
@@ -47,5 +46,14 @@ public class AdminServiceTest extends SpringBaseTest {
     @Test
     public void when_an_user_is_not_saved_it_is_not_an_admin(){
         assertThat(adminService.isAdmin(anUser), is(false));
+    }
+
+    @Test
+    public void when_more_than_one_user_are_saved_they_are_all_admins(){
+        User anotherUser = new User(new WorkerBuilder().withFullName("Hans Landa").build(), null);
+        adminService.save(anUser);
+        adminService.save(anotherUser);
+        assertTrue(adminService.isAdmin(anUser));
+        assertTrue(adminService.isAdmin(anotherUser));
     }
 }
