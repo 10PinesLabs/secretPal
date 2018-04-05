@@ -1,10 +1,12 @@
 package com.tenPines.persistence;
 
 import com.tenPines.model.AdminProfile;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 
 @Transactional
-public interface AdminRepository extends JpaRepository<AdminProfile, Long> {
+public interface AdminRepository {
+    List<AdminProfile> findAll();
+    AdminProfile save(AdminProfile anAdminProfile);
 }
