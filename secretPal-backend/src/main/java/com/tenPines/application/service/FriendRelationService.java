@@ -3,6 +3,7 @@ package com.tenPines.application.service;
 import com.tenPines.application.clock.Clock;
 import com.tenPines.application.service.validation.FriendRelationValidator;
 import com.tenPines.model.FriendRelation;
+import com.tenPines.model.Hint;
 import com.tenPines.model.Worker;
 import com.tenPines.model.process.AssignmentException;
 import com.tenPines.model.process.AutoAssignmentFunction;
@@ -187,31 +188,31 @@ public class FriendRelationService {
         friendRelationRepository.deleteByGiftGiver(giver);
     }
 
-    public void addHintFrom(Worker aWorkerGiver, String hint) {
+    public void addHintFrom(Worker aWorkerGiver, Hint hint) {
         FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver).get();
         friendRelation.addHint(hint);
         friendRelationRepository.save(friendRelation);
     }
 
-    public void editHintFrom(Worker aWorkerGiver, String oldHint, String newHint) {
+    public void editHintFrom(Worker aWorkerGiver, Hint oldHint, Hint newHint) {
         FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver).get();
         friendRelation.editHint(oldHint,newHint);
         friendRelationRepository.save(friendRelation);
     }
 
 
-    public void removeHintFrom(Worker aWorkerGiver, String hint) {
+    public void removeHintFrom(Worker aWorkerGiver, Hint hint) {
         FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver).get();
         friendRelation.removeHint(hint);
         friendRelationRepository.save(friendRelation);
     }
 
-    public List<String> retrieveHintsGivenTo(Worker worker) {
+    public List<Hint> retrieveHintsGivenTo(Worker worker) {
         return friendRelationRepository.findByGiftReceiver(worker)
                 .map(relation -> relation.hints()).get();
     }
 
-    public List<String> retrieveHintsFrom(Worker worker) {
+    public List<Hint> retrieveHintsFrom(Worker worker) {
         return friendRelationRepository.findByGiftGiver(worker)
                 .map(relation -> relation.hints()).get();
     }

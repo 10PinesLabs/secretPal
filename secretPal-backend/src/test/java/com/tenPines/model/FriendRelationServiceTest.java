@@ -191,8 +191,9 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     public void TheGifterCanAddHints(){
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
-        friendRelationService.addHintFrom(aWorkerGiver,"hint");
-        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasItem("hint"));
+        Hint hint = new Hint("hint");
+        friendRelationService.addHintFrom(aWorkerGiver, hint);
+        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasItem(hint));
         assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(1));
     }
 
@@ -200,9 +201,11 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     public void TheGifterCanEditHints(){
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
-        friendRelationService.addHintFrom(aWorkerGiver,"hint");
-        friendRelationService.editHintFrom(aWorkerGiver,"hint","newOne");
-        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasItem("newOne"));
+        Hint hint = new Hint("hint");
+        friendRelationService.addHintFrom(aWorkerGiver, hint);
+        Hint newOne = new Hint("newOne");
+        friendRelationService.editHintFrom(aWorkerGiver,hint, newOne);
+        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasItem(newOne));
         assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(1));
     }
 
@@ -210,8 +213,9 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     public void TheGifterCanRemoveHints(){
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
-        friendRelationService.addHintFrom(aWorkerGiver,"hint");
-        friendRelationService.removeHintFrom(aWorkerGiver,"hint");
+        Hint hint = new Hint("hint");
+        friendRelationService.addHintFrom(aWorkerGiver, hint);
+        friendRelationService.removeHintFrom(aWorkerGiver,hint);
         assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(0));
     }
 

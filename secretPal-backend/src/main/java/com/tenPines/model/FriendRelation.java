@@ -19,9 +19,10 @@ public class FriendRelation {
     @OneToOne
     private Worker giftReceiver;
 
-    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-
-    private List<String> hints;
+//    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name="friend_relation_id")
+    private List<Hint> hints;
 
 //    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
 //    public SecretPalEvent event;
@@ -32,7 +33,7 @@ public class FriendRelation {
     public FriendRelation(Worker participant, Worker giftReceiver) {
         this.giftGiver = participant;
         this.giftReceiver = giftReceiver;
-        this.hints = new ArrayList<String>();
+        this.hints = new ArrayList<Hint>();
     }
 
     public Long getId() {
@@ -59,12 +60,12 @@ public class FriendRelation {
         this.giftReceiver = giftReceiver;
     }
 
-    public void addHint(String pista) {
+    public void addHint(Hint pista) {
         assertLessThan3Hints();
         this.hints.add(pista);
     }
 
-    public List<String> hints() {
+    public List<Hint> hints() {
         return this.hints;
     }
 
@@ -74,19 +75,19 @@ public class FriendRelation {
         }
     }
 
-    public void removeHint(String pista) {
+    public void removeHint(Hint pista) {
         this.hints.remove(pista);
     }
 
-    public void editHint(String pista, String pista_nueva) {
+    public void editHint(Hint pista, Hint pista_nueva) {
         hints.set(hints.indexOf(pista), pista_nueva);
     }
 
-    public List<String> getHints() {
+    public List<Hint> getHints() {
         return hints;
     }
 
-    public void setHints(List<String> hints) {
+    public void setHints(List<Hint> hints) {
         this.hints = hints;
     }
 }

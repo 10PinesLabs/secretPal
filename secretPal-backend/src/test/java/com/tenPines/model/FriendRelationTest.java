@@ -105,10 +105,9 @@ public class FriendRelationTest {
         RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
 
         FriendRelation relation = relationEstablisher.createRelation();
-        String pista = "Tengo un cuchillo";
-        relation.addHint(pista);
+        relation.addHint(new Hint("Tengo un cuchillo"));
 
-        assertThat(relation.hints(), hasItem(pista));
+        assertThat(relation.hints(), hasItem( new Hint("Tengo un cuchillo")));
     }
 
     @Test
@@ -126,12 +125,12 @@ public class FriendRelationTest {
 
         FriendRelation relation = relationEstablisher.createRelation();
 
-        relation.addHint("1");
-        relation.addHint("2");
-        relation.addHint("3");
+        relation.addHint(new Hint("1"));
+        relation.addHint(new Hint("2"));
+        relation.addHint(new Hint("3"));
 
         try {
-            relation.addHint("cuarta pista");
+            relation.addHint(new Hint("cuarta pista"));
             fail("The exception was not raised");
         } catch (RuntimeException e) {
             assertThat(e.getMessage(), is("Can not have more than 3 hints"));
@@ -144,13 +143,15 @@ public class FriendRelationTest {
         RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
 
         FriendRelation relation = relationEstablisher.createRelation();
-        relation.addHint("pista");
-        relation.addHint("pista2");
-        relation.removeHint("pista");
+        Hint pista = new Hint("pista");
+        relation.addHint(pista);
+        Hint pista2 = new Hint("pista2");
+        relation.addHint(pista2);
+        relation.removeHint(pista);
 
         assertThat(relation.hints(), hasSize(1));
-        assertThat(relation.hints(), hasItem("pista2"));
-        assertFalse(relation.hints().contains("pista"));
+        assertThat(relation.hints(), hasItem(pista2));
+        assertFalse(relation.hints().contains(pista));
     }
 
     @Test
@@ -158,12 +159,14 @@ public class FriendRelationTest {
         RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
 
         FriendRelation relation = relationEstablisher.createRelation();
-        relation.addHint("pista");
-        relation.editHint("pista", "pista nueva");
+        Hint pista = new Hint("pista");
+        relation.addHint(pista);
+        Hint pista_nueva = new Hint("pista nueva");
+        relation.editHint(pista, pista_nueva);
 
         assertThat(relation.hints(), hasSize(1));
-        assertThat(relation.hints(), hasItem("pista nueva"));
-        assertFalse(relation.hints().contains("pista"));
+        assertThat(relation.hints(), hasItem(pista_nueva));
+        assertFalse(relation.hints().contains(pista));
     }
 
 

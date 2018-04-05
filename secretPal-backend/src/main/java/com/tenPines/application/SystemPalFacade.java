@@ -202,24 +202,24 @@ public class SystemPalFacade {
         reminderSystem.sendAllReminders();
     }
 
-    public List<String> hintsFor(Worker worker) {
+    public List<Hint> hintsFor(Worker worker) {
         return friendRelationService.retrieveHintsGivenTo(worker);
     }
 
-    public List<String> hintsFrom(Worker worker) {
+    public List<Hint> hintsFrom(Worker worker) {
         return friendRelationService.retrieveHintsFrom(worker);
 
     }
 
-    public void removeHintFrom(Worker worker, String oldHint) {
+    public void removeHintFrom(Worker worker, Hint oldHint) {
         friendRelationService.removeHintFrom(worker,oldHint);
     }
 
-    public void updateHintFrom(Worker worker, String oldHint, String newHint) {
+    public void updateHintFrom(Worker worker, Hint oldHint, Hint newHint) {
         friendRelationService.editHintFrom(worker, oldHint,newHint);
     }
 
-    public void addHintFrom(Worker worker, String newHint) {
+    public void addHintFrom(Worker worker, Hint newHint) {
         friendRelationService.addHintFrom(worker,newHint);
     }
 }

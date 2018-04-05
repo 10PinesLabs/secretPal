@@ -4,6 +4,7 @@ import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.FriendRelation;
 //import com.tenPines.model.SecretPalEvent;
+import com.tenPines.model.Hint;
 import com.tenPines.model.Worker;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,14 +94,14 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/hintsFor/{workerID}", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> getHintsFor(@PathVariable Long workerID) {
+    public List<Hint> getHintsFor(@PathVariable Long workerID) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
         return systemFacade.hintsFor(worker);
     }
 
     @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> getHintsFrom(@PathVariable Long workerID) {
+    public List<Hint> getHintsFrom(@PathVariable Long workerID) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
         return systemFacade.hintsFrom(worker);
     }
@@ -108,21 +109,21 @@ public class FriendRelationController {
     @ResponseBody
     public void addHintsFrom(@PathVariable Long workerID, @RequestBody String newHint) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        systemFacade.addHintFrom(worker,newHint);
+        systemFacade.addHintFrom(worker,new Hint(newHint));
     }
 
     @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.PUT)
     @ResponseBody
     public void updateHintsFrom(@PathVariable Long workerID, @RequestBody String oldHint, @RequestBody String newHint) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        systemFacade.updateHintFrom(worker,oldHint,newHint);
+        systemFacade.updateHintFrom(worker,new Hint(oldHint),new Hint(newHint));
     }
 
     @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.DELETE)
     @ResponseBody
     public void removeHintFrom(@PathVariable Long workerID, @RequestBody String oldHint) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        systemFacade.removeHintFrom(worker,oldHint);
+        systemFacade.removeHintFrom(worker,new Hint(oldHint));
     }
 
 
