@@ -60,6 +60,14 @@ angular
       })
       .when('/wishlist', {
         templateUrl: '../views/wishlist.html',
+        controller: 'WorkersController',
+        resolve: { user : authenticated },
+        data: {
+          pageTitle: 'Pistas'
+        }
+      })
+      .when('/hints', {
+        templateUrl: '../views/hints.html',
         controller: 'WishlistController',
         resolve: { user : authenticated },
         data: {
