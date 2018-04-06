@@ -1,46 +1,56 @@
-<script type="text/ng-template" id="editModalWorker.html">
+<script type="text/ng-template" id="editModalWish.html">
   <div class="modal-header">
-    <h3 class="modal-title">Editando a un Pino</h3>
+    <h3 class="modal-title">Editando los deseos de {{wish.worker.fullName}}</h3>
   </div>
   <div class="modal-body">
-    <label class="control-label col-md-4" for="date">Pistas </label>
-    <input type="text" ng-model="worker.fullName">
-  </div>
-  <div class="modal-body">
-    <label class="control-label col-md-4" for="date">Email del Pino: </label>
-    <input type="text" ng-model="worker.eMail">
-  </div>
-  <div class="modal-body">
-    <div class="field">
-      <label class="control-label col-md-4" for="date">Fecha de nacimiento: </label>
-      <p class="input-group">
-        <input id="date" required type="text" class="form-control" datepicker-popup="dd.MM.yyyy"
-               ng-model="worker.dateOfBirth" is-open="opened"/>
-        <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event)"><i
-                  class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-      </p>
-    </div>
+    Deseo: <input type="text" ng-model="wish.gift">
   </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
-    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();">OK</button>
+    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();" ->OK</button>
   </div>
 </script>
 
-<div class="list_data">
-  <h1>Tus pistas</h1>
-  <div class="panel panel-black">
-    <ul class="table table-striped">
-      <li><h3> No soy de Teespring </h3></li>
-      <li><h3> No soy Joaco </h3></li>
-    </ul>
-  </div>
-  <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_worker" aria-expanded="false"
-          aria-controls="add_worker" id="add_worker_button">
-    Agregar pista
-  </button>
+
+<h1>Pistas para tu pino invisible</h1>
+<div class="panel panel-black">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th class="col-md-3">Pista</th>
+      <th class="col-md-1">Editar</th>
+      <th class="col-md-1">Borrar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="wish in wishlist">
+      <td>{{wish.worker.fullName}}</td>
+      <td>{{wish.gift}}</td>
+      <td><a ng-click="Edit(wish)" ng-show="canDelete(wish)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+      <td><a ng-click="Delete(wish)" ng-show="canDelete(wish)"><span
+        class="glyphicon glyphicon glyphicon-remove"></span></a></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 
+<button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false"
+        aria-controls="add_wish" id="add_wish_button">
+  Agrega una nueva pista
+</button>
+<div class="collapse" id="add_wish">
+  <div class="well">
+    <form class="navbar-form" name="form" ng-submit="Add()">
+
+      <div class="field">
+        <br>
+        <label class="control-label col-md-4" for="mail">Regalo que quiere: </label>
+        <input id="mail" required placeholder="Gift" class="form-control" ng-model="wish.gift">
+      </div>
+      <div class="action">
+        <button type="submit" class="btn btn-success">Agregar</button>
+      </div>
+    </form>
+  </div>
+</div>
 
