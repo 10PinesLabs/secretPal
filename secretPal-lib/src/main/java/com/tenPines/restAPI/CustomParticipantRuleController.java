@@ -2,7 +2,6 @@ package com.tenPines.restAPI;
 
 import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.WorkerService;
-import com.tenPines.application.service.validation.rule.AssignationRule;
 import com.tenPines.application.service.validation.rule.CustomParticipantRule;
 import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;

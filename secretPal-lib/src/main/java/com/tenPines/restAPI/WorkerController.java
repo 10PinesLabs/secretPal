@@ -4,7 +4,6 @@ import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.AdminService;
 import com.tenPines.application.service.UserService;
 import com.tenPines.application.service.WorkerService;
-import com.tenPines.model.User;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/worker")
