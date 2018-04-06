@@ -22,7 +22,7 @@ public class AdminServiceTest extends SpringBaseTest {
     @Before
     public void setUp(){
         anUser = new User(new WorkerBuilder().build(), null);
-        fakeAdminRepository = new FakeAdminRepository();
+        fakeAdminRepository = new InMemoryAdminRepository();
         adminService = new AdminService(fakeAdminRepository);
     }
 

@@ -6,7 +6,7 @@ import com.tenPines.persistence.AdminRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FakeAdminRepository implements AdminRepository {
+public class InMemoryAdminRepository implements AdminRepository {
 
     List<AdminProfile> adminProfiles = new ArrayList<>();
 
