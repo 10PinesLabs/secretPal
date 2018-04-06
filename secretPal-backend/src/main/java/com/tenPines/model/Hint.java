@@ -9,6 +9,7 @@ public class Hint {
     @Id
     @GeneratedValue
     private Long id;
+
     private String message;
 
     public Hint() {

@@ -19,13 +19,9 @@ public class FriendRelation {
     @OneToOne
     private Worker giftReceiver;
 
-//    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="friend_relation_id")
     private List<Hint> hints;
-
-//    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
-//    public SecretPalEvent event;
 
     public FriendRelation() {
     }
