@@ -6,5 +6,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Transactional
-public interface RealAdminRepository extends AdminRepository, JpaRepository<AdminProfile, Long> {
+public interface JpaAdminRepository extends AdminRepository, JpaRepository<AdminProfile, Long> {
 }

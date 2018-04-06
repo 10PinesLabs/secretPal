@@ -18,12 +18,14 @@ public class AdminServiceTest extends SpringBaseTest {
     private AdminRepository fakeAdminRepository;
     private AdminService adminService;
     private User anUser;
+    private User anotherUser;
 
     @Before
     public void setUp(){
         anUser = new User(new WorkerBuilder().build(), null);
         fakeAdminRepository = new InMemoryAdminRepository();
         adminService = new AdminService(fakeAdminRepository);
+        anotherUser = new User(new WorkerBuilder().withFullName("Hans Landa").build(), null);
     }
 
     @Test
@@ -49,8 +51,15 @@ public class AdminServiceTest extends SpringBaseTest {
     }
 
     @Test
+    public void when_more_than_one_user_are_saved_they_are_all_added_to_the_admin_list(){
+        adminService.save(anUser);
+        adminService.save(anotherUser);
+        assertThat(adminService.adminUsers(), hasItem(anUser));
+        assertThat(adminService.adminUsers(), hasItem(anotherUser));
+    }
+
+    @Test
     public void when_more_than_one_user_are_saved_they_are_all_admins(){
-        User anotherUser = new User(new WorkerBuilder().withFullName("Hans Landa").build(), null);
         adminService.save(anUser);
         adminService.save(anotherUser);
         assertTrue(adminService.isAdmin(anUser));
