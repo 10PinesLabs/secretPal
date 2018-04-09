@@ -3,11 +3,11 @@
     <h3 class="modal-title">Editando las pistas de {{user.worker.fullName}}</h3>
   </div>
   <div class="modal-body">
-    Pista: <input type="text" ng-model="hint">
+    Pista: <input type="text" ng-model="hint.message">
   </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
-    <button class="btn btn-success" ng-submit="ok()" ->OK</button>
+    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();" ->OK</button>
   </div>
 </script>
 

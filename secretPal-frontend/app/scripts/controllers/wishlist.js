@@ -27,7 +27,7 @@ angular.module('secretPalApp')
     $scope.Edit = function (wish) {
       var modalInstance = $modal.open({
         animation: false,
-        templateUrl: 'editModalHint.html',
+        templateUrl: 'editModalWish.html',
         controller: 'ModalInstanceCtrl',
         resolve: {
           wish: function () {
