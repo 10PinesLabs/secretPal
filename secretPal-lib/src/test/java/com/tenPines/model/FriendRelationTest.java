@@ -102,9 +102,10 @@ public class FriendRelationTest {
         RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
 
         FriendRelation relation = relationEstablisher.createRelation();
-        relation.addHint(new Hint("Tengo un cuchillo"));
+        Hint tengo_un_cuchillo = new Hint("Tengo un cuchillo");
+        relation.addHint(tengo_un_cuchillo);
 
-        assertThat(relation.hints(), hasItem( new Hint("Tengo un cuchillo")));
+        assertThat(relation.hints(), hasItem(tengo_un_cuchillo));
     }
 
     @Test
@@ -144,7 +145,7 @@ public class FriendRelationTest {
         relation.addHint(pista);
         Hint pista2 = new Hint("pista2");
         relation.addHint(pista2);
-        relation.removeHint(pista);
+        relation.removeHint(0);
 
         assertThat(relation.hints(), hasSize(1));
         assertThat(relation.hints(), hasItem(pista2));
@@ -159,11 +160,12 @@ public class FriendRelationTest {
         Hint pista = new Hint("pista");
         relation.addHint(pista);
         Hint pista_nueva = new Hint("pista nueva");
-        relation.editHint(pista, pista_nueva);
+        int index = relation.hints().indexOf(pista);
+        relation.editHint(index, pista_nueva);
 
         assertThat(relation.hints(), hasSize(1));
         assertThat(relation.hints(), hasItem(pista_nueva));
-        assertFalse(relation.hints().contains(pista));
+        assertThat(relation.hints(), not(hasItem(pista)));
     }
 
 

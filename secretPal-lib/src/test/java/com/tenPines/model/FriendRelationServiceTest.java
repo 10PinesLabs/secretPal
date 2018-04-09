@@ -193,8 +193,9 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
         Hint hint = new Hint("hint");
         friendRelationService.addHintFrom(aWorkerGiver, hint);
-        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasItem(hint));
         assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(1));
+        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver).get(0)
+                .message(), equalTo("hint"));
     }
 
     @Test
@@ -204,9 +205,14 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         Hint hint = new Hint("hint");
         friendRelationService.addHintFrom(aWorkerGiver, hint);
         Hint newOne = new Hint("newOne");
-        friendRelationService.editHintFrom(aWorkerGiver,hint, newOne);
-        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasItem(newOne));
+        List<Hint> hints = friendRelationService.retrieveHintsGivenBy(aWorkerGiver);
+        Hint oldHint = hints.stream()
+                .filter(aHint -> aHint.message().equals(hint.message()))
+                .findFirst().orElse(null);
+        friendRelationService.editHintFrom(aWorkerGiver,hints.indexOf(oldHint), newOne);
         assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(1));
+        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver).get(0)
+                .message(), equalTo("newOne"));
     }
 
     @Test
@@ -215,7 +221,11 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
         Hint hint = new Hint("hint");
         friendRelationService.addHintFrom(aWorkerGiver, hint);
-        friendRelationService.removeHintFrom(aWorkerGiver,hint);
+        List<Hint> hints = friendRelationService.retrieveHintsGivenBy(aWorkerGiver);
+        Hint oldHint = hints.stream()
+                .filter(aHint -> aHint.message().equals(hint.message()))
+                .findFirst().orElse(null);
+        friendRelationService.removeHintFrom(aWorkerGiver,hints.indexOf(oldHint));
         assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(0));
     }
 

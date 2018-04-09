@@ -17,8 +17,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
-//import com.tenPines.model.SecretPalEvent;
-
 @Controller
 @RequestMapping("/api/friendRelation")
 public class FriendRelationController {
@@ -115,16 +113,16 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.PUT)
     @ResponseBody
-    public void updateHintsFrom(@PathVariable Long workerID, @RequestBody String oldHint, @RequestBody String newHint) {
+    public void updateHintsFrom(@PathVariable Long workerID, @RequestBody int oldHint, @RequestBody String newHint) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        systemFacade.updateHintFrom(worker,new Hint(oldHint),new Hint(newHint));
+        systemFacade.updateHintFrom(worker,oldHint,new Hint(newHint));
     }
 
     @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.DELETE)
     @ResponseBody
-    public void removeHintFrom(@PathVariable Long workerID, @RequestBody String oldHint) {
+    public void removeHintFrom(@PathVariable Long workerID, @RequestBody int oldHint) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        systemFacade.removeHintFrom(worker,new Hint(oldHint));
+        systemFacade.removeHintFrom(worker,oldHint);
     }
 
 

@@ -207,15 +207,15 @@ public class SystemPalFacade {
     }
 
     public List<Hint> hintsFrom(Worker worker) {
-        return friendRelationService.retrieveHintsFrom(worker);
+        return friendRelationService.retrieveHintsGivenBy(worker);
 
     }
 
-    public void removeHintFrom(Worker worker, Hint oldHint) {
+    public void removeHintFrom(Worker worker, int oldHint) {
         friendRelationService.removeHintFrom(worker,oldHint);
     }
 
-    public void updateHintFrom(Worker worker, Hint oldHint, Hint newHint) {
+    public void updateHintFrom(Worker worker, int oldHint, Hint newHint) {
         friendRelationService.editHintFrom(worker, oldHint,newHint);
     }
 

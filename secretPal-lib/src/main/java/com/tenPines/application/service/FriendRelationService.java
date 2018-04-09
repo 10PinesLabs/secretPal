@@ -196,7 +196,7 @@ public class FriendRelationService {
         friendRelationRepository.save(friendRelation);
     }
 
-    public void editHintFrom(Worker aWorkerGiver, Hint oldHint, Hint newHint) {
+    public void editHintFrom(Worker aWorkerGiver, int oldHint, Hint newHint) {
         FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver)
                 .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
         friendRelation.editHint(oldHint,newHint);
@@ -204,10 +204,10 @@ public class FriendRelationService {
     }
 
 
-    public void removeHintFrom(Worker aWorkerGiver, Hint hint) {
+    public void removeHintFrom(Worker aWorkerGiver, int hintIndex) {
         FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver)
                 .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
-        friendRelation.removeHint(hint);
+        friendRelation.removeHint(hintIndex);
         friendRelationRepository.save(friendRelation);
     }
 
@@ -217,7 +217,7 @@ public class FriendRelationService {
                 .hints();
     }
 
-    public List<Hint> retrieveHintsFrom(Worker worker) {
+    public List<Hint> retrieveHintsGivenBy(Worker worker) {
         return friendRelationRepository.findByGiftGiver(worker)
                 .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"))
                 .hints();

@@ -29,17 +29,11 @@ public class Hint {
 
         Hint hint = (Hint) o;
 
-        return hint.message().equals(message);
+        return this == hint;
     }
 
     public String message() {
         return message;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return message.hashCode()*31;
     }
 
     public Long getId() {

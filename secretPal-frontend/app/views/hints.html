@@ -25,8 +25,8 @@
     <tbody>
     <tr ng-repeat="hint in hints">
       <td>{{hint.message}}</td>
-      <td><a ng-click="Edit(hint)"><span class="glyphicon glyphicon-pencil"></span></a></td>
-      <td><a ng-click="Delete(hint)"><span class="glyphicon glyphicon-remove"></span></a></td>
+      <td><a ng-click="edit(hint)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+      <td><a ng-click="delete(hint)"><span class="glyphicon glyphicon-remove"></span></a></td>
     </tr>
     </tbody>
   </table>
@@ -38,7 +38,7 @@
 </button>
 <div class="collapse" id="add_wish">
   <div class="well">
-    <form class="navbar-form" name="form" ng-submit="Add()">
+    <form class="navbar-form" name="form" ng-submit="add()">
 
       <div class="field">
         <br>

@@ -8,14 +8,14 @@ angular.module('secretPalApp')
         $scope.hints = data;
       });
 
-      $scope.Add = function () {
+      $scope.add = function () {
 
         HintsService.new(user, $scope.hint, function (persistedHint) {
           $scope.hints.push(persistedHint);
         });
       };
 
-      $scope.Edit = function (hint) {
+      $scope.edit = function (hint) {
         var modalInstance = $modal.open({
           animation: false,
           templateUrl: 'editModalHint.html',
@@ -32,8 +32,8 @@ angular.module('secretPalApp')
         });
       };
 
-      $scope.Delete = function (hint) {
-        HintsService.delete(user, hint, function () {
+      $scope.delete = function (hint) {
+        HintsService.delete(user, $scope.hints.indexOf(hint), function () {
           $scope.hints.splice(
             $scope.hints.indexOf(hint), 1
           );
@@ -71,7 +71,7 @@ angular.module('secretPalApp')
       };
 
       this.delete = function (user, hint, successFunction) {
-        $http.delete(buildRoute('/hintsFrom/' + user.worker.id), hint).success(function (data) {
+        $http.delete(buildRoute('/hintsFrom/' + user.worker.id), {data: hint}).success(function (data) {
           successFunction(data);
         });
       };
