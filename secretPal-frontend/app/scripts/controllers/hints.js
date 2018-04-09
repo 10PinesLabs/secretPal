@@ -8,6 +8,10 @@ angular.module('secretPalApp')
         $scope.hints = data;
       });
 
+      $scope.canBeAdded= function () {
+        return $scope.hints.length < 3
+      }
+
       $scope.add = function () {
 
         HintsService.new(user, $scope.hint, function () {
