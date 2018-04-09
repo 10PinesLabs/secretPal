@@ -1,5 +1,4 @@
 <div class="list_data">
-  <button class="btn btn-success pull-right">Arriesgar!</button>
   <h1>Pistas de tu pino invisible</h1>
   <div class="panel panel-black">
     <table class="table table-striped">
@@ -15,4 +14,12 @@
       </tbody>
     </table>
   </div>
+  <form>
+    <label>Creo que mi pino invisible es:</label>
+    <select
+      ng-model="guess"
+      ng-options="posibleSecretPine.fullName for posibleSecretPine in posibleSecretPines track by posibleSecretPine.id">
+    </select>
+    <button ng-disabled="!guess" class="btn btn-success pull-right">Arriesgar!</button>
+  </form>
 </div>
