@@ -111,18 +111,18 @@ public class FriendRelationController {
         systemFacade.addHintFrom(worker,new Hint(newHint));
     }
 
-    @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/hintsFrom/{workerID}/{hintIndex}", method = RequestMethod.PUT)
     @ResponseBody
-    public void updateHintsFrom(@PathVariable Long workerID, @RequestBody int oldHint, @RequestBody String newHint) {
+    public void updateHintsFrom(@PathVariable Long workerID, @PathVariable int oldHint, @RequestBody String newHint) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
         systemFacade.updateHintFrom(worker,oldHint,new Hint(newHint));
     }
 
-    @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/hintsFrom/{workerID}/{hintIndex}", method = RequestMethod.DELETE)
     @ResponseBody
-    public void removeHintFrom(@PathVariable Long workerID, @RequestBody int oldHint) {
+    public void removeHintFrom(@PathVariable Long workerID, @PathVariable int hintIndex) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        systemFacade.removeHintFrom(worker,oldHint);
+        systemFacade.removeHintFrom(worker,hintIndex);
     }
 
 

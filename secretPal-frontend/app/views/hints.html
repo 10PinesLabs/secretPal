@@ -1,13 +1,13 @@
-<script type="text/ng-template" id="editModalWish.html">
+<script type="text/ng-template" id="editModalHint.html">
   <div class="modal-header">
-    <h3 class="modal-title">Editando las pistas de {{wish.worker.fullName}}</h3>
+    <h3 class="modal-title">Editando las pistas de {{user.worker.fullName}}</h3>
   </div>
   <div class="modal-body">
-    Deseo: <input type="text" ng-model="wish.gift">
+    Pista: <input type="text" ng-model="hint">
   </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
-    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();" ->OK</button>
+    <button class="btn btn-success" ng-submit="ok()" ->OK</button>
   </div>
 </script>
 

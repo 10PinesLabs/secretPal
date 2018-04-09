@@ -63,17 +63,19 @@ angular.module('secretPalApp')
       };
 
       this.new = function (user, hint, successFunction) {
-        $http.post(buildRoute('/hintsFrom/' + user.worker.id), hint).success(function (data) {
-          successFunction(data);
+        $http.post(buildRoute('/hintsFrom/' + user.worker.id), hint).success(function () {
+          successFunction(hint);
         }).error(function () {
           errorMsg("No se pudo agregar la pista, por favor inténtelo de nuevo.");
         });
       };
 
       this.delete = function (user, hint, successFunction) {
-        $http.delete(buildRoute('/hintsFrom/' + user.worker.id), {data: hint}).success(function (data) {
+        $http.delete(buildRoute('/hintsFrom/' + user.worker.id+ "/" + hint)).success(function (data) {
           successFunction(data);
         });
       };
+
+
 
     })
