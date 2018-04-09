@@ -5,13 +5,14 @@
     <h2>No tenés amigo invisible asignado aún</h2>
     <img src="https://i.giphy.com/media/AYKv7lXcZSJig/giphy.webp">
   </div>
-  <div class="container" ng-show="haveFriend()">
+  <span class="container" ng-show="haveFriend()">
     <h2>Este año tu pino cumpleañero es:</h2>
 
     <h5>-Apoye el mouse por encima de los bloques verdes para ver la información-</h5>
     <h3>
       <center>
-        <span style="display:block; width: 450px; height: 30px; background-color: #61b85c" class="label label-success"><strong
+        <span style="display:block; width: 450px; height: 30px; background-color: #61b85c"
+              class="label label-success"><strong
           style="text-transform:uppercase">{{friend.data.fullName}}</strong>
         </span>
       </center>
@@ -19,7 +20,8 @@
     <h2>Tu pino asignado cumple el:</h2>
     <h3>
       <center>
-      <span style="display:block; width: 450px; height: 30px; background-color: #61b85c;" class="label label-info"><strong
+      <span style="display:block; width: 450px; height: 30px; background-color: #61b85c;"
+            class="label label-info"><strong
         style="text-transform:uppercase">{{friend.data.dateOfBirth | date: 'dd-MMMM'}}</strong>
       </span>
       </center>
@@ -30,16 +32,20 @@
       <strong style="text-transform:uppercase">{{amountDefault}}</strong></h3>
 
     <h3>Particularmente a tu pino le gustaría:</h3>
-    <div ng-show="wishlist.length === 0"><h2>Tu pino no tiene deseos en la Wishlist</h2></div>
-    <div ng-repeat="wish in wishlist">
+
+    <div ng-mouseover="showWishes = true" ng-mouseleave="showWishes = false">
       <h2>
         <center>
-          <span style="display:block; width: 400px; height: 30px; background-color: #61b85c;" class="label label-warning -align-center"><strong
-            style="text-transform:uppercase">{{wish.gift}}</strong></span>
+          <span style="display:block; width: 450px; background-color: #61b85c; word-wrap: break-word;" class="label label-warning -align-center">
+            <strong ng-show="!showWishes">Texto que no se va a ver, necesario para que el span comience con una linea</strong>
+            <strong ng-show="showWishes && wishlist.length === 0">Tu pino no tiene deseos en la Wishlist</strong>
+            <strong ng-show="showWishes" ng-repeat="wish in wishlist" style="text-transform:uppercase">{{wish.gift}}<br></strong>
+          </span>
         </center>
       </h2>
     </div>
-  </div>
+  </span>
+</div>
 </div>
 
 
