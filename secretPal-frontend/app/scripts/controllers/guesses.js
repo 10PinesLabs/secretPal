@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .controller('GuessesController', function ($scope, $http, user, GuessesService, WorkerService, SweetAlert) {
+  .controller('GuessesController', function ($scope, $http, user, GuessesService, WorkerService) {
       $scope.hints = [];
       $scope.guess = null;
 
@@ -19,10 +19,6 @@ angular.module('secretPalApp')
         $scope.posibleSecretPines = data;
       });
     }
-
-    $scope.sendGuess = function () {
-      GuessesService.evaluateGuessForUser(guess, user);
-    };
 
     }
   )

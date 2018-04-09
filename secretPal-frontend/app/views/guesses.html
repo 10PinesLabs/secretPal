@@ -20,6 +20,6 @@
       ng-model="guess"
       ng-options="posibleSecretPine.fullName for posibleSecretPine in posibleSecretPines track by posibleSecretPine.id">
     </select>
-    <button ng-click="sendGuess()" ng-disabled="!guess" class="btn btn-success pull-right">Arriesgar!</button>
+    <button ng-disabled="!guess" class="btn btn-success pull-right">Arriesgar!</button>
   </form>
 </div>
