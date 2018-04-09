@@ -1,33 +1,28 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .controller('GuessesController', function ($scope, $http, user, GuessesService, $modal, $log, SweetAlert) {
+  .controller('GuessesController', function ($scope, $http, user, GuessesService, WorkerService, SweetAlert) {
       $scope.hints = [];
+      $scope.guess = null;
 
+    loadHints();
+    loadPossibleSecretPines();
+
+    function loadHints() {
       GuessesService.all(user, function (data) {
         $scope.hints = data;
       });
+    }
+
+    function loadPossibleSecretPines() {
+      WorkerService.all( function(data) {
+        $scope.posibleSecretPines = data;
+      });
+    }
+
+    $scope.sendGuess = function () {
+      GuessesService.evaluateGuessForUser(guess, user);
+    };
 
     }
   )
-    .service('GuessesService', function ($http, SweetAlert) {
-
-      function buildRoute(path) {
-        var route = '/api/friendRelation';
-        return route + path;
-      }
-
-      function errorMsg(msg) {
-        SweetAlert.swal("Algo salio mal", msg, "error");
-      }
-
-      this.all = function (user, callback) {
-        $http.get(buildRoute('/hintsFor/' + user.worker.id)).success(function (data) {
-          callback(data);
-        }).error(function () {
-          errorMsg("No se pudo cargar la lista de pistas  , inténtlo de nuevo más tarde.");
-        });
-      };
-
-
-    })
