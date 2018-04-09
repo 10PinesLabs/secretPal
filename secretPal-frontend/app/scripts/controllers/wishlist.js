@@ -115,9 +115,11 @@ angular.module('secretPalApp')
         successFunction();
       });
     };
+
     this.update = function (wish) {
       $http.post(buildRoute('/') + wish.id, wish.gift);
     };
+
     this.getAllWishesFor = function (worker, callback) {
       $http.get(buildRoute('/worker/' + worker.id)).then(function (data) {
         callback(data);

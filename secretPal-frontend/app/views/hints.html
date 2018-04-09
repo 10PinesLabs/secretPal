@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="editModalWish.html">
   <div class="modal-header">
-    <h3 class="modal-title">Editando los deseos de {{wish.worker.fullName}}</h3>
+    <h3 class="modal-title">Editando las pistas de {{wish.worker.fullName}}</h3>
   </div>
   <div class="modal-body">
     Deseo: <input type="text" ng-model="wish.gift">
@@ -23,12 +23,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="wish in wishlist">
-      <td>{{wish.worker.fullName}}</td>
-      <td>{{wish.gift}}</td>
-      <td><a ng-click="Edit(wish)" ng-show="canDelete(wish)"><span class="glyphicon glyphicon-pencil"></span></a></td>
-      <td><a ng-click="Delete(wish)" ng-show="canDelete(wish)"><span
-        class="glyphicon glyphicon glyphicon-remove"></span></a></td>
+    <tr ng-repeat="hint in hints">
+      <td>{{hint.message}}</td>
+      <td><a ng-click="Edit(hint)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+      <td><a ng-click="Delete(hint)"><span class="glyphicon glyphicon-remove"></span></a></td>
     </tr>
     </tbody>
   </table>
@@ -44,8 +42,8 @@
 
       <div class="field">
         <br>
-        <label class="control-label col-md-4" for="mail">Regalo que quiere: </label>
-        <input id="mail" required placeholder="Gift" class="form-control" ng-model="wish.gift">
+        <label class="control-label col-md-4" for="mail">Nueva pista </label>
+        <input id="mail" required placeholder="Pista" class="form-control" ng-model="hint">
       </div>
       <div class="action">
         <button type="submit" class="btn btn-success">Agregar</button>

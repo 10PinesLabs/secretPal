@@ -68,7 +68,7 @@ angular
       })
       .when('/guesses', {
         templateUrl: '../views/guesses.html',
-        controller: 'WorkersController',
+        controller: 'GuessesController',
         resolve: { user : authenticated },
         data: {
           pageTitle: 'Adivinar'

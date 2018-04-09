@@ -1,125 +1,79 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .controller('HintsController', function ($scope, user, WorkerService, HintsService, $modal, $log, SweetAlert) {
+  .controller('HintsController', function ($scope, $http, user, HintsService, $modal, $log, SweetAlert) {
+      $scope.hints = [];
 
-    HintsService.all(function (data) {
-      $scope.hints = data;
-    });
-
-    WorkerService.all(function (data) {
-      $scope.posibleWorkers = data;
-    });
-
-    $scope.Add = function () {
-      $scope.hints.createdBy = user.worker;
-      HintsService.new($scope.hint, function (persistedHint) {
-        $scope.hints.push(persistedHint);
-        $scope.Reset();
+      HintsService.all(user, function (data) {
+        $scope.hints = data;
       });
-    };
 
-    $scope.Reset = function () {
-      $scope.hint = null;
-    };
+      $scope.Add = function () {
 
-    $scope.Edit = function (hint) {
-      var modalInstance = $modal.open({
-        animation: false,
-        templateUrl: 'editModalWish.html',
-        controller: 'ModalInstanceCtrl',
-        resolve: {
-          hint: function () {
-            return angular.copy(hint);
-          }
-        }
-      });
-      modalInstance.result.then(function (returnedHint) {
-        angular.copy(returnedHint, hint);
-        HintsService.update(hint, returnedHint);
-      });
-    };
+        HintsService.new(user, $scope.hint, function (persistedHint) {
+          $scope.hints.push(persistedHint);
+        });
+      };
 
-    $scope.Delete = function (hint) {
-      SweetAlert.swal({
-          title: "¿Estás seguro?",
-          text: "¡No vas a poder recuperar este deseo!",
-          type: "warning",
-          allowOutsideClick: false,
-          showConfirmButton: true,
-          showCancelButton: true,
-          closeOnConfirm: false,
-          closeOnCancel: true,
-          confirmButtonColor: "#d43f3a",
-          confirmButtonText: "Si, borrar!",
-          cancelButtonText: "Cancelar"
-        },
-        function (isConfirm) {
-          if (isConfirm) {
-            HintsService.delete(wish, function () {
-              $scope.wishlist.splice(
-                $scope.wishlist.indexOf(wish), 1
-              );
-              SweetAlert.swal({
-                title: "Regalo borrado exitosamente",
-                confirmButtonColor: "#68bd46",
-              });
-            });
+      $scope.Edit = function (hint) {
+        var modalInstance = $modal.open({
+          animation: false,
+          templateUrl: 'editModalHint.html',
+          controller: 'ModalInstanceCtrl',
+          resolve: {
+            hint: function () {
+              return angular.copy(hint);
+            }
           }
         });
-    };
+        modalInstance.result.then(function (returnedHint) {
+          angular.copy(returnedHint, hint);
+          HintsService.update(hint);
+        });
+      };
 
-    $scope.canDelete = function (wish) {
-      return user.worker.id == wish.createdBy.id || user.worker.id == wish.worker.id;
-    };
-  })
-  .controller('ModalInstanceCtrl', function ($scope, $modalInstance, wish) {
-    $scope.wish = wish;
-    $scope.ok = function () {
-      $modalInstance.close($scope.wish);
-    };
-    $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
-    };
-  })
-  .service('HintsService', function ($http, SweetAlert) {
+      $scope.Delete = function (hint) {
+        HintsService.delete(user, hint, function () {
+          $scope.hints.splice(
+            $scope.hints.indexOf(hint), 1
+          );
 
-    function buildRoute(path) {
-      var route = '/api/friendRelation';
-      return route + path;
+        });
+      };
+
     }
+  )
+    .service('HintsService', function ($http, SweetAlert) {
 
-    function errorMsg(msg) {
-      SweetAlert.swal("Algo salio mal", msg, "error");
-    }
+      function buildRoute(path) {
+        var route = '/api/friendRelation';
+        return route + path;
+      }
 
-    this.all = function (callback) {
-      $http.get(buildRoute('/')).success(function (data) {
-        callback(data);
-      }).error(function () {
-        errorMsg("No se pudo cargar la lista de regalos, inténtlo de nuevo más tarde.");
-      });
-    };
+      function errorMsg(msg) {
+        SweetAlert.swal("Algo salio mal", msg, "error");
+      }
 
-    this.new = function (wish, successFunction) {
-      $http.post(buildRoute('/'), wish).success(function (data) {
-        successFunction(data);
-      }).error(function () {
-        errorMsg("No se pudo crear un regalo, por favor inténtelo de nuevo.");
-      });
-    };
+      this.all = function (user, callback) {
+        $http.get(buildRoute('/hintsFrom/' + user.worker.id)).success(function (data) {
+          callback(data);
+        }).error(function () {
+          errorMsg("No se pudo cargar la lista de pistas  , inténtlo de nuevo más tarde.");
+        });
+      };
 
-    this.delete = function (wish, successFunction) {
-      $http.delete(buildRoute('/' + wish.id)).success(function () {
-        successFunction();
-      });
-    };
-    this.update = function (hint, returnedHint) {
-      $http.put(buildRoute('/hintsFrom/') + worker.id, hint, returnedHint);
-    };
-    this.getAllHintsFor = function (worker, callback) {
-      $http.get(buildRoute('/hintsFor/' + worker.id)).then(function (data) {
-        callback(data);
-      });
-    };
-  });
+      this.new = function (user, hint, successFunction) {
+        $http.post(buildRoute('/hintsFrom/' + user.worker.id), hint).success(function (data) {
+          successFunction(data);
+        }).error(function () {
+          errorMsg("No se pudo agregar la pista, por favor inténtelo de nuevo.");
+        });
+      };
+
+      this.delete = function (user, hint, successFunction) {
+        $http.delete(buildRoute('/hintsFrom/' + user.worker.id), hint).success(function (data) {
+          successFunction(data);
+        });
+      };
+
+    })

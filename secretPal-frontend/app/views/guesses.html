@@ -2,8 +2,19 @@
   <button class="btn btn-success pull-right">Arriesgar!</button>
   <h1>Pistas de tu pino invisible</h1>
   <div class="panel panel-black">
-    <ul class="table table-striped">
-      <li><h3> Tengo un cuchillo </h3></li>
-    </ul>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th class="col-md-3">Pista</th>
+        <th class="col-md-1">Editar</th>
+        <th class="col-md-1">Borrar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="hint in hints">
+        <td>{{hint.message}}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>
