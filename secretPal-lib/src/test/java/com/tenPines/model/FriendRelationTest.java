@@ -145,7 +145,7 @@ public class FriendRelationTest {
         relation.addHint(pista);
         Hint pista2 = new Hint("pista2");
         relation.addHint(pista2);
-        relation.removeHint(0);
+        relation.removeHint(pista);
 
         assertThat(relation.hints(), hasSize(1));
         assertThat(relation.hints(), hasItem(pista2));
@@ -160,8 +160,7 @@ public class FriendRelationTest {
         Hint pista = new Hint("pista");
         relation.addHint(pista);
         Hint pista_nueva = new Hint("pista nueva");
-        int index = relation.hints().indexOf(pista);
-        relation.editHint(index, pista_nueva);
+        relation.editHint(pista, pista_nueva);
 
         assertThat(relation.hints(), hasSize(1));
         assertThat(relation.hints(), hasItem(pista_nueva));

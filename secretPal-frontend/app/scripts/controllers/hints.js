@@ -10,8 +10,8 @@ angular.module('secretPalApp')
 
       $scope.add = function () {
 
-        HintsService.new(user, $scope.hint, function (persistedHint) {
-          $scope.hints.push(persistedHint);
+        HintsService.new(user, $scope.hint, function () {
+          $scope.hints.push({message: $scope.hint});
         });
       };
 
@@ -33,7 +33,7 @@ angular.module('secretPalApp')
       };
 
       $scope.delete = function (hint) {
-        HintsService.delete(user, $scope.hints.indexOf(hint), function () {
+        HintsService.delete(user, hint.id, function () {
           $scope.hints.splice(
             $scope.hints.indexOf(hint), 1
           );
@@ -64,7 +64,7 @@ angular.module('secretPalApp')
 
       this.new = function (user, hint, successFunction) {
         $http.post(buildRoute('/hintsFrom/' + user.worker.id), hint).success(function () {
-          successFunction(hint);
+          successFunction();
         }).error(function () {
           errorMsg("No se pudo agregar la pista, por favor inténtelo de nuevo.");
         });

@@ -209,7 +209,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         Hint oldHint = hints.stream()
                 .filter(aHint -> aHint.message().equals(hint.message()))
                 .findFirst().orElse(null);
-        friendRelationService.editHintFrom(aWorkerGiver,hints.indexOf(oldHint), newOne);
+        friendRelationService.editHintFrom(aWorkerGiver,oldHint.getId(), newOne);
         assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(1));
         assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver).get(0)
                 .message(), equalTo("newOne"));
@@ -225,7 +225,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         Hint oldHint = hints.stream()
                 .filter(aHint -> aHint.message().equals(hint.message()))
                 .findFirst().orElse(null);
-        friendRelationService.removeHintFrom(aWorkerGiver,hints.indexOf(oldHint));
+        friendRelationService.removeHintFrom(aWorkerGiver,oldHint.getId());
         assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(0));
     }
 

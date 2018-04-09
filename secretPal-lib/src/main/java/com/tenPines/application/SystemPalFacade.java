@@ -211,11 +211,12 @@ public class SystemPalFacade {
 
     }
 
-    public void removeHintFrom(Worker worker, int oldHint) {
+    public void removeHintFrom(Worker worker, long oldHint) {
+
         friendRelationService.removeHintFrom(worker,oldHint);
     }
 
-    public void updateHintFrom(Worker worker, int oldHint, Hint newHint) {
+    public void updateHintFrom(Worker worker, Long oldHint, Hint newHint) {
         friendRelationService.editHintFrom(worker, oldHint,newHint);
     }
 

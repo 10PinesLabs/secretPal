@@ -72,12 +72,12 @@ public class FriendRelation {
         }
     }
 
-    public void removeHint(int aHint) {
+    public void removeHint(Hint aHint) {
         this.hints.remove(aHint);
     }
 
-    public void editHint(int aHint, Hint aNewHint) {
-        hints.set(aHint, aNewHint);
+    public void editHint(Hint anOldHint, Hint aNewHint) {
+        hints.set(hints.indexOf(anOldHint), aNewHint);
     }
 
     public List<Hint> getHints() {
