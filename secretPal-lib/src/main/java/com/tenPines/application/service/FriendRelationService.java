@@ -110,7 +110,8 @@ public class FriendRelationService {
 
     public Worker retrieveGiftGiverFor(Worker worker) {
         return friendRelationRepository.findByGiftReceiver(worker)
-                .map(relation -> relation.getGiftGiver()).get();
+                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"))
+                .getGiftGiver();
     }
 
 
@@ -189,31 +190,36 @@ public class FriendRelationService {
     }
 
     public void addHintFrom(Worker aWorkerGiver, Hint hint) {
-        FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver).get();
+        FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver)
+                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
         friendRelation.addHint(hint);
         friendRelationRepository.save(friendRelation);
     }
 
     public void editHintFrom(Worker aWorkerGiver, Hint oldHint, Hint newHint) {
-        FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver).get();
+        FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver)
+                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
         friendRelation.editHint(oldHint,newHint);
         friendRelationRepository.save(friendRelation);
     }
 
 
     public void removeHintFrom(Worker aWorkerGiver, Hint hint) {
-        FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver).get();
+        FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver)
+                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
         friendRelation.removeHint(hint);
         friendRelationRepository.save(friendRelation);
     }
 
     public List<Hint> retrieveHintsGivenTo(Worker worker) {
         return friendRelationRepository.findByGiftReceiver(worker)
-                .map(relation -> relation.hints()).get();
+                .orElseThrow(() -> new RuntimeException("No hay pistas!"))
+                .hints();
     }
 
     public List<Hint> retrieveHintsFrom(Worker worker) {
         return friendRelationRepository.findByGiftGiver(worker)
-                .map(relation -> relation.hints()).get();
+                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"))
+                .hints();
     }
 }

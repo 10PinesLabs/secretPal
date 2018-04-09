@@ -9,6 +9,7 @@ import java.util.List;
 public class FriendRelation {
 
 
+    public static final int HINTS_AMOUNT_LIMIT = 3;
     @Id
     @GeneratedValue
     private Long id;
@@ -56,27 +57,27 @@ public class FriendRelation {
         this.giftReceiver = giftReceiver;
     }
 
-    public void addHint(Hint pista) {
-        assertLessThan3Hints();
-        this.hints.add(pista);
+    public void addHint(Hint aHint) {
+        assertHintAmountLessThanLimit();
+        this.hints.add(aHint);
     }
 
     public List<Hint> hints() {
         return this.hints;
     }
 
-    private void assertLessThan3Hints() {
-        if (this.hints.size() >= 3) {
-            throw new RuntimeException("Can not have more than 3 hints");
+    private void assertHintAmountLessThanLimit() {
+        if (this.hints.size() >= HINTS_AMOUNT_LIMIT) {
+            throw new RuntimeException("Can not have more than "+ HINTS_AMOUNT_LIMIT+" hints");
         }
     }
 
-    public void removeHint(Hint pista) {
-        this.hints.remove(pista);
+    public void removeHint(Hint aHint) {
+        this.hints.remove(aHint);
     }
 
-    public void editHint(Hint pista, Hint pista_nueva) {
-        hints.set(hints.indexOf(pista), pista_nueva);
+    public void editHint(Hint aHint, Hint aNewHint) {
+        hints.set(hints.indexOf(aHint), aNewHint);
     }
 
     public List<Hint> getHints() {

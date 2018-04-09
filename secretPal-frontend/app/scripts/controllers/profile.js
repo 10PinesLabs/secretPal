@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .controller('ProfileController', function ($scope, $http, user, $location, FriendRelationService, WishlistService, SweetAlert, WorkerService) {
-
+  .controller('ProfileController', function ($scope, $http, user, $location, FriendRelationService, WishlistService, SweetAlert, WorkerService, HintsService) {
+    $scope.hints = [];
     $scope.wishlist = [];
     $scope.giftDefault;
 
@@ -52,6 +52,9 @@ angular.module('secretPalApp')
 
         WishlistService.getAllWishesFor($scope.friend.data, function (wishlistResponse) {
           $scope.wishlist = wishlistResponse.data;
+        });
+        HintsService.getAllHintsFor($scope.friend.data, function (hintsResponse) {
+          $scope.hints = hintsResponse.data;
         });
       });
     }
