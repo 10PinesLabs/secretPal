@@ -5,6 +5,7 @@ import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Hint;
 import com.tenPines.model.Worker;
+import com.tenPines.restAPI.utils.GuessResponse;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -125,6 +126,10 @@ public class FriendRelationController {
         systemFacade.removeHintFrom(worker,hintId);
     }
 
-
+    public GuessResponse guessGiftGiverFor(@PathVariable Long workerID, @RequestBody String assumedGiftGiverFullName){
+       //FriendRelation relationAfterGuess = frservice.guessGiftGiverFor(workerID, assumedGiftGiverFullName);
+       //relation.guessGiftGiver(assumedGiftGiverFullName);//esto va en el service
+       //return new GuessResponse(relation.isGuessed(), relation.getRemainingGuessAttempts());
+    }
 
 }
