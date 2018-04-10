@@ -213,7 +213,7 @@ public class FriendRelationService {
     public void removeHintFrom(Worker aWorkerGiver, Long hintId) {
         FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver)
                 .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
-        Hint hintToRemove = friendRelation.hints().stream().filter(hint -> hint.getId().equals(hintId)).findFirst().orElse(null);
+        Hint hintToRemove = hintsRepository.findOne(hintId);
         friendRelation.removeHint(hintToRemove);
         hintsRepository.delete(hintToRemove);
         friendRelationRepository.save(friendRelation);
