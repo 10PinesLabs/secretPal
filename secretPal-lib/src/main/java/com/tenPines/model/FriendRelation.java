@@ -99,4 +99,26 @@ public class FriendRelation {
     public void setHints(List<Hint> hints) {
         this.hints = hints;
     }
+
+    public void guessGiftGiver(String assumedGiftGiverFullName) {
+        assertIsNotGuessed();
+        assertThereAreRemainingGuessAttempts();
+        if(giftGiver.getFullName().equals(assumedGiftGiverFullName)){
+            isGuessed = true;
+        } else {
+            remainingGuessAttempts--;
+        }
+    }
+
+    private void assertIsNotGuessed() {
+        if (this.isGuessed) {
+            throw new RuntimeException("The gift giver was already guessed");
+        }
+    }
+
+    private void assertThereAreRemainingGuessAttempts() {
+        if (this.remainingGuessAttempts <= 0) {
+            throw new RuntimeException("Can not have more than "+ GUESS_ATTEMPTS_LIMIT +" failed guess attempts");
+        }
+    }
 }
