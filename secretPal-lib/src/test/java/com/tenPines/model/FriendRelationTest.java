@@ -167,5 +167,16 @@ public class FriendRelationTest {
         assertThat(relation.hints(), not(hasItem(pista)));
     }
 
+    @Test
+    public void aNewRelationHas3RemainingGuessAttempts(){
+        RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
+        assertThat(relationEstablisher.createRelation().getRemainingGuessAttempts(), is(3));
+    }
+
+    @Test
+    public void aNewRelationHasNotBeenGuessed(){
+        RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
+        assertThat(relationEstablisher.createRelation().isGuessed(), is(false));
+    }
 
 }
