@@ -6,10 +6,24 @@ angular.module('secretPalApp')
       $scope.guess = null;
       $scope.user = user;
       $scope.today = new Date();
-
+      $scope.remainingAttempts = 3;
+      $scope.secretPineFullName = "Daniel Fau"
 
     loadHints();
     loadPossibleSecretPines();
+
+    $scope.attempts = function (number) {
+      return [...Array(number).keys()];
+    }
+
+    $scope.guessSecretPine = function () {
+      if($scope.guess.fullName !== $scope.secretPineFullName){
+        $scope.remainingAttempts--;
+      }
+      else{
+        $scope.hasGuessedCorrectly = true;
+      }
+    }
 
     $scope.diff = function (date) {
       var unDia = 24 * 60 * 60 * 1000; // hora*minuto*segundo*milli
@@ -19,11 +33,11 @@ angular.module('secretPalApp')
       return Math.round((birthday.getTime() - $scope.today.getTime()) / unDia);
     };
 
-    $scope.beforeBirthday = function () {
+    $scope.afterBirthday = function () {
       var date = $scope.user.worker.dateOfBirth;
       var diff = $scope.diff(date);
 
-      return (diff > 0);
+      return (diff < 0);
     };
 
     function loadHints() {
