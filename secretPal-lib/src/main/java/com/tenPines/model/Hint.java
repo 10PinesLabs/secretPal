@@ -19,19 +19,6 @@ public class Hint {
         this.message = aMessage;
     }
 
-    @Override
-    public boolean equals(Object o) {
-
-        if (o == this) return true;
-        if (!(o instanceof Hint)) {
-            return false;
-        }
-
-        Hint hint = (Hint) o;
-
-        return this == hint;
-    }
-
     public String message() {
         return message;
     }
