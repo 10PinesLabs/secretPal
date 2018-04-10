@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.MonthDay;
 import java.util.Set;
 
 @Entity
@@ -131,4 +132,7 @@ public class Worker {
         setGiftDateReceived(LocalDate.now());
     }
 
+    public MonthDay getBirthday() {
+        return MonthDay.from(dateOfBirth);
+    }
 }

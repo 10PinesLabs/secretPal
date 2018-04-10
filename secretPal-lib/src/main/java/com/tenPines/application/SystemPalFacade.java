@@ -50,7 +50,6 @@ public class SystemPalFacade {
 
     public void addGiftDefaults(DefaultGift defaultGift) {
         giftDefaultService.addGift(defaultGift);
-
     }
 
     public List<Wish> retrieveAllWishes() {
@@ -66,7 +65,6 @@ public class SystemPalFacade {
     }
 
     public Wish saveWish(Wish wish) {
-
         return wishListService.saveWish(wish);
     }
 
@@ -136,7 +134,6 @@ public class SystemPalFacade {
 
     public EmailTemplate getEMailTemplate() throws IOException {
         return mailerService.getEMailTemplate();
-
     }
 
     public EmailTemplate setEmailTemplate(EmailTemplate modifiedMail) throws IOException {
@@ -148,7 +145,6 @@ public class SystemPalFacade {
     }
 
     public void resendMessageFailure(UnsentMessage unsentMessage) {
-
         mailerService.resendMessageFailure(unsentMessage);
     }
 
@@ -167,6 +163,7 @@ public class SystemPalFacade {
     public List<CustomParticipantRule> getAllCustomRules() {
         return customParticipantRuleService.getAllCustomRules();
     }
+
     public List<FriendRelation> getAllRelations() {
         return friendRelationService.getAllRelations();
     }
@@ -208,11 +205,9 @@ public class SystemPalFacade {
 
     public List<Hint> hintsFrom(Worker worker) {
         return friendRelationService.retrieveHintsGivenBy(worker);
-
     }
 
     public void removeHintFrom(Worker worker, long oldHint) {
-
         friendRelationService.removeHintFrom(worker,oldHint);
     }
 

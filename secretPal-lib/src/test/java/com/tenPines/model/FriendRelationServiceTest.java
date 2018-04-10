@@ -181,9 +181,26 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     }
 
     @Test
-    public void canSeeTheHintsGivenToTheGiftReciever(){
+    public void canSeeTheHintsGivenToTheGiftRecieverWhenItsBirthdayHasPassed(){
         setUp();
-        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+        clock.setTime(LocalDate.of(2018,02,01));
+        Worker aWorkerReceiverWhoseBirthdayHasPassed = new WorkerBuilder()
+                .withBirthDayDate(LocalDate.of(1995,03,04)).build();
+        workerService.save(aWorkerReceiverWhoseBirthdayHasPassed);
+        friendRelationService.create(aWorkerGiver, aWorkerReceiverWhoseBirthdayHasPassed);
+
+        assertTrue(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver).isEmpty());
+    }
+
+    @Test
+    public void cannotSeeTheHintsGivenToTheGiftRecieverUntilItsBirthdayHasPassed(){
+        setUp();
+        clock.setTime(LocalDate.of(2018,02,01));
+        Worker aWorkerReceiverWhoseBirthdayHasNotPassed = new WorkerBuilder()
+                .withBirthDayDate(LocalDate.of(1995,01,01)).build();
+        workerService.save(aWorkerReceiverWhoseBirthdayHasNotPassed);
+        friendRelationService.create(aWorkerGiver, aWorkerReceiverWhoseBirthdayHasNotPassed);
+
         assertTrue(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver).isEmpty());
     }
 
@@ -193,14 +210,15 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
         Hint hint = new Hint("hint");
         friendRelationService.addHintFrom(aWorkerGiver, hint);
-        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(1));
-        assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver).get(0)
+        assertThat(friendRelationService.retrieveHintsGivenBy(aWorkerGiver),hasSize(1));
+        assertThat(friendRelationService.retrieveHintsGivenBy(aWorkerGiver).get(0)
                 .message(), equalTo("hint"));
     }
 
     @Test
     public void TheGifterCanEditHints(){
         setUp();
+        clock.setTime(LocalDate.of(2018,12,31));
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
         Hint hint = new Hint("hint");
         friendRelationService.addHintFrom(aWorkerGiver, hint);

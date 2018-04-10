@@ -41,7 +41,7 @@ public class ReminderSystem {
     public void sendHappyBithdayMessages() {
         workerService.getAllParticipants().stream()
                 .filter(worker ->
-                        MonthDay.from(worker.getDateOfBirth())
+                        worker.getBirthday()
                                 .equals(
                                         MonthDay.from(clock.now()))
                 )
@@ -72,7 +72,7 @@ public class ReminderSystem {
 
     private boolean twoMonthsFromNow(FriendRelation friendRelation) {
         MonthDay todayPlusTwoMonths = MonthDay.from(clock.now().plusMonths(secretPalProperties.getReminderMonthPeriod()));
-        MonthDay birthday = MonthDay.from(friendRelation.getGiftReceiver().getDateOfBirth());
+        MonthDay birthday = friendRelation.getGiftReceiver().getBirthday();
         return birthday.equals(todayPlusTwoMonths);
     }
 
@@ -85,7 +85,7 @@ public class ReminderSystem {
 
     private boolean twoWeeksFromNow(FriendRelation friendRelation) {
         MonthDay todayPlusTwoWeeks = MonthDay.from(clock.now().plusWeeks(secretPalProperties.getReminderWeekPeriod()));
-        MonthDay birthday = MonthDay.from(friendRelation.getGiftReceiver().getDateOfBirth());
+        MonthDay birthday = friendRelation.getGiftReceiver().getBirthday();
         return birthday.equals(todayPlusTwoWeeks);
     }
 

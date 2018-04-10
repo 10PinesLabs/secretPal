@@ -130,6 +130,7 @@ public class FriendRelationController {
        //FriendRelation relationAfterGuess = frservice.guessGiftGiverFor(workerID, assumedGiftGiverFullName);
        //relation.guessGiftGiver(assumedGiftGiverFullName);//esto va en el service
        //return new GuessResponse(relation.isGuessed(), relation.getRemainingGuessAttempts());
+        return null;
     }
 
 }
