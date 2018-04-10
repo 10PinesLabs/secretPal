@@ -31,24 +31,30 @@
     </tbody>
   </table>
 </div>
+<div ng-show="!canBeAdded()">
+  <h3><span class="glyphicon glyphicon-remove-circle" ng-value="limit"></span>
+    Llegaste al limite de pistas
+  </h3>
+</div>
+<div ng-show="canBeAdded()">
+  <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false"
+          aria-controls="add_wish" id="add_wish_button">
+    Agrega una nueva pista
+  </button>
+  <div class="collapse" id="add_wish">
+    <div class="well">
+      <form class="navbar-form" name="form" ng-submit="add()">
 
-<button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false"
-        aria-controls="add_wish" id="add_wish_button" ng-show="canBeAdded()">
-  Agrega una nueva pista
-</button>
-<div class="collapse" id="add_wish" ng-show="canBeAdded()">
-  <div class="well">
-    <form class="navbar-form" name="form" ng-submit="add()">
-
-      <div class="field">
-        <br>
-        <label class="control-label col-md-4" for="mail">Nueva pista </label>
-        <input id="mail" required placeholder="Pista" class="form-control" ng-model="hint">
-      </div>
-      <div class="action">
-        <button type="submit" class="btn btn-success">Agregar</button>
-      </div>
-    </form>
+        <div class="field">
+          <br>
+          <label class="control-label col-md-4" for="mail">Nueva pista </label>
+          <input id="mail" required placeholder="Pista" class="form-control" ng-model="hint">
+        </div>
+        <div class="action">
+          <button type="submit" class="btn btn-success">Agregar</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 

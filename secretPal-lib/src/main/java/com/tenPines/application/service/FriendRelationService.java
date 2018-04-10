@@ -9,6 +9,7 @@ import com.tenPines.model.process.AssignmentException;
 import com.tenPines.model.process.AutoAssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
+import com.tenPines.persistence.HintsRepository;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,17 +29,19 @@ public class FriendRelationService {
 
     private final Clock clock;
     private final FriendRelationRepository friendRelationRepository;
+    private final HintsRepository hintsRepository;
     private final WorkerService workerService;
     private static Random random = new Random(System.nanoTime());
     private final CustomParticipantRuleService customParticipantRuleService;
 
     @Autowired
     public FriendRelationService(Clock clock, FriendRelationRepository friendRelationRepository, WorkerService workerService,
-                                 CustomParticipantRuleService customParticipantRuleService) {
+                                 CustomParticipantRuleService customParticipantRuleService, HintsRepository hintsRepository) {
         this.clock = clock;
         this.friendRelationRepository = friendRelationRepository;
         this.workerService = workerService;
         this.customParticipantRuleService = customParticipantRuleService;
+        this.hintsRepository = hintsRepository;
     }
 
     public FriendRelation create(Worker friendWorker, Worker birthdayWorker) {
@@ -189,11 +192,12 @@ public class FriendRelationService {
         friendRelationRepository.deleteByGiftGiver(giver);
     }
 
-    public void addHintFrom(Worker aWorkerGiver, Hint hint) {
+    public Hint addHintFrom(Worker aWorkerGiver, Hint hint) {
         FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver)
                 .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
         friendRelation.addHint(hint);
         friendRelationRepository.save(friendRelation);
+        return hint;
     }
 
     public void editHintFrom(Worker aWorkerGiver, long oldHintId, Hint newHint) {
@@ -211,6 +215,7 @@ public class FriendRelationService {
                 .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
         Hint hintToRemove = friendRelation.hints().stream().filter(hint -> hint.getId().equals(hintId)).findFirst().orElse(null);
         friendRelation.removeHint(hintToRemove);
+        hintsRepository.delete(hintToRemove);
         friendRelationRepository.save(friendRelation);
     }
 
