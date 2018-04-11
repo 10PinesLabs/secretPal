@@ -108,7 +108,7 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/hintsLimit", method = RequestMethod.GET)
     @ResponseBody
-    public Integer getHintsLimit(@PathVariable Long workerID) {
+    public Integer getHintsLimit() {
         return systemFacade.hintsLimit();
     }
 
