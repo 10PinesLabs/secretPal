@@ -259,4 +259,11 @@ public class FriendRelationService {
     private Supplier<RuntimeException> noHayPistasException() {
         return () -> new RuntimeException("No hay pistas!");
     }
+
+    public FriendRelation guessGiftGiverFor(Worker worker, String assumedGiftGiverFullName) {
+        FriendRelation relation = friendRelationRepository.findByGiftReceiver(worker)
+                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
+        relation.guessGiftGiver(assumedGiftGiverFullName);
+        return relation;
+    }
 }
