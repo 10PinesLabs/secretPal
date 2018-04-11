@@ -230,4 +230,11 @@ public class FriendRelationService {
                 .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"))
                 .hints();
     }
+
+    public FriendRelation guessGiftGiverFor(Worker worker, String assumedGiftGiverFullName) {
+        FriendRelation relation = friendRelationRepository.findByGiftReceiver(worker)
+                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
+        relation.guessGiftGiver(assumedGiftGiverFullName);
+        return relation;
+    }
 }

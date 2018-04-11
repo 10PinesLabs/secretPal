@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 public class FriendRelationServiceTest extends SpringBaseTest {
@@ -245,6 +246,25 @@ public class FriendRelationServiceTest extends SpringBaseTest {
                 .findFirst().orElse(null);
         friendRelationService.removeHintFrom(aWorkerGiver,oldHint.getId());
         assertThat(friendRelationService.retrieveHintsGivenTo(aWorkerReceiver),hasSize(0));
+    }
+
+    @Test
+    public void canGuessGiftGiverForAWorkerWhenItIsAlreadyAssigned(){
+        setUp();
+        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+        FriendRelation friendRelationAfterGuess = friendRelationService.guessGiftGiverFor(aWorkerReceiver, aWorkerGiver.getFullName());
+        assertThat(friendRelationAfterGuess.isGuessed(), is(true));
+    }
+
+    @Test
+    public void cannotGuessGiftGiverForAWorkerWhenItIsNotYetAssigned(){
+        setUp();
+        try {
+            friendRelationService.guessGiftGiverFor(aWorkerReceiver, "Some Name");
+            fail("The exception was not raised");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), is("No hay amigo asignado!"));
+        }
     }
 
 }
