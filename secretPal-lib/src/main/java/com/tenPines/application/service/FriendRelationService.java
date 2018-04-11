@@ -249,4 +249,10 @@ public class FriendRelationService {
                 .filter(relation -> relation.isGuessed())
                 .map(relation -> relation.getGiftGiver());
     }
+
+    public FriendRelation guessStatusFor(Worker worker) {
+        FriendRelation relation = friendRelationRepository.findByGiftReceiver(worker)
+                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
+        return relation;
+    }
 }
