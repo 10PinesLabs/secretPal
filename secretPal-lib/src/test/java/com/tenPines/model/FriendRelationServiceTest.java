@@ -238,6 +238,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     @Test
     public void TheGifterCanRemoveHints(){
         setUp();
+        clock.setTime(LocalDate.of(2018,12,31));
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
         Hint hint = new Hint("hint");
         friendRelationService.addHintFrom(aWorkerGiver, hint);
