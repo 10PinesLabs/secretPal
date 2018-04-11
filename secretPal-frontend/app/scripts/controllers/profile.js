@@ -2,7 +2,6 @@
 
 angular.module('secretPalApp')
   .controller('ProfileController', function ($scope, $http, user, $location, FriendRelationService, WishlistService, SweetAlert, WorkerService) {
-
     $scope.wishlist = [];
     $scope.giftDefault;
 
@@ -53,6 +52,7 @@ angular.module('secretPalApp')
         WishlistService.getAllWishesFor($scope.friend.data, function (wishlistResponse) {
           $scope.wishlist = wishlistResponse.data;
         });
+
       });
     }
   });

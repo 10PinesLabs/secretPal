@@ -1,11 +1,15 @@
 package com.tenPines.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
 public class FriendRelation {
 
+
+    public static final int HINTS_AMOUNT_LIMIT = 3;
     @Id
     @GeneratedValue
     private Long id;
@@ -16,14 +20,17 @@ public class FriendRelation {
     @OneToOne
     private Worker giftReceiver;
 
-//    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
-//    public SecretPalEvent event;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="friend_relation_id")
+    private List<Hint> hints;
 
-    public FriendRelation(){}
+    public FriendRelation() {
+    }
 
-    public FriendRelation(Worker participant, Worker giftReceiver)  {
+    public FriendRelation(Worker participant, Worker giftReceiver) {
         this.giftGiver = participant;
         this.giftReceiver = giftReceiver;
+        this.hints = new ArrayList<Hint>();
     }
 
     public Long getId() {
@@ -48,5 +55,36 @@ public class FriendRelation {
 
     public void setGiftReceiver(Worker giftReceiver) {
         this.giftReceiver = giftReceiver;
+    }
+
+    public void addHint(Hint aHint) {
+        assertHintAmountLessThanLimit();
+        this.hints.add(aHint);
+    }
+
+    public List<Hint> hints() {
+        return this.hints;
+    }
+
+    private void assertHintAmountLessThanLimit() {
+        if (this.hints.size() >= HINTS_AMOUNT_LIMIT) {
+            throw new RuntimeException("Can not have more than "+ HINTS_AMOUNT_LIMIT+" hints");
+        }
+    }
+
+    public void removeHint(Hint aHint) {
+        this.hints.remove(aHint);
+    }
+
+    public void editHint(Hint anOldHint, Hint aNewHint) {
+        hints.set(hints.indexOf(anOldHint), aNewHint);
+    }
+
+    public List<Hint> getHints() {
+        return hints;
+    }
+
+    public void setHints(List<Hint> hints) {
+        this.hints = hints;
     }
 }

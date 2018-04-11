@@ -38,7 +38,8 @@
             <ul class="nav navbar-nav">
               <li ng-show="isAuthenticated()"><a ng-href="#/profile">Tu amigo</a></li>
               <li ng-show="isAuthenticated()"><a ng-href="#/wishlist">Lista de Deseos</a></li>
-
+              <li ng-show="isAuthenticated()"><a ng-href="#/hints">Dar pistas</a></li>
+              <li ng-show="isAuthenticated()"><a ng-href="#/guesses">Adivinar</a></li>
               <li class="dropdown" ng-show="isAuthenticated() && isAdmin()">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -99,6 +100,8 @@
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/workers.js"></script>
+    <script src="scripts/controllers/hints.js"></script>
+    <script src="scripts/controllers/guesses.js"></script>
     <script src="scripts/controllers/wishlist.js"></script>
     <script src="scripts/controllers/login.js"></script>
     <script src="scripts/controllers/profile.js"></script>
@@ -119,6 +122,8 @@
     <script src="scripts/services/account.js"></script>
     <script src="scripts/services/token.js"></script>
     <script src="scripts/services/gameStatusService.js"></script>
+    <script src="scripts/services/guessesService.js"></script>
+    <script src="scripts/services/hintsService.js"></script>
     <script src="scripts/services/customParticipantRuleService.js"></script>
     <!-- endbuild -->
 </body>

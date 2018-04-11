@@ -3,7 +3,7 @@ package com.tenPines.restAPI;
 import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.FriendRelation;
-//import com.tenPines.model.SecretPalEvent;
+import com.tenPines.model.Hint;
 import com.tenPines.model.Worker;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,4 +90,48 @@ public class FriendRelationController {
         Worker newReceiver = workerService.retriveWorker(newReceiverId);
         systemFacade.updateRelation(giver, newReceiver);
     }
+
+    @RequestMapping(value = "/hintsFor/{workerID}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Hint> getHintsFor(@PathVariable Long workerID) {
+        Worker worker = systemFacade.retrieveAWorker(workerID);
+        return systemFacade.hintsFor(worker);
+    }
+
+    @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Hint> getHintsFrom(@PathVariable Long workerID) {
+        Worker worker = systemFacade.retrieveAWorker(workerID);
+        return systemFacade.hintsFrom(worker);
+    }
+
+    @RequestMapping(value = "/hintsLimit", method = RequestMethod.GET)
+    @ResponseBody
+    public Integer getHintsLimit(@PathVariable Long workerID) {
+        return systemFacade.hintsLimit();
+    }
+
+    @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.POST)
+    @ResponseBody
+    public Hint addHintsFrom(@PathVariable Long workerID, @RequestBody String newHint) {
+        Worker worker = systemFacade.retrieveAWorker(workerID);
+       return systemFacade.addHintFrom(worker,new Hint(newHint));
+    }
+
+    @RequestMapping(value = "/hintsFrom/{workerID}/{hintId}", method = RequestMethod.PUT)
+    @ResponseBody
+    public void updateHintsFrom(@PathVariable Long workerID, @PathVariable Long hintId, @RequestBody String newHint) {
+        Worker worker = systemFacade.retrieveAWorker(workerID);
+        systemFacade.updateHintFrom(worker,hintId,new Hint(newHint));
+    }
+
+    @RequestMapping(value = "/hintsFrom/{workerID}/{hintId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void removeHintFrom(@PathVariable Long workerID, @PathVariable Long hintId) {
+        Worker worker = systemFacade.retrieveAWorker(workerID);
+        systemFacade.removeHintFrom(worker,hintId);
+    }
+
+
+
 }

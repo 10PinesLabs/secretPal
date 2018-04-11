@@ -1,0 +1,29 @@
+<div ng-show="beforeBirthday">
+
+</div>
+
+<div class="list_data" ng-show="beforeBirthday">
+  <h1>Pistas de tu pino invisible</h1>
+  <div class="panel panel-black">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th class="col-md-3">Pista</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="hint in hints">
+        <td>{{hint.message}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <form>
+    <label>Creo que mi pino invisible es:</label>
+    <select
+      ng-model="guess"
+      ng-options="posibleSecretPine.fullName for posibleSecretPine in posibleSecretPines track by posibleSecretPine.id">
+    </select>
+    <button ng-disabled="!guess" class="btn btn-success pull-right">Arriesgar!</button>
+  </form>
+</div>

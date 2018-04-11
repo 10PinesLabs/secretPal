@@ -1,0 +1,60 @@
+<script type="text/ng-template" id="editModalHint.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Editando las pistas de {{user.worker.fullName}}</h3>
+  </div>
+  <div class="modal-body">
+    Pista: <input type="text" ng-model="hint.message">
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
+    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();" ->OK</button>
+  </div>
+</script>
+
+
+<h1>Pistas para tu pino invisible</h1>
+<div class="panel panel-black">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th class="col-md-3">Pista</th>
+      <th class="col-md-1">Editar</th>
+      <th class="col-md-1">Borrar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="hint in hints">
+      <td>{{hint.message}}</td>
+      <td><a ng-click="edit(hint)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+      <td><a ng-click="delete(hint)"><span class="glyphicon glyphicon-remove"></span></a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div ng-show="!canBeAdded()">
+  <h3><span class="glyphicon glyphicon-remove-circle" ng-value="limit"></span>
+    Llegaste al limite de pistas
+  </h3>
+</div>
+<div ng-show="canBeAdded()">
+  <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false"
+          aria-controls="add_wish" id="add_wish_button">
+    Agrega una nueva pista
+  </button>
+  <div class="collapse" id="add_wish">
+    <div class="well">
+      <form class="navbar-form" name="form" ng-submit="add()">
+
+        <div class="field">
+          <br>
+          <label class="control-label col-md-4" for="mail">Nueva pista </label>
+          <input id="mail" required placeholder="Pista" class="form-control" ng-model="hint">
+        </div>
+        <div class="action">
+          <button type="submit" class="btn btn-success">Agregar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

@@ -58,6 +58,22 @@ angular
           pageTitle: 'Relaciones de amiguitos'
         }
       })
+      .when('/hints', {
+        templateUrl: '../views/hints.html',
+        controller: 'HintsController',
+        resolve: { user : authenticated },
+        data: {
+          pageTitle: 'Pistas'
+        }
+      })
+      .when('/guesses', {
+        templateUrl: '../views/guesses.html',
+        controller: 'GuessesController',
+        resolve: { user : authenticated },
+        data: {
+          pageTitle: 'Adivinar'
+        }
+      })
       .when('/wishlist', {
         templateUrl: '../views/wishlist.html',
         controller: 'WishlistController',
