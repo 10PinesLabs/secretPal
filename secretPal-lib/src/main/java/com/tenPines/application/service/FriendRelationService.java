@@ -264,6 +264,7 @@ public class FriendRelationService {
         FriendRelation relation = friendRelationRepository.findByGiftReceiver(worker)
                 .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
         relation.guessGiftGiver(assumedGiftGiverFullName);
+        friendRelationRepository.save(relation);
         return relation;
     }
 }
