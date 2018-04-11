@@ -51,8 +51,20 @@
         <td>{{worker.dateOfBirth | date}}</td>
         <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
                    ng-change="changeIntention(worker)" ng-model="worker.wantsToParticipate"></td>
-        <td><a ng-click="Edit(worker)"><span class="glyphicon glyphicon glyphicon-pencil"></span></a></td>
-        <td><a ng-click="delete(worker)"><span class="glyphicon glyphicon-trash"></span></a></td>
+        <td>
+          <button class="btn btn-sm btn-success"
+                  ng-click="Edit(worker)"
+                  title="Editar">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-danger"
+                  ng-click="delete(worker)"
+                  title="Borrar">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </td>
       </tr>
       </tbody>
     </table>

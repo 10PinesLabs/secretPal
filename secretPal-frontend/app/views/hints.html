@@ -25,8 +25,20 @@
     <tbody>
     <tr ng-repeat="hint in hints">
       <td>{{hint.message}}</td>
-      <td><a ng-click="edit(hint)"><span class="glyphicon glyphicon-pencil"></span></a></td>
-      <td><a ng-click="delete(hint)"><span class="glyphicon glyphicon-remove"></span></a></td>
+      <td>
+        <button class="btn btn-sm btn-success"
+                ng-click="edit(hint)"
+                title="Editar">
+          <span class="glyphicon glyphicon-pencil"></span>
+        </button>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-danger"
+                ng-click="delete(hint)"
+                title="Borrar">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </td>
     </tr>
     </tbody>
   </table>

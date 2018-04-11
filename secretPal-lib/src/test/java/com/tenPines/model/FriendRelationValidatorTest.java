@@ -1,6 +1,7 @@
 package com.tenPines.model;
 
 import com.tenPines.application.clock.Clock;
+import com.tenPines.application.clock.FakeClock;
 import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
@@ -24,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 public class FriendRelationValidatorTest extends SpringBaseTest {
 
     @Autowired
-    private Clock clock;
+    private FakeClock clock;
     @Autowired
     private FriendRelationService friendRelationService;
     @Autowired
@@ -92,6 +93,7 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
 
     @Test
     public void isValidWhenValidateTooCloseBirthdayRule() {
+        clock.setTime(LocalDate.of(2018,04,01));
         NotTooCloseBirthdaysRule notTooCloseBirthdaysRule = customParticipantRuleService.getNotTooCloseBirthdayRule();
         notTooCloseBirthdaysRule.isActive = false;
         notTooCloseBirthdayRuleRepository.save(notTooCloseBirthdaysRule);

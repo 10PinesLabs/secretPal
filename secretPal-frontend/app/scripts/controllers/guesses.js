@@ -6,10 +6,25 @@ angular.module('secretPalApp')
       $scope.guess = null;
       $scope.user = user;
       $scope.today = new Date();
+      $scope.maxGuesses = 3;
+      $scope.remainingAttempts = 2;
+      $scope.hasGuessedCorrectly = false
 
-
+    loadMaxGuesses();
+    loadGuessStatus();
     loadHints();
     loadPossibleSecretPines();
+
+    $scope.attempts = function (number) {
+      return Array.from(Array(number).keys());
+    }
+
+    $scope.guessSecretPine = function () {
+      GuessesService.makeGuess(user, $scope.guess.fullName, function(response){
+        $scope.remainingAttempts = response.remainingGuessAttempts;
+        $scope.hasGuessedCorrectly= response.wasGuessed;
+      });
+    }
 
     $scope.diff = function (date) {
       var unDia = 24 * 60 * 60 * 1000; // hora*minuto*segundo*milli
@@ -19,15 +34,28 @@ angular.module('secretPalApp')
       return Math.round((birthday.getTime() - $scope.today.getTime()) / unDia);
     };
 
-    $scope.beforeBirthday = function () {
+    $scope.afterBirthday = function () {
       var date = $scope.user.worker.dateOfBirth;
       var diff = $scope.diff(date);
 
-      return (diff > 0);
+      return (diff < 0);
     };
 
+    function loadMaxGuesses() {
+      GuessesService.maxGuesses(user, function (data) {
+        $scope.maxGuesses = data;
+      });
+    }
+
+    function loadGuessStatus() {
+      GuessesService.currentStatus(user, function (data) {
+        $scope.remainingAttempts = data.remainingGuessAttempts;
+        $scope.hasGuessedCorrectly = data.wasGuessed;
+      });
+    }
+
     function loadHints() {
-      GuessesService.all(user, function (data) {
+      GuessesService.getHints(user, function (data) {
         $scope.hints = data;
       });
     }
