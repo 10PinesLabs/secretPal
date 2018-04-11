@@ -238,4 +238,10 @@ public class FriendRelationService {
         friendRelationRepository.save(relation);
         return relation;
     }
+
+    public Optional<Worker> getGiftSenderFor(Worker giftReceiver) {
+        return friendRelationRepository.findByGiftReceiver(giftReceiver)
+                .filter(relation -> relation.isGuessed())
+                .map(relation -> relation.getGiftGiver());
+    }
 }
