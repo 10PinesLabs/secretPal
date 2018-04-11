@@ -1,10 +1,12 @@
 package com.tenPines.restAPI;
 
 import com.tenPines.application.SystemPalFacade;
+import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Hint;
 import com.tenPines.model.Worker;
+import com.tenPines.restAPI.utils.GuessResponse;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +23,11 @@ import java.util.List;
 @RequestMapping("/api/friendRelation")
 public class FriendRelationController {
 
-
     @Autowired
     private SystemPalFacade systemFacade;
+
+    @Autowired
+    private FriendRelationService friendRelationService;
 
     @Autowired
     private WorkerService workerService;
@@ -34,18 +38,15 @@ public class FriendRelationController {
         return systemFacade.getAllRelations();
     }
 
-
     @RequestMapping(value = "/posibleFriend/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<Worker> posiblesFriends(@PathVariable Long id) {
         return systemFacade.getPossibleFriendsTo(id);
-
-
     }
+
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public void createRelation(@RequestBody @Valid List<FriendRelation> friendRelations) throws IOException, MessagingException {
-        
         systemFacade.deleteAllRelations();
         for (FriendRelation friendRelation : friendRelations) {
             systemFacade.createRelation(friendRelation.getGiftGiver(), friendRelation.getGiftReceiver());
@@ -54,7 +55,7 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/{from}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
-    public void deleteRelation(@PathVariable Long from){
+    public void deleteRelation(@PathVariable Long from) {
         Worker giver = workerService.retriveWorker(from);
         systemFacade.deleteRelation(giver);
     }
@@ -85,7 +86,7 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/update/{giverId}/{newReceiverId}", method = RequestMethod.PUT)
     @ResponseBody
-    public void updateRelation(@PathVariable Long giverId,@PathVariable Long newReceiverId) throws IOException, MessagingException {
+    public void updateRelation(@PathVariable Long giverId, @PathVariable Long newReceiverId) throws IOException, MessagingException {
         Worker giver = workerService.retriveWorker(giverId);
         Worker newReceiver = workerService.retriveWorker(newReceiverId);
         systemFacade.updateRelation(giver, newReceiver);
@@ -122,16 +123,22 @@ public class FriendRelationController {
     @ResponseBody
     public void updateHintsFrom(@PathVariable Long workerID, @PathVariable Long hintId, @RequestBody String newHint) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        systemFacade.updateHintFrom(worker,hintId,new Hint(newHint));
+        systemFacade.updateHintFrom(worker, hintId, new Hint(newHint));
     }
 
     @RequestMapping(value = "/hintsFrom/{workerID}/{hintId}", method = RequestMethod.DELETE)
     @ResponseBody
     public void removeHintFrom(@PathVariable Long workerID, @PathVariable Long hintId) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        systemFacade.removeHintFrom(worker,hintId);
+        systemFacade.removeHintFrom(worker, hintId);
     }
 
-
+    @RequestMapping(value = "/guessFor/{workerID}", method = RequestMethod.PUT)
+    @ResponseBody
+    public GuessResponse guessGiftGiverFor(@PathVariable Long workerID, @RequestBody String assumedGiftGiverFullName) {
+        Worker worker = systemFacade.retrieveAWorker(workerID);
+        FriendRelation relationAfterGuess = friendRelationService.guessGiftGiverFor(worker, assumedGiftGiverFullName);
+        return new GuessResponse(relationAfterGuess.isGuessed(), relationAfterGuess.getRemainingGuessAttempts());
+    }
 
 }

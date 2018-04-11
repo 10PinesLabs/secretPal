@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.MonthDay;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -220,14 +221,25 @@ public class FriendRelationService {
     }
 
     public List<Hint> retrieveHintsGivenTo(Worker worker) {
-        return friendRelationRepository.findByGiftReceiver(worker)
-                .orElseThrow(() -> new RuntimeException("No hay pistas!"))
-                .hints();
+        List<Hint> hints = new ArrayList<>();
+        if(MonthDay.from(clock.now()).isAfter(worker.getBirthday())){
+            hints = friendRelationRepository.findByGiftReceiver(worker)
+                    .orElseThrow(() -> new RuntimeException("No hay pistas!"))
+                    .hints();
+        }
+        return hints;
     }
 
     public List<Hint> retrieveHintsGivenBy(Worker worker) {
         return friendRelationRepository.findByGiftGiver(worker)
                 .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"))
                 .hints();
+    }
+
+    public FriendRelation guessGiftGiverFor(Worker worker, String assumedGiftGiverFullName) {
+        FriendRelation relation = friendRelationRepository.findByGiftReceiver(worker)
+                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
+        relation.guessGiftGiver(assumedGiftGiverFullName);
+        return relation;
     }
 }
