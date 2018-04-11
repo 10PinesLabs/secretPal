@@ -18,6 +18,7 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/friendRelation")
@@ -46,7 +47,7 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public void createRelation(@RequestBody @Valid List<FriendRelation> friendRelations) throws IOException, MessagingException {
+    public void createRelation(@RequestBody @Valid List<FriendRelation> friendRelations) {
         systemFacade.deleteAllRelations();
         for (FriendRelation friendRelation : friendRelations) {
             systemFacade.createRelation(friendRelation.getGiftGiver(), friendRelation.getGiftReceiver());
@@ -139,6 +140,21 @@ public class FriendRelationController {
         Worker worker = systemFacade.retrieveAWorker(workerID);
         FriendRelation relationAfterGuess = friendRelationService.guessGiftGiverFor(worker, assumedGiftGiverFullName);
         return new GuessResponse(relationAfterGuess.isGuessed(), relationAfterGuess.getRemainingGuessAttempts());
+    }
+
+    @RequestMapping(value = "/giftGiverFor/{workerID}", method = RequestMethod.GET)
+    @ResponseBody
+    public Worker getGiftSenderForWorker(@PathVariable Long workerID) {
+        Worker giftReceiver = systemFacade.retrieveAWorker(workerID);
+        Optional<Worker> giftSender = friendRelationService.getGiftSenderFor(giftReceiver);
+        return giftSender.orElseThrow(CannotGetGiftGiverException::new);
+    }
+
+    @ExceptionHandler(CannotGetGiftGiverException.class)
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public CannotGetGiftGiverException handleException(CannotGetGiftGiverException e) {
+        return e;
     }
 
     @RequestMapping(value = "/guessFor/{workerID}", method = RequestMethod.GET)

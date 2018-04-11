@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -237,6 +238,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     @Test
     public void TheGifterCanRemoveHints(){
         setUp();
+        clock.setTime(LocalDate.of(2018,12,31));
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
         Hint hint = new Hint("hint");
         friendRelationService.addHintFrom(aWorkerGiver, hint);
@@ -263,6 +265,21 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         } catch (RuntimeException e) {
             assertThat(e.getMessage(), is("No hay amigo asignado!"));
         }
+    }
+
+    @Test
+    public void gettingTheGiftGiverForAWorkerWhenItHasNotYetBeenGuessedReturnsNone(){
+        setUp();
+        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+        assertThat(friendRelationService.getGiftSenderFor(aWorkerReceiver), is(Optional.empty()));
+    }
+
+    @Test
+    public void gettingTheGiftGiverForAWorkerWhenItHasAlreadyBeenGuessedReturnsIt(){
+        setUp();
+        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+        friendRelationService.guessGiftGiverFor(aWorkerReceiver, aWorkerGiver.getFullName());
+        assertThat(friendRelationService.getGiftSenderFor(aWorkerReceiver), is(Optional.of(aWorkerGiver)));
     }
 
 }

@@ -28,30 +28,27 @@ public class MailerController {
         return system.getEMailTemplate();
     }
 
-
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseBody
     public EmailTemplate setMail(@RequestBody EmailTemplate modifiedMail) throws IOException {
         return system.setEmailTemplate(modifiedMail);
     }
 
-
     @RequestMapping(value = "/failedMails", method = RequestMethod.GET)
     @ResponseBody
     public List<UnsentMessage> getFailedMail(){
-        return mailerService.retrieveAllFailedMails();}
-
-
+        return mailerService.retrieveAllFailedMails();
+    }
 
     @RequestMapping(value = "/resendMailsFailure", method = RequestMethod.POST)
     @ResponseBody
-    public void resendMail(@RequestBody UnsentMessage unsentMessage) throws IOException {
+    public void resendMail(@RequestBody UnsentMessage unsentMessage) {
         system.resendMessageFailure(unsentMessage);
     }
 
     @RequestMapping(value = "/remind", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.OK)
-    public void sendAllTodayReminders() throws IOException {
+    public void sendAllTodayReminders() {
         system.sendAllTodayReminders();
     }
 
