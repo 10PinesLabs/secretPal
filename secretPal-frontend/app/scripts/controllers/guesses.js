@@ -16,7 +16,10 @@ angular.module('secretPalApp')
     loadPossibleSecretPines();
 
     $scope.attempts = function (number) {
-      return [...Array(number).keys()];
+      return Array.apply(0, Array(number))
+        .map(function (element, index) {
+          return index + 0;
+        });
     }
 
     $scope.guessSecretPine = function () {
