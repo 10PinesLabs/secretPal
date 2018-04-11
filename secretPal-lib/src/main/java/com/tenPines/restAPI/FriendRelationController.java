@@ -171,4 +171,19 @@ public class FriendRelationController {
         return systemFacade.guessesLimit();
     }
 
+    @RequestMapping(value = "/giftGiverFor/{workerID}", method = RequestMethod.GET)
+    @ResponseBody
+    public Worker getGiftSenderForWorker(@PathVariable Long workerID) {
+        Worker giftReceiver = systemFacade.retrieveAWorker(workerID);
+        Optional<Worker> giftSender = friendRelationService.getGiftSenderFor(giftReceiver);
+        return giftSender.orElseThrow(CannotGetGiftGiverException::new);
+    }
+
+    @ExceptionHandler(CannotGetGiftGiverException.class)
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public CannotGetGiftGiverException handleException(CannotGetGiftGiverException e) {
+        return e;
+    }
+
 }
