@@ -107,11 +107,17 @@ public class FriendRelationController {
         return systemFacade.hintsFrom(worker);
     }
 
+    @RequestMapping(value = "/hintsLimit", method = RequestMethod.GET)
+    @ResponseBody
+    public Integer getHintsLimit(@PathVariable Long workerID) {
+        return systemFacade.hintsLimit();
+    }
+
     @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.POST)
     @ResponseBody
-    public void addHintsFrom(@PathVariable Long workerID, @RequestBody String newHint) {
+    public Hint addHintsFrom(@PathVariable Long workerID, @RequestBody String newHint) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        systemFacade.addHintFrom(worker, new Hint(newHint));
+       return systemFacade.addHintFrom(worker,new Hint(newHint));
     }
 
     @RequestMapping(value = "/hintsFrom/{workerID}/{hintId}", method = RequestMethod.PUT)

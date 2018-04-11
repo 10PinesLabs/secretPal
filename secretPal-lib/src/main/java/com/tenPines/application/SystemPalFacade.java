@@ -215,7 +215,11 @@ public class SystemPalFacade {
         friendRelationService.editHintFrom(worker, oldHint,newHint);
     }
 
-    public void addHintFrom(Worker worker, Hint newHint) {
-        friendRelationService.addHintFrom(worker,newHint);
+    public Hint addHintFrom(Worker worker, Hint newHint) {
+        return friendRelationService.addHintFrom(worker,newHint);
+    }
+
+    public Integer hintsLimit() {
+        return FriendRelation.HINTS_AMOUNT_LIMIT;
     }
 }

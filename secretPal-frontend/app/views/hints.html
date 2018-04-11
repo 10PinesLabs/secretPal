@@ -3,11 +3,11 @@
     <h3 class="modal-title">Editando las pistas de {{user.worker.fullName}}</h3>
   </div>
   <div class="modal-body">
-    Pista: <input type="text" ng-model="hint">
+    Pista: <input type="text" ng-model="hint.message">
   </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
-    <button class="btn btn-success" ng-submit="ok()" ->OK</button>
+    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();" ->OK</button>
   </div>
 </script>
 
@@ -31,24 +31,30 @@
     </tbody>
   </table>
 </div>
+<div ng-show="!canBeAdded()">
+  <h3><span class="glyphicon glyphicon-remove-circle" ng-value="limit"></span>
+    Llegaste al limite de pistas
+  </h3>
+</div>
+<div ng-show="canBeAdded()">
+  <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false"
+          aria-controls="add_wish" id="add_wish_button">
+    Agrega una nueva pista
+  </button>
+  <div class="collapse" id="add_wish">
+    <div class="well">
+      <form class="navbar-form" name="form" ng-submit="add()">
 
-<button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false"
-        aria-controls="add_wish" id="add_wish_button">
-  Agrega una nueva pista
-</button>
-<div class="collapse" id="add_wish">
-  <div class="well">
-    <form class="navbar-form" name="form" ng-submit="add()">
-
-      <div class="field">
-        <br>
-        <label class="control-label col-md-4" for="mail">Nueva pista </label>
-        <input id="mail" required placeholder="Pista" class="form-control" ng-model="hint">
-      </div>
-      <div class="action">
-        <button type="submit" class="btn btn-success">Agregar</button>
-      </div>
-    </form>
+        <div class="field">
+          <br>
+          <label class="control-label col-md-4" for="mail">Nueva pista </label>
+          <input id="mail" required placeholder="Pista" class="form-control" ng-model="hint">
+        </div>
+        <div class="action">
+          <button type="submit" class="btn btn-success">Agregar</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 
