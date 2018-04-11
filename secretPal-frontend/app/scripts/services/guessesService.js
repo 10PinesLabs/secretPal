@@ -26,10 +26,18 @@ angular.module('secretPalApp').service('GuessesService', function ($http, SweetA
   };
 
   this.makeGuess = function(user, guessFullName ,callback){
-    $http.put(buildRoute('guessFor/'+user.worker.id), guessFullName).success(function (data) {
+    $http.put(buildRoute('/guessFor/'+user.worker.id), guessFullName).success(function (data) {
       callback(data);
     }).error(function () {
       errorMsg("No se pudo realizar la adivinanza, inténtlo de nuevo más tarde.");
+    });
+  }
+
+  this.maxGuesses = function(callback){
+    $http.get(buildRoute('/guessLimit/')).success(function (data) {
+      callback(data);
+    }).error(function () {
+      errorMsg("No se pudo realizar, inténtlo de nuevo más tarde.");
     });
   }
 

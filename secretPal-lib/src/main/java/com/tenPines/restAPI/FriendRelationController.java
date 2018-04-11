@@ -141,4 +141,18 @@ public class FriendRelationController {
         return new GuessResponse(relationAfterGuess.isGuessed(), relationAfterGuess.getRemainingGuessAttempts());
     }
 
+    @RequestMapping(value = "/guessFor/{workerID}", method = RequestMethod.GET)
+    @ResponseBody
+    public GuessResponse getStatusFor(@PathVariable Long workerID) {
+        Worker worker = systemFacade.retrieveAWorker(workerID);
+        FriendRelation relationAfterGuess = friendRelationService.guessStatusFor(worker);
+        return new GuessResponse(relationAfterGuess.isGuessed(), relationAfterGuess.getRemainingGuessAttempts());
+    }
+
+    @RequestMapping(value = "/guessLimit", method = RequestMethod.GET)
+    @ResponseBody
+    public Integer getGuessLimit() {
+        return systemFacade.guessesLimit();
+    }
+
 }

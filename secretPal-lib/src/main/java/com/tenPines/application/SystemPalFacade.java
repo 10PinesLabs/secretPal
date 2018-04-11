@@ -222,4 +222,8 @@ public class SystemPalFacade {
     public Integer hintsLimit() {
         return FriendRelation.HINTS_AMOUNT_LIMIT;
     }
+
+    public Integer guessesLimit() {
+        return FriendRelation.GUESS_ATTEMPTS_LIMIT;
+    }
 }

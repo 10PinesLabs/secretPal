@@ -7,9 +7,10 @@ angular.module('secretPalApp')
       $scope.user = user;
       $scope.today = new Date();
       $scope.maxGuesses = 3;
-      $scope.remainingAttempts = 0;
+      $scope.remainingAttempts = 2;
       $scope.hasGuessedCorrectly = false
 
+    loadMaxGuesses();
     loadGuessStatus();
     loadHints();
     loadPossibleSecretPines();
@@ -21,15 +22,8 @@ angular.module('secretPalApp')
     $scope.guessSecretPine = function () {
       GuessesService.makeGuess(user, $scope.guess.fullName, function(response){
         $scope.remainingAttempts = response.remainingGuessAttempts;
-        $scope.hasGuessedCorrectly= response
-
-      })
-      if($scope.guess.fullName !== $scope.secretPineFullName){
-        $scope.remainingAttempts--;
-      }
-      else{
-        $scope.hasGuessedCorrectly = true;
-      }
+        $scope.hasGuessedCorrectly= response.wasGuessed;
+      });
     }
 
     $scope.diff = function (date) {
@@ -47,9 +41,16 @@ angular.module('secretPalApp')
       return (diff < 0);
     };
 
+    function loadMaxGuesses() {
+      GuessesService.maxGuesses(user, function (data) {
+        $scope.maxGuesses = data;
+      });
+    }
+
     function loadGuessStatus() {
       GuessesService.currentStatus(user, function (data) {
-        $scope.hints = data;
+        $scope.remainingAttempts = data.remainingGuessAttempts;
+        $scope.hasGuessedCorrectly = data.wasGuessed;
       });
     }
 

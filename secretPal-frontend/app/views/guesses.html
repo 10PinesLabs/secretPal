@@ -9,23 +9,17 @@
 
 <div class="jumbotron" ng-show="!afterBirthday()">
   <div class="container" >
-    <h2>No podes ver las pistas hasta despues de tu birthday :( </h2>
+    <h2>No podes ver las pistas hasta despues de tu cumpleaños </h2>
     <img src="https://i.giphy.com/media/AYKv7lXcZSJig/giphy.webp">
   </div>
 </div>
 
-<div class="jumbotron" ng-show="afterBirthday() && remainingAttempts<1">
-  <div class="container" >
-    <h2>Perdiste. Trae facturas</h2>
-    <img src="https://i.giphy.com/media/AYKv7lXcZSJig/giphy.webp">
-  </div>
-</div>
-
-<div class="list_data" ng-show="afterBirthday() && remainingAttempts>0">
+<div class="list_data" >
 
   <h1 >Pistas de tu pino invisible
-    <img style="float: right" src="images/empty_heart.png" width="40" height="40" ng-repeat="i in attempts(maxGuesses-remainingAttempts)">
     <img style="float: right" src="images/zelda_heart.png" width="40" height="40" ng-repeat="i in attempts(remainingAttempts)">
+    <img style="float: right" src="images/empty_heart.png" width="40" height="40" ng-repeat="i in attempts(maxGuesses-remainingAttempts)">
+
 
   </h1>
 
@@ -43,7 +37,7 @@
       </tbody>
     </table>
   </div>
-  <form>
+  <form ng-show="afterBirthday() && remainingAttempts>0">
     <label>Creo que mi pino invisible es:</label>
     <select
       ng-model="guess"
@@ -51,5 +45,11 @@
     </select>
     <button ng-click="guessSecretPine()" ng-disabled="!guess" class="btn btn-success pull-right">Arriesgar!</button>
   </form>
+  <div class="jumbotron" ng-show="afterBirthday() && remainingAttempts<1">
+    <div class="container" >
+      <h2>Perdiste. Trae facturas</h2>
+      <img src="https://i.giphy.com/media/AYKv7lXcZSJig/giphy.webp">
+    </div>
+  </div>
 </div>
 </div>
