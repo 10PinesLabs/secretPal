@@ -27,13 +27,17 @@ public abstract class ReminderBuilder {
         return new Message(
                 aFriendRelation.getGiftGiver().geteMail(),
                 assignationSubject(),
-                assignationBodyText(aFriendRelation.getGiftReceiver()));
+                htmlAssignationBodyText(aFriendRelation.getGiftReceiver()),
+                plainAssignationBodyText(aFriendRelation.getGiftReceiver()));
     }
-
 
     protected abstract String assignationSubject() throws IOException;
 
-    protected String assignationBodyText(Worker birthdayWorker) throws IOException {
+    private String htmlAssignationBodyText(Worker birthdayWorker) {
+        return "<p>" + plainAssignationBodyText(birthdayWorker) + "</p>";
+    }
+
+    protected String plainAssignationBodyText(Worker birthdayWorker) {
         return mailerService.getTemplate()
                 .map(emailTemplate -> replaceMailVariables(emailTemplate.getBodyText(), birthdayWorker))
                 .orElse(defaultBody(birthdayWorker));

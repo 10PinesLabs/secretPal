@@ -2,25 +2,25 @@ package com.tenPines.model;
 
 import com.tenPines.application.MailProperties;
 
-import javax.mail.Authenticator;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
 public class Message {
 
     private String recipient;
-    private String body;
     private String subject;
+    private String plainTextBody;
+    private String htmlBody;
 
-
-    public Message(String recipient, String subject, String body) {
+    public Message(String recipient, String subject, String htmlBody, String plainTextBody) {
         this.recipient = recipient;
-        this.body = body;
         this.subject = subject;
+        this.htmlBody = htmlBody;
+        this.plainTextBody = plainTextBody;
     }
 
     public String getRecipient() {
@@ -31,15 +31,28 @@ public class Message {
         return subject;
     }
 
-    public String getBody() {
-        return body;
+    public String getPlainTextBody() {
+        return plainTextBody;
+    }
+
+    public String getHtmlBody() {
+        return htmlBody;
     }
 
     public javax.mail.Message toJavax(MailProperties mailProperties) throws MessagingException {
         javax.mail.Message javaxMessage = new MimeMessage(authenticatedSession(mailProperties));
         javaxMessage.setRecipients(javax.mail.Message.RecipientType.TO, InternetAddress.parse(getRecipient()));
         javaxMessage.setSubject(getSubject());
-        javaxMessage.setText(getBody());
+
+        MimeBodyPart textPart = new MimeBodyPart();
+        textPart.setText(plainTextBody, "utf-8");
+        MimeBodyPart htmlPart = new MimeBodyPart();
+        htmlPart.setContent(htmlBody, "text/html; charset=utf-8");
+
+        MimeMultipart multiPart = new MimeMultipart("alternative");
+        multiPart.addBodyPart(textPart);
+        multiPart.addBodyPart(htmlPart);
+        javaxMessage.setContent(multiPart);
         return javaxMessage;
     }
 
