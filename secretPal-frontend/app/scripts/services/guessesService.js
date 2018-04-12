@@ -1,3 +1,6 @@
+'use strict';
+
+
 angular.module('secretPalApp').service('GuessesService', function ($http, SweetAlert) {
 
   function buildRoute(path) {
@@ -31,14 +34,14 @@ angular.module('secretPalApp').service('GuessesService', function ($http, SweetA
     }).error(function () {
       errorMsg("No se pudo realizar la adivinanza, inténtlo de nuevo más tarde.");
     });
-  }
+  };
 
   this.maxGuesses = function(callback){
-    $http.get(buildRoute('/guessLimit/')).success(function (data) {
+    $http.get(buildRoute('/guessLimit')).success(function (data) {
       callback(data);
     }).error(function () {
-      errorMsg("No se pudo realizar, inténtlo de nuevo más tarde.");
+      errorMsg("No limit found");
     });
-  }
+  };
 
-})
+});

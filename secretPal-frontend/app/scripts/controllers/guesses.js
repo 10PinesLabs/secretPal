@@ -7,24 +7,21 @@ angular.module('secretPalApp')
       $scope.user = user;
       $scope.today = new Date();
       $scope.maxGuesses = 3;
-      $scope.remainingAttempts = 2;
-      $scope.hasGuessedCorrectly = false
+      $scope.remainingAttempts = 3;
+      $scope.hasGuessedCorrectly = false;
 
-    loadMaxGuesses();
-    loadGuessStatus();
-    loadHints();
-    loadPossibleSecretPines();
+
 
     $scope.attempts = function (number) {
-      return Array.from(Array(number).keys());
-    }
+      return Array.from(new Array(number).keys());
+    };
 
     $scope.guessSecretPine = function () {
       GuessesService.makeGuess(user, $scope.guess.fullName, function(response){
         $scope.remainingAttempts = response.remainingGuessAttempts;
         $scope.hasGuessedCorrectly= response.wasGuessed;
       });
-    }
+    };
 
     $scope.diff = function (date) {
       var unDia = 24 * 60 * 60 * 1000; // hora*minuto*segundo*milli
@@ -42,7 +39,7 @@ angular.module('secretPalApp')
     };
 
     function loadMaxGuesses() {
-      GuessesService.maxGuesses(user, function (data) {
+      GuessesService.maxGuesses(function (data) {
         $scope.maxGuesses = data;
       });
     }
@@ -66,5 +63,10 @@ angular.module('secretPalApp')
       });
     }
 
+    loadMaxGuesses();
+    loadGuessStatus();
+    loadHints();
+    loadPossibleSecretPines();
+
     }
-  )
+  );

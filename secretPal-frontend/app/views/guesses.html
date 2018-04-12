@@ -10,7 +10,7 @@
 <div class="jumbotron" ng-show="!afterBirthday()">
   <div class="container" >
     <h2>No podes ver las pistas hasta despues de tu cumpleaños </h2>
-    <img src="https://i.giphy.com/media/AYKv7lXcZSJig/giphy.webp">
+    <img src="images/facturas.jpg">
   </div>
 </div>
 
@@ -45,10 +45,10 @@
     </select>
     <button ng-click="guessSecretPine()" ng-disabled="!guess" class="btn btn-success pull-right">Arriesgar!</button>
   </form>
-  <div class="jumbotron" ng-show="afterBirthday() && remainingAttempts<1">
+  <div class="jumbotron" ng-show="afterBirthday() && remainingAttempts < 1">
     <div class="container" >
       <h2>Perdiste. Trae facturas</h2>
-      <img src="https://i.giphy.com/media/AYKv7lXcZSJig/giphy.webp">
+      <img src="images/facturas.jpg" width="400" height="270">
     </div>
   </div>
 </div>

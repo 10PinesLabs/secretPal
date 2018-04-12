@@ -115,9 +115,9 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/hintsFrom/{workerID}", method = RequestMethod.POST)
     @ResponseBody
-    public Hint addHintsFrom(@PathVariable Long workerID, @RequestBody String newHint) {
+    public Hint addHintsFrom(@PathVariable Long workerID, @RequestBody Hint newHint) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-       return systemFacade.addHintFrom(worker,new Hint(newHint));
+       return systemFacade.addHintFrom(worker,newHint);
     }
 
     @RequestMapping(value = "/hintsFrom/{workerID}/{hintId}", method = RequestMethod.PUT)

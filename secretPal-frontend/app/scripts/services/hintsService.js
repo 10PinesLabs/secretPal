@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('secretPalApp').service('HintsService', function ($http, SweetAlert) {
 
   function buildRoute(path) {
@@ -35,7 +37,7 @@ angular.module('secretPalApp').service('HintsService', function ($http, SweetAle
 
   this.delete = function (user, hint, successFunction) {
     $http.delete(buildRoute('/hintsFrom/' + user.worker.id + "/" + hint)).success(function (data) {
-      successFunction(data);
+      successFunc tion(data);
     });
   };
 
@@ -46,4 +48,4 @@ angular.module('secretPalApp').service('HintsService', function ($http, SweetAle
   };
 
 
-})
+});

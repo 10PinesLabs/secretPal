@@ -48,7 +48,7 @@
     Llegaste al limite de pistas
   </h3>
 </div>
-<div ng-show="canBeAdded()">
+<div>
   <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false"
           aria-controls="add_wish" id="add_wish_button">
     Agrega una nueva pista
@@ -60,7 +60,7 @@
         <div class="field">
           <br>
           <label class="control-label col-md-4" for="mail">Nueva pista </label>
-          <input id="mail" required placeholder="Pista" class="form-control" ng-model="hint">
+          <input id="mail" required placeholder="Pista" class="form-control" ng-model="hintMessage">
         </div>
         <div class="action">
           <button type="submit" class="btn btn-success">Agregar</button>
