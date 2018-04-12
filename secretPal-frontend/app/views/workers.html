@@ -19,9 +19,27 @@
         <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="open($event)"><i
                   class="glyphicon glyphicon-calendar"></i></button>
-              </span>
+        </span>
       </p>
     </div>
+  </div>
+  <div class="modal-body">
+    <label class="control-label col-md-4" for="date">Gif del Pino: </label>
+    <input type="text" ng-model="worker.gifUrl">
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
+    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();">OK</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="updateGifUrlForWorker.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Agregando Gif a un Pino</h3>
+  </div>
+  <div class="modal-body">
+    <label class="control-label col-md-4" for="date">URL del gif a agregar: </label>
+    <input type="text" ng-model="worker.gifUrl">
   </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
@@ -39,6 +57,7 @@
         <th>Nombre</th>
         <th>Email</th>
         <th>Fecha de cumpleaños</th>
+        <th>Gif de cumpleaños</th>
         <th>Quiere participar?</th>
         <th>Modificar</th>
         <th>Borrar</th>
@@ -49,6 +68,10 @@
         <td>{{worker.fullName}}</td>
         <td>{{worker.eMail}}</td>
         <td>{{worker.dateOfBirth | date}}</td>
+        <td>
+          <div ng-if="!worker.gifUrl"><a ng-click="updateGifUrlFor(worker)">Agregar</a></div>
+          <div ng-if="worker.gifUrl">{{worker.gifUrl}}</div>
+        </td>
         <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
                    ng-change="changeIntention(worker)" ng-model="worker.wantsToParticipate"></td>
         <td>
