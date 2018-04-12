@@ -5,15 +5,16 @@ angular.module('secretPalApp')
       $scope.hints = [];
       $scope.limit = 3;
 
-      HintsService.limit(function (limit) {
-        $scope.limit = limit;
-      });
 
       HintsService.all(user, function (data) {
         $scope.hints = data;
       });
 
-      $scope.canBeAdded= function () {
+      HintsService.hintsLimit(function (number) {
+        $scope.limit = number;
+      });
+
+      $scope.canBeAdded = function () {
         return $scope.hints.length < $scope.limit
       };
 
@@ -42,7 +43,7 @@ angular.module('secretPalApp')
         });
         modalInstance.result.then(function (returnedHint) {
           angular.copy(returnedHint, hint);
-          HintsService.update(user,returnedHint.id, returnedHint.message);
+          HintsService.update(user, returnedHint.id, returnedHint.message);
         });
       };
 

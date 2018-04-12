@@ -15,11 +15,11 @@ angular.module('secretPalApp').service('HintsService', function ($http, SweetAle
     $http.get(buildRoute('/hintsFrom/' + user.worker.id)).success(function (data) {
       callback(data);
     }).error(function () {
-      errorMsg("No se pudo cargar la lista de pistas  , inténtlo de nuevo más tarde.");
+      errorMsg("No se pudo cargar la lista de pistas, inténtlo de nuevo más tarde.");
     });
   };
 
-  this.limit = function (callback) {
+  this.hintsLimit = function (callback) {
     $http.get(buildRoute('/hintsLimit')).success(function (data) {
       callback(data);
     }).error(function () {
