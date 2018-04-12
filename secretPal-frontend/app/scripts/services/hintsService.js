@@ -37,7 +37,7 @@ angular.module('secretPalApp').service('HintsService', function ($http, SweetAle
 
   this.delete = function (user, hint, successFunction) {
     $http.delete(buildRoute('/hintsFrom/' + user.worker.id + "/" + hint)).success(function (data) {
-      successFunc tion(data);
+      successFunction(data);
     });
   };
 
