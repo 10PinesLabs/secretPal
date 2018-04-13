@@ -20,22 +20,26 @@ public class HappyBithdayMessageBuilder {
         return "Feliz cumpleaños y que seas muy feliz!";
     }
 
-    private String htmlAssignationBodyText() {
+    private String htmlAssignationBodyText(Worker birthdayWorker) {
         return String.join("<div style=\"text-align: center; width: 100%;\">",
                 "<h1>" + plainAssignationBodyText() + "</h1>",
-                "<img src=\"" + gifURL() + "\"/>",
+                "<img src=\"" + gifUrlFor(birthdayWorker) + "\"/>",
                 "</div>");
     }
 
-    private String gifURL() {
-        return "https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif";
+    private String gifUrlFor(Worker birthdayWorker) {
+        return birthdayWorker.getGifUrl().orElse(defaultGifURL());
     }
 
-    public Message buildMessage(Worker birthdaysWorker) {
+    private String defaultGifURL() {
+        return "https://media.giphy.com/media/3oEhn78T277GKAq6Gc/giphy.gif";
+    }
+
+    public Message buildMessage(Worker birthdayWorker) {
         return new Message(
                 mailProperties.getRecipients(),
-                assignationSubject(birthdaysWorker),
-                htmlAssignationBodyText(),
+                assignationSubject(birthdayWorker),
+                htmlAssignationBodyText(birthdayWorker),
                 plainAssignationBodyText());
     }
 }
