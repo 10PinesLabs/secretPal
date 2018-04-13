@@ -123,7 +123,20 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     });
     modalInstance.result.then(function (returnedWorker) {
       angular.copy(returnedWorker, worker);
-      //WorkerService.updateGifUrl(worker); TODO llamar al service
+      WorkerService.updateGifUrlFor(worker);
+    });
+  };
+
+  $scope.showGifFor = function (worker) {
+    $modal.open({
+      animation: false,
+      templateUrl: 'gifViewer.html',
+      controller: 'GifViewerCtrl',
+      resolve: {
+        worker: function () {
+          return angular.copy(worker);
+        }
+      }
     });
   };
 
@@ -199,6 +212,13 @@ app.directive('unique', function () {
       $modalInstance.close($scope.worker);
     };
     $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+  })
+
+  .controller('GifViewerCtrl', function ($scope, $modalInstance, worker) {
+    $scope.worker = worker;
+    $scope.cerrar = function () {
       $modalInstance.dismiss('cancel');
     };
   });

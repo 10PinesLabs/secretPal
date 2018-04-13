@@ -47,6 +47,18 @@
   </div>
 </script>
 
+<script type="text/ng-template" id="gifViewer.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Gif</h3>
+  </div>
+  <div class="modal-body">
+    <img src={{worker.gifUrl}} />
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-transparent" ng-click="cerrar()">Cerrar</button>
+  </div>
+</script>
+
 <div class="list_data">
   <button class="btn btn-success pull-right" ng-click="assignation()">Asignar Amigos!</button>
   <h1>Lista de Pinos</h1>
@@ -70,7 +82,7 @@
         <td>{{worker.dateOfBirth | date}}</td>
         <td>
           <div ng-if="!worker.gifUrl"><a ng-click="updateGifUrlFor(worker)">Agregar</a></div>
-          <div ng-if="worker.gifUrl">{{worker.gifUrl}}</div>
+          <div ng-if="worker.gifUrl"><a ng-click="showGifFor(worker)">Ver gif</a></div>
         </td>
         <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
                    ng-change="changeIntention(worker)" ng-model="worker.wantsToParticipate"></td>
