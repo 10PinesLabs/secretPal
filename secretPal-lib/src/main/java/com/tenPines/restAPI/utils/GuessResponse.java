@@ -2,10 +2,10 @@ package com.tenPines.restAPI.utils;
 
 public class GuessResponse {
     public boolean wasGuessed;
-    public int remainingGuessAttempts;
+    public int guessAttempts;
 
-    public GuessResponse(boolean wasGuessed, int remainingGuessAttempts) {
+    public GuessResponse(boolean wasGuessed, int guessAttempts) {
         this.wasGuessed = wasGuessed;
-        this.remainingGuessAttempts = remainingGuessAttempts;
+        this.guessAttempts = guessAttempts;
     }
 }
