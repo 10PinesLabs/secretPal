@@ -72,5 +72,6 @@ public class WorkerService {
 
     public void updateGifUrlForWorker(Worker worker, URL newGifUrl) {
         worker.setGifUrl(newGifUrl);
+        workerRepository.save(worker);
     }
 }
