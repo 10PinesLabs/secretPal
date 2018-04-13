@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 @Controller
@@ -64,8 +65,15 @@ public class WorkerController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public void updateWorker(@RequestBody Worker worker) throws Exception {
+    public void updateWorker(@RequestBody Worker worker) {
         systemFacade.editWorker(worker);
+    }
+
+    @RequestMapping(value = "/gif", method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateGifUrlForWorker(@PathVariable Long workerID, @RequestBody URL newGifUrl){
+        Worker worker = workerService.retrieveWorker(workerID);
+        workerService.updateGifUrlForWorker(worker, newGifUrl);
     }
 
 }

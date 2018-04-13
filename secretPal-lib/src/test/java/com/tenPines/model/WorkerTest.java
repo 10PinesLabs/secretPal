@@ -46,7 +46,6 @@ public class WorkerTest {
         }
     }
 
-
     @Test
     public void When_I_try_to_create_a_person_with_an_invalid_email_an_exception_is_raised() {
         try {
@@ -58,21 +57,15 @@ public class WorkerTest {
     }
 
     @Test
-    public void When_I_try_to_create_a_person_with_a_last_name_that_contains_a_single_quote_on_it_should_not_raise_an_exception() throws Exception {
+    public void When_I_try_to_create_a_person_with_a_last_name_that_contains_a_single_quote_on_it_should_not_raise_an_exception() {
         Worker aWorker = workerBuilder.withFullName("Jason O'Connel").build();
         assertEquals(aWorker.getFullName(), "Jason O'Connel");
     }
 
     @Test
-    public void When_I_try_to_create_a_person_he_should_not_want_to_participate_yet() throws Exception {
+    public void When_I_try_to_create_a_person_he_should_not_want_to_participate_yet() {
         Worker aWorker = workerBuilder.whoDoesentWantToParticipate().build();
         assertThat(aWorker.getWantsToParticipate(), is(false));
     }
 
-//    @Test
-//    public void when_I_receive_a_gift_I_want_to_mark_the_date_of_receipt(){
-//        Worker aWorker = workerBuilder.withFullName("Jason O'Connel").build();
-//        aWorker.markGiftAsReceived(),
-//        assertThat(aWorker.getGiftDateReceived(),);
-//    }
 }

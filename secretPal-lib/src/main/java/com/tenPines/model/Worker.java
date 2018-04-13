@@ -10,8 +10,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.MonthDay;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -33,6 +35,7 @@ public class Worker {
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @NotNull
     private LocalDate dateOfBirth;
+    private URL gifUrl;
     @NotNull
     private Boolean wantsToParticipate;
     @JsonSerialize(using = JsonDateSerializer.class)
@@ -62,9 +65,6 @@ public class Worker {
         return id;
     }
 
-    /* @ManyToMany(mappedBy="friendRelations")
-    private Set<SecretPalEvent> secretPalEvents = new HashSet<>();*/
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -77,6 +77,22 @@ public class Worker {
         this.fullName = fullName;
     }
 
+    public String geteMail() {
+        return eMail;
+    }
+
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate birthdayDate) {
+        this.dateOfBirth = birthdayDate;
+    }
+
     public void changeParticipationIntention() {
         setWantsToParticipate(!wantsToParticipate);
     }
@@ -87,32 +103,12 @@ public class Worker {
         this.wantsToParticipate = wantsToParticipate;
     }
 
-    public String geteMail() {
-        return eMail;
-    }
-
-    public void seteMail(String eMail) throws Exception {
-        this.eMail = eMail;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
     public LocalDate getGiftDateReceived() {
         return giftDateReceived;
     }
 
     public void setGiftDateReceived(LocalDate giftDateReceived) {
         this.giftDateReceived = giftDateReceived;
-    }
-
-    public void setDateOfBirth(LocalDate birthdayDate) {
-        this.dateOfBirth = birthdayDate;
-    }
-
-    private void checkIfFieldIsValidUponCondition(Boolean condition, String message) throws Exception {
-        if (condition) throw new Exception(message);
     }
 
     @Override
@@ -122,8 +118,7 @@ public class Worker {
         if (!(anObject instanceof Worker)) return false;
         Worker otherWorker = (Worker) anObject;
 
-        return
-                this.getFullName().equals(otherWorker.getFullName()) &&
+        return this.getFullName().equals(otherWorker.getFullName()) &&
                         this.geteMail().equals(otherWorker.geteMail()) &&
                         this.getDateOfBirth().equals(otherWorker.getDateOfBirth());
     }
@@ -134,5 +129,13 @@ public class Worker {
 
     public MonthDay getBirthday() {
         return MonthDay.from(dateOfBirth);
+    }
+
+    public Optional<URL> getGifUrl() {
+        return Optional.ofNullable(gifUrl);
+    }
+
+    public void setGifUrl(URL gifUrl) {
+        this.gifUrl = gifUrl;
     }
 }

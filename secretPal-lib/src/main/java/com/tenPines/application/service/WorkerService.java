@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +49,7 @@ public class WorkerService {
     }
 
     public void changeIntention(Worker aWorker) {
-        Worker worker = retriveWorker(aWorker.getId());
+        Worker worker = retrieveWorker(aWorker.getId());
         worker.changeParticipationIntention();
         workerRepository.save(worker);
     }
@@ -57,7 +58,7 @@ public class WorkerService {
         return workerRepository.findBywantsToParticipate(true);
     }
 
-    public Worker retriveWorker(Long to) {
+    public Worker retrieveWorker(Long to) {
         return workerRepository.findOne(to);
     }
 
@@ -69,4 +70,7 @@ public class WorkerService {
         return workerRepository.findByfullName(token);
     }
 
+    public void updateGifUrlForWorker(Worker worker, URL newGifUrl) {
+        worker.setGifUrl(newGifUrl);
+    }
 }

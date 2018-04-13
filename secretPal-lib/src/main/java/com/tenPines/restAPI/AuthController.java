@@ -127,7 +127,7 @@ public class AuthController {
     @RequestMapping(value = "/confirmationGift/{id}", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.OK)
     public void updateGiftReceivedDate(@PathVariable(value = "id") Long id) {
-        Worker workerToUpdate = workerService.retriveWorker(id);
+        Worker workerToUpdate = workerService.retrieveWorker(id);
         workerToUpdate.markGiftAsReceived();
         workerService.save(workerToUpdate);
     }
