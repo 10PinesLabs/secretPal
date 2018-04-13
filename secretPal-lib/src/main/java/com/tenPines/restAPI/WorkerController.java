@@ -1,7 +1,6 @@
 package com.tenPines.restAPI;
 
 import com.tenPines.application.SystemPalFacade;
-import com.tenPines.application.service.AdminService;
 import com.tenPines.application.service.UserService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.Worker;
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 @Controller

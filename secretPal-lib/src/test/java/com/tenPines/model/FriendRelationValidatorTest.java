@@ -1,6 +1,5 @@
 package com.tenPines.model;
 
-import com.tenPines.application.clock.Clock;
 import com.tenPines.application.clock.FakeClock;
 import com.tenPines.application.service.CustomParticipantRuleService;
 import com.tenPines.application.service.FriendRelationService;

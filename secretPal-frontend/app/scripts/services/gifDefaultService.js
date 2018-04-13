@@ -17,23 +17,23 @@ angular.module('secretPalApp')
   }
 
   this.get = function(successFunction) {
-    $http.get(buildRoute('/gifDefault')).
-    success(function(data) {
-      successFunction(data);
-    }).
-    error(function() {
-      errorMsg("No se pudieron cargar los regalos.");
-    });
+    $http.get(buildRoute('/defaultGif')).
+      success(function(data) {
+        successFunction(data);
+      }).
+      error(function() {
+        errorMsg("No se pudo cargar el gif default.");
+      });
   };
 
-  this.update = function(giftDefault) {
-    $http.post(buildRoute('/giftsDefault'), giftDefault).
-    success(function() {
-      successMsg("Se ha actualizado el regalo default");
-    }).
-    error(function() {
-      errorMsg("No se ha podido actualizar el regalo default.");
-    });
+  this.set = function(defaultGifUrl) {
+    $http.post(buildRoute('/defaultGif'), defaultGifUrl).
+      success(function() {
+        successMsg("Se ha actualizado el gif default");
+      }).
+      error(function() {
+        errorMsg("No se ha podido actualizar el gif default.");
+      });
   };
 
 });

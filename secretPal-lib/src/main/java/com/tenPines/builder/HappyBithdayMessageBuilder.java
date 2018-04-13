@@ -1,15 +1,19 @@
 package com.tenPines.builder;
 
 import com.tenPines.application.MailProperties;
+import com.tenPines.application.service.DefaultGifService;
 import com.tenPines.model.Message;
 import com.tenPines.model.Worker;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class HappyBithdayMessageBuilder {
 
+    private DefaultGifService defaultGifService;
     private MailProperties mailProperties;
 
-    public HappyBithdayMessageBuilder(MailProperties mailProperties) {
+    public HappyBithdayMessageBuilder(MailProperties mailProperties, DefaultGifService defaultGifService) {
         this.mailProperties = mailProperties;
+        this.defaultGifService = defaultGifService;
     }
 
     private String assignationSubject(Worker birthdayWorker) {
@@ -28,11 +32,7 @@ public class HappyBithdayMessageBuilder {
     }
 
     private String gifUrlFor(Worker birthdayWorker) {
-        return birthdayWorker.getGifUrl().orElse(defaultGifURL());
-    }
-
-    private String defaultGifURL() {
-        return "https://media.giphy.com/media/3oEhn78T277GKAq6Gc/giphy.gif";
+        return birthdayWorker.getGifUrl().orElse(defaultGifService.get().getUrl());
     }
 
     public Message buildMessage(Worker birthdayWorker) {

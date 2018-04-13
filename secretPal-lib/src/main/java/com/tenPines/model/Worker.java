@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.util.Optional;

@@ -3,15 +3,13 @@
 var app = angular.module('secretPalApp');
 app.controller('GifDefaultController', function($scope, $route, GifDefaultService, SweetAlert) {
 
-  $scope.defaultGifUrl = "https://media.giphy.com/media/3oEhn78T277GKAq6Gc/giphy.gif";
-
   GifDefaultService.get(
-    function(defaultGifUrl){
-      $scope.defaultGifUrl = defaultGifUrl;
+    function(defaultGif){
+      $scope.defaultGifUrl = defaultGif.url;
     });
 
   $scope.change = function(){
-    SweetAlert.swal({
+    /*SweetAlert.swal({
         title: "Estás seguro?",
         text: "El gif default será modificado",
         type: "warning",
@@ -26,10 +24,10 @@ app.controller('GifDefaultController', function($scope, $route, GifDefaultServic
         cancelButtonColor: '#FFFFFF',
       },
       function (isConfirm) {
-        if(isConfirm) {
-          GifDefaultService.update($scope.defaultGifUrl);
-        }
-      });
+        if(isConfirm) {*/
+          GifDefaultService.set($scope.defaultGifUrl);
+        /*}
+      });*/
   };
 });
 

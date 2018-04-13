@@ -2,7 +2,10 @@ package com.tenPines.model;
 
 import com.tenPines.application.MailProperties;
 
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
