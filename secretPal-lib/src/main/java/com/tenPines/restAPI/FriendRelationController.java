@@ -139,7 +139,7 @@ public class FriendRelationController {
     public GuessResponse guessGiftGiverFor(@PathVariable Long workerID, @RequestBody String assumedGiftGiverFullName) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
         FriendRelation relationAfterGuess = friendRelationService.guessGiftGiverFor(worker, assumedGiftGiverFullName);
-        return new GuessResponse(relationAfterGuess.isGuessed(), relationAfterGuess.getRemainingGuessAttempts());
+        return new GuessResponse(relationAfterGuess.isGuessed(), relationAfterGuess.getGuessAttempts());
     }
 
     @RequestMapping(value = "/giftGiverFor/{workerID}", method = RequestMethod.GET)
@@ -162,7 +162,7 @@ public class FriendRelationController {
     public GuessResponse getStatusFor(@PathVariable Long workerID) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
         FriendRelation relation = friendRelationService.guessStatusFor(worker);
-        return new GuessResponse(relation.isGuessed(), relation.getRemainingGuessAttempts());
+        return new GuessResponse(relation.isGuessed(), relation.getGuessAttempts());
     }
 
     @RequestMapping(value = "/guessLimit", method = RequestMethod.GET)

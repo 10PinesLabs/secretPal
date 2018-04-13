@@ -9,7 +9,7 @@ function randomFrom(possibleRecievers) {
 app.controller('FriendRelationController', function ($scope, $modal, $filter, FriendRelationService, SweetAlert) {
 
   function updatePosibilities() {
-    FriendRelationService.allPosibleRelations( function(data) {
+    FriendRelationService.allPosibleRelations(function (data) {
       $scope.posibleRelations = data;
     });
   }
@@ -17,7 +17,7 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
   updatePosibilities();
 
   function updateInmutableRelations() {
-    FriendRelationService.allInmutableRelations( function(data) {
+    FriendRelationService.allInmutableRelations(function (data) {
       $scope.inmutableRelations = data;
     });
   }
@@ -112,67 +112,40 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
       if ($scope.notUsed(fr.giftGiver)) {
         return fr.giftGiver.id !== elem.giftReceiver.id && fr.giftGiver.id !== elem.giftGiver.id;
       }
-
-
     });
   };
 
-  $scope.auto = function(){
-    // SweetAlert.swal({
-    //   title: "Actualizando",
-    //   text: "Esto puede tardar un rato...\n muchos algoritmos",
-    //   showConfirmButton: false
-    // });
-
+  $scope.auto = function () {
     FriendRelationService.autoAssign(updatePosibilities);
-
   };
 
-  $scope.autoSelected = function(worker){
+  $scope.autoSelected = function (worker) {
     return $scope.alreadySelected[worker.fullName];
   };
 
-  $scope.removeAutoSelect = function(worker){
+  $scope.removeAutoSelect = function (worker) {
     $scope.toggleAlreadySelected(worker, false);
   };
 
-  $scope.toggleAlreadySelected = function(worker, boolean){
+  $scope.toggleAlreadySelected = function (worker, boolean) {
     $scope.alreadySelected[worker.fullName] = boolean;
   };
 
-  $scope.autoAssignPine = function(giver, possibleRecievers) {
-    // SweetAlert.swal({
-    //   title: "Actualizando",
-    //   text: "Esto puede tardar un rato...\n muchos algoritmos",
-    //   showConfirmButton: false
-    // });
+  $scope.autoAssignPine = function (giver, possibleRecievers) {
     $scope.update(giver, randomFrom(possibleRecievers));
   };
 
-  $scope.update = function(giver, receiver) {
+  $scope.update = function (giver, receiver) {
     $scope.toggleAlreadySelected(giver, true);
     FriendRelationService.update(giver, receiver, updatePosibilities);
   };
 
   $scope.delete = function (giver) {
-    // SweetAlert.swal({
-    //     title: "¿Estás seguro?",
-    //     text:  giver.fullName + " no será amigo invisible de nadie!",
-    //     type: "warning",
-    //     showCancelButton: true,
-    //     confirmButtonColor: "#d43f3a",
-    //     confirmButtonText: "Si, borrar!",
-    //     closeOnConfirm: false
-    //   },
-    //   function (isConfirm) {
-    //     if (isConfirm) {
-          FriendRelationService.delete(giver, function () {
-            updatePosibilities();
-            $scope.toggleAlreadySelected(giver, false);
-            SweetAlert.swal("Relación eliminada exitosamente", "Ahora " + giver.fullName + " no es amigo invisible de nadie ", "success");
-          });
-        }
-  //     });
-  // };
+    FriendRelationService.delete(giver, function () {
+      updatePosibilities();
+      $scope.toggleAlreadySelected(giver, false);
+      SweetAlert.swal("Relación eliminada exitosamente", "Ahora " + giver.fullName + " no es amigo invisible de nadie ", "success");
+    });
+  }
 
 });

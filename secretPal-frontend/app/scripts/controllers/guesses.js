@@ -6,8 +6,8 @@ angular.module('secretPalApp')
       $scope.guess = null;
       $scope.user = user;
       $scope.today = new Date();
-      $scope.maxGuesses = 3;
-      $scope.remainingAttempts = 3;
+      $scope.maxGuesses = 0;
+      $scope.remainingAttempts = 0;
       $scope.hasGuessedCorrectly = false;
 
 
