@@ -1,22 +1,23 @@
 package com.tenPines.mailer;
 
 import com.tenPines.model.Message;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.tenPines.mailer.InMemoryPostMan.USE_FAKE_MAILER_ENVIRONMENT;
+
 @Component
-@Profile("test")
+@Primary
+@ConditionalOnExpression(USE_FAKE_MAILER_ENVIRONMENT)
 public class InMemoryPostMan implements PostMan {
+    public static final String USE_FAKE_MAILER_ENVIRONMENT = "${use.fake.mailer:false}";
 
     public List<Message> messages = new ArrayList<>();
-
-    void flushSentMails() {
-        messages.clear();
-    }
 
     @Override
     public void sendMessage(Message message) {
