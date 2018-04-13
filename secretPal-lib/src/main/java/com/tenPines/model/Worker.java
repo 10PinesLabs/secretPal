@@ -35,7 +35,7 @@ public class Worker {
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @NotNull
     private LocalDate dateOfBirth;
-    private URL gifUrl;
+    private String gifUrl;
     @NotNull
     private Boolean wantsToParticipate;
     @JsonSerialize(using = JsonDateSerializer.class)
@@ -131,11 +131,11 @@ public class Worker {
         return MonthDay.from(dateOfBirth);
     }
 
-    public Optional<URL> getGifUrl() {
+    public Optional<String> getGifUrl() {
         return Optional.ofNullable(gifUrl);
     }
 
-    public void setGifUrl(URL gifUrl) {
+    public void setGifUrl(String gifUrl) {
         this.gifUrl = gifUrl;
     }
 }

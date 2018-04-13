@@ -69,10 +69,10 @@ public class WorkerController {
         systemFacade.editWorker(worker);
     }
 
-    @RequestMapping(value = "/gif", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{workerId}/gif", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.OK)
-    public void updateGifUrlForWorker(@PathVariable Long workerID, @RequestBody URL newGifUrl){
-        Worker worker = workerService.retrieveWorker(workerID);
+    public void updateGifUrlForWorker(@PathVariable Long workerId, @RequestBody String newGifUrl){
+        Worker worker = workerService.retrieveWorker(workerId);
         workerService.updateGifUrlForWorker(worker, newGifUrl);
     }
 

@@ -70,7 +70,7 @@ public class WorkerService {
         return workerRepository.findByfullName(token);
     }
 
-    public void updateGifUrlForWorker(Worker worker, URL newGifUrl) {
+    public void updateGifUrlForWorker(Worker worker, String newGifUrl) {
         worker.setGifUrl(newGifUrl);
         workerRepository.save(worker);
     }
