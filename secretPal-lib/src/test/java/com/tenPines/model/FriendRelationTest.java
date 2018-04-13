@@ -170,7 +170,7 @@ public class FriendRelationTest {
     @Test
     public void aNewRelationHas3RemainingGuessAttempts(){
         RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
-        assertThat(relationEstablisher.createRelation().getGuessAttempts(), is(3));
+        assertThat(relationEstablisher.createRelation().getGuessAttempts(), is(0));
     }
 
     @Test
@@ -196,7 +196,7 @@ public class FriendRelationTest {
 
         relation.guessGiftGiver("Some Incorrect Full Name");
 
-        assertThat(relation.getGuessAttempts(), is(2));
+        assertThat(relation.getGuessAttempts(), is(1));
     }
 
     @Test

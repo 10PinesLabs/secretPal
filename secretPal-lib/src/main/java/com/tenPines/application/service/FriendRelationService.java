@@ -228,7 +228,7 @@ public class FriendRelationService {
 
 
     public List<Hint> retrieveHintsGivenBy(Worker worker) {
-        return friendRelationRepository.findByGiftReceiver(worker)
+        return friendRelationRepository.findByGiftGiver(worker)
                 .map(FriendRelation::hints)
                 .orElseThrow(noHayPistasException());
     }
