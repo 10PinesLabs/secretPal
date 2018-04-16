@@ -48,11 +48,24 @@ angular.module('secretPalApp')
       };
 
       $scope.delete = function (hint) {
-        HintsService.delete(user, hint.id, function () {
-          $scope.hints.splice(
-            $scope.hints.indexOf(hint), 1
-          );
-        });
+        SweetAlert.swal({
+            title: "¿Estás seguro?",
+            text: "Si borras esta pista, tu pino invisible ya no va a poder verla",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d43f3a",
+            confirmButtonText: "Borrar",
+            closeOnConfirm: true
+          },
+          function (isConfirm) {
+            if (isConfirm) {
+              HintsService.delete(user, hint.id, function () {
+                $scope.hints.splice(
+                  $scope.hints.indexOf(hint), 1
+                );
+              });
+            }
+          });
       };
 
     }
