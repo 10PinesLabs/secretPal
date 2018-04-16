@@ -11,7 +11,7 @@ public class ClockConfig {
     @Bean
     @Profile("test")
     public Clock fakeClock() {
-        return new FakeClock(LocalDate.now());
+        return new FakeClock(LocalDate.of(2018, 4, 1));
     }
 
     @Bean

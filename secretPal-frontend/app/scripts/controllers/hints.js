@@ -1,25 +1,27 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .controller('HintsController', function ($scope, $http, user, HintsService, $modal, $log, SweetAlert) {
+  .controller('HintsController', function ($scope, $http, user, HintsService, $modal, SweetAlert) {
       $scope.hints = [];
       $scope.limit = 3;
 
-      HintsService.limit(function (limit) {
-        $scope.limit = limit;
-      });
 
       HintsService.all(user, function (data) {
         $scope.hints = data;
       });
 
-      $scope.canBeAdded= function () {
+      HintsService.hintsLimit(function (number) {
+        $scope.limit = number;
+      });
+
+      $scope.canBeAdded = function () {
         return $scope.hints.length < $scope.limit
-      }
+      };
 
       $scope.add = function () {
 
-        HintsService.new(user, $scope.hint, function (hint) {
+        var newHint = {message: $scope.hintMessage};
+        HintsService.new(user, newHint, function (hint) {
 
           $scope.hints.push(hint);
         });
@@ -41,7 +43,7 @@ angular.module('secretPalApp')
         });
         modalInstance.result.then(function (returnedHint) {
           angular.copy(returnedHint, hint);
-          HintsService.update(user,returnedHint.id, returnedHint.message);
+          HintsService.update(user, returnedHint.id, returnedHint.message);
         });
       };
 
@@ -50,7 +52,6 @@ angular.module('secretPalApp')
           $scope.hints.splice(
             $scope.hints.indexOf(hint), 1
           );
-
         });
       };
 
@@ -58,11 +59,11 @@ angular.module('secretPalApp')
   )
   .controller('ModalInstanceCtrlEdit', function ($scope, $modalInstance, user, hint) {
     $scope.user = user;
-    $scope.hint = hint;
+    $scope.hintMessage = hint;
     $scope.ok = function () {
-      $modalInstance.close($scope.hint);
+      $modalInstance.close($scope.hintMessage);
     };
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
-  })
+  });

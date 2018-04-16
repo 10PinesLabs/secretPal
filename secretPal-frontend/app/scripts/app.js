@@ -117,16 +117,25 @@ angular
       .when('/giftDefault', {
         templateUrl: '../views/giftDefault.html',
         controller: 'GiftDefaultController',
-        resolve: { user : authenticatedAndAdmin }
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Regalo default'
+        }
       })
       .when('/ruleConfiguration', {
         templateUrl: '../views/ruleConfiguration.html',
         controller: 'CustomParticipantRuleController',
-        resolve: { user : authenticatedAndAdmin }
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Configuracion de reglas'
+        }
       })
       .when('/gameStatus', {
         templateUrl: '../views/gameStatus.html',
         controller: 'GameStatusController',
-        resolve: { user : authenticatedAndAdmin }
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Estado del juego'
+        }
       });
   });

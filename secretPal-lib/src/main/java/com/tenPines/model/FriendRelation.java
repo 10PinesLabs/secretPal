@@ -8,8 +8,8 @@ import java.util.List;
 @Table
 public class FriendRelation {
 
-
     public static final int HINTS_AMOUNT_LIMIT = 3;
+    public static final int GUESS_ATTEMPTS_LIMIT = 3;
     @Id
     @GeneratedValue
     private Long id;
@@ -24,13 +24,17 @@ public class FriendRelation {
     @JoinColumn(name="friend_relation_id")
     private List<Hint> hints;
 
+    private int guessAttempts = 0;
+
+    private boolean isGuessed = false;
+
     public FriendRelation() {
     }
 
     public FriendRelation(Worker participant, Worker giftReceiver) {
         this.giftGiver = participant;
         this.giftReceiver = giftReceiver;
-        this.hints = new ArrayList<Hint>();
+        this.hints = new ArrayList<>();
     }
 
     public Long getId() {
@@ -55,6 +59,14 @@ public class FriendRelation {
 
     public void setGiftReceiver(Worker giftReceiver) {
         this.giftReceiver = giftReceiver;
+    }
+
+    public int getGuessAttempts() {
+        return guessAttempts;
+    }
+
+    public boolean isGuessed() {
+        return isGuessed;
     }
 
     public void addHint(Hint aHint) {
@@ -86,5 +98,27 @@ public class FriendRelation {
 
     public void setHints(List<Hint> hints) {
         this.hints = hints;
+    }
+
+    public void guessGiftGiver(String guessedGiftGiverFullName) {
+        assertIsNotGuessed();
+        assertThereAreRemainingGuessAttempts();
+        if(giftGiver.getFullName().equals(guessedGiftGiverFullName)){
+            isGuessed = true;
+        } else {
+            guessAttempts++;
+        }
+    }
+
+    private void assertIsNotGuessed() {
+        if (this.isGuessed) {
+            throw new RuntimeException("The gift giver was already guessed");
+        }
+    }
+
+    private void assertThereAreRemainingGuessAttempts() {
+        if (this.guessAttempts >= GUESS_ATTEMPTS_LIMIT) {
+            throw new RuntimeException("Can not have more than "+ GUESS_ATTEMPTS_LIMIT +" failed guess attempts");
+        }
     }
 }
