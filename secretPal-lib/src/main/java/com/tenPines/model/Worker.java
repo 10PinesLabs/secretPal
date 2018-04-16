@@ -28,6 +28,8 @@ public class Worker {
     @NotEmpty
     private String fullName;
     @NotEmpty
+    private String nickname;
+    @NotEmpty
     @Email
     private String eMail;
     @JsonSerialize(using = JsonDateSerializer.class)
@@ -74,6 +76,14 @@ public class Worker {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String geteMail() {
@@ -137,4 +147,5 @@ public class Worker {
     public void setGifUrl(String gifUrl) {
         this.gifUrl = gifUrl;
     }
+
 }
