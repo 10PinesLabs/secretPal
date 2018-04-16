@@ -7,7 +7,7 @@
       <input id="subject" class="form-control" ng-model="defaultGifUrl"/>
     </div>
     <div class="row">
-      <img src={{defaultGifUrl}} />
+      <img onerror="this.src='images/no_image_available.png';" src={{defaultGifUrl}} />
     </div>
     <div class="row">
       <button type="submit" class="btn btn-success">Aceptar</button>

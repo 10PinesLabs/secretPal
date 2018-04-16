@@ -26,7 +26,10 @@
   <div class="modal-body">
     <label class="control-label col-md-4" for="date">Gif del Pino: </label>
     <input style="vertical-align:top" type="text" ng-model="worker.gifUrl">
-    <img src={{worker.gifUrl}} width="100" />
+  </div>
+  <div class="modal-body" ng-if="worker.gifUrl">
+    <label class="control-label col-md-4" for="date">Preview: </label>
+    <img src={{worker.gifUrl}} width="200" onerror="this.src='images/no_image_available.png';" />
   </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
@@ -42,6 +45,9 @@
     <label class="control-label col-md-4" for="date">URL del gif a agregar: </label>
     <input type="text" ng-model="worker.gifUrl">
   </div>
+  <div class="modal-body" style="text-align: center">
+    <img src={{worker.gifUrl}} width="300" onerror="this.src='images/no_image_available.png';" />
+  </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
     <button class="btn btn-success" ng-click="ok()" ng-enter="ok();">OK</button>
@@ -53,7 +59,7 @@
     <h3 class="modal-title">Gif</h3>
   </div>
   <div class="modal-body" style="text-align: center">
-    <img src={{worker.gifUrl}} />
+    <img src={{worker.gifUrl}} onerror="this.src='images/no_image_available.png';" />
   </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cerrar()">Cerrar</button>
