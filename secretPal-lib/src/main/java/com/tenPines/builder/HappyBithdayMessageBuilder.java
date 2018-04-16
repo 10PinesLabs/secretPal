@@ -4,7 +4,6 @@ import com.tenPines.application.MailProperties;
 import com.tenPines.application.service.DefaultGifService;
 import com.tenPines.model.Message;
 import com.tenPines.model.Worker;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class HappyBithdayMessageBuilder {
 
