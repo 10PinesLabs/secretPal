@@ -55,6 +55,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
 
   $scope.Reset = function () {
     $scope.newName = '';
+    $scope.newNickname = '';
     $scope.newMail = '';
     $scope.newDate = '';
   };
@@ -68,7 +69,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
   };
 
   function buildWorker() {
-    return {fullName: $scope.newName, eMail: $scope.newMail, dateOfBirth: $scope.newDate, wantsToParticipate: false};
+    return {fullName: $scope.newName, nickname: $scope.newNickname, eMail: $scope.newMail, dateOfBirth: $scope.newDate, wantsToParticipate: false};
   }
 
   $scope.changeIntention = function (worker) {
