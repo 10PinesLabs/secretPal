@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .controller('GuessesController', function ($scope, $http, user, GuessesService, WorkerService) {
+  .controller('GuessesController', function ($scope, $http, user, GuessesService, WorkerService, SweetAlert) {
       $scope.hints = [];
       $scope.guess = null;
       $scope.user = user;
@@ -19,10 +19,29 @@ angular.module('secretPalApp')
     };
 
     $scope.guessSecretPine = function () {
-      GuessesService.makeGuess(user, $scope.guess.fullName, function(response){
-        $scope.attemptsDone = response.guessAttempts;
-        $scope.hasGuessedCorrectly= response.wasGuessed;
-      });
+      SweetAlert.swal({
+          title: "¿Estás seguro?",
+          text: " Si te quedas sin vidas, perdes",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#32d48a",
+          confirmButtonText: "Si, arriesgar!",
+          closeOnConfirm: false
+        },
+        function (isConfirm) {
+          if (isConfirm) {
+            GuessesService.makeGuess(user, $scope.guess.fullName, function(response){
+              if(response.wasGuessed){
+                SweetAlert.swal("Adivinaste!", "", "success");
+              }else{
+                SweetAlert.swal("Te equivocaste", "Perdiste una vida ", "error");
+              }
+              $scope.attemptsDone = response.guessAttempts;
+              $scope.hasGuessedCorrectly= response.wasGuessed;
+            });
+          }
+        });
+
     };
 
     $scope.diff = function (date) {

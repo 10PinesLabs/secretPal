@@ -42,33 +42,32 @@ angular.module('secretPalApp')
     };
 
     $scope.Delete = function (wish) {
-      // SweetAlert.swal({
-      //     title: "¿Estás seguro?",
-      //     text: "¡No vas a poder recuperar este deseo!",
-      //     type: "warning",
-      //     allowOutsideClick: false,
-      //     showConfirmButton: true,
-      //     showCancelButton: true,
-      //     closeOnConfirm: false,
-      //     closeOnCancel: true,
-      //     confirmButtonColor: "#d43f3a",
-      //     confirmButtonText: "Si, borrar!",
-      //     cancelButtonText: "Cancelar"
-      //   },
-      //   function (isConfirm) {
-      //     if (isConfirm) {
+      SweetAlert.swal({
+          title: "¿Estás seguro?",
+          text: "¡No vas a poder recuperar este deseo!",
+          type: "warning",
+          allowOutsideClick: false,
+          showConfirmButton: true,
+          showCancelButton: true,
+          closeOnConfirm: false,
+          closeOnCancel: true,
+          confirmButtonColor: "#d43f3a",
+          confirmButtonText: "Si, borrar!",
+          cancelButtonText: "Cancelar"
+        },
+        function (isConfirm) {
+          if (isConfirm) {
             WishlistService.delete(wish, function () {
               $scope.wishlist.splice(
                 $scope.wishlist.indexOf(wish), 1
               );
-              alert("Deseo borrado exitosamente")
-              // SweetAlert.swal({
-              //   title: "Regalo borrado exitosamente",
-              //   confirmButtonColor: "#68bd46",
-              // });
+              SweetAlert.swal({
+                title: "Regalo borrado exitosamente",
+                confirmButtonColor: "#68bd46",
+              });
             });
-        //   }
-        // });
+          }
+        });
     };
 
     $scope.canDelete = function (wish) {
@@ -94,6 +93,8 @@ angular.module('secretPalApp')
     function errorMsg(msg) {
       SweetAlert.swal("Algo salio mal", msg, "error");
     }
+
+
 
     this.all = function (callback) {
       $http.get(buildRoute('/')).success(function (data) {
