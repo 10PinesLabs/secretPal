@@ -3,7 +3,6 @@
 angular.module('secretPalApp')
   .controller('ProfileController', function ($scope, $http, user, $location, FriendRelationService, WishlistService, SweetAlert, WorkerService) {
 
-    $scope.showWishes = false;
     $scope.wishlist = [];
     $scope.giftDefault;
 

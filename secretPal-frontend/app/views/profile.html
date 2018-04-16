@@ -11,18 +11,16 @@
     <h5>-Apoye el mouse por encima de los bloques verdes para ver la información-</h5>
     <h3>
       <center>
-        <span style="display:block; width: 450px; height: 30px; background-color: #61b85c"
-              class="label label-success"><strong
-          style="text-transform:uppercase">{{friend.data.fullName}}</strong>
+        <span class="label label-success wishbox">
+          <label>{{friend.data.fullName}}</label>
         </span>
       </center>
     </h3>
     <h2>Tu pino asignado cumple el:</h2>
     <h3>
       <center>
-      <span style="display:block; width: 450px; height: 30px; background-color: #61b85c;"
-            class="label label-info"><strong
-        style="text-transform:uppercase">{{friend.data.dateOfBirth | date: 'dd-MMMM'}}</strong>
+      <span class="label label-info wishbox">
+        <label>{{friend.data.dateOfBirth | date: 'dd-MMMM'}}</label>
       </span>
       </center>
     </h3>
@@ -33,22 +31,16 @@
 
     <h3>Particularmente a tu pino le gustaría:</h3>
 
-    <div ng-mouseover="showWishes = true" ng-mouseleave="showWishes = false">
-      <h2>
+    <div>
+      <h3>
         <center>
-          <span style="display:block; width: 450px; background-color: #61b85c; word-wrap: break-word;" class="label label-warning -align-center">
-            <strong ng-show="!showWishes">Texto que no se va a ver, necesario para que el span comience con una linea</strong>
-            <strong ng-show="showWishes && wishlist.length === 0">Tu pino no tiene deseos en la Wishlist</strong>
-            <strong ng-show="showWishes" ng-repeat="wish in wishlist" style="text-transform:uppercase">{{wish.gift}}<br></strong>
+          <span class="label label-warning wishbox -align-center">
+            <label ng-show="wishlist.length === 0">Tu pino no tiene deseos en la Wishlist</label>
+            <label ng-repeat="wish in wishlist">{{wish.gift}}<br></label>
           </span>
         </center>
-      </h2>
+      </h3>
     </div>
   </span>
 </div>
 </div>
-
-
-
-
-
