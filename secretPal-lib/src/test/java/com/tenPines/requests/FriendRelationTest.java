@@ -5,7 +5,6 @@ import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
 import com.tenPines.model.Hint;
 import com.tenPines.model.Worker;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-@Ignore
 public class FriendRelationTest extends SpringBaseTest {
     @Autowired
     private TestRestTemplate restTemplate;
