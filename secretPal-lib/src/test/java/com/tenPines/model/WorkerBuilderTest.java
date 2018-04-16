@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
-public class WorkerTest {
+public class WorkerBuilderTest {
 
     private WorkerBuilder workerBuilder;
 
