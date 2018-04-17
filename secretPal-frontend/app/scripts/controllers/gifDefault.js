@@ -9,7 +9,7 @@ app.controller('GifDefaultController', function($scope, $route, GifDefaultServic
     });
 
   $scope.change = function(){
-    /*SweetAlert.swal({
+    SweetAlert.swal({
         title: "Estás seguro?",
         text: "El gif default será modificado",
         type: "warning",
@@ -24,10 +24,10 @@ app.controller('GifDefaultController', function($scope, $route, GifDefaultServic
         cancelButtonColor: '#FFFFFF',
       },
       function (isConfirm) {
-        if(isConfirm) {*/
+        if(isConfirm) {
           GifDefaultService.set($scope.defaultGifUrl);
-        /*}
-      });*/
+        }
+      });
   };
 });
 

@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<div ng-show="!hasGuessedCorrectly">
+<div ng-hide="hasGuessedCorrectly">
 
   <div class="jumbotron" ng-show="!afterBirthday()">
     <div class="container">
@@ -21,8 +21,6 @@
            ng-repeat="i in attempts(maxGuesses-attemptsDone)"/>
       <img style="float: right" src="images/empty_heart.png" width="40" height="40"
            ng-repeat="i in attempts(attemptsDone)"/>
-
-
     </h1>
 
     <div class="panel panel-black">
