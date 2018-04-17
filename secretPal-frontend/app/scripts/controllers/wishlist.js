@@ -63,7 +63,8 @@ angular.module('secretPalApp')
               );
               SweetAlert.swal({
                 title: "Regalo borrado exitosamente",
-                confirmButtonColor: "#68bd46",
+                showConfirmButton: false,
+                timer: 800
               });
             });
           }

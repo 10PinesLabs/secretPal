@@ -19,28 +19,48 @@ angular.module('secretPalApp')
     };
 
     $scope.guessSecretPine = function () {
-      SweetAlert.swal({
-          title: "¿Estás seguro?",
-          text: " Si te quedas sin vidas, perdes",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#32d48a",
-          confirmButtonText: "Si, arriesgar!",
-          closeOnConfirm: false
-        },
-        function (isConfirm) {
-          if (isConfirm) {
-            GuessesService.makeGuess(user, $scope.guess.fullName, function(response){
-              if(response.wasGuessed){
-                SweetAlert.swal("Adivinaste!", "", "success");
-              }else{
-                SweetAlert.swal("Te equivocaste", "Perdiste una vida ", "error");
-              }
-              $scope.attemptsDone = response.guessAttempts;
-              $scope.hasGuessedCorrectly= response.wasGuessed;
+      function makeGuess() {
+        GuessesService.makeGuess(user, $scope.guess.fullName, function (response) {
+          if (response.wasGuessed) {
+            SweetAlert.swal({
+              title:"Adivinaste!",
+              text: "",
+              type: "success",
+              showConfirmButton:false,
+              timer: 1000
+            });
+          } else {
+            SweetAlert.swal({
+              title:"Te equivocaste!",
+              text: "Perdiste una vida",
+              type: "error",
+              showConfirmButton:false,
+              timer: 1000
             });
           }
+          $scope.attemptsDone = response.guessAttempts;
+          $scope.hasGuessedCorrectly = response.wasGuessed;
         });
+      }
+      if($scope.maxGuesses-$scope.attemptsDone == 1) {
+        SweetAlert.swal({
+            title: "¿Estás seguro?",
+            text: "Si te equivocas, perdes.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#32d48a",
+            confirmButtonText: "Si, arriesgar!",
+            closeOnConfirm: false
+          },
+          function (isConfirm) {
+            if (isConfirm) {
+              makeGuess();
+            }
+          });
+      }
+      else{
+        makeGuess();
+      }
 
     };
 
