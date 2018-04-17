@@ -1,18 +1,29 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .controller('HintsController', function ($scope, $http, user, HintsService, $modal, SweetAlert) {
+  .controller('HintsController', function ($scope, $http, user, HintsService, $modal, FriendRelationService, SweetAlert) {
       $scope.hints = [];
       $scope.limit = 3;
 
+      FriendRelationService.getFriend(user.worker, function (friend) {
 
-      HintsService.all(user, function (data) {
-        $scope.hints = data;
+        $scope.friend = friend;
+        if (friend != null) {
+          HintsService.all(user, function (data) {
+            $scope.hints = data;
+          });
+        }
+
       });
 
       HintsService.hintsLimit(function (number) {
         $scope.limit = number;
       });
+
+      $scope.hasFriend = function () {
+        console.log($scope.friend);
+        return $scope.friend != null;
+      };
 
       $scope.canBeAdded = function () {
         return $scope.hints.length < $scope.limit

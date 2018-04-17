@@ -11,62 +11,68 @@
   </div>
 </script>
 
-
-<h1>Pistas para tu pino invisible</h1>
-<div class="panel panel-black">
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th class="col-md-3">Pista</th>
-      <th class="col-md-1">Editar</th>
-      <th class="col-md-1">Borrar</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="hint in hints">
-      <td>{{hint.message}}</td>
-      <td>
-        <button class="btn btn-sm btn-success"
-                ng-click="edit(hint)"
-                title="Editar">
-          <span class="glyphicon glyphicon-pencil"></span>
-        </button>
-      </td>
-      <td>
-        <button class="btn btn-sm btn-danger"
-                ng-click="delete(hint)"
-                title="Borrar">
-          <span class="glyphicon glyphicon-remove"></span>
-        </button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+<div ng-show="!hasFriend()" class="jumbotron">
+    <h2>No podes dar pistas! <br/> No tenés amigo invisible asignado aún</h2>
+    <img src="https://media.giphy.com/media/hEc4k5pN17GZq/giphy.gif">
 </div>
-<div ng-show="!canBeAdded()">
-  <h3><span class="glyphicon glyphicon-remove-circle" ng-value="limit"></span>
-    Llegaste al limite de pistas
-  </h3>
-</div>
-<div>
-  <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false"
-          aria-controls="add_wish" id="add_wish_button">
-    Agrega una nueva pista
-  </button>
-  <div class="collapse" id="add_wish">
-    <div class="well">
-      <form class="navbar-form" name="form" ng-submit="add()">
 
-        <div class="field">
-          <br>
-          <label class="control-label col-md-4" for="mail">Nueva pista </label>
-          <input id="mail" required placeholder="Pista" class="form-control" ng-model="hintMessage">
-        </div>
-        <div class="action">
-          <button type="submit" class="btn btn-success">Agregar</button>
-        </div>
-      </form>
+<div ng-show="hasFriend()">
+  <h1>Pistas para tu pino invisible</h1>
+  <div class="panel panel-black">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th class="col-md-3">Pista</th>
+        <th class="col-md-1">Editar</th>
+        <th class="col-md-1">Borrar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="hint in hints">
+        <td>{{hint.message}}</td>
+        <td>
+          <button class="btn btn-sm btn-success"
+                  ng-click="edit(hint)"
+                  title="Editar">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-danger"
+                  ng-click="delete(hint)"
+                  title="Borrar">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div ng-show="!canBeAdded()">
+    <h3><span class="glyphicon glyphicon-remove-circle" ng-value="limit"></span>
+      Llegaste al limite de pistas
+    </h3>
+  </div>
+  <div>
+    <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false"
+            aria-controls="add_wish" id="add_wish_button">
+      Agrega una nueva pista
+    </button>
+    <div class="collapse" id="add_wish">
+      <div class="well">
+        <form class="navbar-form" name="form" ng-submit="add()">
+
+          <div class="field">
+            <br>
+            <label class="control-label col-md-4" for="mail">Nueva pista </label>
+            <input id="mail" required placeholder="Pista" class="form-control" ng-model="hintMessage">
+          </div>
+          <div class="action">
+            <button type="submit" class="btn btn-success">Agregar</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
+</div>
