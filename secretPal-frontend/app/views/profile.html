@@ -36,7 +36,7 @@
         <center>
           <span class="label label-warning wishbox -align-center">
             <label ng-show="wishlist.length === 0">Tu pino no tiene deseos en la Wishlist</label>
-            <label ng-repeat="wish in wishlist">{{wish.gift}}<br></label>
+            <label ng-repeat-start="wish in wishlist">{{wish.gift}}</label><br ng-repeat-end/>
           </span>
         </center>
       </h3>
