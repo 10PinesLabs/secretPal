@@ -13,11 +13,17 @@ import java.time.Month;
 public class WorkerBuilder {
 
     private Faker faker = new Faker();
-    private String fullName = faker.name().fullName();
-    private String nickname = faker.name().firstName();
+    private String fullName;
+    private String nickname;
     private String email = faker.internet().emailAddress();
     private LocalDate birthdayDate = LocalDate.of(1993, Month.APRIL,12);
     private Boolean wantsToParticipate = true;
+
+    public WorkerBuilder() {
+        Name fakeName = faker.name();
+        fullName = fakeName.fullName();
+        nickname = fakeName.firstName();
+    }
 
     public WorkerBuilder withFullName(String fullName) {
         checkIfFullNameIsValid(fullName);
