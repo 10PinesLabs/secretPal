@@ -1,7 +1,6 @@
 package com.tenPines.restAPI;
 
 import com.tenPines.application.SystemPalFacade;
-import com.tenPines.application.service.AdminService;
 import com.tenPines.application.service.UserService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.Worker;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -64,8 +62,15 @@ public class WorkerController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public void updateWorker(@RequestBody Worker worker) throws Exception {
+    public void updateWorker(@RequestBody Worker worker) {
         systemFacade.editWorker(worker);
+    }
+
+    @RequestMapping(value = "/{workerId}/gif", method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateGifUrlForWorker(@PathVariable Long workerId, @RequestBody String newGifUrl){
+        Worker worker = workerService.retrieveWorker(workerId);
+        workerService.updateGifUrlForWorker(worker, newGifUrl);
     }
 
 }

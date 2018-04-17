@@ -35,7 +35,6 @@ public class ReminderSystemTest extends SpringBaseTest {
     private Worker friendWorker;
     private Worker birthdayWorker;
 
-
     private void setUp(LocalDate today, LocalDate birthday) {
         clock.setTime(today);
 
@@ -45,7 +44,6 @@ public class ReminderSystemTest extends SpringBaseTest {
         friendRelationService.create(friendWorker, birthdayWorker);
     }
 
-
     @Test
     public void When_A_Workers_Birthday_Should_Mail_All_Pines(){
         setUp(LocalDate.now(), LocalDate.now());
@@ -54,9 +52,6 @@ public class ReminderSystemTest extends SpringBaseTest {
         assertThat(postMan.messagesTo(birthdayWorker.geteMail()), empty());
     }
 
-
-
-
     @Test
     public void When_aproach_the_birthday_of_friendWorker(){
         setUp(LocalDate.now().plusDays(secretPalProperties.getReminderWeekPeriod()), LocalDate.now());
@@ -64,6 +59,5 @@ public class ReminderSystemTest extends SpringBaseTest {
         reminderSystem.sendTwoWeeksReminders();
         assertThat(postMan.messagesTo(friendWorker.geteMail()), empty());
     }
-
 
 }

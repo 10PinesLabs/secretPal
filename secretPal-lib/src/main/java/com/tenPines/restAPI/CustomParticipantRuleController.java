@@ -28,8 +28,8 @@ public class CustomParticipantRuleController {
     @RequestMapping(value = "/{from}/{to}", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     public void createRule(@PathVariable Long from, @PathVariable Long to) {
-        Worker workerFrom = workerService.retriveWorker(from);
-        Worker workerTo = workerService.retriveWorker(to);
+        Worker workerFrom = workerService.retrieveWorker(from);
+        Worker workerTo = workerService.retrieveWorker(to);
         systemFacade.createRule(workerFrom, workerTo, false);
     }
 

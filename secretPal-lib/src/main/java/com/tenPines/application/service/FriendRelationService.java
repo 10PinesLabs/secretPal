@@ -274,4 +274,5 @@ public class FriendRelationService {
                 .filter(relation -> relation.isGuessed())
                 .map(relation -> relation.getGiftGiver());
     }
+
 }

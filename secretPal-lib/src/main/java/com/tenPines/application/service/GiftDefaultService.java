@@ -21,7 +21,6 @@ public class GiftDefaultService {
 
     public List<DefaultGift> getAll() {
         return repository.findAll();
-
     }
 
     public void addGift(DefaultGift defaultGift) {

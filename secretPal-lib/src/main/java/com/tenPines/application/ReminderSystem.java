@@ -1,6 +1,7 @@
 package com.tenPines.application;
 
 import com.tenPines.application.clock.Clock;
+import com.tenPines.application.service.DefaultGifService;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.MailerService;
 import com.tenPines.application.service.WorkerService;
@@ -26,9 +27,10 @@ public class ReminderSystem {
     private final MailProperties mailProperties;
     private final PostOffice postOffice;
     private final MailerService mailerService;
+    private final DefaultGifService defaultGifService;
 
     @Autowired
-    public ReminderSystem(Clock clock, FriendRelationService friendRelationService, WorkerService workerService, SecretPalProperties secretPalProperties, MailProperties mailProperties, PostOffice postOffice, MailerService mailerService) {
+    public ReminderSystem(Clock clock, FriendRelationService friendRelationService, WorkerService workerService, SecretPalProperties secretPalProperties, MailProperties mailProperties, PostOffice postOffice, MailerService mailerService, DefaultGifService defaultGifService) {
         this.clock = clock;
         this.friendRelationService = friendRelationService;
         this.workerService = workerService;
@@ -36,6 +38,7 @@ public class ReminderSystem {
         this.mailProperties = mailProperties;
         this.postOffice = postOffice;
         this.mailerService = mailerService;
+        this.defaultGifService = defaultGifService;
     }
 
     public void sendHappyBithdayMessages() {
@@ -45,7 +48,7 @@ public class ReminderSystem {
                                 .equals(
                                         MonthDay.from(clock.now()))
                 )
-                .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder(mailProperties).buildMessage(worker)));
+                .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder(mailProperties, defaultGifService).buildMessage(worker)));
 
     }
 

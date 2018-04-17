@@ -53,7 +53,7 @@ public class ScheduleMailerTest extends SpringBaseTest {
         reminderSystem.sendTwoWeeksReminders();
 
         assertThat(postMan.messagesTo(friendWorker.geteMail()), hasSize(1));
-        assertThat(postMan.messagesTo(friendWorker.geteMail()), contains(hasProperty("body",
+        assertThat(postMan.messagesTo(friendWorker.geteMail()), contains(hasProperty("plainTextBody",
                 allOf(
                         containsString(birthdayWorker.getFullName())
                         ))));
@@ -75,7 +75,7 @@ public class ScheduleMailerTest extends SpringBaseTest {
         reminderSystem.sendTwoMonthsReminders();
 
         assertThat(postMan.messagesTo(friendWorker.geteMail()), hasSize(1));
-        assertThat(postMan.messagesTo(friendWorker.geteMail()), contains(hasProperty("body",
+        assertThat(postMan.messagesTo(friendWorker.geteMail()), contains(hasProperty("plainTextBody",
                 allOf(
                         containsString(birthdayWorker.getFullName())
                 ))));

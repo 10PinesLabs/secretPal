@@ -22,8 +22,9 @@ public class UnsentMessage{
     private Long id;
 
     private String recipient;
-    private String body;
     private String subject;
+    private String plainTextBody;
+    private String htmlBody;
 
     private String error;
 
@@ -35,7 +36,8 @@ public class UnsentMessage{
             instance.setError(error.toString());
         else
             instance.setError(error.toString().substring(0,200));
-        instance.setBody(message.getBody());
+        instance.setPlainTextBody(message.getPlainTextBody());
+        instance.setHtmlBody(message.getHtmlBody());
         instance.setSubject(message.getSubject());
         instance.setRecipient(message.getRecipient());
         return instance;
@@ -49,20 +51,28 @@ public class UnsentMessage{
         this.recipient = recipient;
     }
 
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
     public String getSubject() {
         return subject;
     }
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getPlainTextBody() {
+        return plainTextBody;
+    }
+
+    public void setPlainTextBody(String plainTextBody) {
+        this.plainTextBody = plainTextBody;
+    }
+
+    public String getHtmlBody() {
+        return htmlBody;
+    }
+
+    public void setHtmlBody(String htmlBody) {
+        this.htmlBody = htmlBody;
     }
 
     public String getError() {
@@ -74,6 +84,6 @@ public class UnsentMessage{
     }
 
     public Message toMessage() {
-        return new Message(getRecipient(), getSubject(), getBody());
+        return new Message(getRecipient(), getSubject(), getHtmlBody(), getPlainTextBody());
     }
 }
