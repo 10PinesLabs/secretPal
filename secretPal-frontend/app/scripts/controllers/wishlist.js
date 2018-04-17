@@ -95,8 +95,6 @@ angular.module('secretPalApp')
       SweetAlert.swal("Algo salio mal", msg, "error");
     }
 
-
-
     this.all = function (callback) {
       $http.get(buildRoute('/')).success(function (data) {
         callback(data);
