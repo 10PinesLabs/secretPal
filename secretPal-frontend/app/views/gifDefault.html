@@ -1,0 +1,16 @@
+<h1>Configuración de gif default para cumpleaños</h1>
+
+<div class="well">
+  <form class="navbar-form" name="form" ng-submit="change()">
+    <div class="row">
+      <label class="control-label col-md-5" for="subject">URL default:</label>
+      <input id="subject" class="form-control" ng-model="defaultGifUrl"/>
+    </div>
+    <div class="row">
+      <img onerror="this.src='images/no_image_available.png';" src={{defaultGifUrl}} />
+    </div>
+    <div class="row">
+      <button type="submit" class="btn btn-success">Aceptar</button>
+    </div>
+  </form>
+</div>

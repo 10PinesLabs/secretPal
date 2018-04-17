@@ -27,7 +27,7 @@ public class SystemPalFacade {
     private final ReminderSystem reminderSystem;
 
     public Worker retrieveAssignedFriendFor(Long Idparticipant) {
-        Worker participant = workerService.retriveWorker(Idparticipant);
+        Worker participant = workerService.retrieveWorker(Idparticipant);
         return friendRelationService.retrieveAssignedFriendFor(participant);
     }
 
@@ -57,7 +57,7 @@ public class SystemPalFacade {
     }
 
     public Worker retrieveAWorker(Long workerID) {
-        return workerService.retriveWorker(workerID);
+        return workerService.retrieveWorker(workerID);
     }
 
     public List<Wish> retrievallWishesForWorker(Worker worker) {
@@ -124,11 +124,11 @@ public class SystemPalFacade {
     }
 
     public List<Worker> getPossibleFriendsTo(Long id) {
-        Worker workerTo = workerService.retriveWorker(id);
+        Worker workerTo = workerService.retrieveWorker(id);
         return friendRelationService.getAvailablesRelationsTo(workerTo);
     }
 
-    public void editWorker(Worker workerEdited) throws Exception {
+    public void editWorker(Worker workerEdited) {
         workerService.save(workerEdited);
     }
 

@@ -37,6 +37,7 @@ public class SMTPPostManTest extends SpringBaseTest {
         anEmail = faker.internet().emailAddress();
         aMessage = new Message(anEmail,
                 faker.lorem().sentence(),
+                faker.lorem().paragraph(),
                 faker.lorem().paragraph()
         );
     }

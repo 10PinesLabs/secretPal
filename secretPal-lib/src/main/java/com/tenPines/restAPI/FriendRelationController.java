@@ -57,7 +57,7 @@ public class FriendRelationController {
     @RequestMapping(value = "/{from}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void deleteRelation(@PathVariable Long from) {
-        Worker giver = workerService.retriveWorker(from);
+        Worker giver = workerService.retrieveWorker(from);
         systemFacade.deleteRelation(giver);
     }
 
@@ -88,8 +88,8 @@ public class FriendRelationController {
     @RequestMapping(value = "/update/{giverId}/{newReceiverId}", method = RequestMethod.PUT)
     @ResponseBody
     public void updateRelation(@PathVariable Long giverId, @PathVariable Long newReceiverId) throws IOException, MessagingException {
-        Worker giver = workerService.retriveWorker(giverId);
-        Worker newReceiver = workerService.retriveWorker(newReceiverId);
+        Worker giver = workerService.retrieveWorker(giverId);
+        Worker newReceiver = workerService.retrieveWorker(newReceiverId);
         systemFacade.updateRelation(giver, newReceiver);
     }
 

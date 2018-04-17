@@ -91,8 +91,8 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     if (keepGoing) {
       WorkerService.changeIntention(worker);
     }
-
   };
+
   $scope.Edit = function (worker) {
     var modalInstance = $modal.open({
       animation: false,
@@ -107,6 +107,36 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     modalInstance.result.then(function (returnedWorker) {
       angular.copy(returnedWorker, worker);
       WorkerService.update(worker);
+    });
+  };
+
+  $scope.updateGifUrlFor = function (worker) {
+    var modalInstance = $modal.open({
+      animation: false,
+      templateUrl: 'updateGifUrlForWorker.html',
+      controller: 'WorkerGifCtrl',
+      resolve: {
+        worker: function () {
+          return angular.copy(worker);
+        }
+      }
+    });
+    modalInstance.result.then(function (returnedWorker) {
+      angular.copy(returnedWorker, worker);
+      WorkerService.updateGifUrlFor(worker);
+    });
+  };
+
+  $scope.showGifFor = function (worker) {
+    $modal.open({
+      animation: false,
+      templateUrl: 'gifViewer.html',
+      controller: 'GifViewerCtrl',
+      resolve: {
+        worker: function () {
+          return angular.copy(worker);
+        }
+      }
     });
   };
 
@@ -173,5 +203,22 @@ app.directive('unique', function () {
       $event.stopPropagation();
 
       $scope.opened = true;
+    };
+  })
+
+  .controller('WorkerGifCtrl', function ($scope, $modalInstance, worker) {
+    $scope.worker = worker;
+    $scope.ok = function () {
+      $modalInstance.close($scope.worker);
+    };
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
+  })
+
+  .controller('GifViewerCtrl', function ($scope, $modalInstance, worker) {
+    $scope.worker = worker;
+    $scope.cerrar = function () {
+      $modalInstance.dismiss('cancel');
     };
   });

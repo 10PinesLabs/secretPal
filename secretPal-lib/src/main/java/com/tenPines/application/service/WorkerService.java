@@ -48,7 +48,7 @@ public class WorkerService {
     }
 
     public void changeIntention(Worker aWorker) {
-        Worker worker = retriveWorker(aWorker.getId());
+        Worker worker = retrieveWorker(aWorker.getId());
         worker.changeParticipationIntention();
         workerRepository.save(worker);
     }
@@ -57,7 +57,7 @@ public class WorkerService {
         return workerRepository.findBywantsToParticipate(true);
     }
 
-    public Worker retriveWorker(Long to) {
+    public Worker retrieveWorker(Long to) {
         return workerRepository.findOne(to);
     }
 
@@ -69,4 +69,8 @@ public class WorkerService {
         return workerRepository.findByfullName(token);
     }
 
+    public void updateGifUrlForWorker(Worker worker, String newGifUrl) {
+        worker.setGifUrl(newGifUrl);
+        workerRepository.save(worker);
+    }
 }
