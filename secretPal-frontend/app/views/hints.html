@@ -11,9 +11,9 @@
   </div>
 </script>
 
-<div ng-show="!hasFriend()" class="jumbotron">
+<div ng-hide="hasFriend()" class="jumbotron">
     <h2>No podes dar pistas! <br/> No tenés amigo invisible asignado aún</h2>
-    <img src="https://media.giphy.com/media/hEc4k5pN17GZq/giphy.gif">
+    <img src="images/confused-travolta.gif">
 </div>
 
 <div ng-show="hasFriend()">
@@ -48,12 +48,12 @@
       </tbody>
     </table>
   </div>
-  <div ng-show="!canBeAdded()">
+  <div ng-hide="canBeAdded()">
     <h3><span class="glyphicon glyphicon-remove-circle" ng-value="limit"></span>
       Llegaste al limite de pistas
     </h3>
   </div>
-  <div>
+  <div ng-show="canBeAdded()">
     <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_wish" aria-expanded="false"
             aria-controls="add_wish" id="add_wish_button">
       Agrega una nueva pista
