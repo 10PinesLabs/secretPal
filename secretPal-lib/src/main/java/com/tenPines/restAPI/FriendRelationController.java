@@ -171,33 +171,4 @@ public class FriendRelationController {
         return systemFacade.guessesLimit();
     }
 
-    @RequestMapping(value = "/giftGiverFor/{workerID}", method = RequestMethod.GET)
-    @ResponseBody
-    public Worker getGiftSenderForWorker(@PathVariable Long workerID) {
-        Worker giftReceiver = systemFacade.retrieveAWorker(workerID);
-        Optional<Worker> giftSender = friendRelationService.getGiftSenderFor(giftReceiver);
-        return giftSender.orElseThrow(CannotGetGiftGiverException::new);
-    }
-
-    @ExceptionHandler(CannotGetGiftGiverException.class)
-    @ResponseBody
-    @ResponseStatus(value = HttpStatus.FORBIDDEN)
-    public CannotGetGiftGiverException handleException(CannotGetGiftGiverException e) {
-        return e;
-    }
-
-    @RequestMapping(value = "/guessFor/{workerID}", method = RequestMethod.GET)
-    @ResponseBody
-    public GuessResponse getStatusFor(@PathVariable Long workerID) {
-        Worker worker = systemFacade.retrieveAWorker(workerID);
-        FriendRelation relation = friendRelationService.guessStatusFor(worker);
-        return new GuessResponse(relation.isGuessed(), relation.getRemainingGuessAttempts());
-    }
-
-    @RequestMapping(value = "/guessLimit", method = RequestMethod.GET)
-    @ResponseBody
-    public Integer getGuessLimit() {
-        return systemFacade.guessesLimit();
-    }
-
 }

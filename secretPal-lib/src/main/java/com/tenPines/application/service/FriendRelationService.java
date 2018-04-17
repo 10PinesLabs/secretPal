@@ -261,18 +261,4 @@ public class FriendRelationService {
         return () -> new RuntimeException("No hay pistas!");
     }
 
-    public FriendRelation guessGiftGiverFor(Worker worker, String assumedGiftGiverFullName) {
-        FriendRelation relation = friendRelationRepository.findByGiftReceiver(worker)
-                .orElseThrow(() -> new RuntimeException("No hay amigo asignado!"));
-        relation.guessGiftGiver(assumedGiftGiverFullName);
-        friendRelationRepository.save(relation);
-        return relation;
-    }
-
-    public Optional<Worker> getGiftSenderFor(Worker giftReceiver) {
-        return friendRelationRepository.findByGiftReceiver(giftReceiver)
-                .filter(relation -> relation.isGuessed())
-                .map(relation -> relation.getGiftGiver());
-    }
-
 }
