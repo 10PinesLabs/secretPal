@@ -261,4 +261,19 @@ span.label:not(:hover) {
   color: #61b85c;
 }
 
+.wishbox {
+  display:block;
+  width: 450px;
+  min-height: 30px;
+  max-height: 30px;
+  background-color: #61b85c;
+  text-transform:uppercase;
+  font-weight: bold;
+  overflow: hidden;
+}
 
+.wishbox:hover {
+  overflow: visible;
+  white-space: unset;
+  max-height: fit-content;
+}
