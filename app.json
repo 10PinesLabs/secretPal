@@ -1,0 +1,32 @@
+{
+  "name": "secretPal",
+  "description": "Aplicación para administrar el \"Juego\" del Pino invisible",
+  "scripts": {
+    "postdeploy": "pg_dump $PROD_DATABASE_URL --data-only --format=custom --file=/tmp/dump.bin  && pg_restore --dbname=$DATABASE_URL --single-transaction /tmp/dump.bin"
+  },
+  "env": {
+    "PROD_DATABASE_URL": {
+      "required": true
+    },
+    "BACKOFFICE_SECRET": {
+      "required": true
+    },
+    "MAIL_PASSWORD": {
+      "required": true
+    },
+    "USE_FAKE_MAILER": "true"
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/java"
+    }
+  ]
+}

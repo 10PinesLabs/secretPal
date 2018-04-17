@@ -1,0 +1,57 @@
+<div class="jumbotron" ng-show="hasGuessedCorrectly">
+  <div class="container">
+    <h2> Adivinaste a tu amigo invisible!! </h2>
+    <img src="images/correct.gif">
+  </div>
+</div>
+
+<div ng-show="!hasGuessedCorrectly">
+
+  <div class="jumbotron" ng-show="!afterBirthday()">
+    <div class="container">
+      <h2>No podes ver las pistas hasta despues de tu cumpleaños </h2>
+      <img src="images/facturas.jpg">
+    </div>
+  </div>
+
+  <div class="list_data" ng-show="afterBirthday()">
+
+    <h1>Pistas de tu pino invisible
+      <img style="float: right" src="images/zelda_heart.png" width="40" height="40"
+           ng-repeat="i in attempts(maxGuesses-attemptsDone)"/>
+      <img style="float: right" src="images/empty_heart.png" width="40" height="40"
+           ng-repeat="i in attempts(attemptsDone)"/>
+
+
+    </h1>
+
+    <div class="panel panel-black">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th class="col-md-3">Pista</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="hint in hints">
+          <td>{{hint.message}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <form ng-show="canKeepPlaying()">
+      <label>Creo que mi pino invisible es:</label>
+      <select
+        ng-model="guess"
+        ng-options="posibleSecretPine.fullName for posibleSecretPine in posibleSecretPines track by posibleSecretPine.id">
+      </select>
+      <button ng-click="guessSecretPine()" ng-disabled="!guess" class="btn btn-success pull-right">Arriesgar!</button>
+    </form>
+    <div class="jumbotron" ng-show="!canKeepPlaying()">
+      <div class="container">
+        <h2>Perdiste. Trae facturas.</h2>
+        <img src="images/facturas.gif" width="400" height="270">
+      </div>
+    </div>
+  </div>
+</div>

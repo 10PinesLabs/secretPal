@@ -32,7 +32,6 @@ public class NotTooCloseBirthdaysRule extends AssignationRule {
 
     @Override
     public Boolean validate(Worker giver, Worker receiver) {
-
         return (isActive && moreThan2WeeksBetweenBirthdays(giver, receiver)) || !isActive;
     }
 
@@ -50,7 +49,7 @@ public class NotTooCloseBirthdaysRule extends AssignationRule {
     }
 
     private LocalDate actualWorkerBirthday(Worker giver) {
-        return MonthDay.from(giver.getDateOfBirth()).atYear(LocalDate.now().getYear());
+        return giver.getBirthday().atYear(LocalDate.now().getYear());
     }
 
     public void changeRuleIntention() {

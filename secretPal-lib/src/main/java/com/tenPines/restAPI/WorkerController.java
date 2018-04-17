@@ -4,7 +4,6 @@ import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.AdminService;
 import com.tenPines.application.service.UserService;
 import com.tenPines.application.service.WorkerService;
-import com.tenPines.model.User;
 import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/worker")
@@ -28,8 +26,6 @@ public class WorkerController {
     @Autowired
     private SystemPalFacade systemFacade;
     @Autowired
-    private AdminService adminService;
-    @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE )
@@ -41,13 +37,13 @@ public class WorkerController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseBody
-    public Worker save(@RequestBody @Valid Worker aWorker) throws IOException {
+    public Worker save(@RequestBody @Valid Worker aWorker) {
         return workerService.save(aWorker);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
-    public void delete(@PathVariable Long id) throws IOException {
+    public void delete(@PathVariable Long id) {
         Worker worker = system.retrieveAWorker(id);
         userService.deleteByWorker(worker);
         system.deleteAWorker(worker);

@@ -3,7 +3,6 @@ package com.tenPines.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.time.LocalDate;
 
 /**
  * Created by Aye on 09/11/16.

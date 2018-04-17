@@ -1,8 +1,6 @@
 package com.tenPines.model;
 
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 
 @Entity
