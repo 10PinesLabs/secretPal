@@ -47,8 +47,9 @@ public class Worker {
     // Necessary for hibernate
     private Worker() { }
 
-    public Worker(String fullName, String email, LocalDate dateOfBirth, Boolean wantsToParticipate) {
+    public Worker(String fullName, String nickname, String email, LocalDate dateOfBirth, Boolean wantsToParticipate) {
         this.fullName = fullName;
+        this.nickname = nickname;
         this.eMail = email;
         this.dateOfBirth = dateOfBirth;
         this.wantsToParticipate = wantsToParticipate;
