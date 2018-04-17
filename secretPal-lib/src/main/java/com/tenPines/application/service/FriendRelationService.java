@@ -193,6 +193,7 @@ public class FriendRelationService {
         FriendRelation friendRelation = getByWorkerGiver(aWorkerGiver)
                 .orElseThrow(noHayAmigoAsignadoException());
         friendRelation.addHint(hint);
+        hintsRepository.save(hint);
         friendRelationRepository.save(friendRelation);
         return hint;
     }
