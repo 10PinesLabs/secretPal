@@ -16,7 +16,6 @@ angular.module('secretPalApp').service('GuessesService', function ($http, SweetA
     $http.get(buildRoute('/guessFor/' + user.worker.id)).success(function (data) {
       callback(data);
     }).error(function () {
-      // errorMsg("No se pudo obtener el estado, inténtelo de nuevo más tarde.");
     });
   };
 

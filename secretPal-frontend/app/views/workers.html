@@ -69,8 +69,8 @@
 <div class="list_data">
   <button class="btn btn-success pull-right" ng-click="assignation()">Asignar Amigos!</button>
   <h1>Lista de Pinos</h1>
-  <div class="panel panel-black">
-    <table class="table table-striped center-vertical" style="table-layout: auto">
+  <div class="panel panel-black" style="width: fit-content">
+    <table class="table table-striped">
       <thead>
       <tr>
         <th>Nombre</th>
@@ -84,7 +84,7 @@
       </thead>
       <tbody>
       <tr ng-repeat="worker in workers">
-        <td style="word-wrap:break-word;">{{worker.fullName}}</td>
+        <td>{{worker.fullName}}</td>
         <td>{{worker.eMail}}</td>
         <td>{{worker.dateOfBirth | date}}</td>
         <td>

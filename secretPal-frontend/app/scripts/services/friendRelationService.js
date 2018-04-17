@@ -13,8 +13,7 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
       text: msg,
       type:"success",
       timer: 1000,
-      confirmButtonColor: "#0099d4",
-
+      confirmButtonColor: "#0099d4"
     });
   }
 

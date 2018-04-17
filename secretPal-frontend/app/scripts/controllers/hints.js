@@ -21,7 +21,6 @@ angular.module('secretPalApp')
       });
 
       $scope.hasFriend = function () {
-        console.log($scope.friend);
         return $scope.friend != null;
       };
 

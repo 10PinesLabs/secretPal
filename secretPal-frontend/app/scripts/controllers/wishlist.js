@@ -112,7 +112,7 @@ angular.module('secretPalApp')
         errorMsg("No se pudo crear un regalo, por favor inténtelo de nuevo.");
       });
     };
-x
+
     this.delete = function (wish, successFunction) {
       $http.delete(buildRoute('/' + wish.id)).success(function () {
         successFunction();
