@@ -57,7 +57,7 @@ public class FriendRelationController {
     @RequestMapping(value = "/{from}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public void deleteRelation(@PathVariable Long from) {
-        Worker giver = workerService.retriveWorker(from);
+        Worker giver = workerService.retrieveWorker(from);
         systemFacade.deleteRelation(giver);
     }
 
@@ -88,8 +88,8 @@ public class FriendRelationController {
     @RequestMapping(value = "/update/{giverId}/{newReceiverId}", method = RequestMethod.PUT)
     @ResponseBody
     public void updateRelation(@PathVariable Long giverId, @PathVariable Long newReceiverId) throws IOException, MessagingException {
-        Worker giver = workerService.retriveWorker(giverId);
-        Worker newReceiver = workerService.retriveWorker(newReceiverId);
+        Worker giver = workerService.retrieveWorker(giverId);
+        Worker newReceiver = workerService.retrieveWorker(newReceiverId);
         systemFacade.updateRelation(giver, newReceiver);
     }
 
@@ -163,35 +163,6 @@ public class FriendRelationController {
         Worker worker = systemFacade.retrieveAWorker(workerID);
         FriendRelation relation = friendRelationService.guessStatusFor(worker);
         return new GuessResponse(relation.isGuessed(), relation.getGuessAttempts());
-    }
-
-    @RequestMapping(value = "/guessLimit", method = RequestMethod.GET)
-    @ResponseBody
-    public Integer getGuessLimit() {
-        return systemFacade.guessesLimit();
-    }
-
-    @RequestMapping(value = "/giftGiverFor/{workerID}", method = RequestMethod.GET)
-    @ResponseBody
-    public Worker getGiftSenderForWorker(@PathVariable Long workerID) {
-        Worker giftReceiver = systemFacade.retrieveAWorker(workerID);
-        Optional<Worker> giftSender = friendRelationService.getGiftSenderFor(giftReceiver);
-        return giftSender.orElseThrow(CannotGetGiftGiverException::new);
-    }
-
-    @ExceptionHandler(CannotGetGiftGiverException.class)
-    @ResponseBody
-    @ResponseStatus(value = HttpStatus.FORBIDDEN)
-    public CannotGetGiftGiverException handleException(CannotGetGiftGiverException e) {
-        return e;
-    }
-
-    @RequestMapping(value = "/guessFor/{workerID}", method = RequestMethod.GET)
-    @ResponseBody
-    public GuessResponse getStatusFor(@PathVariable Long workerID) {
-        Worker worker = systemFacade.retrieveAWorker(workerID);
-        FriendRelation relation = friendRelationService.guessStatusFor(worker);
-        return new GuessResponse(relation.isGuessed(), relation.getRemainingGuessAttempts());
     }
 
     @RequestMapping(value = "/guessLimit", method = RequestMethod.GET)
