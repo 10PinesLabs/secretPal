@@ -5,9 +5,9 @@
   </div>
 
 
-  <div class="panel panel-black">
+  <div class="panel panel-black" style="width: fit-content">
     <form class="navbar-form" name="form">
-      <table class="table table-striped center-vertical">
+      <table class="table table-striped center-vertical" style="table-layout: fixed">
         <thead>
         <tr>
           <th>Participante</th>
@@ -18,12 +18,12 @@
         </thead>
         <tbody>
         <tr ng-repeat="posibleRelation in posibleRelations">
-          <td>{{posibleRelation.giver.fullName}}</td>
+          <td style="word-wrap:break-word">{{posibleRelation.giver.fullName}}</td>
           <td>
             <small>le regala a</small>
           </td>
           <td>
-            <select
+            <select style="width: 150px"
               ng-model="posibleRelation.receiver"
               ng-change="removeAutoSelect(posibleRelation.giver)"
               ng-options="posibleReceiver as posibleReceiver.fullName for posibleReceiver in posibleRelation.posibleReceivers track by posibleReceiver.id">
@@ -41,7 +41,7 @@
                title="Actualizar">
               <span class="glyphicon glyphicon-ok"></span>
             </button>
-            <button class="btn btn-sm btn-danger pull-right"
+            <button class="btn btn-sm btn-danger"
                ng-click="delete(posibleRelation.giver)"
                title="Borrar">
                 <span class="glyphicon glyphicon-remove"></span>

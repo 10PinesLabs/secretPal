@@ -33,7 +33,7 @@
   <button class="btn btn-success pull-right" ng-click="assignation()">Asignar Amigos!</button>
   <h1>Lista de Pinos</h1>
   <div class="panel panel-black">
-    <table class="table table-striped">
+    <table class="table table-striped center-vertical" style="table-layout: auto">
       <thead>
       <tr>
         <th>Nombre</th>
@@ -46,7 +46,7 @@
       </thead>
       <tbody>
       <tr ng-repeat="worker in workers">
-        <td>{{worker.fullName}}</td>
+        <td style="word-wrap:break-word;">{{worker.fullName}}</td>
         <td>{{worker.eMail}}</td>
         <td>{{worker.dateOfBirth | date}}</td>
         <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
