@@ -1,28 +1,34 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .controller('HintsController', function ($scope, $http, user, HintsService, $modal, SweetAlert) {
+  .controller('HintsController', function ($scope, $http, user, HintsService, $modal, FriendRelationService) {
       $scope.hints = [];
       $scope.limit = 3;
 
-
-      HintsService.all(user, function (data) {
-        $scope.hints = data;
+      FriendRelationService.getFriend(user.worker, function (friend) {
+        $scope.friend = friend;
+        if (friend != null) {
+          HintsService.all(user, function (data) {
+            $scope.hints = data;
+          });
+        }
       });
 
       HintsService.hintsLimit(function (number) {
         $scope.limit = number;
       });
 
+      $scope.hasFriend = function () {
+        return $scope.friend != null;
+      };
+
       $scope.canBeAdded = function () {
         return $scope.hints.length < $scope.limit
       };
 
       $scope.add = function () {
-
         var newHint = {message: $scope.hintMessage};
         HintsService.new(user, newHint, function (hint) {
-
           $scope.hints.push(hint);
         });
       };
@@ -57,6 +63,7 @@ angular.module('secretPalApp')
 
     }
   )
+
   .controller('ModalInstanceCtrlEdit', function ($scope, $modalInstance, user, hint) {
     $scope.user = user;
     $scope.hintMessage = hint;
