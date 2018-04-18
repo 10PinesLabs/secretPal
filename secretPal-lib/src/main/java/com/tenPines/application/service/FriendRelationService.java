@@ -38,6 +38,10 @@ public class FriendRelationService {
         this.hintsRepository = hintsRepository;
     }
 
+    public FriendRelation retrieveRelation(Long relationId) {
+        return friendRelationRepository.getOne(relationId);
+    }
+
     public FriendRelation create(Worker friendWorker, Worker birthdayWorker) {
         return friendRelationRepository.save(new RelationEstablisher(friendWorker, birthdayWorker).createRelation());
     }
