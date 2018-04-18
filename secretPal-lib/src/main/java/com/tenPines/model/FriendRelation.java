@@ -27,7 +27,7 @@ public class FriendRelation {
 
     private boolean isGuessed = false;
 
-    private boolean isImmutable = false;
+    private Boolean isImmutable = false;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "guesses", joinColumns = @JoinColumn(name = "friend_relation_id"))
@@ -128,12 +128,12 @@ public class FriendRelation {
         }
     }
 
-    public boolean isImmutable() {
+    public Boolean isImmutable() {
         return isImmutable;
     }
 
     public void makeImmutable() {
-        this.isImmutable = true;
+        isImmutable = true;
     }
 
 }
