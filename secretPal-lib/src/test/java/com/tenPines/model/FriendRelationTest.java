@@ -105,7 +105,7 @@ public class FriendRelationTest {
         Hint tengo_un_cuchillo = new Hint("Tengo un cuchillo");
         relation.addHint(tengo_un_cuchillo);
 
-        assertThat(relation.hints(), hasItem(tengo_un_cuchillo));
+        assertThat(relation.getHints(), hasItem(tengo_un_cuchillo));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class FriendRelationTest {
 
         FriendRelation relation = relationEstablisher.createRelation();
 
-        assertTrue(relation.hints().isEmpty());
+        assertTrue(relation.getHints().isEmpty());
     }
 
     @Test
@@ -147,9 +147,9 @@ public class FriendRelationTest {
         relation.addHint(pista2);
         relation.removeHint(pista);
 
-        assertThat(relation.hints(), hasSize(1));
-        assertThat(relation.hints(), hasItem(pista2));
-        assertFalse(relation.hints().contains(pista));
+        assertThat(relation.getHints(), hasSize(1));
+        assertThat(relation.getHints(), hasItem(pista2));
+        assertFalse(relation.getHints().contains(pista));
     }
 
     @Test
@@ -162,9 +162,9 @@ public class FriendRelationTest {
         Hint pista_nueva = new Hint("pista nueva");
         relation.editHint(pista, pista_nueva);
 
-        assertThat(relation.hints(), hasSize(1));
-        assertThat(relation.hints(), hasItem(pista_nueva));
-        assertThat(relation.hints(), not(hasItem(pista)));
+        assertThat(relation.getHints(), hasSize(1));
+        assertThat(relation.getHints(), hasItem(pista_nueva));
+        assertThat(relation.getHints(), not(hasItem(pista)));
     }
 
     @Test
@@ -232,7 +232,6 @@ public class FriendRelationTest {
         }
     }
 
-
     @Test
     public void theGuessesAreRecorded(){
         RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
@@ -247,5 +246,22 @@ public class FriendRelationTest {
         assertThat(relation.getAmountOfGuessAttempts(), is(2));
     }
 
+    @Test
+    public void aNewRelationIsNotImmutableByDefault(){
+        RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
+        FriendRelation relation = relationEstablisher.createRelation();
+
+        assertThat(relation.isImmutable(), is(false));
+    }
+
+    @Test
+    public void aRelationCanBeMadeImmutable(){
+        RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
+        FriendRelation relation = relationEstablisher.createRelation();
+
+        relation.makeImmutable();
+
+        assertThat(relation.isImmutable(), is(true));
+    }
 
 }
