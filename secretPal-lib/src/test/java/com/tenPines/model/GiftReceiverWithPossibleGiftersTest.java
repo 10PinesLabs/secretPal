@@ -106,4 +106,19 @@ public class GiftReceiverWithPossibleGiftersTest extends SpringBaseTest{
 
     }
 
+    @Test
+    public void aParticipantThatAlreadyIsInAnImmutableRelationHasNoPossibilities() {
+        clock.setTime(LocalDate.of(2017, Month.DECEMBER, 1));
+        workerService.save(worker);
+        workerService.save(anotherWorker);
+
+        GiftReceiverWithPossibleGifters posibilities =
+                new GiftReceiverWithPossibleGifters(worker, friendRelationService);
+
+        assertThat(posibilities.getReceiver(), is(worker));
+        assertThat(posibilities.getPossibleGivers(), hasSize(0));
+
+
+    }
+
 }

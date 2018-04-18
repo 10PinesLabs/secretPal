@@ -11,6 +11,7 @@ public class GiftReceiverWithPossibleGifters implements Comparable<GiftReceiverW
 
     private Optional<Worker> giver;
     private List<Worker> posibleGivers;
+
     public GiftReceiverWithPossibleGifters(Worker participant, FriendRelationService friendRelationService) {
         this.receiver = participant;
         this.giver = friendRelationService.retrieveGiftGiverFor(participant);

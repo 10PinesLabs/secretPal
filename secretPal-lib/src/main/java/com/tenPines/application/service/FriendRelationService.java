@@ -263,6 +263,7 @@ public class FriendRelationService {
     }
 
     public List<Worker> possibleGiftersFor(Worker receiver) {
+
         FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
         return workerService.getAllParticipants().stream().filter(participant ->
                 validator.validatePossible(participant, receiver)
@@ -270,9 +271,16 @@ public class FriendRelationService {
     }
 
     public List<GiftReceiverWithPossibleGifters> allReceiversWithPosibilities() {
-        List<GiftReceiverWithPossibleGifters> gifters = workerService.getAllParticipants().stream().map(participant ->
+        return workerService.getAllParticipants().stream()
+                .filter(this::notInImmutableRelation)
+                .map(participant ->
                 new GiftReceiverWithPossibleGifters(participant, this)
         ).collect(Collectors.toList());
-        return gifters;
+    }
+
+    private boolean notInImmutableRelation(Worker worker) {
+        return friendRelationRepository.findByGiftReceiver(worker)
+                .map(relation -> !inmutableRelation(relation))
+                .orElse(true);
     }
 }
