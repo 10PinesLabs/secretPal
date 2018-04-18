@@ -72,12 +72,12 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     $scope.friendRelations = data;
     $scope.posibilities = $scope.friendRelations.map(function (relation) {
 
-      $scope.alreadySelected[relation.giftGiver.fullName] = $scope.notNull(relation);
+      $scope.alreadySelected[relation.giftReceiver.fullName] = $scope.notNull(relation);
 
       return relation.giftGiver;
     });
 
-    console.log($scope.posibilities);
+    // console.log($scope.posibilities);
 
     $scope.relations = $filter('filter')($scope.friendRelations, {giftReceiver: null});
   });
@@ -131,12 +131,12 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     $scope.alreadySelected[worker.fullName] = boolean;
   };
 
-  $scope.autoAssignPine = function (giver, possibleRecievers) {
-    $scope.update(giver, randomFrom(possibleRecievers));
+  $scope.autoAssignPine = function (receiver, possibleGivers) {
+    $scope.update(randomFrom(possibleGivers),receiver);
   };
 
   $scope.update = function (giver, receiver) {
-    $scope.toggleAlreadySelected(giver, true);
+    $scope.toggleAlreadySelected(receiver, true);
     FriendRelationService.update(giver, receiver, updatePosibilities);
   };
 

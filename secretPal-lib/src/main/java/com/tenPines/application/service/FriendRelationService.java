@@ -10,6 +10,7 @@ import com.tenPines.model.process.AutoAssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
 import com.tenPines.persistence.HintsRepository;
+import com.tenPines.restAPI.utils.GiftReceiverWithPossibleGifters;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -165,15 +166,16 @@ public class FriendRelationService {
         return birthday.equals(todayPlusTwoMonths) || birthday.isBefore(todayPlusTwoMonths);
     }
 
-    public void updateRelation(Worker giver, Worker newReceiver) {
-        Optional<FriendRelation> optionalRelation = friendRelationRepository.findByGiftGiver(giver);
-        optionalRelation.ifPresent(relation -> changeReceiver(relation, newReceiver));
-        optionalRelation.orElseGet(() -> create(giver, newReceiver));
+    public void updateRelation(Worker newGiver, Worker receiver) {
+        Optional<FriendRelation> optionalRelation = friendRelationRepository.findByGiftReceiver(receiver);
+        optionalRelation.ifPresent(relation -> changeGiver(relation, newGiver));
+        optionalRelation.orElseGet(() -> create(newGiver, receiver));
     }
 
-    private void changeReceiver(FriendRelation relation, Worker newReceiver) {
-        relation.setGiftReceiver(newReceiver);
+    private void changeGiver(FriendRelation relation, Worker newReceiver) {
+        relation.setGiftGiver(newReceiver);
         friendRelationRepository.save(relation);
+        return;
     }
 
     public void deleteAllRelations() {
@@ -265,5 +267,12 @@ public class FriendRelationService {
         return workerService.getAllParticipants().stream().filter(participant ->
                 validator.validatePossible(participant, receiver)
         ).collect(Collectors.toList());
+    }
+
+    public List<GiftReceiverWithPossibleGifters> allReceiversWithPosibilities() {
+        List<GiftReceiverWithPossibleGifters> gifters = workerService.getAllParticipants().stream().map(participant ->
+                new GiftReceiverWithPossibleGifters(participant, this)
+        ).collect(Collectors.toList());
+        return gifters;
     }
 }

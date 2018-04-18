@@ -7,6 +7,7 @@ import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.*;
+import com.tenPines.restAPI.utils.GiftReceiverWithPossibleGifters;
 import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
 import org.springframework.stereotype.Service;
 
@@ -187,12 +188,16 @@ public class SystemPalFacade {
         return friendRelationService.allPosibilities();
     }
 
+    public List<GiftReceiverWithPossibleGifters> allReceiversWithPosibilities() {
+        return friendRelationService.allReceiversWithPosibilities();
+    }
+
     public List<FriendRelation> allInmutableRelations() {
         return friendRelationService.allInmutableRelations();
     }
 
-    public void updateRelation(Worker giver, Worker newReceiver) {
-        friendRelationService.updateRelation(giver, newReceiver);
+    public void updateRelation(Worker newGiver, Worker receiver) {
+        friendRelationService.updateRelation(newGiver, receiver);
     }
 
     public void sendAllTodayReminders() {

@@ -11,33 +11,30 @@
         <thead>
         <tr>
           <th>Participante</th>
-          <th></th>
-          <th>Agasajado</th>
+          <th>Pino que le regala</th>
           <th>Opciones</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="posibleRelation in posibleRelations">
-          <td>{{posibleRelation.giver.fullName}}</td>
-          <td>
-            <small>le regala a</small>
-          </td>
+          <td>{{posibleRelation.receiver.fullName}}</td>
+
           <td>
             <select
-              ng-model="posibleRelation.receiver"
-              ng-change="removeAutoSelect(posibleRelation.giver)"
-              ng-options="posibleReceiver as posibleReceiver.fullName for posibleReceiver in posibleRelation.posibleReceivers track by posibleReceiver.id">
+              ng-model="posibleRelation.giver"
+              ng-change="removeAutoSelect(posibleRelation.receiver)"
+              ng-options="posibleGiver as posibleGiver.fullName for posibleGiver in posibleRelation.possibleGivers track by posibleGiver.id">
             </select>
           </td>
           <td>
             <button class="btn btn-sm btn-warning"
-                    ng-click="autoAssignPine(posibleRelation.giver, posibleRelation.posibleReceivers)"
+                    ng-click="autoAssignPine(posibleRelation.receiver, posibleRelation.possibleGivers)"
                     title="Autoasignar">
               <span class="glyphicon glyphicon-random"></span>
             </button>
             <button class="btn btn-sm btn-success"
                ng-click="update(posibleRelation.giver, posibleRelation.receiver)"
-               ng-disabled="!posibleRelation.receiver ||  autoSelected(posibleRelation.giver)"
+               ng-disabled="!posibleRelation.giver ||  autoSelected(posibleRelation.receiver)"
                title="Actualizar">
               <span class="glyphicon glyphicon-ok"></span>
             </button>
