@@ -16,7 +16,7 @@ public class HappyBithdayMessageBuilder {
     }
 
     private String assignationSubject(Worker birthdayWorker) {
-        return "Feliz cumpleaños " + birthdayWorker.getFullName();
+        return "Feliz cumpleaños " + birthdayWorker.getNickname();
     }
 
     private String plainAssignationBodyText() {

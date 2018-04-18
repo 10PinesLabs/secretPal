@@ -141,11 +141,6 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     });
   };
 
-  $scope.assignation = function () {
-    $location.path('/friendRelations');
-  };
-
-
   /*DATEPICKER FUNCTIONS*/
   $scope.open = function ($event) {
     $event.preventDefault();
