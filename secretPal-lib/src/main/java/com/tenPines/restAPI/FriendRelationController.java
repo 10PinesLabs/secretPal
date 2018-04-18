@@ -77,6 +77,7 @@ public class FriendRelationController {
     @ResponseBody
     public List<GiftReceiverWithPossibleGifters> allPosibilities() {
         List<GiftReceiverWithPossibleGifters> giftReceiverWithPossibleGifters = systemFacade.allReceiversWithPosibilities();
+        giftReceiverWithPossibleGifters.sort(GiftReceiverWithPossibleGifters::compareTo);
         return giftReceiverWithPossibleGifters;
     }
 

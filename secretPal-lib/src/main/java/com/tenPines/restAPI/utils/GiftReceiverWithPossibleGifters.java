@@ -6,7 +6,7 @@ import com.tenPines.model.Worker;
 import java.util.List;
 import java.util.Optional;
 
-public class GiftReceiverWithPossibleGifters {
+public class GiftReceiverWithPossibleGifters implements Comparable<GiftReceiverWithPossibleGifters>{
     private Worker receiver;
 
     private Optional<Worker> giver;
@@ -31,5 +31,19 @@ public class GiftReceiverWithPossibleGifters {
 
     public Worker getReceiver() {
         return receiver;
+    }
+
+    @Override
+    public int compareTo(GiftReceiverWithPossibleGifters o) {
+        boolean before = this.receiver.getBirthday().isBefore(o.getReceiver().getBirthday());
+        int leq = 0;
+        if(before){
+            leq = -1;
+        }
+        return leq;
+    }
+
+    public Object receiverBirthday() {
+        return receiver.getBirthday();
     }
 }

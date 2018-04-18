@@ -11,6 +11,7 @@
         <thead>
         <tr>
           <th>Participante</th>
+          <th>Cumpleaños</th>
           <th>Pino que le regala</th>
           <th>Opciones</th>
         </tr>
@@ -18,6 +19,7 @@
         <tbody>
         <tr ng-repeat="posibleRelation in posibleRelations">
           <td>{{posibleRelation.receiver.fullName}}</td>
+          <td>{{posibleRelation.receiver.dateOfBirth | date: 'dd/MM'}}</td>
 
           <td>
             <select
