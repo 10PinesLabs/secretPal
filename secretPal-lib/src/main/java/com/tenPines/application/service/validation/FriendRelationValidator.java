@@ -27,6 +27,16 @@ public class FriendRelationValidator {
         return validateRules(giver, receiver) && !hasOtherSecretPal(giver, receiver);
     }
 
+    public Boolean validatePossible(Worker giver, Worker receiver) {
+        return validateRules(giver, receiver) && !hasAssignedPal(giver, receiver);
+    }
+
+    private boolean hasAssignedPal(Worker giver, Worker receiver) {
+        return friendRelationService.getByWorkerGiver(giver)
+                .map(relation -> !relation.getGiftReceiver().equals(receiver))
+                .orElse(false);
+    }
+
 
     private Boolean validateRules(Worker giver, Worker receiver) {
         return customParticipantRuleService.getRules().stream().allMatch(rule -> rule.validate(giver, receiver));

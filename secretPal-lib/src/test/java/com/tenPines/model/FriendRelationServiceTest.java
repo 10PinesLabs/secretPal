@@ -177,7 +177,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     public void canFindTheGifterForAWorker(){
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
-        assertThat(friendRelationService.retrieveGiftGiverFor(aWorkerReceiver), is(aWorkerGiver));
+        assertThat(friendRelationService.retrieveGiftGiverFor(aWorkerReceiver).get(), is(aWorkerGiver));
     }
 
     @Test

@@ -113,10 +113,9 @@ public class FriendRelationService {
                 .map(FriendRelation::getGiftReceiver);
     }
 
-    public Worker retrieveGiftGiverFor(Worker worker) {
+    public Optional<Worker> retrieveGiftGiverFor(Worker worker) {
         return friendRelationRepository.findByGiftReceiver(worker)
-                .orElseThrow(noHayAmigoAsignadoException())
-                .getGiftGiver();
+                .map(FriendRelation::getGiftGiver);
     }
 
 
@@ -261,4 +260,10 @@ public class FriendRelationService {
         return () -> new RuntimeException("No hay pistas!");
     }
 
+    public List<Worker> possibleGiftersFor(Worker receiver) {
+        FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
+        return workerService.getAllParticipants().stream().filter(participant ->
+                validator.validatePossible(participant, receiver)
+        ).collect(Collectors.toList());
+    }
 }
