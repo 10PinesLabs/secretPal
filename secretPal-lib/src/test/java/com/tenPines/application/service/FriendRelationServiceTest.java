@@ -1,10 +1,11 @@
-package com.tenPines.model;
+package com.tenPines.application.service;
 
 import com.tenPines.application.clock.FakeClock;
-import com.tenPines.application.service.FriendRelationService;
-import com.tenPines.application.service.WorkerService;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
+import com.tenPines.model.FriendRelation;
+import com.tenPines.model.Hint;
+import com.tenPines.model.Worker;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +16,8 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 public class FriendRelationServiceTest extends SpringBaseTest {
@@ -79,68 +81,6 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     }
 
     @Test
-    public void whenAWorkerCannotChangeTheirRelationReceiver() {
-        clock.setTime(LocalDate.of(2017, Month.JUNE, 10)); //Set today
-
-        Worker aWorker = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
-        Worker workerWhoHasBirthday = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
-        workerService.save(aWorker);
-        workerService.save(workerWhoHasBirthday);
-
-        friendRelationService.create(aWorker, workerWhoHasBirthday);
-        clock.setTime(clock.now().plusMonths(3)); //advance time
-
-        List<Worker> assignableWorkers = friendRelationService.workersWhoCanGive();
-
-        assertThat(assignableWorkers, hasSize(1));
-        assertThat(assignableWorkers, hasItem(workerWhoHasBirthday));
-    }
-
-    @Test
-    public void whenItIsMoreThanTwoMonthsBeforeRelationBirthday() {
-        clock.setTime(LocalDate.of(2017, Month.MAY, 10)); //Set today
-
-        Worker aWorker = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
-        Worker anotherWorker = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
-        workerService.save(aWorker);
-        workerService.save(anotherWorker);
-
-        FriendRelation relation = friendRelationService.create(aWorker, anotherWorker);
-
-        assertFalse(friendRelationService.inmutableRelation(relation));
-    }
-
-    @Test
-    public void whenARelationBirthdayIsOver() {
-        clock.setTime(LocalDate.of(2017, Month.JUNE, 10)); //Set today
-
-        Worker aWorker = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
-        Worker anotherWorker = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
-        workerService.save(aWorker);
-        workerService.save(anotherWorker);
-
-        FriendRelation relation = friendRelationService.create(aWorker, anotherWorker);
-        clock.setTime(LocalDate.of(2017, Month.AUGUST, 5)); //advance time
-
-        assertTrue(friendRelationService.inmutableRelation(relation));
-    }
-
-    @Test
-    public void whenARelationBirthdayWillPassInLessThanOneMonth() {
-        clock.setTime(LocalDate.of(2017, Month.JUNE, 10)); //Set today
-
-        Worker aWorker = new WorkerBuilder().buildFromDate(20, Month.NOVEMBER);
-        Worker anotherWorker = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
-        workerService.save(aWorker);
-        workerService.save(anotherWorker);
-
-        FriendRelation relation = friendRelationService.create(aWorker, anotherWorker);
-        clock.setTime(LocalDate.of(2017, Month.JULY, 25)); //advance time
-
-        assertTrue(friendRelationService.inmutableRelation(relation));
-    }
-
-    @Test
     public void whenAllWorkersCanBeReceivers() {
         clock.setTime(LocalDate.of(2017, Month.FEBRUARY, 10)); //Set today
         Worker aWorker = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
@@ -156,21 +96,34 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     }
 
     @Test
-    public void whenAWorkerCannotBeReceiver() {
-        clock.setTime(LocalDate.of(2017, Month.JUNE, 10)); //Set today
-
+    public void aWorkerCannotBeGiverIfItIsAlreadyAGiverInAnImmutableRelation() {
         Worker aWorker = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
         Worker workerWhoHasBirthday = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
         workerService.save(aWorker);
         workerService.save(workerWhoHasBirthday);
+        FriendRelation relation = friendRelationService.create(aWorker, workerWhoHasBirthday);
 
-        friendRelationService.create(aWorker, workerWhoHasBirthday);
-        clock.setTime(clock.now().plusMonths(2)); //advance time
+        friendRelationService.makeImmutable(relation);
 
-        List<Worker> assignableWorkers = friendRelationService.workersWhoCanReceive();
+        List<Worker> assignableWorkers = friendRelationService.workersWhoCanGive();
 
         assertThat(assignableWorkers, hasSize(1));
-        assertThat(assignableWorkers, hasItem(aWorker));
+        assertThat(assignableWorkers, hasItem(workerWhoHasBirthday));
+    }
+
+    @Test
+    public void aWorkerCannotBeReceiverIfItIsAlreadyAReceiverInAnImmutableRelation() {
+        Worker giver = new WorkerBuilder().buildFromDate(10, Month.NOVEMBER);
+        Worker receiver = new WorkerBuilder().buildFromDate(1, Month.AUGUST);
+        workerService.save(giver);
+        workerService.save(receiver);
+        FriendRelation relation = friendRelationService.create(giver, receiver);
+
+        friendRelationService.makeImmutable(relation);
+
+        List<Worker> assignableWorkers = friendRelationService.workersWhoCanReceive();
+        assertThat(assignableWorkers, hasSize(1));
+        assertThat(assignableWorkers, hasItem(giver));
     }
 
     @Test

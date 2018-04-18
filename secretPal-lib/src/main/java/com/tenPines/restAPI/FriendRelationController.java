@@ -67,12 +67,6 @@ public class FriendRelationController {
         return systemFacade.retrieveAssignedFriendFor(id);
     }
 
-    @RequestMapping(value = "/autoAssign", method = RequestMethod.POST)
-    @ResponseBody
-    public void autoAssignRelations() throws IOException {
-        systemFacade.autoAssignRelations();
-    }
-
     @RequestMapping(value = "/posibilities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<PossibleRelationForFrontEnd> allPosibilities() {
@@ -83,8 +77,8 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/inmutables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<FriendRelation> allInmutableRelations() {
-        return systemFacade.allInmutableRelations();
+    public List<FriendRelation> allImmutableRelations() {
+        return systemFacade.allImmutableRelations();
     }
 
     @RequestMapping(value = "/update/{giverId}/{newReceiverId}", method = RequestMethod.PUT)

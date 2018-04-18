@@ -152,10 +152,6 @@ public class SystemPalFacade {
         customParticipantRuleService.create(workerFrom, workerTo, isActive);
     }
 
-    public void autoAssignRelations() {
-        friendRelationService.autoAssignRelations();
-    }
-
     public void deleteRule(Long id) {
         customParticipantRuleService.delete(id);
     }
@@ -188,8 +184,8 @@ public class SystemPalFacade {
         return friendRelationService.allReceiversWithPosibilities();
     }
 
-    public List<FriendRelation> allInmutableRelations() {
-        return friendRelationService.allInmutableRelations();
+    public List<FriendRelation> allImmutableRelations() {
+        return friendRelationService.allImmutableRelations();
     }
 
     public void updateRelation(Worker newGiver, Worker receiver) {
