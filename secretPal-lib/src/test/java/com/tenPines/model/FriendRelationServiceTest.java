@@ -287,7 +287,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
 
         String anotherWorker = new WorkerBuilder().build().getFullName();
         FriendRelation friendRelationAfterGuess = friendRelationService.guessGiftGiverFor(aWorkerReceiver, anotherWorker);
-        assertThat(friendRelationAfterGuess.guesses(), hasItem(anotherWorker));
+        assertThat(friendRelationAfterGuess.getGuessAttempts(), hasItem(anotherWorker));
     }
 
 }

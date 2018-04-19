@@ -1,10 +1,12 @@
 package com.tenPines.restAPI.utils;
 
+import java.util.List;
+
 public class GuessResponse {
     public boolean wasGuessed;
-    public int guessAttempts;
+    public List<String> guessAttempts;
 
-    public GuessResponse(boolean wasGuessed, int guessAttempts) {
+    public GuessResponse(boolean wasGuessed, List<String> guessAttempts) {
         this.wasGuessed = wasGuessed;
         this.guessAttempts = guessAttempts;
     }

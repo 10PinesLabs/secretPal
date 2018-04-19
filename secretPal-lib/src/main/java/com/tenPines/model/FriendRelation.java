@@ -65,7 +65,11 @@ public class FriendRelation {
         this.giftReceiver = giftReceiver;
     }
 
-    public int getGuessAttempts() {
+    public List<String> getGuessAttempts() {
+        return guesses;
+    }
+
+    public int getAmountOfGuessAttempts() {
         return guesses.size();
     }
 
@@ -126,7 +130,4 @@ public class FriendRelation {
         }
     }
 
-    public List<String> guesses() {
-        return guesses;
-    }
 }
