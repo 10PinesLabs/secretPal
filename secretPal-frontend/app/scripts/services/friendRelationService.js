@@ -8,11 +8,21 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
   }
 
   function successMsg(title, msg) {
-    SweetAlert.swal(title, msg, "success");
+    SweetAlert.swal({
+      title: title,
+      text: msg,
+      type:"success",
+      timer: 1000,
+      confirmButtonColor: "#0099d4"
+    });
   }
 
   function errorMsg(msg) {
-    SweetAlert.swal("Algo salio mal", msg, "error");
+    SweetAlert.swal({
+      title: "Algo salio mal",
+      text: msg,
+      type:"error"
+    });
   }
 
   this.all = function (callback) {
