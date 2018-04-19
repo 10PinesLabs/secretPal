@@ -5,13 +5,13 @@
   </div>
 
 
-  <div class="panel panel-black">
+  <div class="panel panel-black" style="width: fit-content; width: -moz-fit-content">
     <form class="navbar-form" name="form">
       <table class="table table-striped center-vertical">
         <thead>
         <tr>
           <th>Participante</th>
-          <th>Cumpleaños</th>
+          <th>Cumple</th>
           <th>Pino que le regala</th>
           <th>Opciones</th>
         </tr>
@@ -23,6 +23,7 @@
 
           <td>
             <select
+              style="width: 12vw"
               ng-model="posibleRelation.giver"
               ng-change="removeAutoSelect(posibleRelation.receiver)"
               ng-options="posibleGiver as posibleGiver.fullName for posibleGiver in posibleRelation.possibleGivers track by posibleGiver.id">
@@ -40,7 +41,7 @@
                title="Actualizar">
               <span class="glyphicon glyphicon-ok"></span>
             </button>
-            <button class="btn btn-sm btn-danger pull-right"
+            <button class="btn btn-sm btn-danger"
                ng-click="delete(posibleRelation.giver)"
                title="Borrar">
                 <span class="glyphicon glyphicon-remove"></span>
