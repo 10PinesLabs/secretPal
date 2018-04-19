@@ -82,7 +82,7 @@ public class FriendRelationService {
     }
 
     public List<FriendRelation> allImmutableRelations() {
-        return getAllRelations().stream().filter(this::immutableRelation).collect(Collectors.toList());
+        return getAllRelations().stream().filter(this::isImmutable).collect(Collectors.toList());
     }
 
     public List<Worker> workersWhoCanGive() {
@@ -91,7 +91,7 @@ public class FriendRelationService {
 
     private Boolean canGive(Worker worker) {
         return friendRelationRepository.findByGiftGiver(worker)
-                .map(relation -> !immutableRelation(relation))
+                .map(relation -> !isImmutable(relation))
                 .orElse(true);
     }
 
@@ -101,11 +101,11 @@ public class FriendRelationService {
 
     private boolean canReceive(Worker worker) {
         return friendRelationRepository.findByGiftReceiver(worker)
-                .map(relation -> !immutableRelation(relation))
+                .map(relation -> !isImmutable(relation))
                 .orElse(true);
     }
 
-    public Boolean immutableRelation(FriendRelation relation) {
+    public Boolean isImmutable(FriendRelation relation) {
         return relation.isImmutable();
     }
 
