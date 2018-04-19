@@ -24,9 +24,12 @@ public class FriendRelation {
     @JoinColumn(name="friend_relation_id")
     private List<Hint> hints;
 
-    private int guessAttempts = 0;
-
     private boolean isGuessed = false;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "guesses", joinColumns = @JoinColumn(name = "friend_relation_id"))
+    @Column(name = "guess")
+    private List<String> guesses;
 
     public FriendRelation() {
     }
@@ -35,6 +38,7 @@ public class FriendRelation {
         this.giftGiver = participant;
         this.giftReceiver = giftReceiver;
         this.hints = new ArrayList<>();
+        this.guesses = new ArrayList<>();
     }
 
     public Long getId() {
@@ -62,7 +66,7 @@ public class FriendRelation {
     }
 
     public int getGuessAttempts() {
-        return guessAttempts;
+        return guesses.size();
     }
 
     public boolean isGuessed() {
@@ -106,7 +110,7 @@ public class FriendRelation {
         if(giftGiver.getFullName().equals(guessedGiftGiverFullName)){
             isGuessed = true;
         } else {
-            guessAttempts++;
+            guesses.add(guessedGiftGiverFullName);
         }
     }
 
@@ -117,8 +121,12 @@ public class FriendRelation {
     }
 
     private void assertThereAreRemainingGuessAttempts() {
-        if (this.guessAttempts >= GUESS_ATTEMPTS_LIMIT) {
+        if (this.guesses.size()  >= GUESS_ATTEMPTS_LIMIT) {
             throw new RuntimeException("Can not have more than "+ GUESS_ATTEMPTS_LIMIT +" failed guess attempts");
         }
+    }
+
+    public List<String> guesses() {
+        return guesses;
     }
 }
