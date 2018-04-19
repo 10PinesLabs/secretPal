@@ -157,5 +157,4 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
       SweetAlert.swal("Algo salió mal", "No se pudo encontrar una relación entre esos pinos", "error");
     }
   }
-
 });
