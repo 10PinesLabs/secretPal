@@ -44,4 +44,12 @@ angular.module('secretPalApp').service('GuessesService', function ($http, SweetA
     });
   };
 
+  this.getSecretPine = function(user, callback){
+    $http.get(buildRoute('/giftGiverFor/'+user.worker.id)).success(function (data) {
+      callback(data);
+    }).error(function () {
+      errorMsg("No pine found");
+    });
+  };
+
 });
