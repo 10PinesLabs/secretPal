@@ -91,4 +91,13 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
     });
   };
 
+  this.lock = function(relation, callback) {
+    $http.put(buildRoute('/' + relation.id + '/makeImmutable'), null).success(function () {
+      successMsg("La relación fue fijada exitosamente!");
+      callback();
+    }).error(function () {
+      errorMsg("No se pudo procesar el pedido");
+    });
+  }
+
 });
