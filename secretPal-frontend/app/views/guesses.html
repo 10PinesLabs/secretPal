@@ -5,11 +5,11 @@
   </div>
 </div>
 
-<div ng-show="!hasGuessedCorrectly">
+<div ng-hide="hasGuessedCorrectly">
 
   <div class="jumbotron" ng-show="!afterBirthday()">
     <div class="container">
-      <h2>No podes ver las pistas hasta despues de tu cumpleaños </h2>
+      <h2>No podés ver las pistas antes de tu cumpleaños</h2>
       <img src="images/facturas.jpg">
     </div>
   </div>
@@ -21,8 +21,6 @@
            ng-repeat="i in attempts(maxGuesses-attemptsDone)"/>
       <img style="float: right" src="images/empty_heart.png" width="40" height="40"
            ng-repeat="i in attempts(attemptsDone)"/>
-
-
     </h1>
 
     <div class="panel panel-black">
@@ -54,4 +52,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

@@ -57,7 +57,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
         String expectedBody = reminderMonthsBuilder.defaultBody(friendRelation.getGiftReceiver());
 
-        assertThat(message.getBody(), is(expectedBody));
+        assertThat(message.getPlainTextBody(), is(expectedBody));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
         Message message = reminderWeeksBuilder.buildMessage(friendRelation);
         String expectedBody = reminderWeeksBuilder.defaultBody(friendRelation.getGiftReceiver());
 
-        assertThat(message.getBody(), is(expectedBody));
+        assertThat(message.getPlainTextBody(), is(expectedBody));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
         String expectedBody = "Body template!";
 
-        assertThat(message.getBody(), is(expectedBody));
+        assertThat(message.getPlainTextBody(), is(expectedBody));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
         String expectedBody = "Tu pino asignado es Cacho Castania!";
 
-        assertThat(message.getBody(), is(expectedBody));
+        assertThat(message.getPlainTextBody(), is(expectedBody));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
         String expectedBody = "Tu pino asignado cumple el 10 de diciembre!";
 
-        assertThat(message.getBody(), is(expectedBody));
+        assertThat(message.getPlainTextBody(), is(expectedBody));
     }
 
 }

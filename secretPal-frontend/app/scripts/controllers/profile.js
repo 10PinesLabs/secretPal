@@ -5,7 +5,6 @@ angular.module('secretPalApp')
     $scope.wishlist = [];
     $scope.giftDefault;
 
-
     $scope.haveFriend = function() {
       return $scope.friend !== undefined;
     };

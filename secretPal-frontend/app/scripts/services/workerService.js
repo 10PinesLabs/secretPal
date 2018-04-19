@@ -56,4 +56,8 @@ angular.module('secretPalApp').service('WorkerService', function($http, SweetAle
   this.update = function (worker) {
     $http.post(buildRoute('/edit'), worker);
   };
+
+  this.updateGifUrlFor = function (worker) {
+    $http.put(buildRoute('/' + worker.id + '/gif'), worker.gifUrl);
+  };
 });

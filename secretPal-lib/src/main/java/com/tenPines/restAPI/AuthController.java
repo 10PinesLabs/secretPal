@@ -2,13 +2,11 @@ package com.tenPines.restAPI;
 
 import com.tenPines.application.SystemPalFacade;
 import com.tenPines.application.service.AdminService;
+import com.tenPines.application.service.DefaultGifService;
 import com.tenPines.application.service.UserService;
 import com.tenPines.application.service.WorkerService;
 import com.tenPines.auth.BackofficeValidator;
-import com.tenPines.model.DefaultGift;
-import com.tenPines.model.User;
-import com.tenPines.model.UserForFrontend;
-import com.tenPines.model.Worker;
+import com.tenPines.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -38,6 +36,9 @@ public class AuthController {
 
     @Autowired
     private BackofficeValidator backofficeValidator;
+
+    @Autowired
+    private DefaultGifService defaultGifService;
 
     @Value("${backoffice.should.validate}")
     private boolean shouldValidate;
@@ -124,10 +125,22 @@ public class AuthController {
         systemFacade.addGiftDefaults(defaultGift);
     }
 
+    @RequestMapping(value = "/defaultGif", method = RequestMethod.GET)
+    @ResponseBody
+    public DefaultGif getDefaultGif() {//TODO
+        return defaultGifService.get();
+    }
+
+    @RequestMapping(value = "/defaultGif", method = RequestMethod.POST)
+    @ResponseBody
+    public void setDefaultGif(@RequestBody String newDefaultGif) {//TODO
+        defaultGifService.set(newDefaultGif);
+    }
+
     @RequestMapping(value = "/confirmationGift/{id}", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.OK)
     public void updateGiftReceivedDate(@PathVariable(value = "id") Long id) {
-        Worker workerToUpdate = workerService.retriveWorker(id);
+        Worker workerToUpdate = workerService.retrieveWorker(id);
         workerToUpdate.markGiftAsReceived();
         workerService.save(workerToUpdate);
     }

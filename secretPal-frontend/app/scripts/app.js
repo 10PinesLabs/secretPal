@@ -122,6 +122,11 @@ angular
           pageTitle: 'Regalo default'
         }
       })
+      .when('/gifDefault', {
+        templateUrl: '../views/gifDefault.html',
+        controller: 'GifDefaultController',
+        resolve: { user : authenticatedAndAdmin }
+      })
       .when('/ruleConfiguration', {
         templateUrl: '../views/ruleConfiguration.html',
         controller: 'CustomParticipantRuleController',
