@@ -27,7 +27,6 @@ public class Worker {
     private Long id;
     @NotEmpty
     private String fullName;
-    @NotEmpty
     private String nickname;
     @NotEmpty
     @Email
@@ -71,6 +70,10 @@ public class Worker {
         this.id = id;
     }
 
+    public String getName() {
+        return getNickname().orElse(getFullName());
+    }
+
     public String getFullName() {
         return fullName;
     }
@@ -79,8 +82,8 @@ public class Worker {
         this.fullName = fullName;
     }
 
-    public String getNickname() {
-        return nickname;
+    public Optional<String> getNickname() {
+        return Optional.ofNullable(nickname);
     }
 
     public void setNickname(String nickname) {
