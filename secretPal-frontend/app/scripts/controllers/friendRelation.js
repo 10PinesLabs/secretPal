@@ -158,4 +158,15 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     }
   }
 
+  $scope.lock = function (giver, receiver) {
+    var relationToLock = $scope.friendRelations.find(function (relation) {
+      return relation.giftGiver.id === giver.id && relation.giftReceiver.id === receiver.id;
+    });
+    if (typeof relationToLock !== "undefined") {
+      FriendRelationService.lock(relationToLock, updateAllRelations);
+    } else {
+      SweetAlert.swal("Algo salió mal", "No se pudo encontrar una relación entre esos pinos", "error");
+    }
+  }
+
 });
