@@ -1,3 +1,3 @@
 ALTER TABLE worker
-ADD COLUMN nickname character varying(255)
+ADD COLUMN nickname text
 ;
