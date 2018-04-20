@@ -36,7 +36,7 @@ angular.module('secretPalApp').service('GuessesService', function ($http, SweetA
     });
   };
 
-  this.maxGuesses = function (callback) {
+  this.getMaxGuesses = function (callback) {
     $http.get(buildRoute('/guessLimit')).success(function (data) {
       callback(data);
     }).error(function () {

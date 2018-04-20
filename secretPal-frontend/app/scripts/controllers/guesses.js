@@ -44,7 +44,10 @@ angular.module('secretPalApp')
           $scope.hasGuessedCorrectly = response.wasGuessed;
         });
       }
-      if($scope.maxGuesses-$scope.attemptsDone == 1) {
+
+      var lastChance = $scope.maxGuesses - $scope.attemptsDone === 1;
+
+      if (lastChance) {
         SweetAlert.swal({
             title: "¿Estás seguro?",
             text: "Si te equivocas, perdes.",
@@ -82,7 +85,7 @@ angular.module('secretPalApp')
       };
 
       function loadMaxGuesses() {
-        GuessesService.maxGuesses(function (data) {
+        GuessesService.getMaxGuesses(function (data) {
           $scope.maxGuesses = data;
         });
       }
@@ -109,11 +112,15 @@ angular.module('secretPalApp')
       });
     }
 
-      function loadPossibleSecretPines() {
+    function loadPossibleSecretPines() {
         WorkerService.all(function (data) {
           function isSelectable(pine) {
-            return !($scope.attemptsDone.includes(pine.fullName) || pine.fullName === user.worker.fullName);
+            var wasNotAFailedGuess = !$scope.attemptsDone.includes(pine.fullName);
+            var isNotMe = !pine.fullName === user.worker.fullName;
+
+            return wasNotAFailedGuess && isNotMe;
           }
+
           $scope.posibleSecretPines = data.filter(isSelectable);
         });
       }

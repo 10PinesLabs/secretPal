@@ -21,7 +21,7 @@ public class FriendRelation {
     private Worker giftReceiver;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="friend_relation_id")
+    @JoinColumn(name = "friend_relation_id")
     private List<Hint> hints;
 
     private boolean isGuessed = false;
@@ -87,8 +87,8 @@ public class FriendRelation {
     }
 
     private void assertHintAmountLessThanLimit() {
-        if (this.hints.size() >= HINTS_AMOUNT_LIMIT) {
-            throw new RuntimeException("Can not have more than "+ HINTS_AMOUNT_LIMIT+" hints");
+        if (getAmountOfGuessAttempts() >= HINTS_AMOUNT_LIMIT) {
+            throw new RuntimeException("Can not have more than " + HINTS_AMOUNT_LIMIT + " hints");
         }
     }
 
@@ -111,11 +111,8 @@ public class FriendRelation {
     public void guessGiftGiver(String guessedGiftGiverFullName) {
         assertIsNotGuessed();
         assertThereAreRemainingGuessAttempts();
-        if(giftGiver.getFullName().equals(guessedGiftGiverFullName)){
-            isGuessed = true;
-        } else {
-            guesses.add(guessedGiftGiverFullName);
-        }
+        isGuessed = giftGiver.getFullName().equals(guessedGiftGiverFullName);
+        guesses.add(guessedGiftGiverFullName);
     }
 
     private void assertIsNotGuessed() {
@@ -125,8 +122,8 @@ public class FriendRelation {
     }
 
     private void assertThereAreRemainingGuessAttempts() {
-        if (this.guesses.size()  >= GUESS_ATTEMPTS_LIMIT) {
-            throw new RuntimeException("Can not have more than "+ GUESS_ATTEMPTS_LIMIT +" failed guess attempts");
+        if (getAmountOfGuessAttempts() >= GUESS_ATTEMPTS_LIMIT) {
+            throw new RuntimeException("Can not have more than " + GUESS_ATTEMPTS_LIMIT + " failed guess attempts");
         }
     }
 
