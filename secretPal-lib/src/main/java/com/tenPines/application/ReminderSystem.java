@@ -14,7 +14,6 @@ import com.tenPines.model.FriendRelation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.MonthDay;
 import java.util.stream.Stream;
 
@@ -49,28 +48,27 @@ public class ReminderSystem {
                                         MonthDay.from(clock.now()))
                 )
                 .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder(mailProperties, defaultGifService).buildMessage(worker)));
-
     }
 
     public void sendTwoWeeksReminders() {
         relationsWithBirthdayTwoWeeksFromNow()
                 .forEach(friendRelation -> {
-                    tryToSendReminderMessage(friendRelation, new ReminderWeeksBirthdayAproachBuilder(mailerService));
+                    sendReminderMessage(friendRelation, new ReminderWeeksBirthdayAproachBuilder(mailerService));
                 });
     }
 
     public void sendTwoMonthsReminders() {
         relationsWithBirthdayTwoMonthsFromNow()
-            .forEach(friendRelation -> {
-                tryToSendReminderMessage(friendRelation, new ReminderMonthsBirthdayAproachBuilder(mailerService));
-            });
+                .forEach(friendRelation -> {
+                    sendReminderMessage(friendRelation, new ReminderMonthsBirthdayAproachBuilder(mailerService));
+                });
     }
 
     private Stream<FriendRelation> relationsWithBirthdayTwoMonthsFromNow() {
         return friendRelationService.getAllRelations().stream()
-            .filter(friendRelation ->
-                    twoMonthsFromNow(friendRelation)
-            );
+                .filter(friendRelation ->
+                        twoMonthsFromNow(friendRelation)
+                );
     }
 
     private boolean twoMonthsFromNow(FriendRelation friendRelation) {
@@ -92,14 +90,8 @@ public class ReminderSystem {
         return birthday.equals(todayPlusTwoWeeks);
     }
 
-    private void tryToSendReminderMessage(FriendRelation friendRelation, ReminderBuilder reminderBuilder) {
-        try {
-            postOffice.sendMessage(
-                    reminderBuilder.buildMessage(friendRelation)
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void sendReminderMessage(FriendRelation friendRelation, ReminderBuilder reminderBuilder) {
+        postOffice.sendMessage(reminderBuilder.buildMessage(friendRelation));
     }
 
     public void sendAllReminders() {
