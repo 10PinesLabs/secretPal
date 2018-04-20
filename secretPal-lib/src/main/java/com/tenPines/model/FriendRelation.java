@@ -87,9 +87,13 @@ public class FriendRelation {
     }
 
     private void assertHintAmountLessThanLimit() {
-        if (getAmountOfGuessAttempts() >= HINTS_AMOUNT_LIMIT) {
+        if (amountOfHints() >= HINTS_AMOUNT_LIMIT) {
             throw new RuntimeException("Can not have more than " + HINTS_AMOUNT_LIMIT + " hints");
         }
+    }
+
+    private int amountOfHints() {
+        return hints().size();
     }
 
     public void removeHint(Hint aHint) {
