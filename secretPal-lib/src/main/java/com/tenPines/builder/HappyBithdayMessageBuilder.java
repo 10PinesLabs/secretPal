@@ -4,7 +4,6 @@ import com.tenPines.application.MailProperties;
 import com.tenPines.application.service.DefaultGifService;
 import com.tenPines.model.Message;
 import com.tenPines.model.Worker;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class HappyBithdayMessageBuilder {
 
@@ -17,7 +16,7 @@ public class HappyBithdayMessageBuilder {
     }
 
     private String assignationSubject(Worker birthdayWorker) {
-        return "Feliz cumpleaños " + birthdayWorker.getFullName();
+        return "Feliz cumpleaños " + birthdayWorker.getName();
     }
 
     private String plainAssignationBodyText() {

@@ -7,6 +7,10 @@
     <input type="text" ng-model="worker.fullName">
   </div>
   <div class="modal-body">
+    <label class="control-label col-md-4" for="date">Apodo del Pino: </label>
+    <input type="text" ng-model="worker.nickname">
+  </div>
+  <div class="modal-body">
     <label class="control-label col-md-4" for="date">Email del Pino: </label>
     <input type="text" ng-model="worker.eMail">
   </div>
@@ -58,7 +62,7 @@
   <div class="modal-header">
     <h3 class="modal-title">Gif</h3>
   </div>
-  <div class="modal-body" style="text-align: center">
+  <div class="modal-body">
     <img src={{worker.gifUrl}} onerror="this.src='images/no_image_available.png';" />
   </div>
   <div class="modal-footer">
@@ -67,13 +71,13 @@
 </script>
 
 <div class="list_data">
-  <button class="btn btn-success pull-right" ng-click="assignation()">Asignar Amigos!</button>
   <h1>Lista de Pinos</h1>
   <div class="panel panel-black" style="width: fit-content">
     <table class="table table-striped">
       <thead>
       <tr>
         <th>Nombre</th>
+        <th>Apodo</th>
         <th>Email</th>
         <th>Fecha de cumpleaños</th>
         <th>Gif de cumpleaños</th>
@@ -85,6 +89,7 @@
       <tbody>
       <tr ng-repeat="worker in workers">
         <td>{{worker.fullName}}</td>
+        <td>{{worker.nickname}}</td>
         <td>{{worker.eMail}}</td>
         <td>{{worker.dateOfBirth | date}}</td>
         <td>
@@ -122,9 +127,14 @@
     <form class="navbar-form" name="form" ng-submit="Add()">
       <div class="field">
         <label class="control-label col-md-4" for="name">Nombre: </label>
-        <input type="text" id="name" placeholder="Name" class="form-control" ng-pattern="/[a-zA-Z]/" ng-model="newName"
+        <input type="text" id="name" placeholder="Nombre" class="form-control" ng-pattern="/[a-zA-Z]/" ng-model="newName"
                required ng-model-options="{ debounce: 500 }">
         <span ng-show="form.newName.$error.unique">Este pino ya existe!</span>
+      </div>
+      <div class="field">
+        <label class="control-label col-md-4" for="nickname">Apodo: </label>
+        <input type="text" id="nickname" placeholder="Apodo" class="form-control" ng-pattern="/[a-zA-Z]/" ng-model="newNickname"
+               required ng-model-options="{ debounce: 500 }">
       </div>
       <div class="field">
         <label class="control-label col-md-4" for="mail">Email: </label>

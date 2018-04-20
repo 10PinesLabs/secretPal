@@ -43,10 +43,6 @@ public class WorkerService {
         return workerRepository.findByeMail(email);
     }
 
-    public static String errorWhenDoNotExistAWorkerWithThisEmail() {
-        return "The Worker with this email does not exist";
-    }
-
     public void changeIntention(Worker aWorker) {
         Worker worker = retrieveWorker(aWorker.getId());
         worker.changeParticipationIntention();

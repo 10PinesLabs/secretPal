@@ -127,6 +127,11 @@ angular
         controller: 'GifDefaultController',
         resolve: { user : authenticatedAndAdmin }
       })
+      .when('/gifDefault', {
+        templateUrl: '../views/gifDefault.html',
+        controller: 'GifDefaultController',
+        resolve: { user : authenticatedAndAdmin }
+      })
       .when('/ruleConfiguration', {
         templateUrl: '../views/ruleConfiguration.html',
         controller: 'CustomParticipantRuleController',
