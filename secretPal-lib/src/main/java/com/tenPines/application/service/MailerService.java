@@ -8,7 +8,6 @@ import com.tenPines.persistence.EmailTemplateRepository;
 import com.tenPines.persistence.FailedMailsRepository;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,21 +26,19 @@ public class MailerService {
         this.postOffice = postOffice;
     }
 
-    public EmailTemplate getEMailTemplate() throws IOException {
+    public EmailTemplate getEMailTemplate() {
         EmailTemplate emailTemplate = new EmailTemplate();
         if (!emailTemplateRepository.findAll().isEmpty())
             emailTemplate = emailTemplateRepository.findAll().get(0);
         return emailTemplate;
-
     }
 
-
-    public EmailTemplate setEmailTemplate(EmailTemplate modifiedMail) throws IOException {
-        EmailTemplate mailerProperties = ModifiedTemplate(modifiedMail);
+    public EmailTemplate setEmailTemplate(EmailTemplate modifiedMail) {
+        EmailTemplate mailerProperties = modifiedTemplate(modifiedMail);
         return mailerProperties;
     }
 
-    private EmailTemplate ModifiedTemplate(EmailTemplate modifiedMail) throws IOException {
+    private EmailTemplate modifiedTemplate(EmailTemplate modifiedMail) {
         EmailTemplate emailActual = getEMailTemplate();
         emailActual.modifiedTemplate(modifiedMail);
         saveTemplate(emailActual);

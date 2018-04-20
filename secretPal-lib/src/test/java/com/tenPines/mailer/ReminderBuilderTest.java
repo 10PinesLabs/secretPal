@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -53,7 +52,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
     }
 
     @Test
-    public void whenDoesntExistsEmailTemplateThenTwoMonthsEmailBodyShouldBeAsDefault() throws IOException {
+    public void whenDoesntExistsEmailTemplateThenTwoMonthsEmailBodyShouldBeAsDefault() {
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
         String expectedBody = reminderMonthsBuilder.defaultBody(friendRelation.getGiftReceiver());
 
@@ -61,7 +60,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
     }
 
     @Test
-    public void whenDoesntExistsEmailTemplateThenTwoWeeksEmailBodyShouldBeAsDefault() throws IOException {
+    public void whenDoesntExistsEmailTemplateThenTwoWeeksEmailBodyShouldBeAsDefault() {
         Message message = reminderWeeksBuilder.buildMessage(friendRelation);
         String expectedBody = reminderWeeksBuilder.defaultBody(friendRelation.getGiftReceiver());
 
@@ -69,7 +68,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
     }
 
     @Test
-    public void whenExistsEmailTemplateThenEmailBodyShouldBeAsTemplate() throws IOException {
+    public void whenExistsEmailTemplateThenEmailBodyShouldBeAsTemplate() {
         mailerService.setEmailTemplate(eMailTemplate("Body template!"));
 
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
@@ -79,7 +78,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
     }
 
     @Test
-    public void whenTheEmailTemplateHasFullNameVariableThenShouldReplaceThisForReceiverFullName() throws IOException {
+    public void whenTheEmailTemplateHasFullNameVariableThenShouldReplaceThisForReceiverFullName() {
         mailerService.setEmailTemplate(eMailTemplate("Tu pino asignado es ${receiver.fullName}!"));
 
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
@@ -89,7 +88,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
     }
 
     @Test
-    public void whenTheEmailTemplateHasDateOfBirthVariableThenShouldReplaceThisForReceiverDateOfBirth() throws IOException {
+    public void whenTheEmailTemplateHasDateOfBirthVariableThenShouldReplaceThisForReceiverDateOfBirth() {
         mailerService.setEmailTemplate(eMailTemplate("Tu pino asignado cumple el ${receiver.dateOfBirth}!"));
 
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);

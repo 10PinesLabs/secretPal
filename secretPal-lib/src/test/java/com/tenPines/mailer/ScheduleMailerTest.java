@@ -2,7 +2,6 @@ package com.tenPines.mailer;
 
 
 import com.tenPines.application.ReminderSystem;
-import com.tenPines.application.SecretPalProperties;
 import com.tenPines.application.clock.FakeClock;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.application.service.WorkerService;
@@ -18,7 +17,6 @@ import java.time.Month;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-//@Ignore
 public class ScheduleMailerTest extends SpringBaseTest {
     @Autowired
     private WorkerService workerService;
@@ -29,10 +27,7 @@ public class ScheduleMailerTest extends SpringBaseTest {
     @Autowired
     private InMemoryPostMan postMan;
     @Autowired
-    private SecretPalProperties secretPalProperties;
-    @Autowired
     private FriendRelationService friendRelationService;
-
 
     private Worker friendWorker;
     private Worker birthdayWorker;
@@ -89,6 +84,5 @@ public class ScheduleMailerTest extends SpringBaseTest {
 
         assertThat(postMan.messagesTo(friendWorker.geteMail()), empty());
     }
-
 
 }

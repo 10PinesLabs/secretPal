@@ -6,7 +6,6 @@ import com.tenPines.model.Message;
 import com.tenPines.model.Worker;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -23,7 +22,7 @@ public abstract class ReminderBuilder {
         this.mailerService = mailerService;
     }
 
-    public Message buildMessage(FriendRelation aFriendRelation) throws IOException {
+    public Message buildMessage(FriendRelation aFriendRelation) {
         return new Message(
                 aFriendRelation.getGiftGiver().geteMail(),
                 assignationSubject(),
@@ -31,7 +30,7 @@ public abstract class ReminderBuilder {
                 plainAssignationBodyText(aFriendRelation.getGiftReceiver()));
     }
 
-    protected abstract String assignationSubject() throws IOException;
+    protected abstract String assignationSubject();
 
     private String htmlAssignationBodyText(Worker birthdayWorker) {
         return "<p>" + plainAssignationBodyText(birthdayWorker) + "</p>";
