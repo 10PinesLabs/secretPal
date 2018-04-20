@@ -259,7 +259,9 @@ a :hover{
 span.label:not(:hover) {
   background: #61b85c;
   color: #61b85c;
+  word-wrap: break-word;
 }
+
 
 .wishbox {
   display:block;
