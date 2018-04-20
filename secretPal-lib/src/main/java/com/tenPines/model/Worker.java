@@ -27,6 +27,7 @@ public class Worker {
     private Long id;
     @NotEmpty
     private String fullName;
+    private String nickname;
     @NotEmpty
     @Email
     private String eMail;
@@ -45,8 +46,9 @@ public class Worker {
     // Necessary for hibernate
     private Worker() { }
 
-    public Worker(String fullName, String email, LocalDate dateOfBirth, Boolean wantsToParticipate) {
+    public Worker(String fullName, String nickname, String email, LocalDate dateOfBirth, Boolean wantsToParticipate) {
         this.fullName = fullName;
+        this.nickname = nickname;
         this.eMail = email;
         this.dateOfBirth = dateOfBirth;
         this.wantsToParticipate = wantsToParticipate;
@@ -68,12 +70,24 @@ public class Worker {
         this.id = id;
     }
 
+    public String getName() {
+        return getNickname().orElse(getFullName());
+    }
+
     public String getFullName() {
         return fullName;
     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public Optional<String> getNickname() {
+        return Optional.ofNullable(nickname);
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String geteMail() {
@@ -137,4 +151,5 @@ public class Worker {
     public void setGifUrl(String gifUrl) {
         this.gifUrl = gifUrl;
     }
+
 }
