@@ -26,10 +26,14 @@ public class MailerService {
 
     private final Clock clock;
 
-    public MailerService(FailedMailsRepository failedMailsRepository, EmailTemplateRepository emailTemplateRepository, PostOffice postOffice, Clock clock) {
+    private AdminService adminService;
+
+    public MailerService(FailedMailsRepository failedMailsRepository, EmailTemplateRepository emailTemplateRepository,
+                         PostOffice postOffice, AdminService adminService, Clock clock) {
         this.failedMailsRepository = failedMailsRepository;
         this.emailTemplateRepository = emailTemplateRepository;
         this.postOffice = postOffice;
+        this.adminService = adminService;
         this.clock = clock;
     }
 
@@ -74,7 +78,7 @@ public class MailerService {
     }
 
     public void sendConfirmationMailFor(FriendRelation relation) {
-        Message message = new AssignationMessageBuilder(this, clock).buildMessage(relation);
+        Message message = new AssignationMessageBuilder(this, adminService, clock).buildMessage(relation);
         postOffice.sendMessage(message);
     }
 }

@@ -22,7 +22,7 @@ public class AdminService {
     }
 
     public List<User> adminUsers() {
-        return adminRepository.findAll().stream().map(a->a.user).collect(Collectors.toList());
+        return adminRepository.findAll().stream().map(AdminProfile::getUser).collect(Collectors.toList());
     }
 
     public boolean isAdmin(User user) {
