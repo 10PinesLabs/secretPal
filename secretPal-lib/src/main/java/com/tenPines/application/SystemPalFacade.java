@@ -223,4 +223,8 @@ public class SystemPalFacade {
     public Integer guessesLimit() {
         return FriendRelation.GUESS_ATTEMPTS_LIMIT;
     }
+
+    public void sendConfirmationEmailFor(FriendRelation relation) {
+        mailerService.sendConfirmationMailFor(relation);
+    }
 }
