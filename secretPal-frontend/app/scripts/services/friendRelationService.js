@@ -18,7 +18,13 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
   }
 
   function errorMsg(msg) {
-    SweetAlert.swal("Algo salio mal", msg, "error");
+    SweetAlert.swal({
+      title: "Algo salio mal",
+      text: msg,
+      type:"error",
+      showConfirmButton: false,
+      timer: 800
+    });
   }
 
   this.all = function (callback) {

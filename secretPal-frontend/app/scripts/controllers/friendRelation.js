@@ -98,7 +98,14 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
   };
 
   $scope.autoAssignPine = function (receiver, possibleGivers) {
-    $scope.update(randomFrom(possibleGivers),receiver);
+    SweetAlert.swal({
+      title: "Actualizando",
+      text: "Esto puede tardar un rato...\n muchos algoritmos",
+      showConfirmButton: false,
+      timer: 500
+    }, function() {
+      $scope.update(randomFrom(possibleGivers),receiver);
+    });
   };
 
   $scope.update = function (giver, receiver) {
@@ -107,11 +114,24 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
   };
 
   $scope.delete = function (giver) {
-    FriendRelationService.delete(giver, function () {
-      updatePosibilities();
-      $scope.toggleAlreadySelected(giver, false);
-      SweetAlert.swal("Relación eliminada exitosamente", "Ahora " + giver.fullName + " no es amigo invisible de nadie ", "success");
-    });
-  }
+    SweetAlert.swal({
+        title: "¿Estás seguro?",
+        text: giver.fullName + " no será amigo invisible de nadie!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d43f3a",
+        confirmButtonText: "Si, borrar!",
+        closeOnConfirm: false
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          FriendRelationService.delete(giver, function () {
+            updatePosibilities();
+            $scope.toggleAlreadySelected(giver, false);
+            SweetAlert.swal("Relación eliminada exitosamente", "Ahora " + giver.fullName + " no es amigo invisible de nadie ", "success");
+          });
+        }
+      });
+  };
 
 });

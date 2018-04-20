@@ -1,18 +1,28 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .controller('HintsController', function ($scope, $http, user, HintsService, $modal, SweetAlert) {
+  .controller('HintsController', function ($scope, $http, user, HintsService, $modal, FriendRelationService, SweetAlert) {
       $scope.hints = [];
       $scope.limit = 3;
 
+      FriendRelationService.getFriend(user.worker, function (friend) {
 
-      HintsService.all(user, function (data) {
-        $scope.hints = data;
+        $scope.friend = friend;
+        if (friend != null) {
+          HintsService.all(user, function (data) {
+            $scope.hints = data;
+          });
+        }
+
       });
 
       HintsService.hintsLimit(function (number) {
         $scope.limit = number;
       });
+
+      $scope.hasFriend = function () {
+        return $scope.friend != null;
+      };
 
       $scope.canBeAdded = function () {
         return $scope.hints.length < $scope.limit
@@ -48,11 +58,24 @@ angular.module('secretPalApp')
       };
 
       $scope.delete = function (hint) {
-        HintsService.delete(user, hint.id, function () {
-          $scope.hints.splice(
-            $scope.hints.indexOf(hint), 1
-          );
-        });
+        SweetAlert.swal({
+            title: "¿Estás seguro?",
+            text: "Si borras esta pista, tu pino invisible ya no va a poder verla",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d43f3a",
+            confirmButtonText: "Borrar",
+            closeOnConfirm: true
+          },
+          function (isConfirm) {
+            if (isConfirm) {
+              HintsService.delete(user, hint.id, function () {
+                $scope.hints.splice(
+                  $scope.hints.indexOf(hint), 1
+                );
+              });
+            }
+          });
       };
 
     }
