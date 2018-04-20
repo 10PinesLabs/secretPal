@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('secretPalApp')
-  .service('Token', function () {
+  .service('Token', function ($rootScope) {
     var self = this;
 
     self.saveToken = function (aToken) {
@@ -18,7 +18,7 @@ angular.module('secretPalApp')
 
     self.logout = function () {
       $rootScope.loggedUser = undefined;
-      saveToken(undefined);
+      window.localStorage.clear();
     };
   });
 
