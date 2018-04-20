@@ -1,6 +1,7 @@
 package com.tenPines.application.service;
 
 
+import com.tenPines.application.clock.Clock;
 import com.tenPines.builder.AssignationMessageBuilder;
 import com.tenPines.mailer.PostOffice;
 import com.tenPines.mailer.UnsentMessage;
@@ -23,10 +24,13 @@ public class MailerService {
 
     private final PostOffice postOffice;
 
-    public MailerService(FailedMailsRepository failedMailsRepository, EmailTemplateRepository emailTemplateRepository, PostOffice postOffice) {
+    private final Clock clock;
+
+    public MailerService(FailedMailsRepository failedMailsRepository, EmailTemplateRepository emailTemplateRepository, PostOffice postOffice, Clock clock) {
         this.failedMailsRepository = failedMailsRepository;
         this.emailTemplateRepository = emailTemplateRepository;
         this.postOffice = postOffice;
+        this.clock = clock;
     }
 
     public EmailTemplate getEMailTemplate() {
@@ -70,7 +74,7 @@ public class MailerService {
     }
 
     public void sendConfirmationMailFor(FriendRelation relation) {
-        Message message = new AssignationMessageBuilder(this).buildMessage(relation);
+        Message message = new AssignationMessageBuilder(this, clock).buildMessage(relation);
         postOffice.sendMessage(message);
     }
 }
