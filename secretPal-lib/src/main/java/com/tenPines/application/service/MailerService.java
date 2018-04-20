@@ -56,7 +56,6 @@ public class MailerService {
     public void resendMessageFailure(UnsentMessage unsentMessage) {
         failedMailsRepository.delete(unsentMessage.getId());
         postOffice.sendMessage(unsentMessage.toMessage());
-
     }
 
     public Optional<EmailTemplate> getTemplate() {
