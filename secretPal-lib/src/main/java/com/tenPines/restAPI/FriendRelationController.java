@@ -82,7 +82,9 @@ public class FriendRelationController {
     @RequestMapping(value = "{id}/makeImmutable", method = RequestMethod.PUT)
     @ResponseBody
     public void makeRelationImmutable(@PathVariable("id") Long relationId) {
-        friendRelationService.makeImmutable(friendRelationService.retrieveRelation(relationId));
+        FriendRelation relation = friendRelationService.retrieveRelation(relationId);
+        friendRelationService.makeImmutable(relation);
+        systemFacade.sendConfirmationEmailFor(relation);
     }
 
     @RequestMapping(value = "/update/{giverId}/{newReceiverId}", method = RequestMethod.PUT)

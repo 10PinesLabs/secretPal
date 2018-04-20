@@ -1,9 +1,12 @@
 package com.tenPines.application.service;
 
 
+import com.tenPines.builder.AssignationMessageBuilder;
 import com.tenPines.mailer.PostOffice;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.EmailTemplate;
+import com.tenPines.model.FriendRelation;
+import com.tenPines.model.Message;
 import com.tenPines.persistence.EmailTemplateRepository;
 import com.tenPines.persistence.FailedMailsRepository;
 import org.springframework.stereotype.Service;
@@ -64,5 +67,10 @@ public class MailerService {
 
     public void deleteTemplate() {
         emailTemplateRepository.deleteAll();
+    }
+
+    public void sendConfirmationMailFor(FriendRelation relation) {
+        Message message = new AssignationMessageBuilder(this).buildMessage(relation);
+        postOffice.sendMessage(message);
     }
 }
