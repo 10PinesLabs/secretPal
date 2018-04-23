@@ -192,6 +192,9 @@ app.directive('unique', function () {
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
+    $scope.makeAdmin = function(worker){
+
+    }
 
     /*DATEPICKER FUNCTIONS*/
     $scope.open = function ($event) {
