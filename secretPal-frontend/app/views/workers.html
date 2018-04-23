@@ -100,8 +100,15 @@
         </td>
         <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
                    ng-change="changeIntention(worker)" ng-model="worker.wantsToParticipate"></td>
-        <td><input type="checkbox" name="adminParticipants[]" value="{{admins[worker]}}"
-                   ng-change="changeAdmin(worker)" ng-model="admins[worker]"></td>
+        <td>
+          <button class="btn btn-sm btn-warning"
+                  ng-click="addAdmin(worker)"
+                  ng-disabled="isAnAdmin(worker)"
+                  title="Admin"
+          >
+            <span class="glyphicon glyphicon-user"></span>
+          </button>
+        </td>
 
         <td>
           <button class="btn btn-sm btn-success"
