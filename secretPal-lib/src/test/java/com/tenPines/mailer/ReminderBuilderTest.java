@@ -9,6 +9,7 @@ import com.tenPines.model.EmailTemplate;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Message;
 import com.tenPines.model.Worker;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.time.Month;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 
 public class ReminderBuilderTest extends SpringBaseTest {
@@ -51,10 +53,19 @@ public class ReminderBuilderTest extends SpringBaseTest {
         return template;
     }
 
+    private String plainTextFromHtml(String htmlText) {
+        String plainText = String.join(" ",
+                StringUtils.substringsBetween(htmlText, "<p>", "</p>"));
+        if(plainText == null){
+            throw new RuntimeException("The html message is missing <p> and </p> tags.");
+        }
+        return plainText;
+    }
+
     @Test
     public void whenDoesntExistsEmailTemplateThenTwoMonthsEmailBodyShouldBeAsDefault() {
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
-        String expectedBody = reminderMonthsBuilder.defaultBody(friendRelation.getGiftReceiver());
+        String expectedBody = plainTextFromHtml(reminderMonthsBuilder.defaultHtmlBody(friendRelation.getGiftReceiver()));
 
         assertThat(message.getPlainTextBody(), is(expectedBody));
     }
@@ -62,14 +73,26 @@ public class ReminderBuilderTest extends SpringBaseTest {
     @Test
     public void whenDoesntExistsEmailTemplateThenTwoWeeksEmailBodyShouldBeAsDefault() {
         Message message = reminderWeeksBuilder.buildMessage(friendRelation);
-        String expectedBody = reminderWeeksBuilder.defaultBody(friendRelation.getGiftReceiver());
+        String expectedBody = plainTextFromHtml(reminderWeeksBuilder.defaultHtmlBody(friendRelation.getGiftReceiver()));
 
         assertThat(message.getPlainTextBody(), is(expectedBody));
     }
 
     @Test
-    public void whenExistsEmailTemplateThenEmailBodyShouldBeAsTemplate() {
+    public void whenExistsEmailTemplateButItDoesNotHaveHtmlParagraphTagsTheMessageCannotBeBuilt() {
         mailerService.setEmailTemplate(eMailTemplate("Body template!"));
+
+        try {
+            reminderMonthsBuilder.buildMessage(friendRelation);;
+            fail("The exception was not raised");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), is("The html message is missing <p> and </p>"));
+        }
+    }
+
+    @Test
+    public void whenExistsEmailTemplateThenEmailBodyShouldBeAsTemplate() {
+        mailerService.setEmailTemplate(eMailTemplate("<p>Body template!</p>"));
 
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
         String expectedBody = "Body template!";
@@ -79,7 +102,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
 
     @Test
     public void whenTheEmailTemplateHasFullNameVariableThenShouldReplaceThisForReceiverFullName() {
-        mailerService.setEmailTemplate(eMailTemplate("Tu pino asignado es ${receiver.fullName}!"));
+        mailerService.setEmailTemplate(eMailTemplate("<p>Tu pino asignado es ${receiver.fullName}!</p>"));
 
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
         String expectedBody = "Tu pino asignado es Cacho Castania!";
@@ -89,7 +112,7 @@ public class ReminderBuilderTest extends SpringBaseTest {
 
     @Test
     public void whenTheEmailTemplateHasDateOfBirthVariableThenShouldReplaceThisForReceiverDateOfBirth() {
-        mailerService.setEmailTemplate(eMailTemplate("Tu pino asignado cumple el ${receiver.dateOfBirth}!"));
+        mailerService.setEmailTemplate(eMailTemplate("<p>Tu pino asignado cumple el ${receiver.dateOfBirth}!</p>"));
 
         Message message = reminderMonthsBuilder.buildMessage(friendRelation);
         String expectedBody = "Tu pino asignado cumple el 10 de diciembre!";
