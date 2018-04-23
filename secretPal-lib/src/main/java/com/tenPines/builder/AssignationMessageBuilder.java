@@ -29,8 +29,8 @@ public class AssignationMessageBuilder extends ReminderBuilder {
     public String defaultHtmlBody(Worker birthdayWorker) {
         return String.join("<div style=\"text-align: center; width: 100%;\">",
                 "<p>" + "Este año vas a ser el amigo invisible de: " + "</p>",
-                "<img src=\"" + "images/dog_playing_drums.gif" + "\"/>",
-                "<p>" + birthdayWorker.getFullName() + " <" + birthdayWorker.geteMail() + "> " + "que cumple el: " + birthday(birthdayWorker) + "</p>",
+                "<img src=\"" + "https://media.giphy.com/media/26BkMkEayiz8Ebjby/giphy.gif" + "\" width=\"265\" height=\"199\"/>",
+                "<p>" + birthdayWorker.getFullName() + " &lt;" + birthdayWorker.geteMail() + "&gt; " + "que cumple el: " + birthday(birthdayWorker) + "</p>",
                 "<br>",
                 "<p>" + "La idea sería tener su regalo para el viernes después de su cumpleaños, y avisarnos." + "</p>",
                 "<p>" + "Por cualquier cosa, no dudes en preguntar a " + admins() + ", o a esta misma dirección." + "</p>",
@@ -49,7 +49,7 @@ public class AssignationMessageBuilder extends ReminderBuilder {
     }
 
     private String nameAndMail(Worker worker) {
-        return worker.getName() + "<" + worker.geteMail() + ">";
+        return worker.getName() + " &lt;" + worker.geteMail() + "&gt;";
     }
 
 }
