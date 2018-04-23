@@ -3,6 +3,7 @@ package com.tenPines.restAPI.utils;
 import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.model.Worker;
 
+import java.time.MonthDay;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,16 +36,16 @@ public class GiftReceiverWithPossibleGifters implements Comparable<GiftReceiverW
     }
 
     @Override
-    public int compareTo(GiftReceiverWithPossibleGifters o) {
-        boolean before = this.receiver.getBirthday().isBefore(o.getReceiver().getBirthday());
-        int leq = 0;
-        if(before){
-            leq = -1;
+    public int compareTo(GiftReceiverWithPossibleGifters otherGiftReceiver) {
+        boolean isBeforeTheOthersBirthday = this.receiverBirthday().isBefore(otherGiftReceiver.receiverBirthday());
+        int comparatorValueForSort = 0;
+        if(isBeforeTheOthersBirthday){
+            comparatorValueForSort = -1;
         }
-        return leq;
+        return comparatorValueForSort;
     }
 
-    public Object receiverBirthday() {
+    public MonthDay receiverBirthday() {
         return receiver.getBirthday();
     }
 }

@@ -28,10 +28,10 @@ public class FriendRelationValidator {
     }
 
     public Boolean validatePossible(Worker giver, Worker receiver) {
-        return validateRules(giver, receiver) && !hasAssignedPal(giver, receiver);
+        return validateRules(giver, receiver) && !existsRelationBetween(giver, receiver);
     }
 
-    private boolean hasAssignedPal(Worker giver, Worker receiver) {
+    private boolean existsRelationBetween(Worker giver, Worker receiver) {
         return friendRelationService.getByWorkerGiver(giver)
                 .map(relation -> !relation.getGiftReceiver().equals(receiver))
                 .orElse(false);
