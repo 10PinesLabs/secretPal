@@ -1,7 +1,8 @@
 'use strict';
 
 var app = angular.module('secretPalApp');
-app.controller('WorkersController', function ($scope, $modal, $rootScope, WorkerService, FriendRelationService, $filter, $location, SweetAlert) {
+app.controller('WorkersController', function ($scope, $modal, $rootScope, WorkerService, FriendRelationService, $filter, $location, SweetAlert,Account) {
+  $scope.admins={};
 
   function warningMsg(msg) {
     SweetAlert.swal({
@@ -10,9 +11,18 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
       type: "warning"
     });
   }
-
   WorkerService.all(function (data) {
     $scope.workers = data;
+    data.map(function(worker){
+      $scope.admins[worker.fullName] = false;
+    } );
+  });
+
+  Account.getAdmins().then(function (admins) {
+    admins.data.map(function(worker){
+      $scope.admins[worker.fullName] = true;
+    } );
+    console.log($scope.admins)
   });
 
   FriendRelationService.all(function (data) {
@@ -91,6 +101,27 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     );
     if (keepGoing) {
       WorkerService.changeIntention(worker);
+    }
+
+    $scope.changeAdmin = function(worker){
+      SweetAlert.swal({
+          title: "¿Estás seguro?",
+          text: worker.fullName + "va a ser admin!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d43f3a",
+          confirmButtonText: "Hacer admin",
+          closeOnConfirm: false
+        },
+        function (isConfirm) {
+          if (isConfirm) {
+            FriendRelationService.delete(giver, function () {
+              updatePosibilities();
+              $scope.toggleAlreadySelected(giver, false);
+              SweetAlert.swal("Relación eliminada exitosamente", "Ahora " + giver.fullName + " no es amigo invisible de nadie ", "success");
+            });
+          }
+        });
     }
   };
 
@@ -192,9 +223,7 @@ app.directive('unique', function () {
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
-    $scope.makeAdmin = function(worker){
 
-    }
 
     /*DATEPICKER FUNCTIONS*/
     $scope.open = function ($event) {
