@@ -4,7 +4,7 @@ import com.tenPines.application.service.MailerService;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Message;
 import com.tenPines.model.Worker;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -26,20 +26,29 @@ public abstract class ReminderBuilder {
         return new Message(
                 aFriendRelation.getGiftGiver().geteMail(),
                 assignationSubject(),
-                htmlAssignationBodyText(aFriendRelation.getGiftReceiver()),
-                plainAssignationBodyText(aFriendRelation.getGiftReceiver()));
+                htmlBodyText(aFriendRelation.getGiftReceiver()),
+                plainBodyText(aFriendRelation.getGiftReceiver())
+        );
     }
 
     protected abstract String assignationSubject();
 
-    private String htmlAssignationBodyText(Worker birthdayWorker) {
-        return "<p>" + plainAssignationBodyText(birthdayWorker) + "</p>";
+    private String plainBodyText(Worker birthdayWorker) {
+        return plainTextFrom(htmlBodyText(birthdayWorker));
     }
 
-    protected String plainAssignationBodyText(Worker birthdayWorker) {
+    private String plainTextFrom(String htmlText) {
+        String[] plainTextFragments = StringUtils.substringsBetween(htmlText, "<p>", "</p>");
+        if(plainTextFragments == null){
+            throw new RuntimeException("The html message is missing <p> and </p>");
+        }
+        return String.join(" ", plainTextFragments);
+    }
+
+    protected String htmlBodyText(Worker birthdayWorker) {
         return mailerService.getTemplate()
                 .map(emailTemplate -> replaceMailVariables(emailTemplate.getBodyText(), birthdayWorker))
-                .orElse(defaultBody(birthdayWorker));
+                .orElse(defaultHtmlBody(birthdayWorker));
     }
 
     private String replaceMailVariables(String bodyText, Worker birthdayWorker) {
@@ -48,7 +57,7 @@ public abstract class ReminderBuilder {
         return res;
     }
 
-    public abstract String defaultBody(Worker birthdayWorker);
+    public abstract String defaultHtmlBody(Worker birthdayWorker);
 
     protected String birthday(Worker birthdayWorker) {
         return dateFormat.format(birthdayWorker.getDateOfBirth());
