@@ -36,12 +36,7 @@ public class PossibleRelationForFrontEnd {
     }
 
     public int orderByBirthdayDate(PossibleRelationForFrontEnd otherGiftReceiver) {
-        boolean isBeforeTheOthersBirthday = this.receiverBirthday().isBefore(otherGiftReceiver.receiverBirthday());
-        int comparatorValueForSort = 0;
-        if(isBeforeTheOthersBirthday){
-            comparatorValueForSort = -1;
-        }
-        return comparatorValueForSort;
+        return this.receiverBirthday().compareTo(otherGiftReceiver.receiverBirthday());
     }
 
     public MonthDay receiverBirthday() {
