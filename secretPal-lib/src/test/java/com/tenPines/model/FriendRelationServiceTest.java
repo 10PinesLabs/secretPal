@@ -42,13 +42,13 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
 
-        Worker newReceiver = new WorkerBuilder().buildFromDate(22, Month.AUGUST);
-        workerService.save(newReceiver);
+        Worker newGiver = new WorkerBuilder().buildFromDate(22, Month.AUGUST);
+        workerService.save(newGiver);
 
-        friendRelationService.updateRelation(aWorkerGiver, newReceiver);
+        friendRelationService.updateRelation(newGiver, aWorkerReceiver);
 
         assertThat(friendRelationService.getAllRelations(), hasSize(1));
-        assertThat(friendRelationService.retrieveAssignedFriendFor(aWorkerGiver), is(newReceiver));
+        assertThat(friendRelationService.retrieveAssignedFriendFor(newGiver), is(aWorkerReceiver));
     }
 
     @Test
@@ -177,7 +177,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     public void canFindTheGifterForAWorker(){
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
-        assertThat(friendRelationService.retrieveGiftGiverFor(aWorkerReceiver), is(aWorkerGiver));
+        assertThat(friendRelationService.retrieveGiftGiverFor(aWorkerReceiver).get(), is(aWorkerGiver));
     }
 
     @Test

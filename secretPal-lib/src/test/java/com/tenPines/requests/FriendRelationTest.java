@@ -13,6 +13,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 
+
 public class FriendRelationTest extends SpringBaseTest {
     @Autowired
     private TestRestTemplate restTemplate;

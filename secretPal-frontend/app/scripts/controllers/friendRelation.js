@@ -70,16 +70,9 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
 
   FriendRelationService.all(function (data) {
     $scope.friendRelations = data;
-    $scope.posibilities = $scope.friendRelations.map(function (relation) {
-
-      $scope.alreadySelected[relation.giftGiver.fullName] = $scope.notNull(relation);
-
-      return relation.giftGiver;
+    $scope.friendRelations.forEach(function (relation) {
+      $scope.alreadySelected[relation.giftReceiver.fullName] = $scope.notNull(relation);
     });
-
-    console.log($scope.posibilities);
-
-    $scope.relations = $filter('filter')($scope.friendRelations, {giftReceiver: null});
   });
 
   $scope.deleteRelation = function (relation) {
@@ -90,33 +83,6 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
 
   $scope.notNull = function (relation) {
     return (relation.giftReceiver !== null);
-  };
-
-  $scope.notUsed = function (giftGiverSelected) {
-    return function (relation) {
-      var notUsed = true;
-      angular.forEach($scope.friendRelations, function (fr) {
-        if (fr.giftReceiver !== null) {
-          if (fr.giftGiver.id !== giftGiverSelected) {
-            notUsed = false;
-          }
-
-        }
-      });
-      return notUsed;
-    };
-  };
-
-  $scope.validFriendRelations = function (fr) {
-    return $scope.friendRelations.filter(function (elem) {
-      if ($scope.notUsed(fr.giftGiver)) {
-        return fr.giftGiver.id !== elem.giftReceiver.id && fr.giftGiver.id !== elem.giftGiver.id;
-      }
-    });
-  };
-
-  $scope.auto = function () {
-    FriendRelationService.autoAssign(updatePosibilities);
   };
 
   $scope.autoSelected = function (worker) {
@@ -131,19 +97,19 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     $scope.alreadySelected[worker.fullName] = boolean;
   };
 
-  $scope.autoAssignPine = function (giver, possibleRecievers) {
+  $scope.autoAssignPine = function (receiver, possibleGivers) {
     SweetAlert.swal({
       title: "Actualizando",
       text: "Esto puede tardar un rato...\n muchos algoritmos",
       showConfirmButton: false,
       timer: 500
     }, function() {
-      $scope.update(giver, randomFrom(possibleRecievers));
+      $scope.update(randomFrom(possibleGivers),receiver);
     });
   };
 
   $scope.update = function (giver, receiver) {
-    $scope.toggleAlreadySelected(giver, true);
+    $scope.toggleAlreadySelected(receiver, true);
     FriendRelationService.update(giver, receiver, updatePosibilities);
   };
 

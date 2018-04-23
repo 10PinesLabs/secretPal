@@ -7,7 +7,7 @@ import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Hint;
 import com.tenPines.model.Worker;
 import com.tenPines.restAPI.utils.GuessResponse;
-import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
+import com.tenPines.restAPI.utils.PossibleRelationForFrontEnd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -75,8 +75,10 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/posibilities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<ParticipantWithPosibilities> allPosibilities() {
-        return systemFacade.allPosibilities();
+    public List<PossibleRelationForFrontEnd> allPosibilities() {
+        List<PossibleRelationForFrontEnd> possibleRelationsForFrontEnd = systemFacade.allReceiversWithPosibilities();
+        possibleRelationsForFrontEnd.sort(PossibleRelationForFrontEnd::orderByBirthdayDate);
+        return possibleRelationsForFrontEnd;
     }
 
     @RequestMapping(value = "/inmutables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

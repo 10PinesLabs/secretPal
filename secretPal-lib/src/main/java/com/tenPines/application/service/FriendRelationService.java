@@ -10,7 +10,7 @@ import com.tenPines.model.process.AutoAssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
 import com.tenPines.persistence.HintsRepository;
-import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
+import com.tenPines.restAPI.utils.PossibleRelationForFrontEnd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -113,19 +113,12 @@ public class FriendRelationService {
                 .map(FriendRelation::getGiftReceiver);
     }
 
-    public Worker retrieveGiftGiverFor(Worker worker) {
+    public Optional<Worker> retrieveGiftGiverFor(Worker worker) {
         return friendRelationRepository.findByGiftReceiver(worker)
-                .orElseThrow(noHayAmigoAsignadoException())
-                .getGiftGiver();
+                .map(FriendRelation::getGiftGiver);
     }
 
 
-
-    public List<ParticipantWithPosibilities> allPosibilities() {
-        return workersWhoCanGive().stream().map(participant ->
-            new ParticipantWithPosibilities(participant, this)
-        ).collect(Collectors.toList());
-    }
 
     public List<FriendRelation> allInmutableRelations() {
         return getAllRelations().stream().filter(this::inmutableRelation
@@ -166,15 +159,16 @@ public class FriendRelationService {
         return birthday.equals(todayPlusTwoMonths) || birthday.isBefore(todayPlusTwoMonths);
     }
 
-    public void updateRelation(Worker giver, Worker newReceiver) {
-        Optional<FriendRelation> optionalRelation = friendRelationRepository.findByGiftGiver(giver);
-        optionalRelation.ifPresent(relation -> changeReceiver(relation, newReceiver));
-        optionalRelation.orElseGet(() -> create(giver, newReceiver));
+    public void updateRelation(Worker newGiver, Worker receiver) {
+        Optional<FriendRelation> optionalRelation = friendRelationRepository.findByGiftReceiver(receiver);
+        optionalRelation.ifPresent(relation -> changeGiver(relation, newGiver));
+        optionalRelation.orElseGet(() -> create(newGiver, receiver));
     }
 
-    private void changeReceiver(FriendRelation relation, Worker newReceiver) {
-        relation.setGiftReceiver(newReceiver);
+    private void changeGiver(FriendRelation relation, Worker newReceiver) {
+        relation.setGiftGiver(newReceiver);
         friendRelationRepository.save(relation);
+        return;
     }
 
     public void deleteAllRelations() {
@@ -261,4 +255,25 @@ public class FriendRelationService {
         return () -> new RuntimeException("No hay pistas!");
     }
 
+    public List<Worker> possibleGiftersFor(Worker receiver) {
+
+        FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
+        return workerService.getAllParticipants().stream().filter(participant ->
+                validator.validatePossible(participant, receiver)
+        ).collect(Collectors.toList());
+    }
+
+    public List<PossibleRelationForFrontEnd> allReceiversWithPosibilities() {
+        return workerService.getAllParticipants().stream()
+                .filter(this::notInImmutableRelation)
+                .map(participant ->
+                new PossibleRelationForFrontEnd(participant, this)
+        ).collect(Collectors.toList());
+    }
+
+    private boolean notInImmutableRelation(Worker worker) {
+        return friendRelationRepository.findByGiftReceiver(worker)
+                .map(relation -> !inmutableRelation(relation))
+                .orElse(true);
+    }
 }
