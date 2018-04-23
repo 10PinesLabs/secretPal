@@ -189,6 +189,11 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
             return $scope.relationIsFromGiverToReceiver(relation, giver, receiver);
           });
           if (typeof relationToLock !== "undefined") {
+            SweetAlert.swal({
+              title: "Procesando",
+              text: "Esto puede tardar un rato...\n muchos algoritmos",
+              showConfirmButton: false
+            });
             FriendRelationService.lock(relationToLock, updateAllRelations);
           } else {
             SweetAlert.swal("Algo salió mal", "No se pudo encontrar una relación entre esos pinos", "error");
