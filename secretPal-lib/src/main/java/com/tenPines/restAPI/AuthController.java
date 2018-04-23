@@ -57,6 +57,9 @@ public class AuthController {
         return admins;
     }
 
+
+
+
     @GetMapping(value = "/callback", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String backofficeCallback(
@@ -143,5 +146,19 @@ public class AuthController {
         Worker workerToUpdate = workerService.retrieveWorker(id);
         workerToUpdate.markGiftAsReceived();
         workerService.save(workerToUpdate);
+    }
+
+    @RequestMapping(value = "/admin", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Worker> makeAdmin() {
+        List<Worker> admins = adminService
+                .adminUsers()
+                .stream()
+                .map(User::getWorker)
+                .collect(Collectors.toList());
+        if(admins.isEmpty()){
+            throw new RuntimeException("No existe un administrador para este sistema");
+        }
+        return admins;
     }
 }
