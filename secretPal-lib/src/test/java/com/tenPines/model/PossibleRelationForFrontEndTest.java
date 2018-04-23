@@ -6,7 +6,7 @@ import com.tenPines.application.service.WorkerService;
 import com.tenPines.application.service.validation.rule.BirthdayPassedRule;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
-import com.tenPines.restAPI.utils.GiftReceiverWithPossibleGifters;
+import com.tenPines.restAPI.utils.PossibleRelationForFrontEnd;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.time.Month;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class GiftReceiverWithPossibleGiftersTest extends SpringBaseTest{
+public class PossibleRelationForFrontEndTest extends SpringBaseTest{
 
     @Autowired
     private FriendRelationService friendRelationService;
@@ -41,8 +41,8 @@ public class GiftReceiverWithPossibleGiftersTest extends SpringBaseTest{
     public void whenIsTheOnlyParticipantPosibilitiesAreNone() {
         workerService.save(worker);
 
-        GiftReceiverWithPossibleGifters posibilities =
-                new GiftReceiverWithPossibleGifters(worker, friendRelationService);
+        PossibleRelationForFrontEnd posibilities =
+                new PossibleRelationForFrontEnd(worker, friendRelationService);
 
         assertThat(posibilities.getReceiver(), is(worker));
         assertThat(posibilities.getPossibleGivers(), empty());
@@ -55,8 +55,8 @@ public class GiftReceiverWithPossibleGiftersTest extends SpringBaseTest{
         workerService.save(anotherWorker);
         workerService.save(yetAnotherWorker);
 
-        GiftReceiverWithPossibleGifters posibilities =
-                new GiftReceiverWithPossibleGifters(worker, friendRelationService);
+        PossibleRelationForFrontEnd posibilities =
+                new PossibleRelationForFrontEnd(worker, friendRelationService);
 
         assertThat(posibilities.getReceiver(), is(worker));
         assertThat(posibilities.getPossibleGivers(), hasSize(2));
@@ -74,8 +74,8 @@ public class GiftReceiverWithPossibleGiftersTest extends SpringBaseTest{
         workerService.save(newWorker);
         friendRelationService.create(yetAnotherWorker,newWorker);
 
-        GiftReceiverWithPossibleGifters posibilities =
-                new GiftReceiverWithPossibleGifters(worker, friendRelationService);
+        PossibleRelationForFrontEnd posibilities =
+                new PossibleRelationForFrontEnd(worker, friendRelationService);
 
         assertThat(posibilities.getReceiver(), is(worker));
         assertThat(posibilities.getPossibleGivers(), hasSize(2));
@@ -95,8 +95,8 @@ public class GiftReceiverWithPossibleGiftersTest extends SpringBaseTest{
         workerService.save(newWorker);
         friendRelationService.create(yetAnotherWorker,worker);
 
-        GiftReceiverWithPossibleGifters posibilities =
-                new GiftReceiverWithPossibleGifters(worker, friendRelationService);
+        PossibleRelationForFrontEnd posibilities =
+                new PossibleRelationForFrontEnd(worker, friendRelationService);
 
         assertThat(posibilities.getReceiver(), is(worker));
         assertThat(posibilities.getPossibleGivers(), hasSize(3));
@@ -112,8 +112,8 @@ public class GiftReceiverWithPossibleGiftersTest extends SpringBaseTest{
         workerService.save(worker);
         workerService.save(anotherWorker);
 
-        GiftReceiverWithPossibleGifters posibilities =
-                new GiftReceiverWithPossibleGifters(worker, friendRelationService);
+        PossibleRelationForFrontEnd posibilities =
+                new PossibleRelationForFrontEnd(worker, friendRelationService);
 
         assertThat(posibilities.getReceiver(), is(worker));
         assertThat(posibilities.getPossibleGivers(), hasSize(0));

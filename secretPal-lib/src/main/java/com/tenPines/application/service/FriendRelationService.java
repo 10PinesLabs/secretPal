@@ -10,8 +10,7 @@ import com.tenPines.model.process.AutoAssignmentFunction;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
 import com.tenPines.persistence.HintsRepository;
-import com.tenPines.restAPI.utils.GiftReceiverWithPossibleGifters;
-import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
+import com.tenPines.restAPI.utils.PossibleRelationForFrontEnd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -120,12 +119,6 @@ public class FriendRelationService {
     }
 
 
-
-    public List<ParticipantWithPosibilities> allPosibilities() {
-        return workersWhoCanGive().stream().map(participant ->
-            new ParticipantWithPosibilities(participant, this)
-        ).collect(Collectors.toList());
-    }
 
     public List<FriendRelation> allInmutableRelations() {
         return getAllRelations().stream().filter(this::inmutableRelation
@@ -270,11 +263,11 @@ public class FriendRelationService {
         ).collect(Collectors.toList());
     }
 
-    public List<GiftReceiverWithPossibleGifters> allReceiversWithPosibilities() {
+    public List<PossibleRelationForFrontEnd> allReceiversWithPosibilities() {
         return workerService.getAllParticipants().stream()
                 .filter(this::notInImmutableRelation)
                 .map(participant ->
-                new GiftReceiverWithPossibleGifters(participant, this)
+                new PossibleRelationForFrontEnd(participant, this)
         ).collect(Collectors.toList());
     }
 

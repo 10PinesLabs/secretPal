@@ -7,8 +7,7 @@ import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.*;
-import com.tenPines.restAPI.utils.GiftReceiverWithPossibleGifters;
-import com.tenPines.restAPI.utils.ParticipantWithPosibilities;
+import com.tenPines.restAPI.utils.PossibleRelationForFrontEnd;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -184,11 +183,8 @@ public class SystemPalFacade {
         customParticipantRuleService.updateRuleBirthday(rule);
     }
 
-    public List<ParticipantWithPosibilities> allPosibilities() {
-        return friendRelationService.allPosibilities();
-    }
 
-    public List<GiftReceiverWithPossibleGifters> allReceiversWithPosibilities() {
+    public List<PossibleRelationForFrontEnd> allReceiversWithPosibilities() {
         return friendRelationService.allReceiversWithPosibilities();
     }
 

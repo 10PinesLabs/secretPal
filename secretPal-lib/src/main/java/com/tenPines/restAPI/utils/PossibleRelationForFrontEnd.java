@@ -7,13 +7,13 @@ import java.time.MonthDay;
 import java.util.List;
 import java.util.Optional;
 
-public class GiftReceiverWithPossibleGifters implements Comparable<GiftReceiverWithPossibleGifters>{
+public class PossibleRelationForFrontEnd {
     private Worker receiver;
 
     private Optional<Worker> giver;
     private List<Worker> posibleGivers;
 
-    public GiftReceiverWithPossibleGifters(Worker participant, FriendRelationService friendRelationService) {
+    public PossibleRelationForFrontEnd(Worker participant, FriendRelationService friendRelationService) {
         this.receiver = participant;
         this.giver = friendRelationService.retrieveGiftGiverFor(participant);
         updatePosibleReceivers(friendRelationService);
@@ -35,8 +35,7 @@ public class GiftReceiverWithPossibleGifters implements Comparable<GiftReceiverW
         return receiver;
     }
 
-    @Override
-    public int compareTo(GiftReceiverWithPossibleGifters otherGiftReceiver) {
+    public int orderByBirthdayDate(PossibleRelationForFrontEnd otherGiftReceiver) {
         boolean isBeforeTheOthersBirthday = this.receiverBirthday().isBefore(otherGiftReceiver.receiverBirthday());
         int comparatorValueForSort = 0;
         if(isBeforeTheOthersBirthday){
