@@ -5,7 +5,6 @@
   <div class="modal-body">
     <label class="control-label col-md-4" for="date">Nombre del Pino: </label>
     <input type="text" ng-model="worker.fullName">
-    <button class="btn btn-info pull-right" ng-click="makeAdmin(worker)">Hacer admin</button>
   </div>
   <div class="modal-body">
     <label class="control-label col-md-4" for="date">Apodo del Pino: </label>
@@ -84,6 +83,7 @@
         <th>Fecha de cumpleaños</th>
         <th>Gif de cumpleaños</th>
         <th>Quiere participar?</th>
+        <th>Admin?</th>
         <th>Editar</th>
         <th>Borrar</th>
       </tr>
@@ -100,6 +100,9 @@
         </td>
         <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
                    ng-change="changeIntention(worker)" ng-model="worker.wantsToParticipate"></td>
+        <td><input type="checkbox" name="adminParticipants[]" value="{{admins[worker]}}"
+                   ng-change="changeAdmin(worker)" ng-model="admins[worker]"></td>
+
         <td>
           <button class="btn btn-sm btn-success"
                   ng-click="Edit(worker)"
