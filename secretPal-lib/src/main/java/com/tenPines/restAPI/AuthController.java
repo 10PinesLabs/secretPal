@@ -150,15 +150,10 @@ public class AuthController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
     @ResponseBody
-    public List<Worker> makeAdmin() {
-        List<Worker> admins = adminService
-                .adminUsers()
-                .stream()
-                .map(User::getWorker)
-                .collect(Collectors.toList());
-        if(admins.isEmpty()){
-            throw new RuntimeException("No existe un administrador para este sistema");
-        }
-        return admins;
+    public Worker makeAdmin(@RequestBody Worker worker) {
+        adminService.save(userService.findByWorker(worker));
+        return worker;
     }
+
+
 }
