@@ -59,15 +59,15 @@ public class FriendRelationService {
     public List<Worker> getAvailablesRelationsTo(Worker workerTo) {
         FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
         return workerService.getAllParticipants().stream().filter(participant ->
-            validator.validate(workerTo, participant)
+                validator.validate(workerTo, participant)
         ).collect(Collectors.toList());
     }
 
-    public Optional<FriendRelation> getByWorkerGiver(Worker giver){
+    public Optional<FriendRelation> getByWorkerGiver(Worker giver) {
         return friendRelationRepository.findByGiftGiver(giver);
     }
 
-    public Optional<FriendRelation> getByWorkerReceiver(Worker receiver){
+    public Optional<FriendRelation> getByWorkerReceiver(Worker receiver) {
         return friendRelationRepository.findByGiftReceiver(receiver);
     }
 
@@ -148,7 +148,7 @@ public class FriendRelationService {
                 .orElseThrow(noHayAmigoAsignadoException());
         Hint hintToEdit = friendRelation.getHints().stream().filter(hint -> hint.getId() == oldHintId).findFirst().orElse(null);
 
-        friendRelation.editHint(hintToEdit,newHint);
+        friendRelation.editHint(hintToEdit, newHint);
         friendRelationRepository.save(friendRelation);
     }
 
@@ -163,7 +163,7 @@ public class FriendRelationService {
 
     public List<Hint> retrieveHintsGivenTo(Worker worker) {
         List<Hint> hints = new ArrayList<>();
-        if(MonthDay.from(clock.now()).isAfter(worker.getBirthday())){
+        if (MonthDay.from(clock.now()).isAfter(worker.getBirthday())) {
             hints = friendRelationRepository.findByGiftReceiver(worker)
                     .map(FriendRelation::getHints)
                     .orElseThrow(noHayPistasException());
@@ -204,24 +204,19 @@ public class FriendRelationService {
     }
 
     public List<Worker> possibleGiftersFor(Worker receiver) {
-
         FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
-        return workerService.getAllParticipants().stream().filter(participant ->
-                validator.validatePossible(participant, receiver)
-        ).collect(Collectors.toList());
+        return workerService.getAllParticipants().stream()
+                .filter(participant ->
+                        validator.validatePossible(participant, receiver)
+                ).collect(Collectors.toList());
     }
 
     public List<PossibleRelationForFrontEnd> allReceiversWithPosibilities() {
         return workerService.getAllParticipants().stream()
-                .filter(this::notInImmutableRelation)
+                .filter(this::canReceive)
                 .map(participant ->
-                new PossibleRelationForFrontEnd(participant, this)
-        ).collect(Collectors.toList());
+                        new PossibleRelationForFrontEnd(participant, this)
+                ).collect(Collectors.toList());
     }
 
-    private boolean notInImmutableRelation(Worker worker) {
-        return friendRelationRepository.findByGiftReceiver(worker)
-                .map(relation -> !inmutableRelation(relation))
-                .orElse(true);
-    }
 }
