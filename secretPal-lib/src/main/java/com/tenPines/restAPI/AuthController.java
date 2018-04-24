@@ -57,6 +57,9 @@ public class AuthController {
         return admins;
     }
 
+
+
+
     @GetMapping(value = "/callback", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String backofficeCallback(
@@ -144,4 +147,13 @@ public class AuthController {
         workerToUpdate.markGiftAsReceived();
         workerService.save(workerToUpdate);
     }
+
+    @RequestMapping(value = "/admin", method = RequestMethod.POST)
+    @ResponseBody
+    public Worker makeAdmin(@RequestBody Worker worker) {
+        adminService.save(userService.findByWorker(worker));
+        return worker;
+    }
+
+
 }
