@@ -170,7 +170,7 @@ public class FriendRelationTest {
     @Test
     public void aNewRelationHas3RemainingGuessAttempts(){
         RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
-        assertThat(relationEstablisher.createRelation().getGuessAttempts(), is(0));
+        assertThat(relationEstablisher.createRelation().getAmountOfGuessAttempts(), is(0));
     }
 
     @Test
@@ -196,7 +196,7 @@ public class FriendRelationTest {
 
         relation.guessGiftGiver("Some Incorrect Full Name");
 
-        assertThat(relation.getGuessAttempts(), is(1));
+        assertThat(relation.getAmountOfGuessAttempts(), is(1));
     }
 
     @Test
@@ -212,6 +212,7 @@ public class FriendRelationTest {
             relation.guessGiftGiver(aWorker.getFullName());
             fail("The exception was not raised");
         } catch (RuntimeException e) {
+            assertThat(relation.getAmountOfGuessAttempts(), is(3));
             assertThat(e.getMessage(), is("Can not have more than 3 failed guess attempts"));
         }
     }
@@ -230,5 +231,21 @@ public class FriendRelationTest {
             assertThat(e.getMessage(), is("The gift giver was already guessed"));
         }
     }
+
+
+    @Test
+    public void theGuessesAreRecorded(){
+        RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
+        FriendRelation relation = relationEstablisher.createRelation();
+
+        String anotherWorker = new WorkerBuilder().build().getFullName();
+        String oneMoreWorker = new WorkerBuilder().build().getFullName();
+        relation.guessGiftGiver(anotherWorker);
+        relation.guessGiftGiver(oneMoreWorker);
+        assertThat(relation.getGuessAttempts(), hasItem(anotherWorker));
+        assertThat(relation.getGuessAttempts(), hasItem(oneMoreWorker));
+        assertThat(relation.getAmountOfGuessAttempts(), is(2));
+    }
+
 
 }

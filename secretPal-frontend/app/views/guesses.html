@@ -1,6 +1,7 @@
 <div class="jumbotron" ng-show="hasGuessedCorrectly">
   <div class="container">
-    <h2> Adivinaste a tu amigo invisible!! </h2>
+    <h2 ng-model="secretPine"> Adivinaste a tu amigo invisible!! <br/> Era {{secretPine.fullName}}!</h2>
+
     <img src="images/correct.gif">
   </div>
 </div>
@@ -18,9 +19,9 @@
 
     <h1>Pistas de tu pino invisible
       <img style="float: right" src="images/zelda_heart.png" width="40" height="40"
-           ng-repeat="i in attempts(maxGuesses-attemptsDone)"/>
+           ng-repeat="i in attemptsLeft()"/>
       <img style="float: right" src="images/empty_heart.png" width="40" height="40"
-           ng-repeat="i in attempts(attemptsDone)"/>
+           ng-repeat="i in attemptsDone"/>
     </h1>
 
     <div class="panel panel-black">
@@ -37,6 +38,11 @@
         </tbody>
       </table>
     </div>
+    <div ng-show="attemptsDone.length>0">
+      <label>No eran:</label>
+      <strong ng-repeat="guess in attemptsDone">{{guess}} | </strong>
+    </div>
+
     <form ng-show="canKeepPlaying()">
       <label>Creo que mi pino invisible es:</label>
       <select

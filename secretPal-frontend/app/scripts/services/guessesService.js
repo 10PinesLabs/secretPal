@@ -36,11 +36,19 @@ angular.module('secretPalApp').service('GuessesService', function ($http, SweetA
     });
   };
 
-  this.maxGuesses = function (callback) {
+  this.getMaxGuesses = function (callback) {
     $http.get(buildRoute('/guessLimit')).success(function (data) {
       callback(data);
     }).error(function () {
       errorMsg("No limit found");
+    });
+  };
+
+  this.getSecretPine = function(user, callback){
+    $http.get(buildRoute('/giftGiverFor/'+user.worker.id)).success(function (data) {
+      callback(data);
+    }).error(function () {
+      errorMsg("No pine found");
     });
   };
 

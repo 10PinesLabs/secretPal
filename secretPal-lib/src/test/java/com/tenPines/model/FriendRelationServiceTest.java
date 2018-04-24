@@ -280,4 +280,14 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         assertThat(friendRelationService.getGiftSenderFor(aWorkerReceiver), is(Optional.of(aWorkerGiver)));
     }
 
+    @Test
+    public void canObtainTheGuessesMadeInARelation(){
+        setUp();
+        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+
+        String anotherWorker = new WorkerBuilder().build().getFullName();
+        FriendRelation friendRelationAfterGuess = friendRelationService.guessGiftGiverFor(aWorkerReceiver, anotherWorker);
+        assertThat(friendRelationAfterGuess.getGuessAttempts(), hasItem(anotherWorker));
+    }
+
 }
