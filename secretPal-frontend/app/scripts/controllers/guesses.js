@@ -29,7 +29,7 @@ angular.module('secretPalApp')
               text: "",
               type: "success",
               showConfirmButton:false,
-              timer: 1000
+              timer: 800
             });
           } else {
             SweetAlert.swal({
@@ -37,11 +37,10 @@ angular.module('secretPalApp')
               text: "Perdiste una vida",
               type: "error",
               showConfirmButton:false,
-              timer: 1000
+              timer: 800
             });
           }
-          $scope.attemptsDone = response.guessAttempts;
-          $scope.hasGuessedCorrectly = response.wasGuessed;
+          loadGuessStatus();
         });
       }
 
@@ -116,7 +115,7 @@ angular.module('secretPalApp')
         WorkerService.all(function (data) {
           function isSelectable(pine) {
             var wasNotAFailedGuess = !$scope.attemptsDone.includes(pine.fullName);
-            var isNotMe = !pine.fullName === user.worker.fullName;
+            var isNotMe = pine.fullName !== user.worker.fullName;
 
             return wasNotAFailedGuess && isNotMe;
           }
