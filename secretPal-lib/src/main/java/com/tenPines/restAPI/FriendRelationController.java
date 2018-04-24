@@ -14,9 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,12 +65,6 @@ public class FriendRelationController {
         return systemFacade.retrieveAssignedFriendFor(id);
     }
 
-    @RequestMapping(value = "/autoAssign", method = RequestMethod.POST)
-    @ResponseBody
-    public void autoAssignRelations() throws IOException {
-        systemFacade.autoAssignRelations();
-    }
-
     @RequestMapping(value = "/posibilities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<PossibleRelationForFrontEnd> allPosibilities() {
@@ -83,13 +75,19 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/inmutables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<FriendRelation> allInmutableRelations() {
-        return systemFacade.allInmutableRelations();
+    public List<FriendRelation> allImmutableRelations() {
+        return systemFacade.allImmutableRelations();
+    }
+
+    @RequestMapping(value = "{id}/makeImmutable", method = RequestMethod.PUT)
+    @ResponseBody
+    public void makeRelationImmutable(@PathVariable("id") Long relationId) {
+        friendRelationService.makeImmutable(friendRelationService.retrieveRelation(relationId));
     }
 
     @RequestMapping(value = "/update/{giverId}/{newReceiverId}", method = RequestMethod.PUT)
     @ResponseBody
-    public void updateRelation(@PathVariable Long giverId, @PathVariable Long newReceiverId) throws IOException, MessagingException {
+    public void updateRelation(@PathVariable Long giverId, @PathVariable Long newReceiverId) {
         Worker giver = workerService.retrieveWorker(giverId);
         Worker newReceiver = workerService.retrieveWorker(newReceiverId);
         systemFacade.updateRelation(giver, newReceiver);

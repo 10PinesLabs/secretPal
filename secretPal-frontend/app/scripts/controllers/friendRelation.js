@@ -8,13 +8,13 @@ function randomFrom(possibleRecievers) {
 
 app.controller('FriendRelationController', function ($scope, $modal, $filter, FriendRelationService, SweetAlert) {
 
+  updateAllRelations();
+
   function updatePosibilities() {
     FriendRelationService.allPosibleRelations(function (data) {
       $scope.posibleRelations = data;
     });
   }
-
-  updatePosibilities();
 
   function updateInmutableRelations() {
     FriendRelationService.allInmutableRelations(function (data) {
@@ -22,7 +22,21 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     });
   }
 
-  updateInmutableRelations();
+  function updateExistingRelations() {
+    FriendRelationService.all(function (data) {
+      $scope.friendRelations = data;
+      $scope.posibilities = $scope.friendRelations.map(function (relation) {
+        $scope.alreadySelected[relation.giftGiver.fullName] = $scope.notNull(relation);
+        return relation.giftGiver;
+      });
+    });
+  }
+
+  function updateAllRelations() {
+    updatePosibilities();
+    updateInmutableRelations();
+    updateExistingRelations();
+  }
 
   $scope.today = new Date();
   $scope.alreadySelected = {};
@@ -52,7 +66,6 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
 
     return (diff > 0);
   };
-
 
   $scope.birthdayPassOnAMonth = function (relation) {
     var date = relation.giftReceiver.dateOfBirth;
@@ -110,7 +123,7 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
 
   $scope.update = function (giver, receiver) {
     $scope.toggleAlreadySelected(receiver, true);
-    FriendRelationService.update(giver, receiver, updatePosibilities);
+    FriendRelationService.update(giver, receiver, updateAllRelations);
   };
 
   $scope.delete = function (giver) {
@@ -133,5 +146,16 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
         }
       });
   };
+
+  $scope.lock = function (giver, receiver) {
+    var relationToLock = $scope.friendRelations.find(function (relation) {
+      return relation.giftGiver.id === giver.id && relation.giftReceiver.id === receiver.id;
+    });
+    if (typeof relationToLock !== "undefined") {
+      FriendRelationService.lock(relationToLock, updateAllRelations);
+    } else {
+      SweetAlert.swal("Algo salió mal", "No se pudo encontrar una relación entre esos pinos", "error");
+    }
+  }
 
 });

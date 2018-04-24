@@ -10,6 +10,7 @@ public class FriendRelation {
 
     public static final int HINTS_AMOUNT_LIMIT = 3;
     public static final int GUESS_ATTEMPTS_LIMIT = 3;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -22,14 +23,16 @@ public class FriendRelation {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "friend_relation_id")
-    private List<Hint> hints;
+    private List<Hint> hints = new ArrayList<>();
 
     private boolean isGuessed = false;
+
+    private boolean isImmutable = false;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "guesses", joinColumns = @JoinColumn(name = "friend_relation_id"))
     @Column(name = "guess")
-    private List<String> guesses;
+    private List<String> guesses = new ArrayList<>();
 
     public FriendRelation() {
     }
@@ -37,8 +40,6 @@ public class FriendRelation {
     public FriendRelation(Worker participant, Worker giftReceiver) {
         this.giftGiver = participant;
         this.giftReceiver = giftReceiver;
-        this.hints = new ArrayList<>();
-        this.guesses = new ArrayList<>();
     }
 
     public Long getId() {
@@ -82,10 +83,6 @@ public class FriendRelation {
         this.hints.add(aHint);
     }
 
-    public List<Hint> hints() {
-        return this.hints;
-    }
-
     private void assertHintAmountLessThanLimit() {
         if (amountOfHints() >= HINTS_AMOUNT_LIMIT) {
             throw new RuntimeException("Can not have more than " + HINTS_AMOUNT_LIMIT + " hints");
@@ -93,7 +90,7 @@ public class FriendRelation {
     }
 
     private int amountOfHints() {
-        return hints().size();
+        return hints.size();
     }
 
     public void removeHint(Hint aHint) {
@@ -129,6 +126,14 @@ public class FriendRelation {
         if (getAmountOfGuessAttempts() >= GUESS_ATTEMPTS_LIMIT) {
             throw new RuntimeException("Can not have more than " + GUESS_ATTEMPTS_LIMIT + " failed guess attempts");
         }
+    }
+
+    public boolean isImmutable() {
+        return isImmutable;
+    }
+
+    public void makeImmutable() {
+        isImmutable = true;
     }
 
 }
