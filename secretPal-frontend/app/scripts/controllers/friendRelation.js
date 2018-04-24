@@ -26,15 +26,9 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     FriendRelationService.all(function (data) {
       $scope.friendRelations = data;
       $scope.posibilities = $scope.friendRelations.map(function (relation) {
-
         $scope.alreadySelected[relation.giftGiver.fullName] = $scope.notNull(relation);
-
         return relation.giftGiver;
       });
-
-      console.log($scope.posibilities);
-
-      $scope.relations = $filter('filter')($scope.friendRelations, {giftReceiver: null});
     });
   }
 
