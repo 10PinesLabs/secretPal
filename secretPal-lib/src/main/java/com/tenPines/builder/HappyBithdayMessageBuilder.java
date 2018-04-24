@@ -5,10 +5,14 @@ import com.tenPines.application.service.DefaultGifService;
 import com.tenPines.model.Message;
 import com.tenPines.model.Worker;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class HappyBithdayMessageBuilder {
 
     private DefaultGifService defaultGifService;
     private MailProperties mailProperties;
+    private int minExclamationSigns = 1;
+    private int maxExclamationSigns = 3;
 
     public HappyBithdayMessageBuilder(MailProperties mailProperties, DefaultGifService defaultGifService) {
         this.mailProperties = mailProperties;
@@ -16,7 +20,12 @@ public class HappyBithdayMessageBuilder {
     }
 
     private String assignationSubject(Worker birthdayWorker) {
-        return "Feliz cumpleaños " + birthdayWorker.getName();
+        String subject = "Feliz cumpleaños " + birthdayWorker.getName();
+        int randomNum = ThreadLocalRandom.current().nextInt(minExclamationSigns, maxExclamationSigns + 1);
+        for(int i=0; i<randomNum; i++){
+            subject = "¡" + subject + "!";
+        }
+        return subject.toUpperCase();
     }
 
     private String plainAssignationBodyText() {
