@@ -247,7 +247,6 @@ app.directive('unique', function () {
       $modalInstance.dismiss('cancel');
     };
 
-
     /*DATEPICKER FUNCTIONS*/
     $scope.open = function ($event) {
       $event.preventDefault();
