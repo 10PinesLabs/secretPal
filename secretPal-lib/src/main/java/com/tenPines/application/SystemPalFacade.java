@@ -7,6 +7,8 @@ import com.tenPines.application.service.validation.rule.NotCircularRelationRule;
 import com.tenPines.application.service.validation.rule.NotTooCloseBirthdaysRule;
 import com.tenPines.mailer.UnsentMessage;
 import com.tenPines.model.*;
+import com.tenPines.restAPI.utils.EmptyRelationForFrontEnd;
+import com.tenPines.restAPI.utils.GuessResponse;
 import com.tenPines.restAPI.utils.PossibleRelationForFrontEnd;
 import org.springframework.stereotype.Service;
 
@@ -226,5 +228,10 @@ public class SystemPalFacade {
 
     public Integer guessesLimit() {
         return FriendRelation.GUESS_ATTEMPTS_LIMIT;
+    }
+
+    public GuessResponse guessStatusFor(Worker worker) {
+        FriendRelation relation = friendRelationService.guessStatusFor(worker).orElse(new EmptyRelationForFrontEnd());
+        return new GuessResponse(relation.isGuessed(), relation.getGuessAttempts());
     }
 }

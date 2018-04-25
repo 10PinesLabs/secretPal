@@ -266,6 +266,18 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     }
 
     @Test
+    public void cannotGuessAnInvalidName(){
+        setUp();
+        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+        try {
+            friendRelationService.guessGiftGiverFor(aWorkerReceiver, null);
+            fail("The exception was not raised");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), is("No es un nombre valido para arriesgar"));
+        }
+    }
+
+    @Test
     public void gettingTheGiftGiverForAWorkerWhenItHasNotYetBeenGuessedReturnsNone(){
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);

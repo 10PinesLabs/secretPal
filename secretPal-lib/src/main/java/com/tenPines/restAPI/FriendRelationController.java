@@ -163,8 +163,8 @@ public class FriendRelationController {
     @ResponseBody
     public GuessResponse getStatusFor(@PathVariable Long workerID) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        FriendRelation relation = friendRelationService.guessStatusFor(worker);
-        return new GuessResponse(relation.isGuessed(), relation.getGuessAttempts());
+        return systemFacade.guessStatusFor(worker);
+
     }
 
     @RequestMapping(value = "/guessLimit", method = RequestMethod.GET)

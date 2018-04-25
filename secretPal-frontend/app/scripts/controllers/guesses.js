@@ -20,53 +20,57 @@ angular.module('secretPalApp')
         return Array.from(new Array(lifesLeft).keys());
       };
 
-    $scope.guessSecretPine = function () {
-      function makeGuess() {
-        GuessesService.makeGuess(user, $scope.guess.fullName, function (response) {
-          if (response.wasGuessed) {
-            SweetAlert.swal({
-              title:"Adivinaste!",
-              text: "",
-              type: "success",
-              showConfirmButton:false,
-              timer: 800
-            });
-          } else {
-            SweetAlert.swal({
-              title:"Te equivocaste!",
-              text: "Perdiste una vida",
-              type: "error",
-              showConfirmButton:false,
-              timer: 800
-            });
-          }
-          loadGuessStatus();
-        });
+      $scope.thereIsNoGuess = function () {
+        return $scope.guess == null;
       }
 
-      var lastChance = $scope.maxGuesses - $scope.attemptsDone === 1;
-
-      if (lastChance) {
-        SweetAlert.swal({
-            title: "¿Estás seguro?",
-            text: "Si te equivocas, perdes.",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#32d48a",
-            confirmButtonText: "Si, arriesgar!",
-            closeOnConfirm: false
-          },
-          function (isConfirm) {
-            if (isConfirm) {
-              makeGuess();
+      $scope.guessSecretPine = function () {
+        function makeGuess() {
+          GuessesService.makeGuess(user, $scope.guess.fullName, function (response) {
+            if (response.wasGuessed) {
+              SweetAlert.swal({
+                title: "Adivinaste!",
+                text: "",
+                type: "success",
+                showConfirmButton: false,
+                timer: 800
+              });
+            } else {
+              SweetAlert.swal({
+                title: "Te equivocaste!",
+                text: "Perdiste una vida",
+                type: "error",
+                showConfirmButton: false,
+                timer: 800
+              });
             }
+            loadGuessStatus();
           });
-      }
-      else{
-        makeGuess();
-      }
+        }
 
-    };
+        var lastChance = $scope.maxGuesses - $scope.attemptsDone === 1;
+
+        if (lastChance) {
+          SweetAlert.swal({
+              title: "¿Estás seguro?",
+              text: "Si te equivocas, perdes.",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#32d48a",
+              confirmButtonText: "Si, arriesgar!",
+              closeOnConfirm: false
+            },
+            function (isConfirm) {
+              if (isConfirm) {
+                makeGuess();
+              }
+            });
+        }
+        else {
+          makeGuess();
+        }
+
+      };
 
       $scope.diff = function (date) {
         var unDia = 24 * 60 * 60 * 1000; // hora*minuto*segundo*milli
@@ -95,7 +99,9 @@ angular.module('secretPalApp')
           $scope.hasGuessedCorrectly = data.wasGuessed;
 
           loadPossibleSecretPines();
-          getSecretPine();
+          if (data.wasGuessed) {
+            getSecretPine();
+          }
         });
       }
 
@@ -105,13 +111,13 @@ angular.module('secretPalApp')
         });
       }
 
-    function getSecretPine() {
-      GuessesService.getSecretPine(user, function (data) {
-        $scope.secretPine = data;
-      });
-    }
+      function getSecretPine() {
+        GuessesService.getSecretPine(user, function (data) {
+          $scope.secretPine = data;
+        });
+      }
 
-    function loadPossibleSecretPines() {
+      function loadPossibleSecretPines() {
         WorkerService.all(function (data) {
           function isSelectable(pine) {
             var wasNotAFailedGuess = !$scope.attemptsDone.includes(pine.fullName);
@@ -125,9 +131,9 @@ angular.module('secretPalApp')
       }
 
 
-    loadGuessStatus();
-    loadMaxGuesses();
-    loadHints();
+      loadGuessStatus();
+      loadMaxGuesses();
+      loadHints();
 
     }
   );
