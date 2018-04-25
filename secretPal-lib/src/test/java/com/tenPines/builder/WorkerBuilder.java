@@ -71,7 +71,7 @@ public class WorkerBuilder {
     }
 
     private void checkIfIsAValidName(String name, String message) {
-        checkIfFieldIsValidUponCondition(StringUtils.isBlank(name) || !name.matches("[a-zA-Z ,.'-]+"), message);
+        checkIfFieldIsValidUponCondition(StringUtils.isBlank(name), message);
     }
 
     private void checkIfValidEmail(String email) {

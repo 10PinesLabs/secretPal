@@ -37,16 +37,6 @@ public class WorkerBuilderTest {
     }
 
     @Test
-    public void When_I_try_to_create_a_person_with_a_non_char_name_an_exception_is_raised() {
-        try {
-            this.workerBuilder.withFullName("123$_").build();
-            fail("The exception was not raised");
-        } catch (Exception e) {
-            assertThat(e.getMessage(), is("Full Name is invalid"));
-        }
-    }
-
-    @Test
     public void When_I_try_to_create_a_person_with_an_invalid_email_an_exception_is_raised() {
         try {
             this.workerBuilder.withEmail("invalidEmail").build();
