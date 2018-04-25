@@ -26,28 +26,6 @@ angular.module('secretPalApp')
       }
 
       $scope.guessSecretPine = function () {
-        function makeGuess() {
-          GuessesService.makeGuess(user, $scope.guess.fullName, function (response) {
-            if (response.wasGuessed) {
-              SweetAlert.swal({
-                title: "Adivinaste!",
-                text: "",
-                type: "success",
-                showConfirmButton: false,
-                timer: 800
-              });
-            } else {
-              SweetAlert.swal({
-                title: "Te equivocaste!",
-                text: "Perdiste una vida",
-                type: "error",
-                showConfirmButton: false,
-                timer: 800
-              });
-            }
-            loadGuessStatus();
-          });
-        }
 
         var lastChance = $scope.maxGuesses - $scope.attemptsDone === 1;
 
@@ -98,23 +76,14 @@ angular.module('secretPalApp')
         GuessesService.currentStatus(user, function (data) {
           $scope.attemptsDone = data.guessAttempts;
           $scope.hasGuessedCorrectly = data.wasGuessed;
-
+          $scope.secretPine=data.secretPine;
           loadPossibleSecretPines();
-          if (data.wasGuessed) {
-            getSecretPine();
-          }
         });
       }
 
       function loadHints() {
         GuessesService.getHints(user, function (data) {
           $scope.hints = data;
-        });
-      }
-
-      function getSecretPine() {
-        GuessesService.getSecretPine(user, function (data) {
-          $scope.secretPine = data;
         });
       }
 
@@ -130,6 +99,28 @@ angular.module('secretPalApp')
           $scope.posibleSecretPines = data.filter(isSelectable);
         });
       }
+
+    function guessResultMessage(title, text, type) {
+
+      SweetAlert.swal({
+        title: title,
+        text: text,
+        type: type,
+        showConfirmButton: false,
+        timer: 800
+      });
+    }
+
+    function makeGuess() {
+      GuessesService.makeGuess(user, $scope.guess.fullName, function (response) {
+        if (response.wasGuessed) {
+          guessResultMessage("Adivinaste!","","success");
+        } else {
+          guessResultMessage("Te equivocaste!","Perdiste ua vida","error");
+        }
+        loadGuessStatus();
+      });
+    }
 
 
       loadGuessStatus();
