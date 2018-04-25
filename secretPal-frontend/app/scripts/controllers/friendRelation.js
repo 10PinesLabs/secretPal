@@ -158,7 +158,7 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d43f3a",
-        confirmButtonText: "Si, borrar!",
+        confirmButtonText: "Si, fijar!",
         closeOnConfirm: false
       },
       function (isConfirm) {
