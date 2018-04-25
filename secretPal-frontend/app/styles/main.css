@@ -279,3 +279,8 @@ span.label:not(:hover) {
   white-space: unset;
   max-height: fit-content;
 }
+
+.lista-de-pinos {
+  width: fit-content;
+  width: -moz-fit-content;
+}
