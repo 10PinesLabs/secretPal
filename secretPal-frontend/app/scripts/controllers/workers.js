@@ -2,7 +2,7 @@
 
 var app = angular.module('secretPalApp');
 app.controller('WorkersController', function ($scope, $modal, $rootScope, WorkerService, FriendRelationService, $filter, $location, SweetAlert, Account, user) {
-  $scope.admins = {};
+  $scope.admins = [];
 
   function warningMsg(msg) {
     SweetAlert.swal({
@@ -15,18 +15,17 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
 
   function updateAdmins() {
     Account.getAdmins().then(function (admins) {
-      admins.data.map(function (worker) {
-        $scope.admins[worker.fullName] = true;
+      $scope.admins = admins.data.map(function(worker){
+        return worker.id;
       });
+
     });
   }
 
   function updateWorkersStatus() {
     WorkerService.all(function (data) {
       $scope.workers = data;
-      data.map(function (worker) {
-        $scope.admins[worker.fullName] = false;
-      });
+
       updateAdmins();
     });
   }
@@ -92,12 +91,9 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
   };
 
   $scope.isAnAdmin = function (worker) {
-    return $scope.admins[worker.fullName];
-  };
 
-  $scope.asd = function () {
-    return false;
-  }
+    return $scope.admins.includes(worker.id);
+  };
 
   function buildWorker() {
     return {
