@@ -165,7 +165,7 @@ public class FriendRelationService {
     public List<Hint> retrieveHintsGivenTo(Worker worker) {
         List<Hint> hints = new ArrayList<>();
         if(MonthDay.from(clock.now()).isAfter(worker.getBirthday())){
-            hints = friendRelationRepository.findByGiftReceiver(worker).orElse(new EmptyRelationForFrontEnd()).hints();
+            hints = friendRelationRepository.findByGiftReceiver(worker).orElse(new EmptyRelationForFrontEnd()).getHints();
         }
         return hints;
     }

@@ -18,7 +18,7 @@ public class EmptyRelationForFrontEnd extends com.tenPines.model.FriendRelation 
     }
 
     @Override
-    public List<Hint> hints() {
+    public List<Hint> getHints() {
         return new ArrayList<>();
     }
 }
