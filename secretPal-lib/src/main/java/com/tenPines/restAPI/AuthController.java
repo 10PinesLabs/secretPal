@@ -151,7 +151,8 @@ public class AuthController {
     @RequestMapping(value = "/admin", method = RequestMethod.POST)
     @ResponseBody
     public Worker makeAdmin(@RequestBody Worker worker) {
-        adminService.save(userService.findByWorker(worker));
+        User aUser = userService.findByWorker(worker);
+        adminService.save(aUser);
         return worker;
     }
 

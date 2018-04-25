@@ -33,9 +33,14 @@ public class UserService {
     }
 
     private void assertIsNotAdmin(Worker worker) {
-        if(adminService.isAdmin(findByWorker(worker))){
+        User user = findByWorker(worker);
+        if(isValidUser(user) && adminService.isAdmin(user) ){
             throw new RuntimeException("No se puede borrar a un administrador");
         }
+    }
+
+    private boolean isValidUser(User user) {
+        return user != null;
     }
 
     public Optional<User> findByBackofficeId(Long backofficeId) {
