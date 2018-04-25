@@ -58,15 +58,6 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
       });
   };
 
-  this.autoAssign = function (callback) {
-    $http.post(buildRoute('/autoAssign')).success(function () {
-      successMsg("La asignación automática fue exitosa", "Ahora todos los pinos tienen amigo invisible!");
-      callback();
-    }).error(function () {
-      errorMsg("No se pudo procesar el pedido");
-    });
-  };
-
   this.allPosibleRelations = function(callback) {
     $http.get(buildRoute('/posibilities')).success(function (data) {
       callback(data);
@@ -99,5 +90,14 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
       successFunction();
     });
   };
+
+  this.lock = function(relation, callback) {
+    $http.put(buildRoute('/' + relation.id + '/makeImmutable'), null).success(function () {
+      successMsg("La relación fue fijada exitosamente!");
+      callback();
+    }).error(function () {
+      errorMsg("No se pudo procesar el pedido");
+    });
+  }
 
 });

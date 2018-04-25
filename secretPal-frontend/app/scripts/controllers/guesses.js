@@ -20,6 +20,7 @@ angular.module('secretPalApp')
         return Array.from(new Array(lifesLeft).keys());
       };
 
+
       $scope.thereIsNoGuess = function () {
         return $scope.guess == null;
       }
