@@ -7,12 +7,19 @@ import com.tenPines.model.Worker;
 import org.apache.commons.lang.StringUtils;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * Created by Aye on 01/11/16.
  */
 public abstract class ReminderBuilder {
+
+    public List<MailTextReplacer> replacers = Arrays.asList(
+            new MailTextReplacer("receiver.fullName", relation -> relation.getGiftReceiver().getFullName()),
+            new MailTextReplacer("receiver.dateOfBirth", relation -> birthday(relation.getGiftReceiver()))
+    );
 
     public MailerService mailerService;
 
@@ -26,34 +33,52 @@ public abstract class ReminderBuilder {
         return new Message(
                 aFriendRelation.getGiftGiver().geteMail(),
                 assignationSubject(),
-                htmlBodyText(aFriendRelation.getGiftReceiver()),
-                plainBodyText(aFriendRelation.getGiftReceiver())
+                htmlBodyText(aFriendRelation),
+                plainBodyText(aFriendRelation)
         );
     }
 
     protected abstract String assignationSubject();
 
-    private String plainBodyText(Worker birthdayWorker) {
-        return plainTextFrom(htmlBodyText(birthdayWorker));
+    private String plainBodyText(FriendRelation relation) {
+        return plainTextFrom(htmlBodyText(relation));
     }
 
     private String plainTextFrom(String htmlText) {
-        String[] plainTextFragments = StringUtils.substringsBetween(htmlText, "<p>", "</p>");
-        if(plainTextFragments == null){
-            throw new RuntimeException("The html message is missing <p> and </p>");
-        }
+        List<String> plainTextFragments = substringsBetween(htmlText, "<p>", "</p>");
+        assertThereIsPlainText(plainTextFragments);
         return String.join(" ", plainTextFragments);
     }
 
-    protected String htmlBodyText(Worker birthdayWorker) {
-        return mailerService.getTemplate()
-                .map(emailTemplate -> replaceMailVariables(emailTemplate.getBodyText(), birthdayWorker))
-                .orElse(defaultHtmlBody(birthdayWorker));
+    private List<String> substringsBetween(String htmlText, String open, String close) {
+        String[] plainTextFragments = StringUtils.substringsBetween(htmlText, open, close);
+        if (plainTextFragments == null) {
+            return Arrays.asList();
+        }
+        return Arrays.asList(plainTextFragments);
     }
 
-    private String replaceMailVariables(String bodyText, Worker birthdayWorker) {
-        String res = StringUtils.replace(bodyText, "${receiver.fullName}", birthdayWorker.getFullName());
-        res = StringUtils.replace(res, "${receiver.dateOfBirth}", birthday(birthdayWorker));
+    private void assertThereIsPlainText(List<String> plainTextFragments) {
+        if (plainTextFragments.isEmpty()){
+            throw new RuntimeException("The html message is missing <p> and </p>");
+        }
+    }
+
+    protected String htmlBodyText(FriendRelation relation) {
+        return mailerService.getTemplate()
+                .map(emailTemplate -> replaceMailVariables(emailTemplate.getBodyText(), relation))
+                .orElse(defaultHtmlBody(relation.getGiftReceiver()));
+    }
+
+    private String replaceMailVariables(String bodyText, FriendRelation friendRelation) {
+        List<String> variablesToReplace = substringsBetween(bodyText, "${", "}");
+        String res = variablesToReplace.stream().reduce(bodyText, (text, variable) -> {
+                    MailTextReplacer appropiateReplacer = replacers.stream().filter(replacer -> replacer.canReplace(variable))
+                            .findFirst()
+                            .orElseThrow(() -> new RuntimeException("${" + variable + "}" + " is not a valid variable"));
+                    return StringUtils.replace(bodyText, "${" + variable + "}", appropiateReplacer.replaceFor(friendRelation));
+                }
+        );
         return res;
     }
 

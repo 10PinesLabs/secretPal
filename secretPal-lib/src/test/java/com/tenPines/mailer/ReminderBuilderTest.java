@@ -120,4 +120,16 @@ public class ReminderBuilderTest extends SpringBaseTest {
         assertThat(message.getPlainTextBody(), is(expectedBody));
     }
 
+    @Test
+    public void whenTheEmailTemplateHasAVariableThatCannotBeReplacedAnErrorShouldBeRaised() {
+        mailerService.setEmailTemplate(eMailTemplate("<p>${inexistent}!</p>"));
+
+        try {
+            reminderMonthsBuilder.buildMessage(friendRelation);
+            fail("The exception was not raised");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), is("${inexistent} is not a valid variable"));
+        }
+    }
+
 }
