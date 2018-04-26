@@ -13,7 +13,6 @@ angular.module('secretPalApp')
             $scope.hints = data;
           });
         }
-
       });
 
       HintsService.hintsLimit(function (number) {
@@ -34,7 +33,9 @@ angular.module('secretPalApp')
         HintsService.new(user, newHint, function (hint) {
 
           $scope.hints.push(hint);
+          $scope.hintMessage = null;
         });
+
       };
 
       $scope.edit = function (hint) {
