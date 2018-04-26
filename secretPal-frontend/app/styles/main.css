@@ -284,3 +284,16 @@ span.label:not(:hover) {
   width: fit-content;
   width: -moz-fit-content;
 }
+
+.btn-magic{
+  text-decoration-color: black;
+  color: white !important;
+  background-image: url("../images/boton.png");
+  background-size: cover;
+  border:none;
+  opacity: 0.8;
+}
+
+.btn-magic:hover{
+  opacity:1;
+}
