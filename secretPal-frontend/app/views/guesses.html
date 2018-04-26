@@ -48,7 +48,7 @@
         ng-model="guess"
         ng-options="posibleSecretPine.fullName for posibleSecretPine in posibleSecretPines track by posibleSecretPine.id">
       </select>
-      <button ng-click="guessSecretPine()" ng-disabled="!guess" class="btn btn-success pull-right">Arriesgar!</button>
+      <button ng-click="guessSecretPine()" ng-disabled="thereIsNoGuess()" class="btn btn-success pull-right">Arriesgar!</button>
     </form>
     <div class="jumbotron" ng-show="!canKeepPlaying()">
       <div class="container">

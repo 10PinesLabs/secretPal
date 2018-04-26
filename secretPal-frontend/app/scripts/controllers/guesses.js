@@ -20,53 +20,36 @@ angular.module('secretPalApp')
         return Array.from(new Array(lifesLeft).keys());
       };
 
-    $scope.guessSecretPine = function () {
-      function makeGuess() {
-        GuessesService.makeGuess(user, $scope.guess.fullName, function (response) {
-          if (response.wasGuessed) {
-            SweetAlert.swal({
-              title:"Adivinaste!",
-              text: "",
-              type: "success",
-              showConfirmButton:false,
-              timer: 800
+
+      $scope.thereIsNoGuess = function () {
+        return $scope.guess == null;
+      }
+
+      $scope.guessSecretPine = function () {
+
+        var lastChance = $scope.maxGuesses - $scope.attemptsDone === 1;
+
+        if (lastChance) {
+          SweetAlert.swal({
+              title: "¿Estás seguro?",
+              text: "Si te equivocas, perdes.",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#32d48a",
+              confirmButtonText: "Si, arriesgar!",
+              closeOnConfirm: false
+            },
+            function (isConfirm) {
+              if (isConfirm) {
+                makeGuess();
+              }
             });
-          } else {
-            SweetAlert.swal({
-              title:"Te equivocaste!",
-              text: "Perdiste una vida",
-              type: "error",
-              showConfirmButton:false,
-              timer: 800
-            });
-          }
-          loadGuessStatus();
-        });
-      }
+        }
+        else {
+          makeGuess();
+        }
 
-      var lastChance = $scope.maxGuesses - $scope.attemptsDone === 1;
-
-      if (lastChance) {
-        SweetAlert.swal({
-            title: "¿Estás seguro?",
-            text: "Si te equivocas, perdes.",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#32d48a",
-            confirmButtonText: "Si, arriesgar!",
-            closeOnConfirm: false
-          },
-          function (isConfirm) {
-            if (isConfirm) {
-              makeGuess();
-            }
-          });
-      }
-      else{
-        makeGuess();
-      }
-
-    };
+      };
 
       $scope.diff = function (date) {
         var unDia = 24 * 60 * 60 * 1000; // hora*minuto*segundo*milli
@@ -93,9 +76,8 @@ angular.module('secretPalApp')
         GuessesService.currentStatus(user, function (data) {
           $scope.attemptsDone = data.guessAttempts;
           $scope.hasGuessedCorrectly = data.wasGuessed;
-
+          $scope.secretPine=data.secretPine;
           loadPossibleSecretPines();
-          getSecretPine();
         });
       }
 
@@ -105,13 +87,7 @@ angular.module('secretPalApp')
         });
       }
 
-    function getSecretPine() {
-      GuessesService.getSecretPine(user, function (data) {
-        $scope.secretPine = data;
-      });
-    }
-
-    function loadPossibleSecretPines() {
+      function loadPossibleSecretPines() {
         WorkerService.all(function (data) {
           function isSelectable(pine) {
             var wasNotAFailedGuess = !$scope.attemptsDone.includes(pine.fullName);
@@ -124,10 +100,32 @@ angular.module('secretPalApp')
         });
       }
 
+    function guessResultMessage(title, text, type) {
 
-    loadGuessStatus();
-    loadMaxGuesses();
-    loadHints();
+      SweetAlert.swal({
+        title: title,
+        text: text,
+        type: type,
+        showConfirmButton: false,
+        timer: 800
+      });
+    }
+
+    function makeGuess() {
+      GuessesService.makeGuess(user, $scope.guess.fullName, function (response) {
+        if (response.wasGuessed) {
+          guessResultMessage("Adivinaste!","","success");
+        } else {
+          guessResultMessage("Te equivocaste!","Perdiste una vida","error");
+        }
+        loadGuessStatus();
+      });
+    }
+
+
+      loadGuessStatus();
+      loadMaxGuesses();
+      loadHints();
 
     }
   );
