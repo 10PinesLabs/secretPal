@@ -1,14 +1,15 @@
-<div class="jumbotron" ng-show="hasGuessedCorrectly">
+<div class="jumbotron success-guess" ng-show="hasGuessedCorrectly">
   <div class="container">
-    <h2 ng-model="secretPine"> Adivinaste a tu amigo invisible!! <br/> Era {{secretPine.fullName}}!</h2>
+    <h2 ng-model="secretPine"> Adivinaste a tu amigo invisible!! </h2>
+    <h2> Era {{secretPine.fullName}}!</h2>
 
-    <img src="images/correct.gif">
+    <img class="success-guess-img" src="images/correct.gif">
   </div>
 </div>
 
 <div ng-hide="hasGuessedCorrectly">
 
-  <div class="jumbotron" ng-show="!afterBirthday()">
+  <div class="jumbotron cant-see-yet" ng-hide="afterBirthday()">
     <div class="container">
       <h2>No podés ver las pistas antes de tu cumpleaños</h2>
     </div>
@@ -50,10 +51,10 @@
       </select>
       <button ng-click="guessSecretPine()" ng-disabled="thereIsNoGuess()" class="btn btn-success pull-right">Arriesgar!</button>
     </form>
-    <div class="jumbotron" ng-show="!canKeepPlaying()">
+    <div class="jumbotron failed-guess" ng-hide="canKeepPlaying()">
       <div class="container">
         <h2>Perdiste. Trae facturas.</h2>
-        <img src="images/facturas.gif" width="400" height="270">
+        <img class="failed-guess-img"src="images/facturas.gif" width="400" height="270">
       </div>
     </div>
   </div>
