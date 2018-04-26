@@ -5,7 +5,7 @@ import com.tenPines.model.Worker;
 import java.util.List;
 
 public class GuessResponseForFrontend {
-    private final Worker secretPine;
+    public Worker secretPine;
     public boolean wasGuessed;
     public List<String> guessAttempts;
 

@@ -2,9 +2,9 @@ package com.tenPines.restAPI.utils;
 
 import java.time.LocalDate;
 
-public class EmptyWorker extends com.tenPines.model.Worker {
+public class EmptyWorkerForFrontend extends com.tenPines.model.Worker {
 
-    public EmptyWorker() {
+    public EmptyWorkerForFrontend() {
         super("","", "", LocalDate.now(), true);
     }
 }

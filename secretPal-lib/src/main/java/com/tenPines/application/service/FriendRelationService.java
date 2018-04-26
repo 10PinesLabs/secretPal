@@ -9,7 +9,7 @@ import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
 import com.tenPines.persistence.HintsRepository;
 import com.tenPines.restAPI.utils.EmptyRelationForFrontEnd;
-import com.tenPines.restAPI.utils.EmptyWorker;
+import com.tenPines.restAPI.utils.EmptyWorkerForFrontend;
 import com.tenPines.restAPI.utils.PossibleRelationForFrontEnd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -195,7 +195,7 @@ public class FriendRelationService {
     public Worker getGiftSenderFor(Worker giftReceiver) {
         return friendRelationRepository.findByGiftReceiver(giftReceiver)
                 .filter(FriendRelation::isGuessed)
-                .map(FriendRelation::getGiftGiver).orElse(new EmptyWorker());
+                .map(FriendRelation::getGiftGiver).orElse(new EmptyWorkerForFrontend());
     }
 
     public Optional<FriendRelation> guessStatusFor(Worker worker) {

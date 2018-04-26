@@ -116,7 +116,7 @@ angular.module('secretPalApp')
         if (response.wasGuessed) {
           guessResultMessage("Adivinaste!","","success");
         } else {
-          guessResultMessage("Te equivocaste!","Perdiste ua vida","error");
+          guessResultMessage("Te equivocaste!","Perdiste una vida","error");
         }
         loadGuessStatus();
       });
