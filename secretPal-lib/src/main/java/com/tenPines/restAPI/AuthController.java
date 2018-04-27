@@ -127,13 +127,13 @@ public class AuthController {
 
     @RequestMapping(value = "/defaultGif", method = RequestMethod.GET)
     @ResponseBody
-    public DefaultGif getDefaultGif() {//TODO
+    public DefaultGif getDefaultGif() {
         return defaultGifService.get();
     }
 
     @RequestMapping(value = "/defaultGif", method = RequestMethod.POST)
     @ResponseBody
-    public void setDefaultGif(@RequestBody String newDefaultGif) {//TODO
+    public void setDefaultGif(@RequestBody String newDefaultGif) {
         defaultGifService.set(newDefaultGif);
     }
 

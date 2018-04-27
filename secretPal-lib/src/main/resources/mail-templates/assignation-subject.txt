@@ -1,0 +1,1 @@
+[SecretPal-Reminder] Asignación Pino Invisible ${currentYear}

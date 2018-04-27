@@ -64,19 +64,6 @@ public class ScheduleMailerTest extends SpringBaseTest {
     }
 
     @Test
-    public void When_A_Worker_Has_A_Friends_Birthday_Two_Months_From_Now_The_System_Should_Mail_Him(){
-        setUp(LocalDate.of(2000, Month.AUGUST, 1), LocalDate.of(2000, Month.OCTOBER, 1));
-
-        reminderSystem.sendTwoMonthsReminders();
-
-        assertThat(postMan.messagesTo(friendWorker.geteMail()), hasSize(1));
-        assertThat(postMan.messagesTo(friendWorker.geteMail()), contains(hasProperty("plainTextBody",
-                allOf(
-                        containsString(birthdayWorker.getFullName())
-                ))));
-    }
-
-    @Test
     public void When_A_Worker_Has_Not_A_Friends_Birthday_Two_Months_From_Now_No_Mail_Should_be_Sent() {
         setUp(LocalDate.of(2000, Month.AUGUST, 1), LocalDate.of(2000, Month.NOVEMBER, 1));
 
