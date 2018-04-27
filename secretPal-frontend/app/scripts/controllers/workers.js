@@ -1,7 +1,8 @@
 'use strict';
 
 var app = angular.module('secretPalApp');
-app.controller('WorkersController', function ($scope, $modal, $rootScope, WorkerService, FriendRelationService, $filter, $location, SweetAlert) {
+app.controller('WorkersController', function ($scope, $modal, $rootScope, WorkerService, FriendRelationService, $filter, $location, SweetAlert, Account, user) {
+  $scope.admins = [];
 
   function warningMsg(msg) {
     SweetAlert.swal({
@@ -11,9 +12,26 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     });
   }
 
-  WorkerService.all(function (data) {
-    $scope.workers = data;
-  });
+
+  function updateAdmins() {
+    Account.getAdmins().then(function (admins) {
+      $scope.admins = admins.data.map(function(worker){
+        return worker.id;
+      });
+
+    });
+  }
+
+  function updateWorkersStatus() {
+    WorkerService.all(function (data) {
+      $scope.workers = data;
+
+      updateAdmins();
+    });
+  }
+
+  updateWorkersStatus();
+
 
   FriendRelationService.all(function (data) {
     $scope.participants = data;
@@ -32,14 +50,16 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
         confirmButtonText: "Si, ¡borrar!",
         confirmButtonColor: "#d43f3a",
         cancelButtonText: "Cancelar",
-        cancelButtonColor: '#FFFFFF',
+        cancelButtonColor: '#FFFFFF'
       },
       function (isConfirm) {
         if (isConfirm) {
           WorkerService.delete(worker.id, function () {
             $scope.workers = $filter('filter')($scope.workers, {id: '!' + worker.id});
-            SweetAlert.swal({title: "Pino borrado exitosamente",
-              confirmButtonColor: "#68bd46",});
+            SweetAlert.swal({
+              title: "Pino borrado exitosamente",
+              confirmButtonColor: "#68bd46"
+            });
           });
         }
       });
@@ -48,7 +68,9 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
   $scope.delete = function (worker) {
     if (worker.wantsToParticipate) {
       warningMsg("Este pino está participando. No se puede borrar.");
-    } else {
+    } else if ($scope.isAnAdmin(worker)) {
+      warningMsg("Este pino es administrador. No se puede borrar.");
+    }else {
       $scope.deleteWithConfirmationMSg(worker);
     }
   };
@@ -68,8 +90,19 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     $scope.Reset();
   };
 
+  $scope.isAnAdmin = function (worker) {
+
+    return $scope.admins.includes(worker.id);
+  };
+
   function buildWorker() {
-    return {fullName: $scope.newName, nickname: $scope.newNickname, eMail: $scope.newMail, dateOfBirth: $scope.newDate, wantsToParticipate: false};
+    return {
+      fullName: $scope.newName,
+      nickname: $scope.newNickname,
+      eMail: $scope.newMail,
+      dateOfBirth: $scope.newDate,
+      wantsToParticipate: false
+    };
   }
 
   $scope.changeIntention = function (worker) {
@@ -93,6 +126,26 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
       WorkerService.changeIntention(worker);
     }
   };
+
+
+  $scope.addAdmin = function (worker) {
+    SweetAlert.swal({
+        title: "Atento!",
+        text: worker.fullName + " va a ser admin! \n Esto no se puede deshacer",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d43f3a",
+        confirmButtonText: "Hacer admin",
+        closeOnConfirm: true
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          Account.makeAdmin(worker, updateAdmins);
+        }
+      }
+    );
+  };
+
 
   $scope.Edit = function (worker) {
     var modalInstance = $modal.open({
@@ -149,7 +202,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     $scope.opened = true;
   };
 
-  $scope.notHimSelf = function(){
+  $scope.notHimSelf = function () {
   };
 
   $scope.cantParticipate = function (worker) {
@@ -160,7 +213,8 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     return actualBirthday <= today;
   };
 
-});
+})
+;
 
 app.directive('unique', function () {
   return {

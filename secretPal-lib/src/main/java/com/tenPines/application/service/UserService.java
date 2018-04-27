@@ -15,9 +15,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final JWTGenerator jwtGenerator;
 
-    public UserService(UserRepository userRepository, JWTGenerator jwtGenerator) {
+    private AdminService adminService;
+
+    public UserService(UserRepository userRepository, JWTGenerator jwtGenerator, AdminService adminService) {
         this.userRepository = userRepository;
         this.jwtGenerator = jwtGenerator;
+        this.adminService = adminService;
     }
 
     public User save(User aUser) {
@@ -25,11 +28,27 @@ public class UserService {
     }
 
     public void deleteByWorker(Worker worker) {
+        assertIsNotAdmin(worker);
         userRepository.deleteByWorker(worker);
+    }
+
+    private void assertIsNotAdmin(Worker worker) {
+        User user = findByWorker(worker);
+        if(isValidUser(user) && adminService.isAdmin(user) ){
+            throw new RuntimeException("No se puede borrar a un administrador");
+        }
+    }
+
+    private boolean isValidUser(User user) {
+        return user != null;
     }
 
     public Optional<User> findByBackofficeId(Long backofficeId) {
         return userRepository.findByBackofficeId(backofficeId);
+    }
+
+    public User findByWorker(Worker worker) {
+        return userRepository.findByWorker(worker);
     }
 
     public String getTokenForUser(User user) {

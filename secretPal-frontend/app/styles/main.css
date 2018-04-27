@@ -280,6 +280,11 @@ span.label:not(:hover) {
   max-height: fit-content;
 }
 
+.lista-de-pinos {
+  width: fit-content;
+  width: -moz-fit-content;
+}
+
 .btn-magic{
   text-decoration-color: black;
   color: white !important;
