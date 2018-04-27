@@ -63,15 +63,22 @@ angular.module('secretPalApp')
 
     self.register = function (newUser) {
       return $http.post(buildRoute('/register'), newUser).then(function () {
-          SweetAlert.swal(SweetAlert.swal({
-            title: "¡Registrado correctamente!",
-            text: "Gracias por participar en ''Amigo invisible''",
-            confirmButtonColor: "#68bd46"
-          }));
-          $location.path('/login');
+        SweetAlert.swal(SweetAlert.swal({
+          title: "¡Registrado correctamente!",
+          text: "Gracias por participar en ''Amigo invisible''",
+          confirmButtonColor: "#68bd46"
+        }));
+        $location.path('/login');
       }).catch(function (error) {
         SweetAlert.swal("No te has registrado", error.data.message, "error");
         $location.path('/register');
       });
     };
+
+    self.makeAdmin = function (worker, callback) {
+      $http.post(buildRoute('/admin'), worker).success(function (data) {
+        callback();
+      })
+    };
+
   });

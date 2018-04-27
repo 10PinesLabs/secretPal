@@ -26,6 +26,6 @@ public class AdminService {
     }
 
     public boolean isAdmin(User user) {
-        return adminUsers().contains(user);
+        return adminUsers().stream().map(u->u.getId()).collect(Collectors.toList()).contains(user.getId());
     }
 }

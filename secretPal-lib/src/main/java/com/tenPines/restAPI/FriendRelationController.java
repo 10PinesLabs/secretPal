@@ -6,7 +6,7 @@ import com.tenPines.application.service.WorkerService;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Hint;
 import com.tenPines.model.Worker;
-import com.tenPines.restAPI.utils.GuessResponse;
+import com.tenPines.restAPI.utils.GuessResponseForFrontend;
 import com.tenPines.restAPI.utils.PossibleRelationForFrontEnd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/friendRelation")
@@ -138,18 +137,10 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/guessFor/{workerID}", method = RequestMethod.PUT)
     @ResponseBody
-    public GuessResponse guessGiftGiverFor(@PathVariable Long workerID, @RequestBody String assumedGiftGiverFullName) {
+    public GuessResponseForFrontend guessGiftGiverFor(@PathVariable Long workerID, @RequestBody String assumedGiftGiverFullName) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
         FriendRelation relationAfterGuess = friendRelationService.guessGiftGiverFor(worker, assumedGiftGiverFullName);
-        return new GuessResponse(relationAfterGuess.isGuessed(), relationAfterGuess.getGuessAttempts());
-    }
-
-    @RequestMapping(value = "/giftGiverFor/{workerID}", method = RequestMethod.GET)
-    @ResponseBody
-    public Worker getGiftSenderForWorker(@PathVariable Long workerID) {
-        Worker giftReceiver = systemFacade.retrieveAWorker(workerID);
-        Optional<Worker> giftSender = friendRelationService.getGiftSenderFor(giftReceiver);
-        return giftSender.orElseThrow(CannotGetGiftGiverException::new);
+        return new GuessResponseForFrontend(relationAfterGuess.isGuessed(), relationAfterGuess.getGuessAttempts(),friendRelationService.getGiftSenderFor(worker));
     }
 
     @ExceptionHandler(CannotGetGiftGiverException.class)
@@ -161,10 +152,10 @@ public class FriendRelationController {
 
     @RequestMapping(value = "/guessFor/{workerID}", method = RequestMethod.GET)
     @ResponseBody
-    public GuessResponse getStatusFor(@PathVariable Long workerID) {
+    public GuessResponseForFrontend getStatusFor(@PathVariable Long workerID) {
         Worker worker = systemFacade.retrieveAWorker(workerID);
-        FriendRelation relation = friendRelationService.guessStatusFor(worker);
-        return new GuessResponse(relation.isGuessed(), relation.getGuessAttempts());
+        return systemFacade.guessStatusFor(worker);
+
     }
 
     @RequestMapping(value = "/guessLimit", method = RequestMethod.GET)

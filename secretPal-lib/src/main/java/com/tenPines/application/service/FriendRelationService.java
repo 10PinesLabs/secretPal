@@ -8,12 +8,13 @@ import com.tenPines.model.Worker;
 import com.tenPines.model.process.RelationEstablisher;
 import com.tenPines.persistence.FriendRelationRepository;
 import com.tenPines.persistence.HintsRepository;
+import com.tenPines.restAPI.utils.EmptyRelationForFrontEnd;
+import com.tenPines.restAPI.utils.EmptyWorkerForFrontend;
 import com.tenPines.restAPI.utils.PossibleRelationForFrontEnd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.MonthDay;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -162,13 +163,20 @@ public class FriendRelationService {
     }
 
     public List<Hint> retrieveHintsGivenTo(Worker worker) {
-        List<Hint> hints = new ArrayList<>();
-        if (MonthDay.from(clock.now()).isAfter(worker.getBirthday())) {
-            hints = friendRelationRepository.findByGiftReceiver(worker)
-                    .map(FriendRelation::getHints)
-                    .orElseThrow(noHayPistasException());
-        }
-        return hints;
+        return friendRelationRepository.findByGiftReceiver(worker)
+                .filter(this::receiverBirthdayPassed)
+                .orElse(new EmptyRelationForFrontEnd())
+                .getHints();
+
+    }
+
+    private boolean receiverBirthdayPassed(FriendRelation r) {
+        return birthdayHasPassed(r.getGiftReceiver());
+    }
+
+
+    private boolean birthdayHasPassed(Worker worker) {
+        return MonthDay.from(clock.now()).isAfter(worker.getBirthday());
     }
 
     public List<Hint> retrieveHintsGivenBy(Worker worker) {
@@ -178,6 +186,7 @@ public class FriendRelationService {
     }
 
     public FriendRelation guessGiftGiverFor(Worker worker, String assumedGiftGiverFullName) {
+        assertValidName(assumedGiftGiverFullName);
         FriendRelation relation = friendRelationRepository.findByGiftReceiver(worker)
                 .orElseThrow(noHayAmigoAsignadoException());
         relation.guessGiftGiver(assumedGiftGiverFullName);
@@ -185,14 +194,20 @@ public class FriendRelationService {
         return relation;
     }
 
-    public Optional<Worker> getGiftSenderFor(Worker giftReceiver) {
-        return friendRelationRepository.findByGiftReceiver(giftReceiver)
-                .filter(FriendRelation::isGuessed)
-                .map(FriendRelation::getGiftGiver);
+    private void assertValidName(String assumedGiftGiverFullName) {
+        if(assumedGiftGiverFullName == null ){
+            throw new RuntimeException("No es un nombre valido para arriesgar");
+        }
     }
 
-    public FriendRelation guessStatusFor(Worker worker) {
-        return friendRelationRepository.findByGiftReceiver(worker).orElseThrow(noHayAmigoAsignadoException());
+    public Worker getGiftSenderFor(Worker giftReceiver) {
+        return friendRelationRepository.findByGiftReceiver(giftReceiver)
+                .filter(FriendRelation::isGuessed)
+                .map(FriendRelation::getGiftGiver).orElse(new EmptyWorkerForFrontend());
+    }
+
+    public Optional<FriendRelation> guessStatusFor(Worker worker) {
+        return friendRelationRepository.findByGiftReceiver(worker);
     }
 
     private Supplier<RuntimeException> noHayAmigoAsignadoException() {

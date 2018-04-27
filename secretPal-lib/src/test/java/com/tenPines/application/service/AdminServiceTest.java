@@ -65,4 +65,6 @@ public class AdminServiceTest extends SpringBaseTest {
         assertTrue(adminService.isAdmin(anUser));
         assertTrue(adminService.isAdmin(anotherUser));
     }
+
+
 }

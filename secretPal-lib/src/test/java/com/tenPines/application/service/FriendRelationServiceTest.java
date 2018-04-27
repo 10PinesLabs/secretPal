@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -219,10 +218,22 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     }
 
     @Test
+    public void cannotGuessAnInvalidName(){
+        setUp();
+        friendRelationService.create(aWorkerGiver, aWorkerReceiver);
+        try {
+            friendRelationService.guessGiftGiverFor(aWorkerReceiver, null);
+            fail("The exception was not raised");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), is("No es un nombre valido para arriesgar"));
+        }
+    }
+
+    @Test
     public void gettingTheGiftGiverForAWorkerWhenItHasNotYetBeenGuessedReturnsNone(){
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
-        assertThat(friendRelationService.getGiftSenderFor(aWorkerReceiver), is(Optional.empty()));
+        assertThat(friendRelationService.getGiftSenderFor(aWorkerReceiver).getFullName(), is(""));
     }
 
     @Test
@@ -230,7 +241,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
         friendRelationService.guessGiftGiverFor(aWorkerReceiver, aWorkerGiver.getFullName());
-        assertThat(friendRelationService.getGiftSenderFor(aWorkerReceiver), is(Optional.of(aWorkerGiver)));
+        assertThat(friendRelationService.getGiftSenderFor(aWorkerReceiver), is(aWorkerGiver));
     }
 
     @Test

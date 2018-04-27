@@ -4,7 +4,6 @@
     <h1>Relaciones entre pinos</h1>
   </div>
 
-
   <div class="panel panel-black" style="width: fit-content; width: -moz-fit-content">
     <form class="navbar-form" name="form">
       <table class="table table-striped center-vertical">
@@ -20,46 +19,36 @@
         <tr ng-repeat="posibleRelation in posibleRelations">
           <td>{{posibleRelation.receiver.fullName}}</td>
           <td>{{posibleRelation.receiver.dateOfBirth | date: 'dd/MM'}}</td>
-
           <td>
             <select
               style="width: 12vw"
               ng-model="posibleRelation.giver"
-              ng-change="removeAutoSelect(posibleRelation.receiver)"
+              ng-change="update(posibleRelation.giver, posibleRelation.receiver)"
               ng-options="posibleGiver as posibleGiver.fullName for posibleGiver in posibleRelation.possibleGivers track by posibleGiver.id">
             </select>
           </td>
           <td>
-            <button class="btn btn-sm btn-warning"
+            <button class="btn btn-sm btn-magic"
                     ng-click="autoAssignPine(posibleRelation.receiver, posibleRelation.possibleGivers)"
                     title="Autoasignar">
               <span class="glyphicon glyphicon-random"></span>
             </button>
-            <button class="btn btn-sm btn-success"
-               ng-click="update(posibleRelation.giver, posibleRelation.receiver)"
-               ng-disabled="!posibleRelation.giver ||  autoSelected(posibleRelation.receiver)"
-               title="Actualizar">
-              <span class="glyphicon glyphicon-ok"></span>
-            </button>
             <button class="btn btn-sm btn-danger"
-               ng-click="delete(posibleRelation.giver)"
-               title="Borrar">
-                <span class="glyphicon glyphicon-remove"></span>
+                    ng-click="delete(posibleRelation.giver)"
+                    ng-disabled="!posibleRelation.giver"
+                    title="Borrar">
+              <span class="glyphicon glyphicon-remove"></span>
             </button>
             <button class="btn btn-sm btn-primary"
                     ng-click="lock(posibleRelation.giver, posibleRelation.receiver)"
+                    ng-disabled="!posibleRelation.giver"
                     title="Fijar">
               <span class="glyphicon glyphicon-lock"></span>
             </button>
-
           </td>
         </tr>
         </tbody>
       </table>
-      <button class="btn btn-success pull-right" ng-click="auto()" ng-show="false">
-        <span class="glyphicon glyphicon-random"></span>
-        Asignar auto<i>magica</i>mente
-      </button>
     </form>
   </div>
 
@@ -80,7 +69,7 @@
         <tr ng-repeat="relation in inmutableRelations">
           <td>{{relation.giftGiver.fullName}}</td>
           <td>
-            <small>es amig@ invisible de </small>
+            <small>es amig@ invisible de</small>
           </td>
           <td>{{relation.giftReceiver.fullName}}</td>
         </tr>

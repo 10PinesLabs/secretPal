@@ -26,7 +26,6 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     FriendRelationService.all(function (data) {
       $scope.friendRelations = data;
       $scope.posibilities = $scope.friendRelations.map(function (relation) {
-        $scope.alreadySelected[relation.giftGiver.fullName] = $scope.notNull(relation);
         return relation.giftGiver;
       });
     });
@@ -37,78 +36,6 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     updateInmutableRelations();
     updateExistingRelations();
   }
-
-  $scope.today = new Date();
-  $scope.alreadySelected = {};
-
-  $scope.hasBirthdayInAMonth = function (worker) {
-    return new Date(worker.dateOfBirth).getMonth() <= $scope.thisMonth;
-  };
-
-  $scope.diff = function (date) {
-    var unDia = 24 * 60 * 60 * 1000; // hora*minuto*segundo*milli
-    var birthday = new Date(date);
-    birthday.setYear($scope.today.getFullYear());
-
-    return Math.round((birthday.getTime() - $scope.today.getTime()) / unDia);
-  };
-
-  $scope.hasBirthdayPassed = function (relation) {
-    var date = relation.giftReceiver.dateOfBirth;
-    var diff = $scope.diff(date);
-
-    return (diff < 0);
-  };
-
-  $scope.birthdayHasNotPassed = function (relation) {
-    var date = relation.giftReceiver.dateOfBirth;
-    var diff = $scope.diff(date);
-
-    return (diff > 0);
-  };
-
-  $scope.birthdayPassOnAMonth = function (relation) {
-    var date = relation.giftReceiver.dateOfBirth;
-    var diff = $scope.diff(date);
-
-    return (diff < 30);
-  };
-
-  $scope.dayDifference = function (date) {
-    var diff = $scope.diff(date);
-    if (diff > 0) {
-      return "Faltan solo " + diff + " dias";
-    }
-  };
-
-  FriendRelationService.all(function (data) {
-    $scope.friendRelations = data;
-    $scope.friendRelations.forEach(function (relation) {
-      $scope.alreadySelected[relation.giftReceiver.fullName] = $scope.notNull(relation);
-    });
-  });
-
-  $scope.deleteRelation = function (relation) {
-    FriendRelationService.delete(relation.giftGiver.id, relation.giftReceiver.id, function () {
-      $scope.friendRelations = $filter('filter')($scope.friendRelations, {giftGiver: '!' + relation.giftGiver});
-    });
-  };
-
-  $scope.notNull = function (relation) {
-    return (relation.giftReceiver !== null);
-  };
-
-  $scope.autoSelected = function (worker) {
-    return $scope.alreadySelected[worker.fullName];
-  };
-
-  $scope.removeAutoSelect = function (worker) {
-    $scope.toggleAlreadySelected(worker, false);
-  };
-
-  $scope.toggleAlreadySelected = function (worker, boolean) {
-    $scope.alreadySelected[worker.fullName] = boolean;
-  };
 
   $scope.autoAssignPine = function (receiver, possibleGivers) {
     SweetAlert.swal({
@@ -121,8 +48,13 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     });
   };
 
+  $scope.deleteRelation = function (relation) {
+    FriendRelationService.delete(relation.giftGiver.id, relation.giftReceiver.id, function () {
+      $scope.friendRelations = $filter('filter')($scope.friendRelations, {giftGiver: '!' + relation.giftGiver});
+    });
+  };
+
   $scope.update = function (giver, receiver) {
-    $scope.toggleAlreadySelected(receiver, true);
     FriendRelationService.update(giver, receiver, updateAllRelations);
   };
 
@@ -140,7 +72,6 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
         if (isConfirm) {
           FriendRelationService.delete(giver, function () {
             updatePosibilities();
-            $scope.toggleAlreadySelected(giver, false);
             SweetAlert.swal("Relación eliminada exitosamente", "Ahora " + giver.fullName + " no es amigo invisible de nadie ", "success");
           });
         }

@@ -279,3 +279,47 @@ span.label:not(:hover) {
   white-space: unset;
   max-height: fit-content;
 }
+
+.lista-de-pinos {
+  width: fit-content;
+  width: -moz-fit-content;
+}
+
+.btn-magic{
+  text-decoration-color: black;
+  color: white !important;
+  background-image: url("../images/boton.png");
+  background-size: cover;
+  border:none;
+  opacity: 0.8;
+}
+
+.btn-magic:hover{
+  opacity:1;
+}
+.cant-see-yet{
+  border: darkgreen solid;
+}
+
+.success-guess{
+  border: #61b85c solid;
+  background-color: #e5ece5;
+}
+
+.success-guess-img{
+  border: #61b85c 1px groove;
+}
+
+.failed-guess{
+  border: darkred solid;
+  background-color: #ece5e5;
+
+}
+
+.failed-guess-img{
+  border: darkred 1px ridge;
+}
+
+.see-friend{
+  border: #61b85c solid;
+}
