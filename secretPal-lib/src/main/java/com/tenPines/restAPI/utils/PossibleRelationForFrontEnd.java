@@ -18,6 +18,9 @@ public class PossibleRelationForFrontEnd {
         this.receiver = participant;
         this.giver = friendRelationService.retrieveGiftGiverFor(participant);
         posibleGivers= new ArrayList();
+        if(giver.isPresent()){
+            posibleGivers.add(giver.get());
+        }
     }
 
     public void updatePosibleGifters(FriendRelationService friendRelationService) {

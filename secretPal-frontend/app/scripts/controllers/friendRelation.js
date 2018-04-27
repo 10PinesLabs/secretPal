@@ -10,6 +10,7 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
 
   updateAllRelations();
 
+
   function updatePosibilities() {
     FriendRelationService.allPosibleRelations(function (data) {
       $scope.posibleRelations = data;
@@ -55,7 +56,10 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
   };
 
   $scope.update = function (giver, receiver) {
-    FriendRelationService.update(giver, receiver, updateAllRelations);
+    FriendRelationService.update(giver, receiver, function () {
+      updateAllRelations();
+      updatePossibleRelation(receiver);
+    });
   };
 
   $scope.delete = function (giver) {
@@ -93,18 +97,30 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     return posRelation.possibleGivers.length === 0;
   };
 
+  function updatePossibleRelation(receiver) {
+    FriendRelationService.updatePosibleRelation(receiver.id, function (data) {
+      $scope.posibleRelations = $scope.posibleRelations.map(function (pr) {
+        if (pr.receiver === receiver) {
+          return data;
+        }
+        else {
+          return pr
+        }
+      })
+    });
+  }
+
+  $scope.hasSecretPal = function (relation) {
+    return relation.possibleGivers.length === 1 && relation.possibleGivers !== null;
+  };
+
+  function haveToUpdate(relation) {
+    return $scope.noPossibilities(relation) || $scope.hasSecretPal(relation);
+  }
+
   $scope.updateRelation = function (relation) {
-    if ($scope.noPossibilities(relation)) {
-      FriendRelationService.updatePosibleRelation(relation.receiver.id, function (data) {
-        $scope.posibleRelations = $scope.posibleRelations.map(function (pr){
-          if (pr.receiver === relation.receiver) {
-            return data;
-          }
-          else {
-            return pr
-          }
-        })
-      });
+    if (haveToUpdate(relation)) {
+      updatePossibleRelation(relation.receiver);
     }
   };
 
