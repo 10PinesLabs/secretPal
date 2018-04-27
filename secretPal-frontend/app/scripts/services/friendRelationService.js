@@ -66,6 +66,14 @@ angular.module('secretPalApp').service('FriendRelationService', function ($http,
     });
   };
 
+  this.updatePosibleRelation = function(receiverId,callback) {
+    $http.get(buildRoute('/posiblegifters/'+ receiverId)).success(function (data) {
+      callback(data);
+    }).error(function () {
+      errorMsg("No se pudo procesar el pedido");
+    });
+  };
+
   this.allInmutableRelations = function(callback) {
     $http.get(buildRoute('/inmutables')).success(function (data) {
       callback(data);

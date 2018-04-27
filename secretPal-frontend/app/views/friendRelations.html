@@ -23,12 +23,14 @@
             <select
               style="width: 12vw"
               ng-model="posibleRelation.giver"
+              ng-click="updateRelation(posibleRelation)"
               ng-change="update(posibleRelation.giver, posibleRelation.receiver)"
               ng-options="posibleGiver as posibleGiver.fullName for posibleGiver in posibleRelation.possibleGivers track by posibleGiver.id">
             </select>
           </td>
           <td>
             <button class="btn btn-sm btn-magic"
+                    ng-disabled="noPossibilities(posibleRelation)"
                     ng-click="autoAssignPine(posibleRelation.receiver, posibleRelation.possibleGivers)"
                     title="Autoasignar">
               <span class="glyphicon glyphicon-random"></span>

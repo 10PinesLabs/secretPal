@@ -43,8 +43,8 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
       text: "Esto puede tardar un rato...\n muchos algoritmos",
       showConfirmButton: false,
       timer: 500
-    }, function() {
-      $scope.update(randomFrom(possibleGivers),receiver);
+    }, function () {
+      $scope.update(randomFrom(possibleGivers), receiver);
     });
   };
 
@@ -87,6 +87,27 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     } else {
       SweetAlert.swal("Algo salió mal", "No se pudo encontrar una relación entre esos pinos", "error");
     }
-  }
+  };
 
-});
+  $scope.noPossibilities = function (posRelation) {
+    return posRelation.possibleGivers.length === 0;
+  };
+
+  $scope.updateRelation = function (relation) {
+    if ($scope.noPossibilities(relation)) {
+      FriendRelationService.updatePosibleRelation(relation.receiver.id, function (data) {
+        $scope.posibleRelations = $scope.posibleRelations.map(function (pr){
+          if (pr.receiver === relation.receiver) {
+            return data;
+          }
+          else {
+            return pr
+          }
+        })
+      });
+    }
+  };
+
+
+})
+;

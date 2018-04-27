@@ -72,6 +72,15 @@ public class FriendRelationController {
         return possibleRelationsForFrontEnd;
     }
 
+    @RequestMapping(value = "/posiblegifters/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public PossibleRelationForFrontEnd updateGifters(@PathVariable Long id) {
+        Worker giftReceiver = workerService.retrieveWorker(id);
+        PossibleRelationForFrontEnd possibleRelation = new PossibleRelationForFrontEnd(giftReceiver, friendRelationService);
+        possibleRelation.updatePosibleGifters(friendRelationService);
+        return possibleRelation;
+    }
+
     @RequestMapping(value = "/inmutables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<FriendRelation> allImmutableRelations() {
