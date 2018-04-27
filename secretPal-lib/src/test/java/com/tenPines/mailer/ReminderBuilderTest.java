@@ -33,8 +33,6 @@ public class ReminderBuilderTest extends SpringBaseTest {
     private Worker birthdayWorker;
     private Worker workerGiver;
     private FriendRelation friendRelation;
-    private ReminderMonthsBirthdayAproachBuilder reminderMonthsBuilder;
-    private ReminderWeeksBirthdayAproachBuilder reminderWeeksBuilder;
 
     @Before
     public void setUp() {
