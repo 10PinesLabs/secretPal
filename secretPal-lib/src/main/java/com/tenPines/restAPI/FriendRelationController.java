@@ -67,9 +67,7 @@ public class FriendRelationController {
     @RequestMapping(value = "/posibilities", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<PossibleRelationForFrontEnd> allPosibilities() {
-        List<PossibleRelationForFrontEnd> possibleRelationsForFrontEnd = systemFacade.allReceiversWithPosibilities();
-
-        return possibleRelationsForFrontEnd;
+        return systemFacade.allReceiversWithPosibilities();
     }
 
     @RequestMapping(value = "/posiblegifters/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

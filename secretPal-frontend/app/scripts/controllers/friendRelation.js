@@ -98,16 +98,18 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
   };
 
   function updatePossibleRelation(receiver) {
-    FriendRelationService.updatePosibleRelation(receiver.id, function (data) {
-      $scope.posibleRelations = $scope.posibleRelations.map(function (pr) {
-        if (pr.receiver === receiver) {
-          return data;
-        }
-        else {
-          return pr
-        }
-      })
-    });
+    if (haveToUpdate(relation)) {
+      FriendRelationService.updatePosibleRelation(receiver.id, function (data) {
+        $scope.posibleRelations = $scope.posibleRelations.map(function (pr) {
+          if (pr.receiver === receiver) {
+            return data;
+          }
+          else {
+            return pr
+          }
+        })
+      });
+    }
   }
 
   $scope.hasSecretPal = function (relation) {
@@ -117,13 +119,6 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
   function haveToUpdate(relation) {
     return $scope.noPossibilities(relation) || $scope.hasSecretPal(relation);
   }
-
-  $scope.updateRelation = function (relation) {
-    if (haveToUpdate(relation)) {
-      updatePossibleRelation(relation.receiver);
-    }
-  };
-
 
 })
 ;
