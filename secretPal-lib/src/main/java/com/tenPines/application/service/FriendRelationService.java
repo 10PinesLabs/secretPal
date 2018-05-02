@@ -227,11 +227,20 @@ public class FriendRelationService {
     }
 
     public List<PossibleRelationForFrontEnd> allReceiversWithPosibilities() {
-        return workerService.getAllParticipants().stream()
+        List<PossibleRelationForFrontEnd> possibleRelations = workerService.getAllParticipants().stream()
                 .filter(this::canReceive)
                 .map(participant ->
                         new PossibleRelationForFrontEnd(participant, this)
                 ).collect(Collectors.toList());
+        possibleRelations.sort(PossibleRelationForFrontEnd::orderByBirthdayDate);
+        updateFirstFiveRelations(possibleRelations);
+        return possibleRelations;
+    }
+
+    private void updateFirstFiveRelations(List<PossibleRelationForFrontEnd> possibleRelations) {
+        for (int i = 0; i < 5; i++) {
+            possibleRelations.get(i).updatePosibleGifters(this);
+        }
     }
 
 }

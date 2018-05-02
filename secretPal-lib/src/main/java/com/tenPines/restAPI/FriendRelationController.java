@@ -68,7 +68,7 @@ public class FriendRelationController {
     @ResponseBody
     public List<PossibleRelationForFrontEnd> allPosibilities() {
         List<PossibleRelationForFrontEnd> possibleRelationsForFrontEnd = systemFacade.allReceiversWithPosibilities();
-        possibleRelationsForFrontEnd.sort(PossibleRelationForFrontEnd::orderByBirthdayDate);
+
         return possibleRelationsForFrontEnd;
     }
 
