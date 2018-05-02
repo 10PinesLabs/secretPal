@@ -57,6 +57,7 @@ public class PossibleRelationForFrontEndTest extends SpringBaseTest{
 
         PossibleRelationForFrontEnd posibilities =
                 new PossibleRelationForFrontEnd(worker, friendRelationService);
+        posibilities.updatePosibleGifters(friendRelationService);
 
         assertThat(posibilities.getReceiver(), is(worker));
         assertThat(posibilities.getPossibleGivers(), hasSize(2));
@@ -76,7 +77,7 @@ public class PossibleRelationForFrontEndTest extends SpringBaseTest{
 
         PossibleRelationForFrontEnd posibilities =
                 new PossibleRelationForFrontEnd(worker, friendRelationService);
-
+        posibilities.updatePosibleGifters(friendRelationService);
         assertThat(posibilities.getReceiver(), is(worker));
         assertThat(posibilities.getPossibleGivers(), hasSize(2));
         assertThat(posibilities.getPossibleGivers(), hasItem(anotherWorker));
@@ -97,6 +98,7 @@ public class PossibleRelationForFrontEndTest extends SpringBaseTest{
 
         PossibleRelationForFrontEnd posibilities =
                 new PossibleRelationForFrontEnd(worker, friendRelationService);
+        posibilities.updatePosibleGifters(friendRelationService);
 
         assertThat(posibilities.getReceiver(), is(worker));
         assertThat(posibilities.getPossibleGivers(), hasSize(3));
