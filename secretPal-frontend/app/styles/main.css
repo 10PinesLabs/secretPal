@@ -9,36 +9,48 @@ body {
   padding: 0;
 }
 
+a{
+  color: #61b85c;
+}
+
+a :hover{
+  color: #44883c;
+}
+
+/*.panel-primary{*/
+  /*border-color: black;*/
+/*}*/
+
 .splash {
-  background-color: #428bca;
+  background-color: #68bd46;
   width: 100%;
   text-align: center;
   color: white;
   display: block !important;
 }
-
 /* Everything but the jumbotron gets side spacing for mobile first views */
+
 .header,
 .marketing,
 .footer {
   padding-left: 15px;
   padding-right: 15px;
 }
-
 /* Custom page header */
 .header {
   border-bottom: 1px solid #e5e5e5;
   margin-bottom: 10px;
 }
 /* Make the masthead heading the same height as the navigation */
+
 .header h3 {
   margin-top: 0;
   margin-bottom: 0;
   line-height: 40px;
   padding-bottom: 19px;
 }
-
 /* Custom page footer */
+
 .footer {
   padding-top: 19px;
   color: #777;
@@ -48,23 +60,46 @@ body {
 .container-narrow > hr {
   margin: 30px 0;
 }
-
 /* Main marketing message and sign up button */
 .jumbotron {
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
 }
+
 .jumbotron .btn {
   font-size: 21px;
   padding: 14px 24px;
 }
-
 /* Supporting marketing content */
 .marketing {
   margin: 40px 0;
 }
+
 .marketing p + h4 {
   margin-top: 28px;
+}
+
+.glyphicon-heart{
+  color: #d00009;
+}
+
+.toggle-switch{
+  color: #61b85c;
+}
+
+.toggle-switch .switch-left {
+  color: #FFFFFF;
+  background: #61b85c;
+}
+
+.btn-transparent{
+  background-color: transparent;
+  text-decoration-color: black;
+  border-color: #4cae4c;
+}
+
+.panel-black{
+  border-color: black;
 }
 
 /* Responsive: Portrait tablets and up */
@@ -156,4 +191,135 @@ body {
   -moz-animation: fadeOutDown 0.2s;
   -ms-animation: fadeOutDown 0.2s;
   animation: fadeOutDown 0.2s;
+}
+
+.checkbox label:after,
+.radio label:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.checkbox .cr,
+.radio .cr {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #a9a9a9;
+  border-radius: .25em;
+  width: 1.3em;
+  height: 1.3em;
+  float: left;
+  margin-right: .5em;
+}
+
+.radio .cr {
+  border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+  position: absolute;
+  font-size: .8em;
+  line-height: 0;
+  top: 50%;
+  left: 20%;
+}
+
+.radio .cr .cr-icon {
+  margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+  display: none;
+}
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+  transform: scale(3) rotateZ(-20deg);
+  opacity: 0;
+  transition: all .3s ease-in;
+}
+
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+  transform: scale(1) rotateZ(0deg);
+  opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+  opacity: .5;
+}
+
+.center-vertical.table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+span.label:not(:hover) {
+  background: #61b85c;
+  color: #61b85c;
+  word-wrap: break-word;
+}
+
+
+.wishbox {
+  display:block;
+  width: 450px;
+  min-height: 30px;
+  max-height: 30px;
+  background-color: #61b85c;
+  text-transform:uppercase;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.wishbox:hover {
+  overflow: visible;
+  white-space: unset;
+  max-height: fit-content;
+}
+
+.lista-de-pinos {
+  width: fit-content;
+  width: -moz-fit-content;
+}
+
+.btn-magic{
+  text-decoration-color: black;
+  color: white !important;
+  background-image: url("../images/boton.png");
+  background-size: cover;
+  border:none;
+  opacity: 0.8;
+}
+
+.btn-magic:hover{
+  opacity:1;
+}
+.cant-see-yet{
+  border: darkgreen solid;
+}
+
+.success-guess{
+  border: #61b85c solid;
+  background-color: #e5ece5;
+}
+
+.success-guess-img{
+  border: #61b85c 1px groove;
+}
+
+.failed-guess{
+  border: darkred solid;
+  background-color: #ece5e5;
+
+}
+
+.failed-guess-img{
+  border: darkred 1px ridge;
+}
+
+.see-friend{
+  border: #61b85c solid;
 }

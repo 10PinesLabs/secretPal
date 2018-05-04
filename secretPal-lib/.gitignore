@@ -1,0 +1,8 @@
+/target/
+.classpath
+.idea
+.settings
+.project
+SecretPal.iml
+/db/
+/src/main/webapp/WEB-INF/frontend/

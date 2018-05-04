@@ -7,7 +7,8 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 @SpringBootApplication
 public class SecretPalStarter extends SpringBootServletInitializer {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication.run(SecretPalStarter.class, args);
     }
+
 }

@@ -1,60 +1,171 @@
+<script type="text/ng-template" id="editModalWorker.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Editando a un Pino</h3>
+  </div>
+  <div class="modal-body">
+    <label class="control-label col-md-4" for="date">Nombre del Pino: </label>
+    <input type="text" ng-model="worker.fullName">
+  </div>
+  <div class="modal-body">
+    <label class="control-label col-md-4" for="date">Apodo del Pino: </label>
+    <input type="text" ng-model="worker.nickname">
+  </div>
+  <div class="modal-body">
+    <label class="control-label col-md-4" for="date">Email del Pino: </label>
+    <input type="text" ng-model="worker.eMail">
+  </div>
+  <div class="modal-body">
+    <div class="field">
+      <label class="control-label col-md-4" for="date">Fecha de nacimiento: </label>
+      <p class="input-group">
+        <input id="date" required type="text" class="form-control" datepicker-popup="dd.MM.yyyy"
+               ng-model="worker.dateOfBirth" is-open="opened"/>
+        <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i
+                  class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+      </p>
+    </div>
+  </div>
+  <div class="modal-body">
+    <label class="control-label col-md-4" for="date">Gif del Pino: </label>
+    <input style="vertical-align:top" type="text" ng-model="worker.gifUrl">
+  </div>
+  <div class="modal-body" ng-if="worker.gifUrl">
+    <label class="control-label col-md-4" for="date">Preview: </label>
+    <img src={{worker.gifUrl}} width="200" onerror="this.src='images/no_image_available.png';" />
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
+    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();">OK</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="updateGifUrlForWorker.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Agregando Gif a un Pino</h3>
+  </div>
+  <div class="modal-body">
+    <label class="control-label col-md-4" for="date">URL del gif a agregar: </label>
+    <input type="text" ng-model="worker.gifUrl">
+  </div>
+  <div class="modal-body" style="text-align: center">
+    <img src={{worker.gifUrl}} width="300" onerror="this.src='images/no_image_available.png';" />
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
+    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();">OK</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="gifViewer.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Gif</h3>
+  </div>
+  <div class="modal-body" style="text-align: center">
+    <img src={{worker.gifUrl}} onerror="this.src='images/no_image_available.png';" />
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-transparent" ng-click="cerrar()">Cerrar</button>
+  </div>
+</script>
+
 <div class="list_data">
-  <button class="btn btn-primary pull-right" ng-click="assignation()">Asignar Amigos!</button>
   <h1>Lista de Pinos</h1>
-  <div class="panel panel-primary">
+  <div class="panel panel-black lista-de-pinos">
     <table class="table table-striped">
       <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Email</th>
-          <th>Fecha de cumpleaños</th>
-          <th>Quiere participar?</th>
-          <th>Borrarlo</th>
-          <th>Hacer Admin!!</th>
-        </tr>
+      <tr>
+        <th>Nombre</th>
+        <th>Apodo</th>
+        <th>Email</th>
+        <th>Fecha de cumpleaños</th>
+        <th>Gif de cumpleaños</th>
+        <th>Quiere participar?</th>
+        <th>Hacer Admin</th>
+        <th>Editar</th>
+        <th>Borrar</th>
+      </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="worker in workers">
-          <td>{{worker.fullName}}</td>
-          <td>{{worker.eMail}}</td>
-          <td>{{worker.dateOfBirth | date}}</td>
-          <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}" ng-change="changeIntention(worker)" ng-model="worker.wantsToParticipate"></td>
-          <td><a ng-click="delete(worker)"><span class="glyphicon glyphicon glyphicon-remove"></span></a></td>
-          <td><a ng-click="makeAdmin(worker)"><span class="glyphicon glyphicon glyphicon-education"></span></a></td>
-        </tr>
+      <tr ng-repeat="worker in workers">
+        <td>{{worker.fullName}}</td>
+        <td>{{worker.nickname}}</td>
+        <td>{{worker.eMail}}</td>
+        <td>{{worker.dateOfBirth | date}}</td>
+        <td>
+          <div ng-if="!worker.gifUrl"><a ng-click="updateGifUrlFor(worker)">Agregar</a></div>
+          <div ng-if="worker.gifUrl"><a ng-click="showGifFor(worker)">Ver gif</a></div>
+        </td>
+        <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
+                   ng-change="changeIntention(worker)" ng-model="worker.wantsToParticipate"></td>
+        <td>
+          <button class="btn btn-sm btn-warning"
+                  ng-click="addAdmin(worker)"
+                  ng-disabled="isAnAdmin(worker)"
+                  title="Admin"
+          >
+            <span class="glyphicon glyphicon-star"></span>
+          </button>
+        </td>
+
+        <td>
+          <button class="btn btn-sm btn-success"
+                  ng-click="Edit(worker)"
+                  title="Editar">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-danger"
+                  ng-click="delete(worker)"
+                  title="Borrar">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#add_worker" aria-expanded="false" aria-controls="add_worker" id="add_worker_button">
+<button class="btn btn-success" type="button" data-toggle="collapse" data-target="#add_worker" aria-expanded="false"
+        aria-controls="add_worker" id="add_worker_button">
   Agrega un nuevo Pino!
 </button>
 <div class="collapse" id="add_worker">
   <div class="well">
-      <form class="navbar-form" name="form" ng-submit="Add()">
-        <div class="field">
-          <label class="control-label col-md-4" for="name">Nombre: </label>
-          <input type="text" id="name" placeholder="Name" class="form-control" ng-pattern="/[a-zA-Z]/" ng-model="newName" required ng-model-options="{ debounce: 500 }">
-          <span ng-show="form.newName.$error.unique">Este pino ya existe!</span>
-        </div>
-        <div class="field">
-          <label class="control-label col-md-4" for="mail">Email: </label>
-          <input id="mail" required type="email" placeholder="Email" class="form-control" ng-model="newMail">
-        </div>
-        <div class="field">
-          <label class="control-label col-md-4" for="date">Fecha de cumpleaños: </label>
-          <p class="input-group">
-            <input id="date" required type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="newDate" is-open="opened" />
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+    <form class="navbar-form" name="form" ng-submit="Add()">
+      <div class="field">
+        <label class="control-label col-md-4" for="name">Nombre: </label>
+        <input type="text" id="name" placeholder="Nombre" class="form-control" ng-pattern="/[a-zA-Z]/" ng-model="newName"
+               required ng-model-options="{ debounce: 500 }">
+        <span ng-show="form.newName.$error.unique">Este pino ya existe!</span>
+      </div>
+      <div class="field">
+        <label class="control-label col-md-4" for="nickname">Apodo: </label>
+        <input type="text" id="nickname" placeholder="Apodo" class="form-control" ng-pattern="/[a-zA-Z]/" ng-model="newNickname"
+               required ng-model-options="{ debounce: 500 }">
+      </div>
+      <div class="field">
+        <label class="control-label col-md-4" for="mail">Email: </label>
+        <input id="mail" required type="email" placeholder="Email" class="form-control" ng-model="newMail">
+      </div>
+      <div class="field">
+        <label class="control-label col-md-4" for="date">Fecha de nacimiento: </label>
+        <p class="input-group">
+          <input id="date" required type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="newDate"
+                 is-open="opened"/>
+          <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i
+                  class="glyphicon glyphicon-calendar"></i></button>
               </span>
-          </p>
-        </div>
-        <div class="action">
-          <button type="submit" class="btn btn-default">Agregar</button>
-        </div>
-      </form>
-      <button class="btn btn-default" ng-click="Reset()">Resetear</button>
+        </p>
+      </div>
+      <div class="action">
+        <button type="submit" class="btn btn-success">Agregar</button>
+      </div>
+    </form>
+    <button class="btn btn-success" ng-click="Reset()">Resetear</button>
   </div>
 </div>

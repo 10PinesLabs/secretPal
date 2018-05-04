@@ -1,129 +1,92 @@
 'use strict';
 
 var app = angular.module('secretPalApp');
-app.controller('FriendRelationController', function($scope, $modal, $filter, FriendRelationService, SweetAlert) {
 
-  $scope.today = new Date();
+function randomFrom(possibleRecievers) {
+  return possibleRecievers[Math.floor(Math.random() * possibleRecievers.length)];
+}
 
-  $scope.hasBirthdayInAMonth = function(worker){
-      return new Date(worker.dateOfBirth).getMonth() <= $scope.thisMonth;
-  };
+app.controller('FriendRelationController', function ($scope, $modal, $filter, FriendRelationService, SweetAlert) {
 
-  $scope.diff = function(date){
-    var unDia = 24*60*60*1000; // hora*minuto*segundo*milli
-    var birthday = new Date(date);
-    birthday.setYear($scope.today.getFullYear());
+  updateAllRelations();
 
-    return Math.round((birthday.getTime() - $scope.today.getTime())/unDia);
-  };
-
-  $scope.hasBirthdayPassed = function(relation){
-    var date = relation.giftReceiver.dateOfBirth;
-    var diff = $scope.diff(date);
-
-    return (diff < 0);
-  };
-
-  $scope.birthdayHasNotPassed = function(relation){
-    var date = relation.giftReceiver.dateOfBirth;
-    var diff = $scope.diff(date);
-
-    return (diff > 0);
-  };
-
-  $scope.birthdayPassOnAMonth = function(relation){
-    var date = relation.giftReceiver.dateOfBirth;
-    var diff = $scope.diff(date);
-
-    return (diff < 30);
-  };
-
-  $scope.dayDifference = function(date){
-    var diff = $scope.diff(date);
-    if( diff > 0){
-      return "Faltan solo " + diff + " dias";
-    }
-  };
-
-  FriendRelationService.all( function(data) {
-    $scope.friendRelations = data;
-    $scope.posibilities = $scope.friendRelations.map( function(relation){
-      return relation.giftGiver;
+  function updatePosibilities() {
+    FriendRelationService.allPosibleRelations(function (data) {
+      $scope.posibleRelations = data;
     });
+  }
 
-    /*.filter(function(worker){
-      return !$scope.hasBirthdayInAMonth(worker);
-    });*/
+  function updateInmutableRelations() {
+    FriendRelationService.allInmutableRelations(function (data) {
+      $scope.inmutableRelations = data;
+    });
+  }
 
-    console.log($scope.posibilities);
-
-    $scope.relations = $filter('filter')($scope.friendRelations, {giftReceiver:null});
-  });
-
-  $scope.deleteRelation = function (relation) {
-    FriendRelationService.delete(relation.giftGiver.id, relation.giftReceiver.id, function() {
-        $scope.friendRelations = $filter('filter')($scope.friendRelations, {giftGiver: '!' + relation.giftGiver});
+  function updateExistingRelations() {
+    FriendRelationService.all(function (data) {
+      $scope.friendRelations = data;
+      $scope.posibilities = $scope.friendRelations.map(function (relation) {
+        return relation.giftGiver;
       });
-  };
+    });
+  }
 
-  $scope.notNull = function(relation){
-    return (relation.giftReceiver !== null);
-  };
+  function updateAllRelations() {
+    updatePosibilities();
+    updateInmutableRelations();
+    updateExistingRelations();
+  }
 
-  $scope.notUsed = function(giftGiverSelected){
-    return function (relation){
-      var notUsed = true;
-      angular.forEach($scope.friendRelations, function(fr){
-        if (fr.giftReceiver !== null) {
-          if (fr.giftReceiver.id === relation.giftGiver.id) {
-            if (fr.giftGiver.id !== giftGiverSelected) {notUsed = false;}
-          }
-        }
-      });
-      return notUsed;
-    };
-  };
-
-  $scope.ok = function () {
+  $scope.autoAssignPine = function (receiver, possibleGivers) {
     SweetAlert.swal({
       title: "Actualizando",
       text: "Esto puede tardar un rato...\n muchos algoritmos",
-      showConfirmButton: false
-    });
-    FriendRelationService.new($scope.friendRelations);
-  };
-
-  $scope.auto = function(){
-    //TODO estas posibilities no deberian tomar la de los cumpleaños que ya pasaron.
-    shuffleArray($scope.posibilities);
-    console.log($scope.posibilities.map(function(worker){ return worker.fullName; }));
-
-    $scope.posibilities.forEach(function(worker, index) {
-      $scope.friendRelations.find(function(relation){
-        return relation.giftGiver == worker;
-      }).giftReceiver = $scope.posibilities[(index+1) % $scope.posibilities.length ];
+      showConfirmButton: false,
+      timer: 500
+    }, function() {
+      $scope.update(randomFrom(possibleGivers),receiver);
     });
   };
 
-  $scope.clean = function (relation) {
-    relation.giftReceiver = null;
+  $scope.deleteRelation = function (relation) {
+    FriendRelationService.delete(relation.giftGiver.id, relation.giftReceiver.id, function () {
+      $scope.friendRelations = $filter('filter')($scope.friendRelations, {giftGiver: '!' + relation.giftGiver});
+    });
   };
 
-});
+  $scope.update = function (giver, receiver) {
+    FriendRelationService.update(giver, receiver, updateAllRelations);
+  };
 
-var shuffleArray = function(array) {
-  var m = array.length, t, i;
+  $scope.delete = function (giver) {
+    SweetAlert.swal({
+        title: "¿Estás seguro?",
+        text: giver.fullName + " no será amigo invisible de nadie!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d43f3a",
+        confirmButtonText: "Si, borrar!",
+        closeOnConfirm: false
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          FriendRelationService.delete(giver, function () {
+            updatePosibilities();
+            SweetAlert.swal("Relación eliminada exitosamente", "Ahora " + giver.fullName + " no es amigo invisible de nadie ", "success");
+          });
+        }
+      });
+  };
 
-  // While there remain elements to shuffle
-  while (m) {
-    // Pick a remaining element…
-    i = Math.floor(Math.random() * m--);
-
-    // And swap it with the current element.
-    t = array[m];
-    array[m] = array[i];
-    array[i] = t;
+  $scope.lock = function (giver, receiver) {
+    var relationToLock = $scope.friendRelations.find(function (relation) {
+      return relation.giftGiver.id === giver.id && relation.giftReceiver.id === receiver.id;
+    });
+    if (typeof relationToLock !== "undefined") {
+      FriendRelationService.lock(relationToLock, updateAllRelations);
+    } else {
+      SweetAlert.swal("Algo salió mal", "No se pudo encontrar una relación entre esos pinos", "error");
+    }
   }
 
-  return array;
-};
+});

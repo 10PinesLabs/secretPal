@@ -8,12 +8,20 @@ angular
     'ngRoute',
     'satellizer',
     'oitozero.ngSweetAlert',
-    'toggle-switch'
+    'toggle-switch',
+    'ngPageTitle'
   ])
-  .config(function ($routeProvider, $authProvider) {
-    var authenticated = function (Account, $location, $auth) {
-      if (!$auth.isAuthenticated()) {
+  .config(function ($routeProvider) {
+    var authenticated = function (Account, $location) {
+      if (!Account.isAuthenticated()) {
         $location.path('/login');
+      }
+      return Account.getProfile();
+    };
+
+    var authenticatedAndAdmin = function (Account, $location) {
+      if (!Account.isAdmin() || !Account.isAuthenticated()) {
+        $location.path('/');
       }
       return Account.getProfile();
     };
@@ -21,54 +29,123 @@ angular
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainController'
+        controller: 'MainController',
+        data: {
+          pageTitle: 'Con cariño'
+        }
       })
       .when('/mail', {
         templateUrl: 'views/mail.html',
-        controller: 'MailController'
+        controller: 'MailController',
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Mails'
+        }
       })
       .when('/workers', {
         templateUrl: '../views/workers.html',
         controller: 'WorkersController',
-        resolve: { user : authenticated }
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Workers'
+        }
       })
       .when('/friendRelations', {
         templateUrl: '../views/friendRelations.html',
         controller: 'FriendRelationController',
-        resolve: { user : authenticated }
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Relaciones de amiguitos'
+        }
+      })
+      .when('/hints', {
+        templateUrl: '../views/hints.html',
+        controller: 'HintsController',
+        resolve: { user : authenticated },
+        data: {
+          pageTitle: 'Pistas'
+        }
+      })
+      .when('/guesses', {
+        templateUrl: '../views/guesses.html',
+        controller: 'GuessesController',
+        resolve: { user : authenticated },
+        data: {
+          pageTitle: 'Adivinar'
+        }
       })
       .when('/wishlist', {
         templateUrl: '../views/wishlist.html',
         controller: 'WishlistController',
-        resolve: { user : authenticated }
+        resolve: { user : authenticated },
+        data: {
+          pageTitle: 'Wishlist'
+        }
       })
       .when('/login', {
         templateUrl: '../views/login.html',
-        controller: 'LoginController'
+        controller: 'LoginController',
+        data: {
+          pageTitle: 'Login'
+        }
       })
-      .when('/logout', {
-        templateUrl: '../views/main.html',
-        controller: 'LogoutController',
-        resolve: { user : authenticated }
+      .when('/register', {
+        templateUrl: '../views/register.html',
+        controller: 'RegisterController',
+        data: {
+          pageTitle: 'Registrar'
+        }
       })
       .when('/profile', {
         templateUrl: '../views/profile.html',
         controller: 'ProfileController',
-        resolve: { user : authenticated }
+        resolve: { user : authenticated },
+        data: {
+          pageTitle: 'Perfil'
+        }
+      })
+      .when('/confirmationGift', {
+        templateUrl: '../views//confirmationGift.html',
+        controller: 'ConfirmationGiftController',
+        resolve: { user : authenticatedAndAdmin }
+      })
+      .when('/mailsFailure', {
+        templateUrl: '../views/mailsFailure.html',
+        controller: 'MailsFailureController',
+        resolve: { user : authenticatedAndAdmin }
+      })
+      .when('/giftDefault', {
+        templateUrl: '../views/giftDefault.html',
+        controller: 'GiftDefaultController',
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Regalo default'
+        }
+      })
+      .when('/gifDefault', {
+        templateUrl: '../views/gifDefault.html',
+        controller: 'GifDefaultController',
+        resolve: { user : authenticatedAndAdmin }
+      })
+      .when('/gifDefault', {
+        templateUrl: '../views/gifDefault.html',
+        controller: 'GifDefaultController',
+        resolve: { user : authenticatedAndAdmin }
+      })
+      .when('/ruleConfiguration', {
+        templateUrl: '../views/ruleConfiguration.html',
+        controller: 'CustomParticipantRuleController',
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Configuracion de reglas'
+        }
+      })
+      .when('/gameStatus', {
+        templateUrl: '../views/gameStatus.html',
+        controller: 'GameStatusController',
+        resolve: { user : authenticatedAndAdmin },
+        data: {
+          pageTitle: 'Estado del juego'
+        }
       });
-
-    $authProvider.google({
-      clientId: '136089227578-tq2gjl89s5b27dk2sdpacbb2a7m6gha9.apps.googleusercontent.com',
-      url: '/api/auth/google',
-      authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
-      redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-      hd: '10pines.com',
-      scope: ['profile', 'email'],
-      scopePrefix: 'openid',
-      scopeDelimiter: ' ',
-      requiredUrlParams: ['scope'],
-      optionalUrlParams: ['display', 'hd'],
-      display: 'popup',
-      type: '2.0'
-    });
   });

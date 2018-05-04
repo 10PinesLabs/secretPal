@@ -1,8 +1,0 @@
-/target/
-.classpath
-.idea
-.settings
-.project
-SecretPal.iml
-/db/
-/webapp/WEB-INF/

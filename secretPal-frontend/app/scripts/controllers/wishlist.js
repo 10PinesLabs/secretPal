@@ -1,19 +1,29 @@
 'use strict';
+
 angular.module('secretPalApp')
   .controller('WishlistController', function ($scope, user, WorkerService, WishlistService, $modal, $log, SweetAlert) {
+
     WishlistService.all(function (data) {
       $scope.wishlist = data;
     });
+
     WorkerService.all(function (data) {
       $scope.posibleWorkers = data;
     });
+
     $scope.Add = function () {
-      WishlistService.new($scope.wish, function(persistedWish) { $scope.wishlist.push(persistedWish); $scope.Reset();});
+      $scope.wish.createdBy = user.worker;
+      WishlistService.new($scope.wish, function (persistedWish) {
+        $scope.wishlist.push(persistedWish);
+        $scope.Reset();
+      });
     };
+
     $scope.Reset = function () {
       $scope.wish.worker = null;
       $scope.wish.gift = '';
     };
+
     $scope.Edit = function (wish) {
       var modalInstance = $modal.open({
         animation: false,
@@ -28,19 +38,22 @@ angular.module('secretPalApp')
       modalInstance.result.then(function (returnedWish) {
         angular.copy(returnedWish, wish);
         WishlistService.update(wish);
-      }, function () {
-        $log.info('Modal dismissed at: ' + new Date());
       });
     };
+
     $scope.Delete = function (wish) {
       SweetAlert.swal({
-          title: "Estas seguro?",
-          text: "No vas a poder recuperar este deseo!",
+          title: "¿Estás seguro?",
+          text: "¡No vas a poder recuperar este deseo!",
           type: "warning",
+          allowOutsideClick: false,
+          showConfirmButton: true,
           showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
+          closeOnConfirm: false,
+          closeOnCancel: true,
+          confirmButtonColor: "#d43f3a",
           confirmButtonText: "Si, borrar!",
-          closeOnConfirm: false
+          cancelButtonText: "Cancelar"
         },
         function (isConfirm) {
           if (isConfirm) {
@@ -48,13 +61,18 @@ angular.module('secretPalApp')
               $scope.wishlist.splice(
                 $scope.wishlist.indexOf(wish), 1
               );
-              SweetAlert.swal("Se ha borrado exitosamente");
+              SweetAlert.swal({
+                title: "Regalo borrado exitosamente",
+                showConfirmButton: false,
+                timer: 800
+              });
             });
           }
         });
     };
-    $scope.canDelete = function(wish){
-      return user.data.worker.id == wish.createdBy.id || user.data.worker.id == wish.worker.id;
+
+    $scope.canDelete = function (wish) {
+      return user.worker.id == wish.createdBy.id || user.worker.id == wish.worker.id;
     };
   })
   .controller('ModalInstanceCtrl', function ($scope, $modalInstance, wish) {
@@ -68,47 +86,46 @@ angular.module('secretPalApp')
   })
   .service('WishlistService', function ($http, SweetAlert) {
 
-  function buildRoute(path) {
-    var route = '/api/wishlist';
-    return route + path;
-  }
+    function buildRoute(path) {
+      var route = '/api/wishlist';
+      return route + path;
+    }
 
-  function errorMsg(msg) {
-    SweetAlert.swal("Algo salio mal",msg, "error");
-  }
+    function errorMsg(msg) {
+      SweetAlert.swal("Algo salio mal", msg, "error");
+    }
 
-  this.all = function(callback) {
-    $http.get(buildRoute('/')).
-      success(function(data) {
+
+
+    this.all = function (callback) {
+      $http.get(buildRoute('/')).success(function (data) {
         callback(data);
-      }).
-      error(function() {
-        errorMsg("No se pudo procesar la solicitud al servidor");
+      }).error(function () {
+        errorMsg("No se pudo cargar la lista de regalos, inténtlo de nuevo más tarde.");
       });
-  };
+    };
 
-    this.new = function(wish, successFunction) {
-      $http.post(buildRoute('/'), wish).
-        success(function(data) {
-          successFunction(data);
-        }).
-        error(function() {
-          errorMsg("No se pudo procesar la solicitud al servidor");
-        });
+    this.new = function (wish, successFunction) {
+      $http.post(buildRoute('/'), wish).success(function (data) {
+        successFunction(data);
+      }).error(function () {
+        errorMsg("No se pudo crear un regalo, por favor inténtelo de nuevo.");
+      });
     };
+
     this.delete = function (wish, successFunction) {
-      $http.delete(buildRoute('/' + wish.id)).
-        success(function() {
-          successFunction();
-        });
+      $http.delete(buildRoute('/' + wish.id)).success(function () {
+        successFunction();
+      });
     };
+
     this.update = function (wish) {
       $http.post(buildRoute('/') + wish.id, wish.gift);
     };
-    this.getAllWishesFor = function(worker, callback) {
-      $http.get(buildRoute('/worker/' + worker.id)).
-        then(function(data) {
-          callback(data);
-        });
+
+    this.getAllWishesFor = function (worker, callback) {
+      $http.get(buildRoute('/worker/' + worker.id)).then(function (data) {
+        callback(data);
+      });
     };
   });

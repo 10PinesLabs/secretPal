@@ -1,0 +1,2 @@
+ALTER TABLE wish
+ALTER COLUMN gift TYPE text;

@@ -1,8 +1,8 @@
 <!doctype html>
-<html>
+<html ng-app="secretPalApp">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title page-title pattern="SecretPal | %s"></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="secretPalApp">
+  <body>
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <!--[endif]-->
@@ -39,22 +39,30 @@
             <ul class="nav navbar-nav">
               <li ng-show="isAuthenticated()"><a ng-href="#/profile">Tu amigo</a></li>
               <li ng-show="isAuthenticated()"><a ng-href="#/wishlist">Lista de Deseos</a></li>
-
+              <li ng-show="isAuthenticated()"><a ng-href="#/hints">Dar pistas</a></li>
+              <li ng-show="isAuthenticated()"><a ng-href="#/guesses">Adivinar</a></li>
               <li class="dropdown" ng-show="isAuthenticated() && isAdmin()">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a ng-href="#/workers">Lista de Pinos</a></li>
                   <li><a ng-href="#/friendRelations">Relaciones entre Pinos</a></li>
+                  <li><a ng-href="#/mailsFailure">Mensajes rechazos</a></li>
+                  <li><a ng-href="#/gameStatus">Estado del juego</a></li>
                   <li role="separator" class="divider"></li>
+                  <li><a ng-href="#/confirmationGift">Control de regalos hechos</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a ng-href="#/giftDefault">Configuración de regalo default</a></li>
                   <li><a ng-href="#/mail">Configuración de Mails</a></li>
+                  <li><a ng-href="#/gifDefault">Configuración de gif default para cumpleaños</a></li>
+                  <li><a ng-href="#/ruleConfiguration">Configuración de reglas de juego</a></li>
                 </ul>
               </li>
 
               <li role="separator" class="divider"></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li ng-show="!isAuthenticated()"><a ng-href="#/login">Login</a></li>
-              <li ng-show="isAuthenticated()"><a ng-href="#/logout">Salir</a></li>
+              <ld ng-show="isAuthenticated()" ><h5>Bienvenido: <strong style="text-transform:uppercase">{{loggedUser.userName}}</strong><span class="glyphicon glyphicon-user"></span></h5></ld>
+              <ld><li ng-show="isAuthenticated()"><button type="button" ng-click="logout()" class="btn btn-xs btn-danger btn-block">Salir</button></li></ld>
             </ul>
           </div>
         </div>
@@ -72,17 +80,6 @@
     </div>
 
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <script>
-       !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
-       (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
-       r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
-       }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-       ga('create', 'UA-XXXXX-X');
-       ga('send', 'pageview');
-    </script>
-
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -96,26 +93,44 @@
     <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
     <script src="bower_components/angular-messages/angular-messages.js"></script>
     <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="bower_components/angular-sweetalert/SweetAlert.js"></script>
+    <script src="bower_components/ngSweetAlert/SweetAlert.js"></script>
     <script src="bower_components/angular-toggle-switch/angular-toggle-switch.js"></script>
+    <script src="bower_components/ng-page-title/dist/ng-page-title.js"></script>
+    <script src="bower_components/ramda/dist/ramda.js"></script>
     <!-- endbower -->
+    <script src="bower_components/angular-i18n/angular-locale_es-ar.js"></script>
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/workers.js"></script>
+    <script src="scripts/controllers/hints.js"></script>
+    <script src="scripts/controllers/guesses.js"></script>
     <script src="scripts/controllers/wishlist.js"></script>
     <script src="scripts/controllers/login.js"></script>
-    <script src="scripts/controllers/logout.js"></script>
     <script src="scripts/controllers/profile.js"></script>
-	  <script src="scripts/controllers/friendRelation.js"></script>
+    <script src="scripts/controllers/friendRelation.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/mail.js"></script>
-	  <script src="scripts/controllers/nav.js"></script>
+    <script src="scripts/controllers/mailsFailure.js"></script>
+    <script src="scripts/controllers/nav.js"></script>
+    <script src="scripts/controllers/giftDefault.js"></script>
+    <script src="scripts/controllers/gifDefault.js"></script>
+    <script src="scripts/controllers/register.js"></script>
+    <script src="scripts/controllers/confirmationGift.js"></script>
+    <script src="scripts/controllers/customParticipantRule.js"></script>
+    <script src="scripts/services/giftDefaultService.js"></script>
+    <script src="scripts/services/gifDefaultService.js"></script>
+    <script src="scripts/controllers/gameStatus.js"></script>
     <script src="scripts/services/workerService.js"></script>
     <script src="scripts/services/mailService.js"></script>
     <script src="scripts/services/friendRelationService.js"></script>
     <script src="scripts/services/account.js"></script>
+    <script src="scripts/services/token.js"></script>
+    <script src="scripts/services/gameStatusService.js"></script>
+    <script src="scripts/services/guessesService.js"></script>
+    <script src="scripts/services/hintsService.js"></script>
+    <script src="scripts/services/customParticipantRuleService.js"></script>
     <!-- endbuild -->
 </body>
 </html>

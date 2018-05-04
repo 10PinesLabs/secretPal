@@ -1,48 +1,57 @@
 'use strict';
 
 angular.module('secretPalApp')
-.controller('ProfileController', function($scope, user, $location, FriendRelationService, WishlistService, SweetAlert, WorkerService) {
+  .controller('ProfileController', function ($scope, $http, user, $location, FriendRelationService, WishlistService, SweetAlert, WorkerService) {
+    $scope.wishlist = [];
+    $scope.giftDefault;
 
-    $scope.noFriendAlert = function(){
-      $location.path('/');
-      SweetAlert.swal("No tienes ningun amigo asignado", "avisale al administrador", "error");
+    $scope.haveFriend = function() {
+      return $scope.friend !== undefined;
     };
 
-    $scope.wantToParticipateMsg = function() {
+    $scope.wantToParticipateMsg = function () {
       SweetAlert.swal({
-          title: "No estas participando",
+          title: "No estás participando",
           text: "Queres participar?",
           type: "warning",
+          allowOutsideClick: false,
+          showConfirmButton: true,
           showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: "Si!",
-          closeOnConfirm: false
+          closeOnConfirm: false,
+          closeOnCancel: true,
+          confirmButtonText: "¡Si!",
+          confirmButtonColor: "#68bd46",
+          cancelButtonText: "Cancelar",
+          cancelButtonColor: '#FFFFFF',
         },
         function (isConfirm) {
           if (isConfirm) {
-            WorkerService.changeIntention(user.data.worker);
-            SweetAlert.swal("Ahora estas participando!");
+            WorkerService.changeIntention(user.worker);
+            SweetAlert.swal("¡Ahora estás participando!");
             $scope.noFriendAlert();
           } else {
             $location.path('/');
           }
         });
     };
-
-    if (!user.data.worker.wantsToParticipate) {
+    if (!user.worker.wantsToParticipate) {
       $scope.wantToParticipateMsg();
     } else {
-      FriendRelationService.getFriend(user.data.worker, function (friend) {
+      FriendRelationService.getFriend(user.worker, function (friend) {
+
+        $http.get('/api/auth/giftsDefault').success(function (data) {
+          $scope.giftDefault = data.giftDefault;
+          $scope.amountDefault = data.amountDefault;
+        }).error(function () {
+          errorMsg("No se han podido cargar el regalo y el monto default. Por favor intentelo de nuevo msá tarde.");
+        });
+
         $scope.friend = friend;
 
-        if (friend.data === "") {
-          $scope.noFriendAlert();
-        }
-
-        WishlistService.getAllWishesFor($scope.friend.data, function (wishlist) {
-          $scope.wishlist = wishlist;
+        WishlistService.getAllWishesFor($scope.friend.data, function (wishlistResponse) {
+          $scope.wishlist = wishlistResponse.data;
         });
+
       });
     }
-
   });

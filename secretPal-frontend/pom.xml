@@ -3,50 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.tenpines</groupId>
   <artifactId>secretPal-frontend</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-
   <name>SecretPal-frontend</name>
 
-  <repositories>
-    <repository>
-      <id>tenpines_repo</id>
-      <name>Repositorio 10pines</name>
-      <url>http://services.10pines.com:8081/artifactory/repo</url>
-    </repository>
-  </repositories>
-
-  <properties>
-    <version.plugin.assembly>2.4</version.plugin.assembly>
-  </properties>
+  <parent>
+    <groupId>com.tenpines</groupId>
+    <artifactId>secretPal</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
 
   <build>
     <plugins>
-      <!-- Una vez que se genera la salida en dist. Empaquetar todo en un zip -->
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>${version.plugin.assembly}</version>
-        <executions>
-          <execution>
-            <id>generate-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <descriptors>
-            <descriptor>maven-assembly-descriptor.xml</descriptor>
-          </descriptors>
-          <finalName>${project.artifactId}</finalName>
-          <appendAssemblyId>false</appendAssemblyId>
-          <outputDirectory>target</outputDirectory>
-        </configuration>
-      </plugin>
-
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
@@ -74,16 +42,6 @@
             </configuration>
           </execution>
           <execution>
-            <id>Actualizar dependencias de node (npm update)</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <arguments>update</arguments>
-            </configuration>
-          </execution>
-
-          <execution>
             <id>Instalar dependencias de bower (bower install)</id>
             <goals>
               <goal>bower</goal>
@@ -92,16 +50,6 @@
               <arguments>install</arguments>
             </configuration>
           </execution>
-          <execution>
-            <id>Actualizar dependencias de bower (bower update)</id>
-            <goals>
-              <goal>bower</goal>
-            </goals>
-            <configuration>
-              <arguments>update</arguments>
-            </configuration>
-          </execution>
-
           <execution>
             <id>grunt build</id>
             <goals>
@@ -115,6 +63,18 @@
           </execution>
 
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>dist</directory>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
+        </configuration>
       </plugin>
     </plugins>
   </build>
