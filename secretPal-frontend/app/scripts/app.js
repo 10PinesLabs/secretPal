@@ -12,9 +12,10 @@ angular
     'ngPageTitle'
   ])
   .config(function ($routeProvider) {
-    var authenticated = function (Account, $location) {
+    var authenticated = function (Account, Token) {
+      debugger;
       if (!Account.isAuthenticated()) {
-        $location.path('/login');
+        window.location.replace(Token.authURL());
       }
       return Account.getProfile();
     };
