@@ -12,7 +12,7 @@
 </script>
 
 <h1>Wish List</h1>
-<p>Agregá sugerencias de regalos para vos u otro pino. Si tenés más de uno, podes ponerlo en deseos separados.</p>
+<p>Agregá sugerencias de regalos para vos u otro pino. Si tenés más de uno, podes ponerlos en deseos separados.</p>
 <div class="panel panel-black">
   <table class="table table-striped">
     <thead>
@@ -30,6 +30,7 @@
       <td>
         <button class="btn btn-sm btn-success"
                 ng-click="Edit(wish)"
+                ng-show="canModify(wish)"
                 title="Editar">
           <span class="glyphicon glyphicon-pencil"></span>
         </button>
@@ -37,6 +38,7 @@
       <td>
         <button class="btn btn-sm btn-danger"
                 ng-click="Delete(wish)"
+                ng-show="canModify(wish)"
                 title="Borrar">
           <span class="glyphicon glyphicon-remove"></span>
         </button>
