@@ -4,6 +4,7 @@ import com.tenPines.application.service.FriendRelationService;
 import com.tenPines.model.Worker;
 
 import java.time.MonthDay;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +17,13 @@ public class PossibleRelationForFrontEnd {
     public PossibleRelationForFrontEnd(Worker participant, FriendRelationService friendRelationService) {
         this.receiver = participant;
         this.giver = friendRelationService.retrieveGiftGiverFor(participant);
-        updatePosibleReceivers(friendRelationService);
+        posibleGivers= new ArrayList();
+        if(giver.isPresent()){
+            posibleGivers.add(giver.get());
+        }
     }
 
-    private void updatePosibleReceivers(FriendRelationService friendRelationService) {
+    public void updatePosibleGifters(FriendRelationService friendRelationService) {
         this.posibleGivers = friendRelationService.possibleGiftersFor(this.receiver);
     }
 

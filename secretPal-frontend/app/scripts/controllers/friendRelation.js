@@ -10,6 +10,7 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
 
   updateAllRelations();
 
+
   function updatePosibilities() {
     FriendRelationService.allPosibleRelations(function (data) {
       $scope.posibleRelations = data;
@@ -43,8 +44,8 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
       text: "Esto puede tardar un rato...\n muchos algoritmos",
       showConfirmButton: false,
       timer: 500
-    }, function() {
-      $scope.update(randomFrom(possibleGivers),receiver);
+    }, function () {
+      $scope.update(randomFrom(possibleGivers), receiver);
     });
   };
 
@@ -55,7 +56,10 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
   };
 
   $scope.update = function (giver, receiver) {
-    FriendRelationService.update(giver, receiver, updateAllRelations);
+    FriendRelationService.update(giver, receiver, function () {
+      updateAllRelations();
+      updatePossibleRelation(receiver);
+    });
   };
 
   $scope.delete = function (giver) {
@@ -87,6 +91,34 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
     } else {
       SweetAlert.swal("Algo salió mal", "No se pudo encontrar una relación entre esos pinos", "error");
     }
+  };
+
+  $scope.noPossibilities = function (posRelation) {
+    return posRelation.possibleGivers.length === 0;
+  };
+
+  function updatePossibleRelation(receiver) {
+    if (haveToUpdate(relation)) {
+      FriendRelationService.updatePosibleRelation(receiver.id, function (data) {
+        $scope.posibleRelations = $scope.posibleRelations.map(function (pr) {
+          if (pr.receiver === receiver) {
+            return data;
+          }
+          else {
+            return pr
+          }
+        })
+      });
+    }
   }
 
-});
+  $scope.hasSecretPal = function (relation) {
+    return relation.possibleGivers.length === 1 && relation.possibleGivers !== null;
+  };
+
+  function haveToUpdate(relation) {
+    return $scope.noPossibilities(relation) || $scope.hasSecretPal(relation);
+  }
+
+})
+;

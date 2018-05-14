@@ -20,9 +20,12 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.min;
+
 @Service
 public class FriendRelationService {
 
+    public static final int AMOUNT_OF_RELATIONS_TO_PRELOAD = 5;
     private final Clock clock;
     private final FriendRelationRepository friendRelationRepository;
     private final HintsRepository hintsRepository;
@@ -227,11 +230,20 @@ public class FriendRelationService {
     }
 
     public List<PossibleRelationForFrontEnd> allReceiversWithPosibilities() {
-        return workerService.getAllParticipants().stream()
+        List<PossibleRelationForFrontEnd> possibleRelations = workerService.getAllParticipants().stream()
                 .filter(this::canReceive)
                 .map(participant ->
                         new PossibleRelationForFrontEnd(participant, this)
                 ).collect(Collectors.toList());
+        possibleRelations.sort(PossibleRelationForFrontEnd::orderByBirthdayDate);
+        loadFirstFewRelationsOptions(possibleRelations);
+        return possibleRelations;
+    }
+
+    private void loadFirstFewRelationsOptions(List<PossibleRelationForFrontEnd> possibleRelations) {
+        for (int i = 0; i < min(AMOUNT_OF_RELATIONS_TO_PRELOAD, possibleRelations.size()); i++) {
+            possibleRelations.get(i).updatePosibleGifters(this);
+        }
     }
 
 }
