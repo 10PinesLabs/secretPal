@@ -37,7 +37,7 @@ public class Worker {
     private LocalDate dateOfBirth;
     private String gifUrl;
     @NotNull
-    private Boolean wantsToParticipate;
+    private ParticipationConfig wantsToParticipate;
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Column
@@ -46,7 +46,7 @@ public class Worker {
     // Necessary for hibernate
     private Worker() { }
 
-    public Worker(String fullName, String nickname, String email, LocalDate dateOfBirth, Boolean wantsToParticipate) {
+    public Worker(String fullName, String nickname, String email, LocalDate dateOfBirth, ParticipationConfig wantsToParticipate) {
         this.fullName = fullName;
         this.nickname = nickname;
         this.eMail = email;
