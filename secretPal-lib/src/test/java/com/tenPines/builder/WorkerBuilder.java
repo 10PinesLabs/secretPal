@@ -2,6 +2,7 @@ package com.tenPines.builder;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
+import com.tenPines.model.ParticipationConfig;
 import com.tenPines.model.Worker;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -17,7 +18,7 @@ public class WorkerBuilder {
     private String nickname;
     private String email = faker.internet().emailAddress();
     private LocalDate birthdayDate = LocalDate.of(1993, Month.APRIL,12);
-    private Boolean wantsToParticipate = true;
+    private ParticipationConfig wantsToParticipate = new ParticipationConfig(true,true,true);
 
     public WorkerBuilder() {
         Name fakeName = faker.name();
@@ -49,7 +50,7 @@ public class WorkerBuilder {
     }
 
     public WorkerBuilder whoDoesentWantToParticipate() {
-        this.wantsToParticipate = false;
+        this.wantsToParticipate.setWantsToGive(false);
         return this;
     }
 

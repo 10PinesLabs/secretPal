@@ -34,7 +34,7 @@ angular.module('secretPalApp')
           }
         });
     };
-    if (!user.worker.wantsToParticipate) {
+    if (!user.worker.wantsToParticipate.wantsToGive) {
       $scope.wantToParticipateMsg();
     } else {
       FriendRelationService.getFriend(user.worker, function (friend) {

@@ -233,7 +233,7 @@ public class FriendRelationServiceTest extends SpringBaseTest {
     public void gettingTheGiftGiverForAWorkerWhenItHasNotYetBeenGuessedReturnsNone(){
         setUp();
         friendRelationService.create(aWorkerGiver, aWorkerReceiver);
-        assertThat(friendRelationService.getGiftSenderFor(aWorkerReceiver).getFullName(), is(""));
+        assertThat(friendRelationService.getGiftSenderFor(aWorkerReceiver).getFullName(), is("xxxxxxxxxxxx"));
     }
 
     @Test

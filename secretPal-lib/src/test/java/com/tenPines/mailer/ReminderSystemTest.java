@@ -48,7 +48,7 @@ public class ReminderSystemTest extends SpringBaseTest {
     public void When_A_Workers_Birthday_Should_Mail_All_Pines(){
         setUp(LocalDate.now(), LocalDate.now());
 
-        reminderSystem.sendHappyBithdayMessages();
+        reminderSystem.sendHappyBirthdayMessages();
         assertThat(postMan.messagesTo(birthdayWorker.geteMail()), empty());
     }
 

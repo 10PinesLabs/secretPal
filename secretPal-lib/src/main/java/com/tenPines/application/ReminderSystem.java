@@ -41,12 +41,12 @@ public class ReminderSystem {
         this.defaultGifService = defaultGifService;
     }
 
-    public void sendHappyBithdayMessages() {
-        workerService.getAllParticipants().stream()
+    public void sendHappyBirthdayMessages() {
+        workerService.getAllGiverParticipants().stream()
                 .filter(worker ->
                         worker.getBirthday()
-                                .equals(
-                                        MonthDay.from(clock.now()))
+                                .equals(MonthDay.from(clock.now()))
+                        && worker.wantsToReceiveBirthdayMessage()
                 )
                 .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder(mailProperties, defaultGifService).buildMessage(worker)));
 
@@ -105,6 +105,6 @@ public class ReminderSystem {
     public void sendAllReminders() {
         sendTwoMonthsReminders();
         sendTwoWeeksReminders();
-        sendHappyBithdayMessages();
+        sendHappyBirthdayMessages();
     }
 }

@@ -1,5 +1,6 @@
 package com.tenPines.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -37,6 +38,7 @@ public class Worker {
     private LocalDate dateOfBirth;
     private String gifUrl;
     @NotNull
+    @Embedded
     private ParticipationConfig wantsToParticipate;
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
@@ -107,13 +109,13 @@ public class Worker {
     }
 
     public void changeParticipationIntention() {
-        setWantsToParticipate(!wantsToParticipate);
+        wantsToParticipate.changeIntentionToGive();
     }
 
-    public boolean getWantsToParticipate() { return this.wantsToParticipate;}
+    public Boolean wantsToParticipate() { return wantsToParticipate.getWantsToGive();}
 
-    public void setWantsToParticipate(Boolean wantsToParticipate) {
-        this.wantsToParticipate = wantsToParticipate;
+    public void setIntentionToGive(boolean b) {
+        wantsToParticipate.setWantsToGive(b);
     }
 
     public LocalDate getGiftDateReceived() {
@@ -150,6 +152,32 @@ public class Worker {
 
     public void setGifUrl(String gifUrl) {
         this.gifUrl = gifUrl;
+    }
+
+    public boolean wantsToGive() {
+        return wantsToParticipate.getWantsToGive();
+    }
+
+    public void setIntentionToReceive(boolean b) {
+        wantsToParticipate.setWantsToReceive(b);
+
+    }
+
+    public boolean wantsToReceive() {
+        return wantsToParticipate.getWantsToReceive();
+    }
+
+    public boolean wantsToReceiveBirthdayMessage() {
+        return wantsToParticipate.getWantsToReceiveMail();
+    }
+
+    @JsonGetter("wantsToParticipate")
+    public ParticipationConfig getWantsToParticipate(){
+        return wantsToParticipate;
+    }
+
+    public void setWantsToParticipate(ParticipationConfig wantsToParticipate) {
+        this.wantsToParticipate = wantsToParticipate;
     }
 
 }

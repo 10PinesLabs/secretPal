@@ -70,6 +70,23 @@
   </div>
 </script>
 
+<script type="text/ng-template" id="updateGifUrlForWorker.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Agregando Gif a un Pino</h3>
+  </div>
+  <div class="modal-body">
+    <label class="control-label col-md-4" for="date">URL del gif a agregar: </label>
+    <input type="text" ng-model="worker.gifUrl">
+  </div>
+  <div class="modal-body" style="text-align: center">
+    <img src={{worker.gifUrl}} width="300" onerror="this.src='images/no_image_available.png';" />
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
+    <button class="btn btn-success" ng-click="ok()" ng-enter="ok();">OK</button>
+  </div>
+</script>
+
 <div class="list_data">
   <h1>Lista de Pinos</h1>
   <div class="panel panel-black lista-de-pinos">

@@ -2,8 +2,6 @@ package com.tenPines.application.service;
 
 import com.tenPines.model.Worker;
 import com.tenPines.persistence.WorkerRepository;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +21,12 @@ public class WorkerService {
         return workerRepository.save(newWorker);
     }
 
-    public List<Worker> getAllParticipants() {
-        Specification<Worker> spec = Specifications.where((model, criteriaQuery, criteriaBuilder) ->
-            criteriaBuilder.isTrue(model.get("wantsToParticipate"))
-        );
-        return workerRepository.findAll(spec);
+    public List<Worker> getAllGiverParticipants() {
+        return workerRepository.findByWantsToParticipate_WantsToGive(true);
+    }
+
+    public List<Worker> getAllReceiverParticipants() {
+        return workerRepository.findByWantsToParticipate_WantsToReceive(true);
     }
 
     public void remove(Worker aWorker) {
@@ -50,7 +49,7 @@ public class WorkerService {
     }
 
     public List<Worker> retrieveParticipants() {
-        return workerRepository.findBywantsToParticipate(true);
+        return workerRepository.findByWantsToParticipate_WantsToGive(true);
     }
 
     public Worker retrieveWorker(Long to) {
