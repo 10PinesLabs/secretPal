@@ -15,7 +15,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
 
   function updateAdmins() {
     Account.getAdmins().then(function (admins) {
-      $scope.admins = admins.data.map(function(worker){
+      $scope.admins = admins.data.map(function (worker) {
         return worker.id;
       });
 
@@ -70,7 +70,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
       warningMsg("Este pino está participando. No se puede borrar.");
     } else if ($scope.isAnAdmin(worker)) {
       warningMsg("Este pino es administrador. No se puede borrar.");
-    }else {
+    } else {
       $scope.deleteWithConfirmationMSg(worker);
     }
   };
@@ -104,28 +104,6 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
       wantsToParticipate: false
     };
   }
-
-  $scope.changeIntention = function (worker) {
-    var keepGoing = true;
-    angular.forEach($scope.participants, function (participant) {
-        if (keepGoing) {
-          if (worker.id === participant.giftGiver.id && participant.giftReceiver !== null) {
-            warningMsg("Este trabajador es el amigo invisible de otro participante. Se debe borrar esa relación antes de que deje de participar.");
-            worker.wantsToParticipate = true;
-            keepGoing = false;
-          }
-          if (participant.giftReceiver !== null && worker.id === participant.giftReceiver.id) {
-            warningMsg("Hay un participante que es amigo invisible de este trabajador.Se debe borrar esa relación antes de que deje de participar.");
-            worker.wantsToParticipate = true;
-            keepGoing = false;
-          }
-        }
-      }
-    );
-    if (keepGoing) {
-      WorkerService.changeIntention(worker);
-    }
-  };
 
 
   $scope.addAdmin = function (worker) {
@@ -192,6 +170,21 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
         }
       }
     });
+  };
+
+  $scope.editParticipation = function (worker) {
+    console.log(worker);
+    $modal.open({
+      animation: false,
+      templateUrl: 'customizeWorkerParticipation.html',
+      controller: 'ParticipationCtrl',
+      resolve: {
+        worker: function () {
+          return angular.copy(worker);
+        }
+      }
+    });
+
   };
 
   /*DATEPICKER FUNCTIONS*/
@@ -269,6 +262,46 @@ app.directive('unique', function () {
   .controller('GifViewerCtrl', function ($scope, $modalInstance, worker) {
     $scope.worker = worker;
     $scope.cerrar = function () {
+      $modalInstance.dismiss('cancel');
+    };
+  })
+  .controller('ParticipationCtrl', function ($scope, $modalInstance, worker, WorkerService) {
+    $scope.worker = worker;
+    $scope.changeGiftingIntention = function (worker) {
+      var keepGoing = true;
+      angular.forEach($scope.participants, function (participant) {
+          if (keepGoing) {
+            if (worker.id === participant.giftGiver.id && participant.giftReceiver !== null) {
+              warningMsg("Este trabajador es el amigo invisible de otro participante. Se debe borrar esa relación antes de que deje de participar.");
+              worker.wantsToParticipate.wantsToGive = true;
+              keepGoing = false;
+            }
+          }
+        }
+      );
+
+    };
+
+    $scope.changeReceivingIntention = function (worker) {
+      var keepGoing = true;
+      angular.forEach($scope.participants, function (participant) {
+          if (keepGoing) {
+            if (participant.giftReceiver !== null && worker.id === participant.giftReceiver.id) {
+              warningMsg("Hay un participante que es amigo invisible de este trabajador.Se debe borrar esa relación antes de que deje de participar.");
+              worker.wantsToParticipate.wantsToReceive = true;
+              keepGoing = false;
+            }
+          }
+        }
+      );
+    };
+
+    $scope.ok = function () {
+      $modalInstance.close($scope.worker);
+      console.log($scope.worker);
+      WorkerService.changeIntention($scope.worker);
+    };
+    $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
   });

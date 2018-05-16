@@ -29,7 +29,8 @@ public class WorkerController {
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE )
     @ResponseBody
     public List<Worker> workers() {
-        List<Worker> workers =system.getAllWorkers();
+        List<Worker> workers = system.getAllWorkers();
+        workers.sort(Worker::orderByName);
         return workers;
     }
 

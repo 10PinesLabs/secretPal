@@ -44,7 +44,7 @@ public class WorkerService {
 
     public void changeIntention(Worker aWorker) {
         Worker worker = retrieveWorker(aWorker.getId());
-        worker.changeParticipationIntention();
+        worker.changeParticipationIntention(aWorker.getWantsToParticipate());
         workerRepository.save(worker);
     }
 

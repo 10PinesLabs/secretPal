@@ -2,6 +2,7 @@ package com.tenPines.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.tenPines.configuration.JsonDateDeserializer;
@@ -108,8 +109,8 @@ public class Worker {
         this.dateOfBirth = birthdayDate;
     }
 
-    public void changeParticipationIntention() {
-        wantsToParticipate.changeIntentionToGive();
+    public void changeParticipationIntention(ParticipationConfig intentions) {
+        this.wantsToParticipate = intentions;
     }
 
     public Boolean wantsToParticipate() { return wantsToParticipate.getWantsToGive();}
@@ -176,8 +177,12 @@ public class Worker {
         return wantsToParticipate;
     }
 
+    @JsonSetter("wantsToParticipate")
     public void setWantsToParticipate(ParticipationConfig wantsToParticipate) {
         this.wantsToParticipate = wantsToParticipate;
     }
 
+    public int orderByName(Worker worker) {
+        return fullName.compareTo(worker.getFullName());
+    }
 }
