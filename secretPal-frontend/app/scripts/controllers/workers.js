@@ -189,6 +189,8 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
           return angular.copy($scope.existingRelations);
         }
       }
+    }).result.then(function(result) {
+      worker.wantsToParticipate = result.wantsToParticipate ;
     });
   };
 
