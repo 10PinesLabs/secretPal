@@ -34,7 +34,7 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
 
 
   FriendRelationService.all(function (data) {
-    $scope.participants = data;
+    $scope.existingRelations = data;
   });
 
   $scope.deleteWithConfirmationMSg = function (worker) {
@@ -101,7 +101,11 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
       nickname: $scope.newNickname,
       eMail: $scope.newMail,
       dateOfBirth: $scope.newDate,
-      wantsToParticipate: false
+      wantsToParticipate: {
+        wantsToGive: false,
+        wantsToReceive: false,
+        wantsToReceiveMail: true
+      }
     };
   }
 
@@ -173,7 +177,6 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
   };
 
   $scope.editParticipation = function (worker) {
-    console.log(worker);
     $modal.open({
       animation: false,
       templateUrl: 'customizeWorkerParticipation.html',
@@ -181,10 +184,12 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
       resolve: {
         worker: function () {
           return angular.copy(worker);
+        },
+        existingRelations: function () {
+          return angular.copy($scope.existingRelations);
         }
       }
     });
-
   };
 
   /*DATEPICKER FUNCTIONS*/
@@ -193,9 +198,6 @@ app.controller('WorkersController', function ($scope, $modal, $rootScope, Worker
     $event.stopPropagation();
 
     $scope.opened = true;
-  };
-
-  $scope.notHimSelf = function () {
   };
 
   $scope.cantParticipate = function (worker) {
@@ -232,6 +234,7 @@ app.directive('unique', function () {
 })
 
   .controller('ModalEditWorkerCtrl', function ($scope, $modalInstance, worker) {
+
     $scope.worker = worker;
     $scope.ok = function () {
       $modalInstance.close($scope.worker);
@@ -265,13 +268,22 @@ app.directive('unique', function () {
       $modalInstance.dismiss('cancel');
     };
   })
-  .controller('ParticipationCtrl', function ($scope, $modalInstance, worker, WorkerService) {
+  .controller('ParticipationCtrl', function ($scope, $modalInstance, worker, WorkerService, existingRelations, SweetAlert) {
     $scope.worker = worker;
+    $scope.existingRelations = existingRelations;
+
+    function warningMsg(msg) {
+      SweetAlert.swal({
+        title: "",
+        text: msg,
+        type: "warning"
+      });
+    }
     $scope.changeGiftingIntention = function (worker) {
       var keepGoing = true;
-      angular.forEach($scope.participants, function (participant) {
+      angular.forEach($scope.existingRelations, function (relation) {
           if (keepGoing) {
-            if (worker.id === participant.giftGiver.id && participant.giftReceiver !== null) {
+            if (worker.id === relation.giftGiver.id && relation.giftReceiver !== null) {
               warningMsg("Este trabajador es el amigo invisible de otro participante. Se debe borrar esa relación antes de que deje de participar.");
               worker.wantsToParticipate.wantsToGive = true;
               keepGoing = false;
@@ -284,9 +296,9 @@ app.directive('unique', function () {
 
     $scope.changeReceivingIntention = function (worker) {
       var keepGoing = true;
-      angular.forEach($scope.participants, function (participant) {
+      angular.forEach($scope.existingRelations, function (relation) {
           if (keepGoing) {
-            if (participant.giftReceiver !== null && worker.id === participant.giftReceiver.id) {
+            if (relation.giftReceiver !== null && worker.id === relation.giftReceiver.id) {
               warningMsg("Hay un participante que es amigo invisible de este trabajador.Se debe borrar esa relación antes de que deje de participar.");
               worker.wantsToParticipate.wantsToReceive = true;
               keepGoing = false;
@@ -298,7 +310,6 @@ app.directive('unique', function () {
 
     $scope.ok = function () {
       $modalInstance.close($scope.worker);
-      console.log($scope.worker);
       WorkerService.changeIntention($scope.worker);
     };
     $scope.cancel = function () {
