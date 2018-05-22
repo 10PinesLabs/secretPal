@@ -10,14 +10,11 @@ public class ParticipationConfig {
     private Boolean wantsToReceiveMail;
 
     private ParticipationConfig(){}
+
     public ParticipationConfig(Boolean wantsToGiveGift, Boolean wantsToReceiveGift, Boolean wantsToReceiveBirthdayMessage) {
         wantsToGive = wantsToGiveGift;
         wantsToReceive = wantsToReceiveGift;
         wantsToReceiveMail = wantsToReceiveBirthdayMessage;
-    }
-
-    public void changeIntentionToGive() {
-        wantsToGive = !wantsToGive;
     }
 
     public Boolean getWantsToGive() {

@@ -161,7 +161,6 @@ public class Worker {
 
     public void setIntentionToReceive(boolean b) {
         wantsToParticipate.setWantsToReceive(b);
-
     }
 
     public boolean wantsToReceive() {
@@ -186,7 +185,7 @@ public class Worker {
         return fullName.compareTo(worker.getFullName());
     }
 
-    public void doNotWantsMail() {
+    public void doesNotWantMail() {
         wantsToParticipate.setWantsToReceiveMail(false);
     }
 }

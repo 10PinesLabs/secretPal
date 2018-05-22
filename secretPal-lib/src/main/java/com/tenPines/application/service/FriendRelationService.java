@@ -97,7 +97,7 @@ public class FriendRelationService {
     }
 
     public List<Worker> workersWhoCanReceive() {
-        return workerService.getAllGiverParticipants().stream().filter(Worker::wantsToReceive).filter(this::canReceive).collect(Collectors.toList());
+        return workerService.getAllReceiverParticipants().stream().filter(this::canReceive).collect(Collectors.toList());
     }
 
     private boolean canReceive(Worker worker) {

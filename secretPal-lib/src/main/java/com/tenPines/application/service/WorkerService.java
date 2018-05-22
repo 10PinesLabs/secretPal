@@ -34,10 +34,6 @@ public class WorkerService {
         workerRepository.delete(aWorker);
     }
 
-    public void removeAll() {
-        workerRepository.deleteAll();
-    }
-
     public Optional<Worker> retrieveWorkerByEmail(String email) {
         return workerRepository.findByeMail(email);
     }
@@ -48,20 +44,12 @@ public class WorkerService {
         workerRepository.save(worker);
     }
 
-    public List<Worker> retrieveParticipants() {
-        return workerRepository.findByWantsToParticipate_WantsToGive(true);
-    }
-
     public Worker retrieveWorker(Long to) {
         return workerRepository.findOne(to);
     }
 
     public List<Worker> getAllWorkers() {
         return workerRepository.findAll();
-    }
-
-    public Worker retrieveWorkerByFullname(String token) {
-        return workerRepository.findByfullName(token);
     }
 
     public void updateGifUrlForWorker(Worker worker, String newGifUrl) {
