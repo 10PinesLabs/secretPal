@@ -60,4 +60,13 @@ public class ReminderSystemTest extends SpringBaseTest {
         assertThat(postMan.messagesTo(friendWorker.geteMail()), empty());
     }
 
+    @Test
+    public void When_A_Worker_Does_Not_Want_To_Receive_Mail_The_Mailer_Does_Not_Send_It(){
+        setUp(LocalDate.now(), LocalDate.now());
+        birthdayWorker.doNotWantsMail();
+        workerService.save(birthdayWorker);
+        reminderSystem.sendHappyBirthdayMessages();
+        assertThat(postMan.messages, empty());
+    }
+
 }

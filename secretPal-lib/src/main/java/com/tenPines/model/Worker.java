@@ -185,4 +185,8 @@ public class Worker {
     public int orderByName(Worker worker) {
         return fullName.compareTo(worker.getFullName());
     }
+
+    public void doNotWantsMail() {
+        wantsToParticipate.setWantsToReceiveMail(false);
+    }
 }
