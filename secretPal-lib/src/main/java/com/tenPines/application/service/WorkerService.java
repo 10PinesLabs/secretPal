@@ -2,8 +2,6 @@ package com.tenPines.application.service;
 
 import com.tenPines.model.Worker;
 import com.tenPines.persistence.WorkerRepository;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,20 +21,17 @@ public class WorkerService {
         return workerRepository.save(newWorker);
     }
 
-    public List<Worker> getAllParticipants() {
-        Specification<Worker> spec = Specifications.where((model, criteriaQuery, criteriaBuilder) ->
-            criteriaBuilder.isTrue(model.get("wantsToParticipate"))
-        );
-        return workerRepository.findAll(spec);
+    public List<Worker> getAllGiverParticipants() {
+        return workerRepository.findByWantsToParticipate_WantsToGive(true);
+    }
+
+    public List<Worker> getAllReceiverParticipants() {
+        return workerRepository.findByWantsToParticipate_WantsToReceive(true);
     }
 
     public void remove(Worker aWorker) {
         userService.deleteByWorker(aWorker);
         workerRepository.delete(aWorker);
-    }
-
-    public void removeAll() {
-        workerRepository.deleteAll();
     }
 
     public Optional<Worker> retrieveWorkerByEmail(String email) {
@@ -45,12 +40,8 @@ public class WorkerService {
 
     public void changeIntention(Worker aWorker) {
         Worker worker = retrieveWorker(aWorker.getId());
-        worker.changeParticipationIntention();
+        worker.changeParticipationIntention(aWorker.getWantsToParticipate());
         workerRepository.save(worker);
-    }
-
-    public List<Worker> retrieveParticipants() {
-        return workerRepository.findBywantsToParticipate(true);
     }
 
     public Worker retrieveWorker(Long to) {
@@ -59,10 +50,6 @@ public class WorkerService {
 
     public List<Worker> getAllWorkers() {
         return workerRepository.findAll();
-    }
-
-    public Worker retrieveWorkerByFullname(String token) {
-        return workerRepository.findByfullName(token);
     }
 
     public void updateGifUrlForWorker(Worker worker, String newGifUrl) {

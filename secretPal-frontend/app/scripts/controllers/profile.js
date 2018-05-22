@@ -26,6 +26,8 @@ angular.module('secretPalApp')
         },
         function (isConfirm) {
           if (isConfirm) {
+            user.worker.wantsToParticipate.wantsToGive = true;
+            user.worker.wantsToParticipate.wantsToReceive = true;
             WorkerService.changeIntention(user.worker);
             SweetAlert.swal("¡Ahora estás participando!");
             $scope.noFriendAlert();
@@ -34,7 +36,7 @@ angular.module('secretPalApp')
           }
         });
     };
-    if (!user.worker.wantsToParticipate) {
+    if (!user.worker.wantsToParticipate.wantsToGive) {
       $scope.wantToParticipateMsg();
     } else {
       FriendRelationService.getFriend(user.worker, function (friend) {

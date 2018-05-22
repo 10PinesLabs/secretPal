@@ -55,7 +55,7 @@ public class WorkerBuilderTest {
     @Test
     public void When_I_try_to_create_a_person_he_should_not_want_to_participate_yet() {
         Worker aWorker = workerBuilder.whoDoesentWantToParticipate().build();
-        assertThat(aWorker.getWantsToParticipate(), is(false));
+        assertThat(aWorker.wantsToParticipate(), is(false));
     }
 
 }

@@ -33,7 +33,7 @@
   </div>
   <div class="modal-body" ng-if="worker.gifUrl">
     <label class="control-label col-md-4" for="date">Preview: </label>
-    <img src={{worker.gifUrl}} width="200" onerror="this.src='images/no_image_available.png';" />
+    <img src={{worker.gifUrl}} width="200" onerror="this.src='images/no_image_available.png';"/>
   </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
@@ -50,7 +50,7 @@
     <input type="text" ng-model="worker.gifUrl">
   </div>
   <div class="modal-body" style="text-align: center">
-    <img src={{worker.gifUrl}} width="300" onerror="this.src='images/no_image_available.png';" />
+    <img src={{worker.gifUrl}} width="300" onerror="this.src='images/no_image_available.png';"/>
   </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
@@ -63,10 +63,40 @@
     <h3 class="modal-title">Gif</h3>
   </div>
   <div class="modal-body" style="text-align: center">
-    <img src={{worker.gifUrl}} onerror="this.src='images/no_image_available.png';" />
+    <img src={{worker.gifUrl}} onerror="this.src='images/no_image_available.png';"/>
   </div>
   <div class="modal-footer">
     <button class="btn btn-transparent" ng-click="cerrar()">Cerrar</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="customizeWorkerParticipation.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Customizando la participacion de {{worker.fullName}}</h3>
+  </div>
+  <div class="modal-body">
+    <span>
+    <label class="control-label" for="date">Quiere dar regalos: </label>
+    <input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
+           ng-change="changeGiftingIntention(worker)" ng-model="worker.wantsToParticipate.wantsToGive">
+    </span>
+    <br/>
+    <span>
+    <label class="control-label" for="date">Quiere recibir regalos: </label>
+
+    <input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
+           ng-change="changeReceivingIntention(worker)" ng-model="worker.wantsToParticipate.wantsToReceive">
+    </span>
+    <br/>
+    <span>
+      <label class="control-label" for="date">Quiere recibir mail de feliz cumple: </label>
+    <input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
+           ng-model="worker.wantsToParticipate.wantsToReceiveMail">
+    </span>
+    <div class="modal-footer">
+      <button class="btn btn-transparent" ng-click="cancel()">Cancelar</button>
+      <button class="btn btn-success" ng-click="ok()" ng-enter="ok();">OK</button>
+    </div>
   </div>
 </script>
 
@@ -81,8 +111,8 @@
         <th>Email</th>
         <th>Fecha de cumpleaños</th>
         <th>Gif de cumpleaños</th>
-        <th>Quiere participar?</th>
-        <th>Hacer Admin</th>
+        <th>Participación</th>
+        <th>Hacer admin</th>
         <th>Editar</th>
         <th>Borrar</th>
       </tr>
@@ -97,8 +127,9 @@
           <div ng-if="!worker.gifUrl"><a ng-click="updateGifUrlFor(worker)">Agregar</a></div>
           <div ng-if="worker.gifUrl"><a ng-click="showGifFor(worker)">Ver gif</a></div>
         </td>
-        <td><input type="checkbox" name="selectedParticipants[]" value="{{worker.fullName}}"
-                   ng-change="changeIntention(worker)" ng-model="worker.wantsToParticipate"></td>
+        <td>
+          <div><a ng-click="editParticipation(worker)">Configurar</a></div>
+        </td>
         <td>
           <button class="btn btn-sm btn-warning"
                   ng-click="addAdmin(worker)"
@@ -138,13 +169,15 @@
     <form class="navbar-form" name="form" ng-submit="Add()">
       <div class="field">
         <label class="control-label col-md-4" for="name">Nombre: </label>
-        <input type="text" id="name" placeholder="Nombre" class="form-control" ng-pattern="/[a-zA-Z]/" ng-model="newName"
+        <input type="text" id="name" placeholder="Nombre" class="form-control" ng-pattern="/[a-zA-Z]/"
+               ng-model="newName"
                required ng-model-options="{ debounce: 500 }">
         <span ng-show="form.newName.$error.unique">Este pino ya existe!</span>
       </div>
       <div class="field">
         <label class="control-label col-md-4" for="nickname">Apodo: </label>
-        <input type="text" id="nickname" placeholder="Apodo" class="form-control" ng-pattern="/[a-zA-Z]/" ng-model="newNickname"
+        <input type="text" id="nickname" placeholder="Apodo" class="form-control" ng-pattern="/[a-zA-Z]/"
+               ng-model="newNickname"
                required ng-model-options="{ debounce: 500 }">
       </div>
       <div class="field">

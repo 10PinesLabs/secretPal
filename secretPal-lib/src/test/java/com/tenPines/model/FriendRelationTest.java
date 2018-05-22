@@ -3,8 +3,11 @@ package com.tenPines.model;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.model.process.AssignmentException;
 import com.tenPines.model.process.RelationEstablisher;
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Map;
 
 import static com.tenPines.model.process.AssignmentException.Reason.*;
 import static junit.framework.TestCase.assertTrue;
@@ -26,29 +29,27 @@ public class FriendRelationTest {
 
     @Test
     public void When_I_try_to_create_a_participant_that_does_not_want_to_participate_an_exception_is_raised() {
-        aWorker.setWantsToParticipate(false);
+        aWorker.setIntentionToGive(false);
         RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
 
-        try {
-            relationEstablisher.createRelation();
-            fail("The exception was not raised");
-        } catch (AssignmentException e) {
-            assertThat(e.getReason(), is(DOES_NOT_WANT_TO_PARTICIPATE.toString()));
-            assertThat(e.getDetails(), hasEntry("worker", aWorker));
-        }
+        assertAssignmentException(relationEstablisher, hasEntry("worker", aWorker));
     }
 
     @Test
     public void When_I_try_to_create_a_participant_whose_secretpal_does_not_want_to_participate_an_exception_is_raised() {
-        otherWorker.setWantsToParticipate(false);
+        otherWorker.setIntentionToReceive(false);
         RelationEstablisher relationEstablisher = new RelationEstablisher(aWorker, otherWorker);
 
+        assertAssignmentException(relationEstablisher, hasEntry("worker", otherWorker));
+    }
+
+    private void assertAssignmentException(RelationEstablisher relationEstablisher, Matcher<Map<? extends String, ?>> worker) {
         try {
             relationEstablisher.createRelation();
             fail("The exception was not raised");
         } catch (AssignmentException e) {
             assertThat(e.getReason(), is(DOES_NOT_WANT_TO_PARTICIPATE.toString()));
-            assertThat(e.getDetails(), hasEntry("worker", otherWorker));
+            assertThat(e.getDetails(), worker);
         }
     }
 

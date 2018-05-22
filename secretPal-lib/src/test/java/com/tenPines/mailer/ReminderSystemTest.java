@@ -48,7 +48,7 @@ public class ReminderSystemTest extends SpringBaseTest {
     public void When_A_Workers_Birthday_Should_Mail_All_Pines(){
         setUp(LocalDate.now(), LocalDate.now());
 
-        reminderSystem.sendHappyBithdayMessages();
+        reminderSystem.sendHappyBirthdayMessages();
         assertThat(postMan.messagesTo(birthdayWorker.geteMail()), empty());
     }
 
@@ -58,6 +58,15 @@ public class ReminderSystemTest extends SpringBaseTest {
 
         reminderSystem.sendTwoWeeksReminders();
         assertThat(postMan.messagesTo(friendWorker.geteMail()), empty());
+    }
+
+    @Test
+    public void When_A_Worker_Does_Not_Want_To_Receive_Mail_The_Mailer_Does_Not_Send_It(){
+        setUp(LocalDate.now(), LocalDate.now());
+        birthdayWorker.doesNotWantMail();
+        workerService.save(birthdayWorker);
+        reminderSystem.sendHappyBirthdayMessages();
+        assertThat(postMan.messages, empty());
     }
 
 }

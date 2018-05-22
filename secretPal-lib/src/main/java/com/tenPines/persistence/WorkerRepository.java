@@ -13,7 +13,10 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
 
     Optional<Worker> findByeMail(String email);
 
-    List<Worker> findBywantsToParticipate(Boolean bool);
+    List<Worker> findByWantsToParticipate_WantsToGive(Boolean bool);
+
+    List<Worker> findByWantsToParticipate_WantsToReceive(Boolean bool);
+
 
     Worker findByfullName(String token);
 

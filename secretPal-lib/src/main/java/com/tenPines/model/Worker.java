@@ -1,6 +1,8 @@
 package com.tenPines.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.tenPines.configuration.JsonDateDeserializer;
@@ -37,7 +39,8 @@ public class Worker {
     private LocalDate dateOfBirth;
     private String gifUrl;
     @NotNull
-    private Boolean wantsToParticipate;
+    @Embedded
+    private ParticipationConfig wantsToParticipate;
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Column
@@ -46,7 +49,7 @@ public class Worker {
     // Necessary for hibernate
     private Worker() { }
 
-    public Worker(String fullName, String nickname, String email, LocalDate dateOfBirth, Boolean wantsToParticipate) {
+    public Worker(String fullName, String nickname, String email, LocalDate dateOfBirth, ParticipationConfig wantsToParticipate) {
         this.fullName = fullName;
         this.nickname = nickname;
         this.eMail = email;
@@ -106,14 +109,14 @@ public class Worker {
         this.dateOfBirth = birthdayDate;
     }
 
-    public void changeParticipationIntention() {
-        setWantsToParticipate(!wantsToParticipate);
+    public void changeParticipationIntention(ParticipationConfig intentions) {
+        this.wantsToParticipate = intentions;
     }
 
-    public boolean getWantsToParticipate() { return this.wantsToParticipate;}
+    public Boolean wantsToParticipate() { return wantsToParticipate.getWantsToGive();}
 
-    public void setWantsToParticipate(Boolean wantsToParticipate) {
-        this.wantsToParticipate = wantsToParticipate;
+    public void setIntentionToGive(boolean b) {
+        wantsToParticipate.setWantsToGive(b);
     }
 
     public LocalDate getGiftDateReceived() {
@@ -152,4 +155,37 @@ public class Worker {
         this.gifUrl = gifUrl;
     }
 
+    public boolean wantsToGive() {
+        return wantsToParticipate.getWantsToGive();
+    }
+
+    public void setIntentionToReceive(boolean b) {
+        wantsToParticipate.setWantsToReceive(b);
+    }
+
+    public boolean wantsToReceive() {
+        return wantsToParticipate.getWantsToReceive();
+    }
+
+    public boolean wantsToReceiveBirthdayMessage() {
+        return wantsToParticipate.getWantsToReceiveMail();
+    }
+
+    @JsonGetter("wantsToParticipate")
+    public ParticipationConfig getWantsToParticipate(){
+        return wantsToParticipate;
+    }
+
+    @JsonSetter("wantsToParticipate")
+    public void setWantsToParticipate(ParticipationConfig wantsToParticipate) {
+        this.wantsToParticipate = wantsToParticipate;
+    }
+
+    public int orderByName(Worker worker) {
+        return fullName.compareTo(worker.getFullName());
+    }
+
+    public void doesNotWantMail() {
+        wantsToParticipate.setWantsToReceiveMail(false);
+    }
 }

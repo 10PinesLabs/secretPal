@@ -17,12 +17,14 @@ public class RelationEstablisher {
     public FriendRelation createRelation() {
         assertReceiverIsNotNull(giftReciever);
         assertGiverIsNotNull(giftgiver);
-        checkIfWantToParticipate(giftgiver);
-        checkIfWantToParticipate(giftReciever);
+        checkIfWantsToGive(giftgiver);
+        checkIfWantToReceive(giftReciever);
         checkIfNotTheSameParticipant(giftgiver, giftReciever);
 
         return relate();
     }
+
+
 
     public void assertReceiverIsNotNull(Worker giftReceiver) {
         if(giftReceiver == null){
@@ -44,8 +46,15 @@ public class RelationEstablisher {
         if(participant.equals(secretPal))
             throw new AssignmentException(CANT_SELF_ASSIGN);
     }
-    private void checkIfWantToParticipate(Worker worker) {
-        if(!worker.getWantsToParticipate())
-            throw new AssignmentException(AssignmentException.Reason.DOES_NOT_WANT_TO_PARTICIPATE, worker);
+
+    private void checkIfWantsToGive(Worker giftGiver) {
+        if(!giftGiver.wantsToGive())
+            throw new AssignmentException(AssignmentException.Reason.DOES_NOT_WANT_TO_PARTICIPATE, giftGiver);
     }
+
+    private void checkIfWantToReceive(Worker giftReciever) {
+        if(!giftReciever.wantsToReceive())
+            throw new AssignmentException(AssignmentException.Reason.DOES_NOT_WANT_TO_PARTICIPATE, giftReciever);
+    }
+
 }

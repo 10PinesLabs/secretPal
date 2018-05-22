@@ -11,6 +11,7 @@ import com.tenPines.builder.ReminderMonthsBirthdayAproachBuilder;
 import com.tenPines.builder.ReminderWeeksBirthdayAproachBuilder;
 import com.tenPines.mailer.PostOffice;
 import com.tenPines.model.FriendRelation;
+import com.tenPines.model.Worker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,15 +42,18 @@ public class ReminderSystem {
         this.defaultGifService = defaultGifService;
     }
 
-    public void sendHappyBithdayMessages() {
-        workerService.getAllParticipants().stream()
+    public void sendHappyBirthdayMessages() {
+        workerService.getAllGiverParticipants().stream()
                 .filter(worker ->
-                        worker.getBirthday()
-                                .equals(
-                                        MonthDay.from(clock.now()))
+                        birthdayToday(worker)
+                        && worker.wantsToReceiveBirthdayMessage()
                 )
                 .forEach(worker -> postOffice.sendMessage(new HappyBithdayMessageBuilder(mailProperties, defaultGifService).buildMessage(worker)));
 
+    }
+
+    private boolean birthdayToday(Worker worker) {
+        return worker.getBirthday().equals(MonthDay.from(clock.now()));
     }
 
     public void sendTwoWeeksReminders() {
@@ -105,6 +109,6 @@ public class ReminderSystem {
     public void sendAllReminders() {
         sendTwoMonthsReminders();
         sendTwoWeeksReminders();
-        sendHappyBithdayMessages();
+        sendHappyBirthdayMessages();
     }
 }

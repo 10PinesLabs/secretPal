@@ -59,7 +59,7 @@ public class FriendRelationService {
 
     public List<Worker> getAvailablesRelationsTo(Worker workerTo) {
         FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
-        return workerService.getAllParticipants().stream().filter(participant ->
+        return workerService.getAllGiverParticipants().stream().filter(participant ->
                 validator.validate(workerTo, participant)
         ).collect(Collectors.toList());
     }
@@ -87,7 +87,7 @@ public class FriendRelationService {
     }
 
     public List<Worker> workersWhoCanGive() {
-        return workerService.getAllParticipants().stream().filter(this::canGive).collect(Collectors.toList());
+        return workerService.getAllGiverParticipants().stream().filter(this::canGive).collect(Collectors.toList());
     }
 
     private Boolean canGive(Worker worker) {
@@ -97,7 +97,7 @@ public class FriendRelationService {
     }
 
     public List<Worker> workersWhoCanReceive() {
-        return workerService.getAllParticipants().stream().filter(this::canReceive).collect(Collectors.toList());
+        return workerService.getAllReceiverParticipants().stream().filter(this::canReceive).collect(Collectors.toList());
     }
 
     private boolean canReceive(Worker worker) {
@@ -220,14 +220,14 @@ public class FriendRelationService {
 
     public List<Worker> possibleGiftersFor(Worker receiver) {
         FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
-        return workerService.getAllParticipants().stream()
+        return workerService.getAllGiverParticipants().stream()
                 .filter(participant ->
                         validator.validatePossible(participant, receiver)
                 ).collect(Collectors.toList());
     }
 
     public List<PossibleRelationForFrontEnd> allReceiversWithPosibilities() {
-        return workerService.getAllParticipants().stream()
+        return workerService.getAllReceiverParticipants().stream()
                 .filter(this::canReceive)
                 .map(participant ->
                         new PossibleRelationForFrontEnd(participant, this)

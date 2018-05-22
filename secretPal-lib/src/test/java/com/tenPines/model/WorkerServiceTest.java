@@ -26,7 +26,7 @@ public class WorkerServiceTest extends SpringBaseTest{
     public void When_I_Save_A_New_User_This_Should_Be_Stored() {
         workerService.save(aWorker);
 
-        assertThat(workerService.getAllParticipants(), hasSize(1));
+        assertThat(workerService.getAllGiverParticipants(), hasSize(1));
     }
 
     @Test
@@ -37,7 +37,7 @@ public class WorkerServiceTest extends SpringBaseTest{
         workerService.save(aWorker);
         workerService.save(anotherWorker);
 
-        assertThat(workerService.getAllParticipants(),
+        assertThat(workerService.getAllGiverParticipants(),
                 hasItems(aWorker, anotherWorker));
     }
 
@@ -48,7 +48,7 @@ public class WorkerServiceTest extends SpringBaseTest{
         workerService.save(aWorker);
         workerService.remove(aWorker);
 
-        assertThat(workerService.getAllParticipants(), not(hasItem(aWorker)));
-        assertThat(workerService.getAllParticipants(), hasSize(0));
+        assertThat(workerService.getAllGiverParticipants(), not(hasItem(aWorker)));
+        assertThat(workerService.getAllGiverParticipants(), hasSize(0));
     }
 }
