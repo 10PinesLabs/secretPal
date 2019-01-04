@@ -1,0 +1,6 @@
+Hola, este mail es para recordarte que el ${receiver.birthday} es el cumpleaños de ${receiver.fullName}.
+
+La idea sería tener su regalo para el Viernes después de su cumpleaños, y avisarnos.
+Por cualquier cosa, no dudes en preguntarnos ${admins}.
+
+Saludos!

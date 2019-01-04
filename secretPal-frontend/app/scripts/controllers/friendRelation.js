@@ -78,15 +78,36 @@ app.controller('FriendRelationController', function ($scope, $modal, $filter, Fr
       });
   };
 
-  $scope.lock = function (giver, receiver) {
-    var relationToLock = $scope.friendRelations.find(function (relation) {
-      return relation.giftGiver.id === giver.id && relation.giftReceiver.id === receiver.id;
-    });
-    if (typeof relationToLock !== "undefined") {
-      FriendRelationService.lock(relationToLock, updateAllRelations);
-    } else {
-      SweetAlert.swal("Algo salió mal", "No se pudo encontrar una relación entre esos pinos", "error");
-    }
+  $scope.relationIsFromGiverToReceiver = function (relation, giver, receiver) {
+    return relation.giftGiver.id === giver.id && relation.giftReceiver.id === receiver.id;
   }
 
+  $scope.lock = function (giver, receiver) {
+    SweetAlert.swal({
+        title: "¿Estás seguro?",
+        text: "Una vez que se fije la relación se enviará un mail avisando a quien tiene que comprar el regalo",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d43f3a",
+        confirmButtonText: "Si, fijar!",
+        closeOnConfirm: false
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          var relationToLock = $scope.friendRelations.find(function (relation){
+            return $scope.relationIsFromGiverToReceiver(relation, giver, receiver);
+          });
+          if (typeof relationToLock !== "undefined") {
+            SweetAlert.swal({
+              title: "Procesando",
+              text: "Esto puede tardar un rato...\n muchos algoritmos",
+              showConfirmButton: false
+            });
+            FriendRelationService.lock(relationToLock, updateAllRelations);
+          } else {
+            SweetAlert.swal("Algo salió mal", "No se pudo encontrar una relación entre esos pinos", "error");
+          }
+        }
+      });
+  }
 });

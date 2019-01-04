@@ -12,7 +12,6 @@ import com.tenPines.restAPI.utils.GuessResponseForFrontend;
 import com.tenPines.restAPI.utils.PossibleRelationForFrontEnd;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -134,14 +133,6 @@ public class SystemPalFacade {
         workerService.save(workerEdited);
     }
 
-    public EmailTemplate getEMailTemplate() throws IOException {
-        return mailerService.getEMailTemplate();
-    }
-
-    public EmailTemplate setEmailTemplate(EmailTemplate modifiedMail) throws IOException {
-        return mailerService.setEmailTemplate(modifiedMail);
-    }
-
     public List<UnsentMessage> retrieveAllFailedMails() {
         return mailerService.retrieveAllFailedMails();
     }
@@ -226,6 +217,10 @@ public class SystemPalFacade {
         return FriendRelation.GUESS_ATTEMPTS_LIMIT;
     }
 
+    public void sendConfirmationEmailFor(FriendRelation relation) {
+        mailerService.sendConfirmationMailFor(relation);
+    }
+  
     public GuessResponseForFrontend guessStatusFor(Worker worker) {
         FriendRelation relation = friendRelationService.guessStatusFor(worker).orElse(new EmptyRelationForFrontEnd());
         return new GuessResponseForFrontend(relation.isGuessed(), relation.getGuessAttempts(),friendRelationService.getGiftSenderFor(worker));

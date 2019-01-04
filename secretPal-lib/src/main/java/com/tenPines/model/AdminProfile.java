@@ -19,6 +19,10 @@ public class AdminProfile {
         return adminProfile;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setUser(User anUser){
         this.user = anUser;
     }

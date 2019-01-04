@@ -1,58 +1,64 @@
 package com.tenPines.builder;
 
-import com.tenPines.application.service.MailerService;
+import com.tenPines.application.service.ReplacerService;
+import com.tenPines.files.TemplateReader;
 import com.tenPines.model.FriendRelation;
 import com.tenPines.model.Message;
-import com.tenPines.model.Worker;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
-import java.io.IOException;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
+import java.util.Arrays;
+import java.util.List;
 
-/**
- * Created by Aye on 01/11/16.
- */
-public abstract class ReminderBuilder {
+public class ReminderBuilder {
 
-    public MailerService mailerService;
+    private String mailTemplate;
+    private List<MailTextReplacer> replacers;
+    private TemplateReader templateReader = new TemplateReader();
 
-    public DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd 'de' MMMM", new Locale("es", "ES"));
-
-    protected ReminderBuilder(MailerService mailerService) {
-        this.mailerService = mailerService;
+    public ReminderBuilder(String mailTemplate, ReplacerService replacerService) {
+        this.mailTemplate = mailTemplate;
+        this.replacers = replacerService.all();
     }
 
-    public Message buildMessage(FriendRelation aFriendRelation) throws IOException {
+    public Message buildMessage(FriendRelation aFriendRelation) {
         return new Message(
                 aFriendRelation.getGiftGiver().geteMail(),
-                assignationSubject(),
-                htmlAssignationBodyText(aFriendRelation.getGiftReceiver()),
-                plainAssignationBodyText(aFriendRelation.getGiftReceiver()));
+                assignationSubject(aFriendRelation),
+                htmlBodyText(aFriendRelation),
+                plainBodyText(aFriendRelation)
+        );
     }
 
-    protected abstract String assignationSubject() throws IOException;
-
-    private String htmlAssignationBodyText(Worker birthdayWorker) {
-        return "<p>" + plainAssignationBodyText(birthdayWorker) + "</p>";
+    private  String assignationSubject(FriendRelation relation){
+        return replaceMailVariables(templateReader.getContent(mailTemplate + "-subject.txt"), relation);
     }
 
-    protected String plainAssignationBodyText(Worker birthdayWorker) {
-        return mailerService.getTemplate()
-                .map(emailTemplate -> replaceMailVariables(emailTemplate.getBodyText(), birthdayWorker))
-                .orElse(defaultBody(birthdayWorker));
+    private String plainBodyText(FriendRelation relation) {
+        return replaceMailVariables(templateReader.getContent(mailTemplate + "-text.txt"), relation);
     }
 
-    private String replaceMailVariables(String bodyText, Worker birthdayWorker) {
-        String res = StringUtils.replace(bodyText, "${receiver.fullName}", birthdayWorker.getFullName());
-        res = StringUtils.replace(res, "${receiver.dateOfBirth}", birthday(birthdayWorker));
+    private String htmlBodyText(FriendRelation relation) {
+        return replaceMailVariables(templateReader.getContent(mailTemplate + "-html.html"), relation);
+    }
+
+    private String replaceMailVariables(String bodyText, FriendRelation friendRelation) {
+        List<String> variablesToReplace = substringsBetween(bodyText, "${", "}");
+        String res = variablesToReplace.stream().reduce(bodyText, (text, variable) -> {
+                    MailTextReplacer appropiateReplacer = replacers.stream().filter(replacer -> replacer.canReplace(variable))
+                            .findFirst()
+                            .orElseThrow(() -> new RuntimeException("${" + variable + "}" + " is not a valid variable"));
+                    return StringUtils.replace(text, "${" + variable + "}", appropiateReplacer.replaceFor(friendRelation));
+                }
+        );
         return res;
     }
 
-    public abstract String defaultBody(Worker birthdayWorker);
-
-    protected String birthday(Worker birthdayWorker) {
-        return dateFormat.format(birthdayWorker.getDateOfBirth());
+    private List<String> substringsBetween(String htmlText, String open, String close) {
+        String[] plainTextFragments = StringUtils.substringsBetween(htmlText, open, close);
+        if (plainTextFragments == null) {
+            return Arrays.asList();
+        }
+        return Arrays.asList(plainTextFragments);
     }
 
 }
