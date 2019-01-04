@@ -13,6 +13,7 @@ import com.tenPines.integration.SpringBaseTest;
 import com.tenPines.persistence.NotCircularRelationRuleRepository;
 import com.tenPines.persistence.NotTooCloseBirthdayRuleRepository;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -71,6 +72,7 @@ public class FriendRelationValidatorTest extends SpringBaseTest {
     }
 
     @Test
+    @Ignore
     public void isInvalidWhenValidateTooCloseBirthdayRule() {
         NotTooCloseBirthdaysRule notTooCloseBirthdaysRule = customParticipantRuleService.getNotTooCloseBirthdayRule();
         notTooCloseBirthdaysRule.isActive = false;
