@@ -27,6 +27,7 @@ public class ReplacerService {
                 new MailTextReplacer("receiver.fullName", relation -> relation.getGiftReceiver().getFullName()),
                 new MailTextReplacer("receiver.birthday", relation -> birthday(relation.getGiftReceiver())),
                 new MailTextReplacer("admins", relation -> admins()),
+                new MailTextReplacer("receiver.eMail", relation -> relation.getGiftReceiver().geteMail()),
                 new MailTextReplacer("currentYear", relation -> String.valueOf(clock.now().getYear()))
         );
     }

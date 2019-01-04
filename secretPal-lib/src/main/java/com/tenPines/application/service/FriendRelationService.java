@@ -40,7 +40,7 @@ public class FriendRelationService {
     }
 
     public FriendRelation retrieveRelation(Long relationId) {
-        return friendRelationRepository.getOne(relationId);
+        return friendRelationRepository.findOne(relationId);
     }
 
     public FriendRelation create(Worker friendWorker, Worker birthdayWorker) {
