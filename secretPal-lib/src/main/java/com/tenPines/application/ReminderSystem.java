@@ -37,7 +37,7 @@ public class ReminderSystem {
     }
 
     public void sendHappyBithdayMessages() {
-        workerService.getAllParticipants().stream()
+        workerService.getAllWorkers().stream()
                 .filter(worker ->
                         worker.getBirthday()
                                 .equals(
