@@ -9,17 +9,20 @@ import com.tenPines.application.service.WorkerService;
 import com.tenPines.builder.WorkerBuilder;
 import com.tenPines.integration.SpringBaseTest;
 import com.tenPines.model.Worker;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.*;
 
 
 public class ReminderSystemTest extends SpringBaseTest {
 
+    private static final String NON_PARTICIPANT_NICKNAME = "PINE WHO DOESNT PARTICIPATE";
     @Autowired
     private WorkerService workerService;
     @Autowired
@@ -32,32 +35,66 @@ public class ReminderSystemTest extends SpringBaseTest {
     private SecretPalProperties secretPalProperties;
     @Autowired
     private FriendRelationService friendRelationService;
-    private Worker friendWorker;
-    private Worker birthdayWorker;
 
-    private void setUp(LocalDate today, LocalDate birthday) {
-        clock.setTime(today);
+    @Value("${mail.recipients}")
+    private String birthdayMailRecipient;
 
-        friendWorker = workerService.save(new WorkerBuilder().build());
-        birthdayWorker = workerService.save(new WorkerBuilder().withBirthDayDate(birthday).build());
+    private Worker giftGiver;
+    private Worker workerTurningYears;
 
-        friendRelationService.create(friendWorker, birthdayWorker);
+    @Before
+    public void setUp() {
+        clock.setTime(LocalDate.now());
     }
 
     @Test
-    public void When_A_Workers_Birthday_Should_Mail_All_Pines(){
-        setUp(LocalDate.now(), LocalDate.now());
+    public void aBirthdayMailIsSentToEveryoneWhenAParticipantTurnsYears(){
+        createFriendRelationWithBirthdayToday();
 
         reminderSystem.sendHappyBithdayMessages();
-        assertThat(postMan.messagesTo(birthdayWorker.geteMail()), empty());
+
+        assertThat(postMan.messagesTo(birthdayMailRecipient), hasSize(1));
     }
 
     @Test
-    public void When_aproach_the_birthday_of_friendWorker(){
-        setUp(LocalDate.now().plusDays(secretPalProperties.getReminderWeekPeriod()), LocalDate.now());
+    public void aBirthdayMailIsSentToEveryoneWhenANonParticipantTurnsYears(){
+        createNonParticipantTurningYearsToday();
+
+        reminderSystem.sendHappyBithdayMessages();
+
+        assertThat(postMan.messagesTo(birthdayMailRecipient), hasSize(1));
+    }
+
+    @Test
+    public void aReminderMailIsSentToGiverWhenThereAreTwoWeeksLeftToTheBirthday(){
+        createFriendRelationWithBirthdayToday();
+        backTheClockTwoWeeks();
 
         reminderSystem.sendTwoWeeksReminders();
-        assertThat(postMan.messagesTo(friendWorker.geteMail()), empty());
+
+        assertThat(postMan.messagesTo(giftGiver.geteMail()), hasSize(1));
     }
+
+
+    private void createFriendRelationWithBirthdayToday() {
+        giftGiver = workerService.save(new WorkerBuilder().build());
+        workerTurningYears = workerService.save(new WorkerBuilder().withBirthDayDate(clock.now()).build());
+        friendRelationService.create(giftGiver, workerTurningYears);
+    }
+
+    private void createNonParticipantTurningYearsToday() {
+        workerService.save(
+            new WorkerBuilder()
+                    .withBirthDayDate(clock.now())
+                    .whoDoesNotWantToParticipate()
+                    .withNickname(NON_PARTICIPANT_NICKNAME)
+                    .build()
+        );
+    }
+
+    private void backTheClockTwoWeeks() {
+        clock.setTime(clock.now().minusWeeks(secretPalProperties.getReminderWeekPeriod()));
+    }
+
 
 }

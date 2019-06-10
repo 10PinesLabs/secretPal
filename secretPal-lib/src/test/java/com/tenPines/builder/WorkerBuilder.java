@@ -48,7 +48,7 @@ public class WorkerBuilder {
         return this;
     }
 
-    public WorkerBuilder whoDoesentWantToParticipate() {
+    public WorkerBuilder whoDoesNotWantToParticipate() {
         this.wantsToParticipate = false;
         return this;
     }
