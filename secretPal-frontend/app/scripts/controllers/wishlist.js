@@ -71,7 +71,7 @@ angular.module('secretPalApp')
         });
     };
 
-    $scope.canDelete = function (wish) {
+    $scope.canModify = function (wish) {
       return user.worker.id == wish.createdBy.id || user.worker.id == wish.worker.id;
     };
   })
@@ -94,8 +94,6 @@ angular.module('secretPalApp')
     function errorMsg(msg) {
       SweetAlert.swal("Algo salio mal", msg, "error");
     }
-
-
 
     this.all = function (callback) {
       $http.get(buildRoute('/')).success(function (data) {

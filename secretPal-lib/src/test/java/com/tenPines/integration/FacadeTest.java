@@ -31,7 +31,4 @@ public class FacadeTest extends SpringBaseTest {
 
     }
 
-
-
-
 }

@@ -1,0 +1,9 @@
+Este año vas a ser el amigo invisible de:
+${receiver.fullName}&lt;${receiver.eMail}&gt; que cumple el: ${receiver.birthday}
+
+La idea sería tener su regalo para el viernes después de su cumpleaños, y avisarnos.
+Por cualquier cosa, no dudes en preguntar a ${admins}, o a esta misma dirección.
+
+PD: Por favor confirmá que leíste este mail respondiéndolo!
+
+Abrazo!

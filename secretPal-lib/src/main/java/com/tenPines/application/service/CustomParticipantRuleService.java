@@ -51,8 +51,8 @@ public class CustomParticipantRuleService {
 
     public List<AssignationRule> getRules() {
         List<AssignationRule> assignationRules = new ArrayList<>();
-            assignationRules.add(getCircularRule());
-            assignationRules.add(getNotTooCloseBirthdayRule());
+            //assignationRules.add(getCircularRule());
+            //assignationRules.add(getNotTooCloseBirthdayRule());
             assignationRules.add(new NotTheSamePersonRule());
             assignationRules.add(new BirthdayPassedRule(clock));
 

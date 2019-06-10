@@ -40,7 +40,7 @@ public class FriendRelationService {
     }
 
     public FriendRelation retrieveRelation(Long relationId) {
-        return friendRelationRepository.getOne(relationId);
+        return friendRelationRepository.findOne(relationId);
     }
 
     public FriendRelation create(Worker friendWorker, Worker birthdayWorker) {
@@ -218,19 +218,20 @@ public class FriendRelationService {
         return () -> new RuntimeException("No hay pistas!");
     }
 
-    public List<Worker> possibleGiftersFor(Worker receiver) {
+    public List<Worker> possibleGiftersFor(Worker receiver, List<Worker> workers) {
         FriendRelationValidator validator = new FriendRelationValidator(clock, this, customParticipantRuleService);
-        return workerService.getAllParticipants().stream()
+        return workers.stream()
                 .filter(participant ->
                         validator.validatePossible(participant, receiver)
                 ).collect(Collectors.toList());
     }
 
     public List<PossibleRelationForFrontEnd> allReceiversWithPosibilities() {
-        return workerService.getAllParticipants().stream()
+        List<Worker> workers = workerService.getAllParticipants();
+        return workers.stream()
                 .filter(this::canReceive)
                 .map(participant ->
-                        new PossibleRelationForFrontEnd(participant, this)
+                        new PossibleRelationForFrontEnd(participant, this, workers)
                 ).collect(Collectors.toList());
     }
 

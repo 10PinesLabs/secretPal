@@ -13,14 +13,14 @@ public class PossibleRelationForFrontEnd {
     private Optional<Worker> giver;
     private List<Worker> posibleGivers;
 
-    public PossibleRelationForFrontEnd(Worker participant, FriendRelationService friendRelationService) {
+    public PossibleRelationForFrontEnd(Worker participant, FriendRelationService friendRelationService, List<Worker> workers) {
         this.receiver = participant;
         this.giver = friendRelationService.retrieveGiftGiverFor(participant);
-        updatePosibleReceivers(friendRelationService);
+        updatePosibleReceivers(friendRelationService, workers);
     }
 
-    private void updatePosibleReceivers(FriendRelationService friendRelationService) {
-        this.posibleGivers = friendRelationService.possibleGiftersFor(this.receiver);
+    private void updatePosibleReceivers(FriendRelationService friendRelationService, List<Worker> workers) {
+        this.posibleGivers = friendRelationService.possibleGiftersFor(this.receiver, workers);
     }
 
     public List<Worker> getPossibleGivers() {
