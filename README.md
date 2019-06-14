@@ -8,21 +8,28 @@
 * Ver la lista de deseos de los pinos 
 * Agregar ítems a la lista de deseos de un pino 
 
-#Configurando el ambiente de desarrollo
+
+# Configurando el ambiente de desarrollo
+
+# Backend 
+
+0. Descargar proyecto
 
 ## Crear la base de datos para levantar la aplicacion del backend
-0. `sudo apt install postgresql`.
-1. `sudo -u postgres createuser -P pal`.
-2. `sudo -u postgres create db secret_pal (secret_pal_test para los tests)`.
-3. `sudo -u postgres psql`.
-4. `grant all privileges on database secret_pal (_test para tests) to pal`.
+1. `sudo apt install postgresql`
+2. `sudo -u postgres createuser -P pal`
+3. `sudo -u postgres psql`. (entramos a la bd)
+4. `create database secret_pal (secret_pal_test para los tests)`
+5. `grant all privileges on database secret_pal to pal`(_test para tests) 
+
+# Frontend
 
 ## Levantar el frontend con npm
-1. `npm install`.
-2. `npm install -g grunt-cli`.
-3. `npm install -g bower`.
-4. `bower install`.
-5. `grunt serve`.
+1. `npm install`
+2. `npm install -g grunt-cli`
+3. `npm install -g bower`
+4. `bower install`
+5. `grunt serve`
 
 
 # Backlog
