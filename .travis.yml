@@ -8,5 +8,5 @@ before_script:
   - psql -c "CREATE DATABASE secret_pal_test WITH OWNER pal;" -U postgres
 
 script: 
-  - mvn -Dmaven.javadoc.skip=true test
+  - mvn -Dmaven.javadoc.skip=true test -Dspring.profiles.active=ci
 
