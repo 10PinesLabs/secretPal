@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.HandlerMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,16 +59,19 @@ public class AuthController {
         return admins;
     }
 
-    @GetMapping(value = "/callback", produces = MediaType.TEXT_HTML_VALUE)
+  @GetMapping(value = "/callback/**", produces = MediaType.TEXT_HTML_VALUE)
     @ResponseBody
     public String backofficeCallback(
-            @RequestParam("uid") Long uid,
-            @RequestParam("email") String email,
-            @RequestParam("username") String username,
-            @RequestParam("full_name") String fullName,
-            @RequestParam("root") Boolean root,
-            @RequestParam("hmac") String hmac) throws Exception {
+      @RequestParam("uid") Long uid,
+      @RequestParam("email") String email,
+      @RequestParam("username") String username,
+      @RequestParam("full_name") String fullName,
+      @RequestParam("root") Boolean root,
+      @RequestParam("hmac") String hmac,
+      HttpServletRequest request) throws Exception {
 
+    String back = ((String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE))
+        .substring("api/auth/callback/".length());
         if (shouldValidate && !backofficeValidator.isFromBackoffice(uid, email, username, fullName, root, hmac))
             return "Falló la validación, el backoffice envió una firma incorrecta";
 
@@ -88,7 +93,7 @@ public class AuthController {
                 "        /* Store the token into localStorage */",
                 "        window.localStorage.setItem('token', '" + token + "');",
                 "        /* Redirect to the actual application */",
-                "        window.location.href = '/';",
+            "        window.location.replace('/#/" + back + "');",
                 "    </script>",
                 "</body>",
                 "</html >");
