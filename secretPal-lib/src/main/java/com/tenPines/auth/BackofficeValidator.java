@@ -22,11 +22,11 @@ public class BackofficeValidator {
         this.secret = new SecretKeySpec(secret.getBytes(UTF_8), CRYPTO_ALGORITHM);
     }
 
-    public boolean isFromBackoffice(Long uid, String email, String username, String fullName, Boolean root, String hmac)
+    public boolean isFromBackoffice(Long uid, String email, String username, String fullName, Boolean root,String userToken, String hmac)
             throws SignatureException, InvalidKeyException, NoSuchAlgorithmException {
         // Because DatetypeConverter return uppercase hex
         hmac = hmac.toUpperCase();
-        String uriToValidate = createUriToValidate(uid, email, username, fullName, root);
+        String uriToValidate = createUriToValidate(uid, email, username, fullName, root,userToken);
 
         Mac mac = Mac.getInstance(CRYPTO_ALGORITHM);
         mac.init(this.secret);
@@ -36,7 +36,7 @@ public class BackofficeValidator {
         return hmac.equals(DatatypeConverter.printHexBinary(byteResult));
     }
 
-    private String createUriToValidate(Long uid, String email, String username, String fullName, Boolean root) {
+    private String createUriToValidate(Long uid, String email, String username, String fullName, Boolean root, String userToken) {
         /*
          * The order is important, this is completely dependant on the backoffice
          * see https://github.com/10Pines/10pines-bk/blob/d6a358dfc0433eb1a9a51ad2ec4760c600f469e2/app/models/auth_app.rb#L9
@@ -46,7 +46,8 @@ public class BackofficeValidator {
                 "email=" + email,
                 "username=" + username,
                 "full_name=" + fullName,
-                "root=" + root.toString()
+                "root=" + root.toString(),
+                "user_token=" + userToken
         );
     }
 }

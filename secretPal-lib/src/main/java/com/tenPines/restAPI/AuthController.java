@@ -64,10 +64,11 @@ public class AuthController {
             @RequestParam("email") String email,
             @RequestParam("username") String username,
             @RequestParam("full_name") String fullName,
+            @RequestParam("user_token") String userToken,
             @RequestParam("root") Boolean root,
             @RequestParam("hmac") String hmac) throws Exception {
 
-        if (shouldValidate && !backofficeValidator.isFromBackoffice(uid, email, username, fullName, root, hmac))
+        if (shouldValidate && !backofficeValidator.isFromBackoffice(uid, email, username, fullName, root, userToken,hmac))
             return "Falló la validación, el backoffice envió una firma incorrecta";
 
         User loggedUser = userService.findByBackofficeId(uid)
