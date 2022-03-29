@@ -14,6 +14,7 @@ public class MailProperties {
     private String user;
     private String password;
     private String recipients;
+    private String sender;
 
     public String getHost() {
         return this.host;
@@ -53,6 +54,14 @@ public class MailProperties {
 
     public void setRecipients(String recipients) {
         this.recipients = recipients;
+    }
+
+    public String getSender() {
+        return this.sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public Properties getProperties() {

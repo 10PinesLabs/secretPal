@@ -46,6 +46,7 @@ public class Message {
         javax.mail.Message javaxMessage = new MimeMessage(authenticatedSession(mailProperties));
         javaxMessage.setRecipients(javax.mail.Message.RecipientType.TO, InternetAddress.parse(getRecipient()));
         javaxMessage.setSubject(getSubject());
+        javaxMessage.setFrom(new InternetAddress(mailProperties.getSender()));
 
         MimeBodyPart textPart = new MimeBodyPart();
         textPart.setText(plainTextBody, "utf-8");
